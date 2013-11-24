@@ -1,7 +1,8 @@
 package com.me.mygdxgame.client;
 
-import com.me.mygdxgame.MyGdxGame;
-import com.me.mygdxgame.UITest;
+import ressourceUseless.MyGdxGame;
+import ressourceUseless.UITest;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;

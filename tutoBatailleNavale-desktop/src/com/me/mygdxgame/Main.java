@@ -11,6 +11,6 @@ public class Main {
 		cfg.width = 1024;
 		cfg.height = 780;
 		
-		new LwjglApplication(new UITest2(), cfg);
+		new LwjglApplication(new MyGame(), cfg);
 	}
 }
