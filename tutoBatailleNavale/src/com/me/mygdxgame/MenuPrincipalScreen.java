@@ -25,12 +25,26 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
  *
  */
 public class MenuPrincipalScreen implements Screen {
-
+	/**
+	 * design en json place dans les assets de android
+	 * {@link Skin}
+	 */
 	private Skin skin;
+	/**
+	 * {@link Stage}
+	 */
 	private Stage stage;
-
+	/**
+	 * label pour montrer les fps
+	 */
 	private Label fpsLabel;
+	/**
+	 * numero du bouton selectionne
+	 */
 	private int buttonSelected;
+	/**
+	 * objet {@link MyGame} pour pouvoir changer d'ecran et recup des infos generales
+	 */
 	MyGame game;
 
 
@@ -40,12 +54,12 @@ public class MenuPrincipalScreen implements Screen {
 
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 
-		// Group.debug = true;
-
+		//nos 3 boutons de selection
 		TextButton tbChat = new TextButton("creer un chat", skin);
 		TextButton tbHost = new TextButton("heberger un chat", skin);
 		TextButton tbJoin = new TextButton("rejoindre une partie", skin);
 
+		//nos listeners sur les boutons
 		tbChat.addListener(new ChangeListener() {
 
 			@Override
@@ -122,6 +136,7 @@ public class MenuPrincipalScreen implements Screen {
 
 		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
 
+		//on switch le num du bouton selectionner et son affiche le screen correspondant
 		switch (buttonSelected) {
 		case 1:
 
@@ -147,7 +162,7 @@ public class MenuPrincipalScreen implements Screen {
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
+		//on dit a l'appli d'ecouter ce stage quand la methode show est appelee
 		Gdx.input.setInputProcessor(stage);
 
 	}

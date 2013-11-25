@@ -57,21 +57,21 @@ public class ChatScreen implements Screen {
 		imageFlipped.flip(true, true);
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 		
-//		Gdx.input.setInputProcessor(stage);
 
-		// Group.debug = true;
-
+		//bouton avec image inutile
 		ImageButtonStyle style = new ImageButtonStyle(skin.get(ButtonStyle.class));
 		style.imageUp = new TextureRegionDrawable(image);
 		style.imageDown = new TextureRegionDrawable(imageFlipped);
 		ImageButton iconButton = new ImageButton(style);
 
+		//bouton de validation
 		TextButton validation = new TextButton("se connecter", skin);
 
-
+		//un label pour montrer les fps
 		Label myLabel = new Label("Pseudo", skin);
 		myLabel.setWrap(true);
 
+		//on recup l'adresse a laquelle on est conecter
 		String localHost="";
 		try {
 			localHost=InetAddress.getLocalHost().getHostAddress();
@@ -87,6 +87,7 @@ public class ChatScreen implements Screen {
 		tfHost.setMessageText("Saisir un host");
 		fpsLabel = new Label("fps:", skin);
 
+		//recuperation des dimensions de l'ecran
 		float width = Gdx.graphics.getWidth();
 	    float height = Gdx.graphics.getHeight();
 	    
@@ -113,6 +114,7 @@ public class ChatScreen implements Screen {
 		// stage.addActor(new Button("Behind Window", skin));
 		stage.addActor(window);
 
+		//ajouts des listeners sur nos boutons
 		tfPseudo.setTextFieldListener(new TextFieldListener() {
 			public void keyTyped (TextField textField, char key) {
 				if (key == '\n') textField.getOnscreenKeyboard().show(false);

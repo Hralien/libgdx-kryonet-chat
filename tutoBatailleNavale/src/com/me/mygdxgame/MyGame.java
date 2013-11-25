@@ -17,6 +17,9 @@ public class MyGame extends Game {
     AnimationPlayerScreen animationScreen;
     CreateCharacterScreen createCharacterScreen;
     ChatScreen chatScreen;
+    /**
+     * le personnage du joueur initialise lors de la creation
+     */
     public Personnage player;
 
 

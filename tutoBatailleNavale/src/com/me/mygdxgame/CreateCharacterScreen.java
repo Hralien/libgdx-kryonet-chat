@@ -31,14 +31,26 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
  *
  */
 public class CreateCharacterScreen implements Screen {
-
+	/**
+	 * design en json place dans les assets de android
+	 * {@link Skin}
+	 */
 	Skin skin;
+	/**
+	 * {@link Stage}
+	 */
 	Stage stage;
-	Texture texture1;
-	Texture texture2;
+	/**
+	 * label pour montrer les fps
+	 */
 	Label fpsLabel;
+	/**
+	 * objet {@link MyGame} pour pouvoir changer d'ecran et recup des infos generales
+	 */
 	MyGame game;
-	
+	/**
+	 * objet requis pour dessiner {@link SpriteBatch}
+	 */
 	SpriteBatch			spriteBatch;		// #6
 
 	
@@ -51,16 +63,16 @@ public class CreateCharacterScreen implements Screen {
 
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 
-		// Group.debug = true;
-
 		TextButton validation = new TextButton("creer un perso", skin);
-
 
 		final TextField tfPseudo = new TextField("", skin);
 		tfPseudo.setMessageText("Saisir un pseudo!");
 
+		//creation d'un tableau pour stocker les classes
 		String[] tabPersonnage={"Soigneur","Barbare","Mage"};
+		//creation d'une select box (appele List ici) avec le tableau ci dessus
 		final List listClasses= new List(tabPersonnage, skin);
+		//ajout de la List dans un scrollPane, pour pouvoir derouler, descendre, monter
 		ScrollPane scrollPaneClass = new ScrollPane(listClasses,skin);
 		
 
@@ -100,6 +112,7 @@ public class CreateCharacterScreen implements Screen {
 				switch(listClasses.getSelectedIndex()){
 				case 0:
 					System.out.println("new Soigneur");
+					//initialisation du player 
 					game.player = new Healer(tfPseudo.getText());
 					break;
 				case 1:
@@ -136,19 +149,19 @@ public class CreateCharacterScreen implements Screen {
 
 		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
 		
-		
+		//dit a l'objet SpriteBatch de se preparer a dessiner
 		spriteBatch.begin();
 		
 		//Animation perso skill
 		if(game.player!=null){
 			game.player.listSkills.get(0).effect.draw(spriteBatch, delta);
+			//dessinage du corps du perso
 			spriteBatch.draw(game.player.regions[0],100,100);
 			
 		}
-		
+		//dit à l'objet SpriteBatch qu'on a finit de dessiner
 		spriteBatch.end();
 
-		
 		
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 		stage.draw();
@@ -157,7 +170,7 @@ public class CreateCharacterScreen implements Screen {
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
+		//on dit a l'appli d'ecouter ce stage quand la methode show est appelee
 		Gdx.input.setInputProcessor(stage);
 
 	}
