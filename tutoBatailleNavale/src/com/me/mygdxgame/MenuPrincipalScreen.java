@@ -1,7 +1,10 @@
 package com.me.mygdxgame;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+
+import chat.ChatServer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -29,8 +32,8 @@ public class MenuPrincipalScreen implements Screen {
 	private Label fpsLabel;
 	private int buttonSelected;
 	MyGame game;
-	
-	
+
+
 	public MenuPrincipalScreen(MyGame game){
 		this.game=game;
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
@@ -40,11 +43,11 @@ public class MenuPrincipalScreen implements Screen {
 		// Group.debug = true;
 
 		TextButton tbChat = new TextButton("creer un chat", skin);
-		TextButton tbHost = new TextButton("heberger une partie", skin);
+		TextButton tbHost = new TextButton("heberger un chat", skin);
 		TextButton tbJoin = new TextButton("rejoindre une partie", skin);
 
 		tbChat.addListener(new ChangeListener() {
-			
+
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				// TODO Auto-generated method stub
@@ -52,15 +55,21 @@ public class MenuPrincipalScreen implements Screen {
 			}
 		});
 		tbHost.addListener(new ChangeListener() {
-			
+
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				// TODO Auto-generated method stub
 				buttonSelected = 2;
+				try {
+					new ChatServer();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		tbJoin.addListener(new ChangeListener() {
-			
+
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				// TODO Auto-generated method stub
@@ -69,7 +78,7 @@ public class MenuPrincipalScreen implements Screen {
 			}
 		});
 		fpsLabel = new Label("fps:", skin);
-	
+
 
 
 		// window.debug();
@@ -112,22 +121,23 @@ public class MenuPrincipalScreen implements Screen {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
-		
-			switch (buttonSelected) {
-			case 1:
-	            game.setScreen(game.chatScreen);			
-				break;
-			case 2:
-	            game.setScreen(game.animationScreen);
-	            
-				break;
-			case 3:
-	            game.setScreen(game.createCharacterScreen);			
-				break;
-			default:
-				break;
-			}
-		
+
+		switch (buttonSelected) {
+		case 1:
+
+			game.setScreen(game.chatScreen);			
+			break;
+		case 2:
+			//game.setScreen(game.animationScreen);
+			
+			break;
+		case 3:
+			game.setScreen(game.createCharacterScreen);			
+			break;
+		default:
+			break;
+		}
+
 
 
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
@@ -145,19 +155,19 @@ public class MenuPrincipalScreen implements Screen {
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
 
