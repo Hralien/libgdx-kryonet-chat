@@ -1,5 +1,8 @@
 package com.me.mygdxgame;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import chat.ChatClient;
 
 import com.badlogic.gdx.Gdx;
@@ -49,13 +52,12 @@ public class ChatScreen implements Screen {
 		batch = new SpriteBatch();
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 		texture1 = new Texture(Gdx.files.internal("data/badlogicsmall.jpg"));
-		texture2 = new Texture(Gdx.files.internal("data/badlogic.jpg"));
 		TextureRegion image = new TextureRegion(texture1);
 		TextureRegion imageFlipped = new TextureRegion(image);
 		imageFlipped.flip(true, true);
-		TextureRegion image2 = new TextureRegion(texture2);
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-		Gdx.input.setInputProcessor(stage);
+		
+//		Gdx.input.setInputProcessor(stage);
 
 		// Group.debug = true;
 
@@ -70,16 +72,18 @@ public class ChatScreen implements Screen {
 		Label myLabel = new Label("Pseudo", skin);
 		myLabel.setWrap(true);
 
-		Table t = new Table();
-		t.row();
-		t.add(myLabel);
-
-		t.layout();
+		String localHost="";
+		try {
+			localHost=InetAddress.getLocalHost().getHostAddress();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		CheckBox checkBox = new CheckBox("Memoriser", skin);
 		final TextField tfPseudo = new TextField("", skin);
 		tfPseudo.setMessageText("Saisir un pseudo!");
-		final TextField tfHost = new TextField("", skin);
+		final TextField tfHost = new TextField(localHost, skin);
 		tfHost.setMessageText("Saisir un host");
 		fpsLabel = new Label("fps:", skin);
 
@@ -161,7 +165,8 @@ public class ChatScreen implements Screen {
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
-		
+		Gdx.input.setInputProcessor(stage);
+
 	}
 
 	@Override

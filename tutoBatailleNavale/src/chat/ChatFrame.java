@@ -24,6 +24,8 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import com.esotericsoftware.minlog.Log;
+
 public class ChatFrame extends JFrame {
 	CardLayout cardLayout;
 	JProgressBar progressBar;
@@ -137,5 +139,9 @@ public class ChatFrame extends JFrame {
 				messageList.ensureIndexIsVisible(model.size() - 1);
 			}
 		});
+	}
+	public static void main (String[] args) {
+		Log.set(Log.LEVEL_DEBUG);
+		new ChatClient("192.168.229.188", "flo");
 	}
 }

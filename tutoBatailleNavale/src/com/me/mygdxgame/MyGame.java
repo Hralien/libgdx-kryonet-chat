@@ -1,6 +1,7 @@
 package com.me.mygdxgame;
 
-import com.badlogic.gdx.ApplicationListener;
+import gameMechanic.Personnage;
+
 import com.badlogic.gdx.Game;
 
 /**
@@ -9,17 +10,22 @@ import com.badlogic.gdx.Game;
  * @author Florian
  *
  */
-public class MyGame extends Game implements ApplicationListener{
-	 
+public class MyGame extends Game {
 
-    MenuPrincipalScreen mainMenuScreen;
-    AnimationPlayerScreen anotherScreen;
+
+	MenuPrincipalScreen mainMenuScreen;
+    AnimationPlayerScreen animationScreen;
+    CreateCharacterScreen createCharacterScreen;
+    ChatScreen chatScreen;
+    public Personnage player;
 
 
    @Override
      public void create() {
              mainMenuScreen = new MenuPrincipalScreen(this);
-             anotherScreen = new AnimationPlayerScreen(this);
-             setScreen(mainMenuScreen);              
+             animationScreen = new AnimationPlayerScreen(this);
+             createCharacterScreen = new CreateCharacterScreen(this);
+             chatScreen = new ChatScreen(this);
+             setScreen(mainMenuScreen);
      }
 }

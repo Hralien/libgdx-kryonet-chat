@@ -14,7 +14,9 @@ public class AnimationPlayerScreen implements Screen{
 
 	private static final int nb_colone = 4;
 	private static final int nb_ligne = 4;
+	
 	private static final int nombre_image_animation = 4;
+	
 	private static final float duree_animation = 1f;
 	private  float vitesse_lapin = 1f;
 
@@ -50,7 +52,7 @@ public class AnimationPlayerScreen implements Screen{
 
 		// Initialisation  
 		batch = new SpriteBatch();
-		sheetTexture = new Texture(Gdx.files.internal("red.PNG"));
+		sheetTexture = new Texture(Gdx.files.internal("red.png"));
 		largeur_texture = sheetTexture.getWidth();
 		hauteur_texture = sheetTexture.getHeight();
 		animation_stop = false;

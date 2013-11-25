@@ -1,6 +1,5 @@
 package chat;
 
-import java.awt.EventQueue;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;

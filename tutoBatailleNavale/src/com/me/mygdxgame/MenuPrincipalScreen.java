@@ -1,25 +1,19 @@
 package com.me.mygdxgame;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 
 /**
  * Menu principal
@@ -31,19 +25,17 @@ public class MenuPrincipalScreen implements Screen {
 
 	private Skin skin;
 	private Stage stage;
-	private SpriteBatch batch;
-	private Texture texture1;
-	private Texture texture2;
+
 	private Label fpsLabel;
 	private int buttonSelected;
-	private MyGame game;
+	MyGame game;
+	
+	
 	public MenuPrincipalScreen(MyGame game){
 		this.game=game;
-		batch = new SpriteBatch();
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-		Gdx.input.setInputProcessor(stage);
 
 		// Group.debug = true;
 
@@ -73,9 +65,11 @@ public class MenuPrincipalScreen implements Screen {
 			public void changed(ChangeEvent event, Actor actor) {
 				// TODO Auto-generated method stub
 				buttonSelected = 3;
+				System.err.println("hi");
 			}
 		});
 		fpsLabel = new Label("fps:", skin);
+	
 
 
 		// window.debug();
@@ -119,21 +113,21 @@ public class MenuPrincipalScreen implements Screen {
 
 		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
 		
-		if (buttonSelected!=0){ // use your own criterion here
 			switch (buttonSelected) {
 			case 1:
-	            game.setScreen(game.anotherScreen);			
+	            game.setScreen(game.chatScreen);			
 				break;
 			case 2:
-	            game.setScreen(game.anotherScreen);			
+	            game.setScreen(game.animationScreen);
+	            
 				break;
 			case 3:
-	            game.setScreen(game.anotherScreen);			
+	            game.setScreen(game.createCharacterScreen);			
 				break;
 			default:
 				break;
 			}
-		}
+		
 
 
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
@@ -144,7 +138,8 @@ public class MenuPrincipalScreen implements Screen {
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
-		
+		Gdx.input.setInputProcessor(stage);
+
 	}
 
 	@Override

@@ -21,6 +21,8 @@ import com.esotericsoftware.minlog.Log;
 
 public class ChatServer {
 	Server server;
+	public final static boolean DEBUG_PC=false;
+
 
 	public ChatServer () throws IOException {
 		server = new Server() {
@@ -89,19 +91,21 @@ public class ChatServer {
 		});
 		server.bind(Network.port);
 		server.start();
-
-		// Open a window to provide an easy way to stop the server.
-		JFrame frame = new JFrame("Chat Server");
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.addWindowListener(new WindowAdapter() {
-			public void windowClosed (WindowEvent evt) {
-				server.stop();
-			}
-		});
-		frame.getContentPane().add(new JLabel("Close to stop the chat server."));
-		frame.setSize(320, 200);
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
+		if (DEBUG_PC) {
+			// Open a window to provide an easy way to stop the server.
+			JFrame frame = new JFrame("Chat Server");
+			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			frame.addWindowListener(new WindowAdapter() {
+				public void windowClosed (WindowEvent evt) {
+					server.stop();
+				}
+			});
+			frame.getContentPane().add(new JLabel("Close to stop the chat server."));
+			frame.setSize(320, 200);
+			frame.setLocationRelativeTo(null);
+			frame.setVisible(true);
+		}
+		
 	}
 
 	void updateNames () {
