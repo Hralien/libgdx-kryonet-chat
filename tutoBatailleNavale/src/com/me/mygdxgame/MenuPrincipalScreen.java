@@ -80,7 +80,7 @@ public class MenuPrincipalScreen implements Screen {
 		fpsLabel = new Label("fps:", skin);
 
 
-
+		
 		// window.debug();
 		Window window = new Window("Selection Perso", skin);
 		window.getButtonTable().add(new TextButton("X", skin)).height(window.getPadTop());

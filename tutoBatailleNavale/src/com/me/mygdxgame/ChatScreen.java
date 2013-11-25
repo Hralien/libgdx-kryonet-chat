@@ -87,20 +87,23 @@ public class ChatScreen implements Screen {
 		tfHost.setMessageText("Saisir un host");
 		fpsLabel = new Label("fps:", skin);
 
+		float width = Gdx.graphics.getWidth();
+	    float height = Gdx.graphics.getHeight();
+	    
 
 		// window.debug();
 		Window window = new Window("Connexion", skin);
 		window.getButtonTable().add(new TextButton("X", skin)).height(window.getPadTop());
-		window.setPosition(50, 200);
+		window.setPosition(width*0, 200);
 		window.defaults().spaceBottom(10);
-		window.row().fill().expandX();
+		window.row().minWidth((float) (width*.4)).fill().expandX();
 		window.add(iconButton);
 		window.row();
 		window.add(checkBox);
 		window.row();
-		window.add(tfPseudo).minWidth(100).expandX().fillX().colspan(4);
+		window.add(tfPseudo).minWidth((float) (width*.4)).expandX().fillX().colspan(6);
 		window.row();
-		window.add(tfHost).minWidth(100).expandX().fillX().colspan(4);
+		window.add(tfHost).minWidth((float) (width*.4)).expandX().fillX().colspan(6);
 		window.row();
 		window.add(validation);
 		window.row();

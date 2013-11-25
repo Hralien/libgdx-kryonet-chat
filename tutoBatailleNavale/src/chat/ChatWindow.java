@@ -43,15 +43,18 @@ public  class ChatWindow{
 		scrollPaneUser.setFlickScroll(true);
 		SplitPane splitPane = new SplitPane(scrollPaneMessage, scrollPaneUser, false, skin, "default-horizontal");
 
-		window = new Window("Connexion", skin);
+		float width = Gdx.graphics.getWidth();
+	    float height = Gdx.graphics.getHeight();
+	    
+		window = new Window("Chat", skin);
 		window.getButtonTable().add(new TextButton("X", skin)).height(window.getPadTop());
-		window.setPosition(100, 100);
+		window.setPosition(width*5, 100);
 		window.defaults().spaceBottom(10);
 		window.row().fill().expandX();
 		window.row();
-		window.add(splitPane).minWidth(100).expandX().fillX().minHeight(100);
+		window.add(splitPane).minWidth((float) (width*.5)).expandX().fillX().minHeight((float) (height*.3));
 		window.row();
-		window.add(tfMessage).minWidth(100).expandX().fillX().colspan(10);
+		window.add(tfMessage).minWidth((float) (width*.5)).expandX().fillX().colspan(10);
 		window.row();
 		window.add(envoyer);
 		window.row();
