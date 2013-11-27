@@ -7,10 +7,12 @@ import java.net.UnknownHostException;
 import chat.ChatServer;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -48,8 +50,8 @@ public class MenuPrincipalScreen implements Screen {
 	MyGame game;
 
 
-	public MenuPrincipalScreen(MyGame game){
-		this.game=game;
+	public MenuPrincipalScreen(MyGame myGame){
+		this.game=myGame;
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
@@ -75,10 +77,18 @@ public class MenuPrincipalScreen implements Screen {
 				// TODO Auto-generated method stub
 				buttonSelected = 2;
 				try {
-					new ChatServer();
+					game.chatserver = new ChatServer();
+					new Dialog("Some Dialog", skin, "dialog") {
+						protected void result (Object object) {
+							//pas de bouton donc pas de resultat
+						}
+					}.text("ChatServer created.").button("Yes", true).key(Keys.ENTER, true).key(Keys.ESCAPE, true).show(stage);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
+					new Dialog("Some Dialog", skin, "dialog") {
+						protected void result (Object object) {
+						}
+					}.text("Server already created").button("Yes", true).key(Keys.ENTER, true).key(Keys.ESCAPE, true).show(stage);
 				}
 			}
 		});
@@ -88,13 +98,12 @@ public class MenuPrincipalScreen implements Screen {
 			public void changed(ChangeEvent event, Actor actor) {
 				// TODO Auto-generated method stub
 				buttonSelected = 3;
-				System.err.println("hi");
 			}
 		});
 		fpsLabel = new Label("fps:", skin);
 
 
-		
+
 		// window.debug();
 		Window window = new Window("Selection Perso", skin);
 		window.getButtonTable().add(new TextButton("X", skin)).height(window.getPadTop());
@@ -144,7 +153,7 @@ public class MenuPrincipalScreen implements Screen {
 			break;
 		case 2:
 			//game.setScreen(game.animationScreen);
-			
+
 			break;
 		case 3:
 			game.setScreen(game.createCharacterScreen);			
@@ -152,8 +161,6 @@ public class MenuPrincipalScreen implements Screen {
 		default:
 			break;
 		}
-
-
 
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 		stage.draw();

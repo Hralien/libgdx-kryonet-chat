@@ -7,6 +7,7 @@ import chat.Network.ChatMessage;
 import chat.Network.RegisterName;
 import chat.Network.UpdateNames;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -122,7 +123,7 @@ public class ChatClient {
 					// Server communication after connection can go here, or in Listener#connected().
 				} catch (IOException ex) {
 					ex.printStackTrace();
-					System.exit(1);
+					//System.exit(1);
 				}
 			}
 		}.start();

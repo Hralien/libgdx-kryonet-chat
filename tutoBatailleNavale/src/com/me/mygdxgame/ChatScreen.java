@@ -1,7 +1,14 @@
 package com.me.mygdxgame;
 
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import chat.ChatClient;
 
@@ -21,6 +28,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -29,14 +37,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.minlog.Log;
 
 /**
  * lancement du chat apres saisie du pseudo et de l'adresse
+ * 
  * @author Florian
- *
+ * 
  */
 public class ChatScreen implements Screen {
-
 
 	Skin skin;
 	Stage stage;
@@ -46,17 +56,61 @@ public class ChatScreen implements Screen {
 	Label fpsLabel;
 	ChatClient cc;
 	MyGame game;
-	
+	private static final String IPADDRESS_PATTERN = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
+			+ "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
+			+ "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
+			+ "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
+
 	public ChatScreen(MyGame game){
 		this.game=game;
-		batch = new SpriteBatch();
-		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-		texture1 = new Texture(Gdx.files.internal("data/badlogicsmall.jpg"));
+		this.batch = new SpriteBatch();
+		this.skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+		this.texture1 = new Texture(Gdx.files.internal("data/badlogicsmall.jpg"));
 		TextureRegion image = new TextureRegion(texture1);
 		TextureRegion imageFlipped = new TextureRegion(image);
 		imageFlipped.flip(true, true);
-		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-		
+		this.stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+
+		//on recup l'adresse a laquelle on est conecter
+		ArrayList<String> listIps=new ArrayList<String>();
+		//		try {
+		//			listIps.add(InetAddress.getLocalHost().getHostAddress());
+		//		} catch (UnknownHostException e1) {
+		//			// TODO Auto-generated catch block
+		//			e1.printStackTrace();
+		//		}
+		//		try {
+		//			InetAddress[] allByName = InetAddress.getAllByName(InetAddress.getLocalHost().getHostName());
+		//
+		//			
+		//			for (int i = 0; i < allByName.length; i++) {
+		//				//test si != localhost et n'est pas une adresse mac
+		//				if(valideIpAdress(allByName[i].getHostAddress())){
+		//					listIps.add(allByName[i].getHostAddress());
+		//				}
+		//			}
+		//		} catch (UnknownHostException e) {
+		//			// TODO Auto-generated catch block
+		//			e.printStackTrace();
+		//		}
+		//		System.out.println("listIps"+listIps.size());
+
+		try {
+			for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+				NetworkInterface intf = en.nextElement();
+				for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+					InetAddress inetAddress = enumIpAddr.nextElement();
+					System.out.println(inetAddress.getHostAddress());
+					if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
+						listIps.add(inetAddress.getHostAddress().toString());
+					}
+
+				}
+			}
+		} catch (SocketException ex) {
+			System.err.println(ex.toString());
+		}
+
 
 		//bouton avec image inutile
 		ImageButtonStyle style = new ImageButtonStyle(skin.get(ButtonStyle.class));
@@ -71,26 +125,20 @@ public class ChatScreen implements Screen {
 		Label myLabel = new Label("Pseudo", skin);
 		myLabel.setWrap(true);
 
-		//on recup l'adresse a laquelle on est conecter
-		String localHost="";
-		try {
-			localHost=InetAddress.getLocalHost().getHostAddress();
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 		CheckBox checkBox = new CheckBox("Memoriser", skin);
 		final TextField tfPseudo = new TextField("", skin);
 		tfPseudo.setMessageText("Saisir un pseudo!");
-		final TextField tfHost = new TextField(localHost, skin);
-		tfHost.setMessageText("Saisir un host");
+
+		final SelectBox sbIps = new SelectBox(listIps.toArray(),skin);
+		//		final TextField tfHost = new TextField("", skin);
+		//		tfHost.setText(localHost);
+		//		tfHost.setMessageText("Saisir un host");
 		fpsLabel = new Label("fps:", skin);
 
 		//recuperation des dimensions de l'ecran
 		float width = Gdx.graphics.getWidth();
-	    float height = Gdx.graphics.getHeight();
-	    
+		float height = Gdx.graphics.getHeight();
+
 
 		// window.debug();
 		Window window = new Window("Connexion", skin);
@@ -104,7 +152,7 @@ public class ChatScreen implements Screen {
 		window.row();
 		window.add(tfPseudo).minWidth((float) (width*.4)).expandX().fillX().colspan(6);
 		window.row();
-		window.add(tfHost).minWidth((float) (width*.4)).expandX().fillX().colspan(6);
+		window.add(sbIps).minWidth((float) (width*.4)).expandX().fillX().colspan(6);
 		window.row();
 		window.add(validation);
 		window.row();
@@ -135,12 +183,26 @@ public class ChatScreen implements Screen {
 
 		validation.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
-				cc = new ChatClient(tfHost.getText(), tfPseudo.getText());
+				cc = new ChatClient(sbIps.getSelection(), tfPseudo.getText());
 				stage.addActor(cc.chatWindow.getWindow());
 			}
 		});
 	}
 
+	/**
+	 * Verifie que l'adresse est bien une adresse ip (et non mac) et qu'elle est
+	 * différente du localhost
+	 * 
+	 * @param ip
+	 * @return
+	 */
+	public boolean valideIpAdress(String ip) {
+		if (ip.equals("127.0.0.1"))
+			return false;
+		Pattern pattern = Pattern.compile(IPADDRESS_PATTERN);
+		Matcher matcher = pattern.matcher(ip);
+		return matcher.matches();
+	}
 
 	@Override
 	public void resize(int width, int height) {
@@ -148,7 +210,7 @@ public class ChatScreen implements Screen {
 	}
 
 	@Override
-	public void dispose () {
+	public void dispose() {
 		stage.dispose();
 		skin.dispose();
 		texture1.dispose();
@@ -177,19 +239,19 @@ public class ChatScreen implements Screen {
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-		
-	}
-}
 
+	}
+
+}

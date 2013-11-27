@@ -2,6 +2,8 @@ package com.me.mygdxgame;
 
 import gameMechanic.Personnage;
 
+import chat.ChatServer;
+
 import com.badlogic.gdx.Game;
 
 /**
@@ -21,6 +23,7 @@ public class MyGame extends Game {
      * le personnage du joueur initialise lors de la creation
      */
     public Personnage player;
+    public ChatServer chatserver;
 
 
    @Override

@@ -32,11 +32,9 @@ public class ChatServer {
 				return new ChatConnection();
 			}
 		};
-
 		// For consistency, the classes to be sent over the network are
 		// registered by the same method for both the client and server.
 		Network.register(server);
-
 		server.addListener(new Listener() {
 			public void received (Connection c, Object object) {
 				// We know all connections for this server are actually ChatConnections.
