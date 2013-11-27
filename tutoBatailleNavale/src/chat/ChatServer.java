@@ -4,7 +4,9 @@ package chat;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,6 +16,7 @@ import chat.Network.ChatMessage;
 import chat.Network.RegisterName;
 import chat.Network.UpdateNames;
 
+import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
@@ -87,7 +90,7 @@ public class ChatServer {
 				}
 			}
 		});
-		server.bind(Network.port);
+		server.bind(Network.portTCP,Network.portUDP);
 		server.start();
 		if (DEBUG_PC) {
 			// Open a window to provide an easy way to stop the server.
@@ -103,6 +106,9 @@ public class ChatServer {
 			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
 		}
+//		Client client = new Client();
+//		List<InetAddress> address = client.discoverHosts(Network.portUDP, 5000);
+//		System.out.println("test"+address);
 		
 	}
 

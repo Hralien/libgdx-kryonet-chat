@@ -95,7 +95,7 @@ public class ChatScreen implements Screen {
 				NetworkInterface intf = en.nextElement();
 				for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
 					InetAddress inetAddress = enumIpAddr.nextElement();
-					System.out.println(inetAddress.getHostAddress());
+//					System.out.println(inetAddress.getHostAddress());
 					if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
 						listIps.add(inetAddress.getHostAddress().toString());
 					}
@@ -106,7 +106,8 @@ public class ChatScreen implements Screen {
 			System.err.println(ex.toString());
 		}
 
-
+		
+		
 		//bouton avec image inutile
 		ImageButtonStyle style = new ImageButtonStyle(skin.get(ButtonStyle.class));
 		style.imageUp = new TextureRegionDrawable(image);

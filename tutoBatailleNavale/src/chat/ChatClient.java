@@ -4,6 +4,8 @@ package chat;
 import java.awt.EventQueue;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
 
 import chat.Network.ChatMessage;
 import chat.Network.RegisterName;
@@ -121,7 +123,7 @@ public class ChatClient {
 		new Thread("Connect") {
 			public void run () {
 				try {
-					client.connect(5000, host, Network.port);
+					client.connect(5000, host, Network.portTCP,Network.portUDP);
 					// Server communication after connection can go here, or in Listener#connected().
 				} catch (IOException ex) {
 					ex.printStackTrace();
@@ -130,8 +132,9 @@ public class ChatClient {
 			}
 		}.start();
 		
-		InetAddress address = client.discoverHost(54555, 5000);
-		System.out.println("test"+address);
+//		List<InetAddress> address = client.discoverHosts(Network.portUDP, 5000);
+//		System.out.println("test"+address);
+		
 	}
 
 }

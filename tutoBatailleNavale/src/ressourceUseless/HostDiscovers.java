@@ -1,6 +1,5 @@
 package ressourceUseless;
 
-
 import java.io.IOException;
 import java.net.InetAddress;
 import com.badlogic.gdx.ApplicationListener;
@@ -19,11 +18,11 @@ public class HostDiscovers implements ApplicationListener
 	public void create()
 	{
 		Gdx.app.log("UDPTEST", "STARTED");
-
-		//DiscoverServerTest();		
+		
+//		DiscoverServerTest();		
 		DiscoverServerTestUDPTCP();
 	}
-
+	
 	public void DiscoverServerTest()
 	{
 		final Server broadcastServer = new Server();
@@ -81,7 +80,7 @@ public class HostDiscovers implements ApplicationListener
 		else
 			Gdx.app.log("UDPTEST", "Client: discovered host "+host.getHostAddress());
 
-
+		
 		client.addListener(new Listener()
 		{
 			public void connected(Connection connection)
@@ -96,10 +95,10 @@ public class HostDiscovers implements ApplicationListener
 			{
 				Gdx.app.log("UDPTEST", "Client: Client disconnected");
 			}
-
-
+			
+			
 		});
-
+		
 		client.start();
 		try
 		{
@@ -110,8 +109,8 @@ public class HostDiscovers implements ApplicationListener
 			e.printStackTrace();
 		}
 	}
-
-
+	
+	
 	public void DiscoverServerTestUDPTCP()
 	{
 		final Server server = new Server();
@@ -147,7 +146,7 @@ public class HostDiscovers implements ApplicationListener
 		else
 			Gdx.app.log("UDPTEST", "Client: discovered host "+host.getHostAddress());
 
-
+		
 		client.addListener(new Listener()
 		{
 			public void connected(Connection connection)
@@ -162,10 +161,10 @@ public class HostDiscovers implements ApplicationListener
 			{
 				Gdx.app.log("UDPTEST", "Client: Client disconnected");
 			}
-
-
+			
+			
 		});
-
+		
 		client.start();
 		try
 		{

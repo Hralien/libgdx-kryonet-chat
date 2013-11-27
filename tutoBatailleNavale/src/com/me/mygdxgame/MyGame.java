@@ -24,9 +24,18 @@ public class MyGame extends Game {
      */
     public Personnage player;
     public ChatServer chatserver;
+    UITrick androidUI;
 
 
-   @Override
+
+   public MyGame(UITrick actionResolver) {
+		super();
+		this.androidUI = actionResolver;
+	}
+
+
+
+@Override
      public void create() {
              mainMenuScreen = new MenuPrincipalScreen(this);
              animationScreen = new AnimationPlayerScreen(this);
