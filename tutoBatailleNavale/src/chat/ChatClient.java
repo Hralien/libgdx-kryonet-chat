@@ -3,6 +3,8 @@ package chat;
 
 import java.awt.EventQueue;
 import java.io.IOException;
+import java.net.InetAddress;
+
 import chat.Network.ChatMessage;
 import chat.Network.RegisterName;
 import chat.Network.UpdateNames;
@@ -127,6 +129,9 @@ public class ChatClient {
 				}
 			}
 		}.start();
+		
+		InetAddress address = client.discoverHost(54555, 5000);
+		System.out.println("test"+address);
 	}
 
 }
