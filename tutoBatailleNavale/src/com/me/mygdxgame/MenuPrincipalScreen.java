@@ -55,11 +55,11 @@ public class MenuPrincipalScreen implements Screen {
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 
 		//nos 3 boutons de selection
-		TextButton tbChat = new TextButton("creer un chat", skin);
+		TextButton tbChat = new TextButton("rejoindre un chat", skin);
 		TextButton tbHost = new TextButton("heberger un chat", skin);
-		TextButton tbJoin = new TextButton("rejoindre une partie", skin);
+		TextButton tbJoin = new TextButton("creer un perso", skin);
 
-		game.androidUI.showAlertBox("Server", "hello", "Button text",stage);
+		//game.androidUI.showAlertBox("Server", "hello", "Button text",stage);
 
 		//nos listeners sur les boutons
 		tbChat.addListener(new ChangeListener() {
@@ -78,16 +78,10 @@ public class MenuPrincipalScreen implements Screen {
 				buttonSelected = 2;
 				try {
 					game.chatserver = new ChatServer();
-
 					game.androidUI.showAlertBox("Server", "Serveur created", "Button text",stage);
-
 				} catch (IOException e) {
 					e.printStackTrace();
 					game.androidUI.showAlertBox("Server", "Serveur already created", "Button text",stage);
-					//					new Dialog("Some Dialog", skin, "dialog") {
-					//						protected void result (Object object) {
-					//						}
-					//					}.text("Server already created").button("Yes", true).key(Keys.ENTER, true).key(Keys.ESCAPE, true).show(stage);
 				}
 			}
 		});
@@ -151,7 +145,7 @@ public class MenuPrincipalScreen implements Screen {
 			game.setScreen(game.chatScreen);			
 			break;
 		case 2:
-			//			game.setScreen(game.animatiopppppppnScreen);
+			//			game.setScreen(game.animationScreen);
 
 			break;
 		case 3:

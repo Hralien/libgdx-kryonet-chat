@@ -4,10 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class Healer extends Personnage{
+public class Shaman extends Personnage{
 	
 
-	public Healer(String name) {
+	public Shaman(String name) {
 		super(name);
 		super.hp=50;
 		super.sp=5*super.intel;

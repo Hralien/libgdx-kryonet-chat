@@ -1,6 +1,6 @@
 package com.me.mygdxgame;
 
-import gameMechanic.Healer;
+import gameMechanic.Shaman;
 import gameMechanic.Personnage;
 
 import com.badlogic.gdx.Gdx;
@@ -113,7 +113,7 @@ public class CreateCharacterScreen implements Screen {
 				case 0:
 					System.out.println("new Soigneur");
 					//initialisation du player 
-					game.player = new Healer(tfPseudo.getText());
+					game.player = new Shaman(tfPseudo.getText());
 					break;
 				case 1:
 					System.out.println("new Barbare");

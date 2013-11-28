@@ -103,10 +103,10 @@ public class ChatScreen implements Screen {
 				}
 			}
 		} catch (SocketException ex) {
-			System.err.println(ex.toString());
+			System.err.println(ex.getMessage());
 		}
-		for(String it:listIps)
-			System.out.println(it);
+//		for(String it:listIps)
+//			System.out.println(it);
 
 
 		//bouton avec image inutile
@@ -193,13 +193,13 @@ public class ChatScreen implements Screen {
 	 * @param ip
 	 * @return
 	 */
-	public boolean valideIpAdress(String ip) {
-		if (ip.equals("127.0.0.1"))
-			return false;
-		Pattern pattern = Pattern.compile(IPADDRESS_PATTERN);
-		Matcher matcher = pattern.matcher(ip);
-		return matcher.matches();
-	}
+//	public boolean valideIpAdress(String ip) {
+//		if (ip.equals("127.0.0.1"))
+//			return false;
+//		Pattern pattern = Pattern.compile(IPADDRESS_PATTERN);
+//		Matcher matcher = pattern.matcher(ip);
+//		return matcher.matches();
+//	}
 
 	@Override
 	public void resize(int width, int height) {

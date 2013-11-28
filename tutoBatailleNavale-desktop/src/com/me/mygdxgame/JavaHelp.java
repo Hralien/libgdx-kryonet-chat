@@ -21,20 +21,20 @@ public class JavaHelp implements UITrick{
 	@Override
 	public void showToast(CharSequence toastMessage, int toastDuration,Stage stage) {
 		//		JOptionPane.showMessageDialog(new JFrame("Message"), toastMessage);
-		new Dialog("Some Dialog", new Skin(Gdx.files.internal("data/uiskin.json")), "dialog") {
+		new Dialog("Some Text", new Skin(Gdx.files.internal("data/uiskin.json")), "dialog") {
 			protected void result (Object object) {
 			}
-		}.text("Server already created").button("Yes", true).key(Keys.ENTER, true).key(Keys.ESCAPE, true).show(stage);
+		}.text(toastMessage.toString()).button("Continuer", true).key(Keys.ENTER, true).key(Keys.ESCAPE, true).show(stage);
 	}
 
 	
 	@Override
 	public void showAlertBox(String alertBoxTitle, String alertBoxMessage,
 			String alertBoxButtonText, Stage stage) {
-		new Dialog("Some Dialog", new Skin(Gdx.files.internal("data/uiskin.json")), "dialog") {
+		new Dialog(alertBoxTitle, new Skin(Gdx.files.internal("data/uiskin.json")), "dialog") {
 			protected void result (Object object) {
 			}
-		}.text("Server already created").button("Yes", true).key(Keys.ENTER, true).key(Keys.ESCAPE, true).show(stage);
+		}.text(alertBoxMessage).button(alertBoxButtonText, true).key(Keys.ENTER, true).key(Keys.ESCAPE, true).show(stage);
 	}
 	@Override
 	public void openUri(String uri) {
