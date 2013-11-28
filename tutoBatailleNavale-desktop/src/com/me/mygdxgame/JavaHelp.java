@@ -16,32 +16,22 @@ import com.badlogic.gdx.Input.Keys;
 
 
 public class JavaHelp implements UITrick{
-	public Skin skin;
-
-	public JavaHelp() {
-		super();
-		this.skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-	}
+	
 
 	@Override
-	public void showToast(CharSequence toastMessage, int toastDuration) {
+	public void showToast(CharSequence toastMessage, int toastDuration,Stage stage) {
 		//		JOptionPane.showMessageDialog(new JFrame("Message"), toastMessage);
-//		new Dialog("Some Dialog", skin, "dialog") {
-//			protected void result (Object object) {
-//			}
-//		}.text("Server already created").button("Yes", true).key(Keys.ENTER, true).key(Keys.ESCAPE, true).show(stage);
+		new Dialog("Some Dialog", new Skin(Gdx.files.internal("data/uiskin.json")), "dialog") {
+			protected void result (Object object) {
+			}
+		}.text("Server already created").button("Yes", true).key(Keys.ENTER, true).key(Keys.ESCAPE, true).show(stage);
 	}
 
-	@Override
-	public void showAlertBox(String alertBoxTitle, String alertBoxMessage,
-			String alertBoxButtonText) {
-		//		JOptionPane.showMessageDialog(new JFrame(alertBoxTitle), alertBoxMessage);
-
-	}
+	
 	@Override
 	public void showAlertBox(String alertBoxTitle, String alertBoxMessage,
 			String alertBoxButtonText, Stage stage) {
-		new Dialog("Some Dialog", skin, "dialog") {
+		new Dialog("Some Dialog", new Skin(Gdx.files.internal("data/uiskin.json")), "dialog") {
 			protected void result (Object object) {
 			}
 		}.text("Server already created").button("Yes", true).key(Keys.ENTER, true).key(Keys.ESCAPE, true).show(stage);

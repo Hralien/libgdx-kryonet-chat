@@ -26,7 +26,7 @@ public class AndroidHelp implements UITrick {
 	}
 	
 	@Override
-	public void showToast(final CharSequence toastMessage, int toastDuration) {
+	public void showToast(final CharSequence toastMessage, int toastDuration,Stage stage) {
 		uiThread.post(new Runnable() {
 			public void run() {
 				Toast.makeText(appContext, toastMessage, Toast.LENGTH_SHORT)
@@ -35,23 +35,7 @@ public class AndroidHelp implements UITrick {
 		});
 	}
 	
-	@Override
-	public void showAlertBox(final String alertBoxTitle,
-			final String alertBoxMessage, final String alertBoxButtonText) {
-		uiThread.post(new Runnable() {
-			public void run() {
-				new AlertDialog.Builder(appContext)
-				.setTitle(alertBoxTitle)
-				.setMessage(alertBoxMessage)
-				.setNeutralButton(alertBoxButtonText,
-						new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog,
-							int whichButton) {
-					}
-				}).create().show();
-			}
-		});
-	}
+
 
 	@Override
 	public void showAlertBox(final String alertBoxTitle, final String alertBoxMessage,
