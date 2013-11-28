@@ -17,9 +17,8 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
 
-
 public class ChatClient {
-	ChatFrame chatFrame;
+//	ChatFrame chatFrame;
 	Client client;
 	String name;
 	public ChatWindow chatWindow;
@@ -44,18 +43,18 @@ public class ChatClient {
 			public void received (Connection connection, Object object) {
 				if (object instanceof UpdateNames) {
 					UpdateNames updateNames = (UpdateNames)object;
-					if(DEBUG_PC)
-						chatFrame.setNames(updateNames.names);
-					else
+//					if(DEBUG_PC)
+//						chatFrame.setNames(updateNames.names);
+//					else
 						chatWindow.setNames(updateNames.names);
 					return;
 				}
 
 				if (object instanceof ChatMessage) {
 					ChatMessage chatMessage = (ChatMessage)object;
-					if(DEBUG_PC)
-						chatFrame.addMessage(chatMessage.text);
-					else
+//					if(DEBUG_PC)
+//						chatFrame.addMessage(chatMessage.text);
+//					else
 						chatWindow.addMessage(chatMessage.text);
 					return;
 				}
@@ -65,8 +64,8 @@ public class ChatClient {
 				EventQueue.invokeLater(new Runnable() {
 					public void run () {
 						// Closing the frame calls the close listener which will stop the client's update thread.
-						if(DEBUG_PC)
-							chatFrame.dispose();
+//						if(DEBUG_PC)
+//							chatFrame.dispose();
 					}
 				});
 			}
@@ -88,26 +87,26 @@ public class ChatClient {
 		//		name = input.trim();
 
 		// All the ugly Swing stuff is hidden in ChatFrame so it doesn't clutter the KryoNet example code.
-		if(DEBUG_PC){
-			chatFrame = new ChatFrame(host);
-
-			// This listener is called when the send button is clicked.
-			chatFrame.setSendListener(new Runnable() {
-				public void run () {
-					ChatMessage chatMessage = new ChatMessage();
-					chatMessage.text = chatFrame.getSendText();
-					client.sendTCP(chatMessage);
-				}
-			});
-			// This listener is called when the chat window is closed.
-			chatFrame.setCloseListener(new Runnable() {
-				public void run () {
-					client.stop();
-				}
-			});
-			chatFrame.setVisible(true);
-		}
-		else{
+//		if(DEBUG_PC){
+//			chatFrame = new ChatFrame(host);
+//
+//			// This listener is called when the send button is clicked.
+//			chatFrame.setSendListener(new Runnable() {
+//				public void run () {
+//					ChatMessage chatMessage = new ChatMessage();
+//					chatMessage.text = chatFrame.getSendText();
+//					client.sendTCP(chatMessage);
+//				}
+//			});
+//			// This listener is called when the chat window is closed.
+//			chatFrame.setCloseListener(new Runnable() {
+//				public void run () {
+//					client.stop();
+//				}
+//			});
+//			chatFrame.setVisible(true);
+//		}
+//		else{
 			chatWindow = new ChatWindow(host);
 			chatWindow.setSendListener(new Runnable() {
 				public void run () {
@@ -116,7 +115,7 @@ public class ChatClient {
 					client.sendTCP(chatMessage);
 				}
 			});
-		}
+//		}
 
 		// We'll do the connect on a new thread so the ChatFrame can show a progress bar.
 		// Connecting to localhost is usually so fast you won't see the progress bar.

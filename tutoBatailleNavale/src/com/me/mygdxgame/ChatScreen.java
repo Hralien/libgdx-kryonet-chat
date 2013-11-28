@@ -95,7 +95,7 @@ public class ChatScreen implements Screen {
 				NetworkInterface intf = en.nextElement();
 				for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
 					InetAddress inetAddress = enumIpAddr.nextElement();
-//					System.out.println(inetAddress.getHostAddress());
+					//					System.out.println(inetAddress.getHostAddress());
 					if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
 						listIps.add(inetAddress.getHostAddress().toString());
 					}
@@ -105,9 +105,10 @@ public class ChatScreen implements Screen {
 		} catch (SocketException ex) {
 			System.err.println(ex.toString());
 		}
+		for(String it:listIps)
+			System.out.println(it);
 
-		
-		
+
 		//bouton avec image inutile
 		ImageButtonStyle style = new ImageButtonStyle(skin.get(ButtonStyle.class));
 		style.imageUp = new TextureRegionDrawable(image);
@@ -125,10 +126,10 @@ public class ChatScreen implements Screen {
 		final TextField tfPseudo = new TextField("", skin);
 		tfPseudo.setMessageText("Saisir un pseudo!");
 
-		final SelectBox sbIps = new SelectBox(listIps.toArray(),skin);
-		//		final TextField tfHost = new TextField("", skin);
-		//		tfHost.setText(localHost);
-		//		tfHost.setMessageText("Saisir un host");
+//		final SelectBox sbIps = new SelectBox(listIps.toArray(),skin);
+		final TextField tfHost = new TextField("", skin);
+		tfHost.setText(listIps.get(0));
+		tfHost.setMessageText("Saisir un host");
 		fpsLabel = new Label("fps:", skin);
 
 		//recuperation des dimensions de l'ecran
@@ -148,7 +149,7 @@ public class ChatScreen implements Screen {
 		window.row();
 		window.add(tfPseudo).minWidth((float) (width*.4)).expandX().fillX().colspan(6);
 		window.row();
-		window.add(sbIps).minWidth((float) (width*.4)).expandX().fillX().colspan(6);
+		window.add(tfHost).minWidth((float) (width*.4)).expandX().fillX().colspan(6);
 		window.row();
 		window.add(validation);
 		window.row();
@@ -179,7 +180,7 @@ public class ChatScreen implements Screen {
 
 		validation.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
-				cc = new ChatClient(sbIps.getSelection(), tfPseudo.getText());
+				cc = new ChatClient(tfHost.getText(), tfPseudo.getText());
 				stage.addActor(cc.chatWindow.getWindow());
 			}
 		});

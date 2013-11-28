@@ -3,6 +3,7 @@ package com.me.mygdxgame;
 import java.io.IOException;
 import chat.ChatServer;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
@@ -58,7 +59,7 @@ public class MenuPrincipalScreen implements Screen {
 		TextButton tbHost = new TextButton("heberger un chat", skin);
 		TextButton tbJoin = new TextButton("rejoindre une partie", skin);
 
-        game.androidUI.showAlertBox("Server", ""+game.androidUI.getConnectedWifi(), "Button text");
+		game.androidUI.showAlertBox("Server", "hello", "Button text");
 
 		//nos listeners sur les boutons
 		tbChat.addListener(new ChangeListener() {
@@ -77,14 +78,26 @@ public class MenuPrincipalScreen implements Screen {
 				buttonSelected = 2;
 				try {
 					game.chatserver = new ChatServer();
-	                game.androidUI.showAlertBox("Server", "Serveur created", "Button text");
+					switch (Gdx.app.getType()) {
+					case Android:
+						game.androidUI.showAlertBox("Server", "Serveur created", "Button text");
+						break;
+					case Desktop:
+						game.androidUI.showAlertBox("Server", "Serveur created", "Button text",stage);
+						break;
+					case WebGL:
+						// HTML5 specific code
+						break;
+					default:
+						// Other platforms specific code
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
-	                game.androidUI.showAlertBox("Server", "Serveur already created", "Button text");
-//					new Dialog("Some Dialog", skin, "dialog") {
-//						protected void result (Object object) {
-//						}
-//					}.text("Server already created").button("Yes", true).key(Keys.ENTER, true).key(Keys.ESCAPE, true).show(stage);
+					game.androidUI.showAlertBox("Server", "Serveur already created", "Button text");
+					//					new Dialog("Some Dialog", skin, "dialog") {
+					//						protected void result (Object object) {
+					//						}
+					//					}.text("Server already created").button("Yes", true).key(Keys.ENTER, true).key(Keys.ESCAPE, true).show(stage);
 				}
 			}
 		});
@@ -148,7 +161,7 @@ public class MenuPrincipalScreen implements Screen {
 			game.setScreen(game.chatScreen);			
 			break;
 		case 2:
-			//game.setScreen(game.animationScreen);
+			//			game.setScreen(game.animatiopppppppnScreen);
 
 			break;
 		case 3:

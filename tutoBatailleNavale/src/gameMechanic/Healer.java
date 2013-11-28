@@ -28,10 +28,5 @@ public class Healer extends Personnage{
 		super.regions[2] = new TextureRegion(super.sprite, 0, 63, 64, 64);         // #5
 		super.regions[3] = new TextureRegion(super.sprite, 0.5f, 0.5f, 1f, 1f);    // #6
 
-
-
 	}
-	
-
-
 }

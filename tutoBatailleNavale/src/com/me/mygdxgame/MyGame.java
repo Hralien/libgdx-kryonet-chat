@@ -27,7 +27,6 @@ public class MyGame extends Game {
     UITrick androidUI;
 
 
-
    public MyGame(UITrick actionResolver) {
 		super();
 		this.androidUI = actionResolver;

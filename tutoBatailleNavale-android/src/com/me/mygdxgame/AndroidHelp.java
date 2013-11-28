@@ -1,5 +1,7 @@
 package com.me.mygdxgame;
 
+import com.badlogic.gdx.scenes.scene2d.Stage;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -51,7 +53,23 @@ public class AndroidHelp implements UITrick {
 		});
 	}
 
-
+	@Override
+	public void showAlertBox(final String alertBoxTitle, final String alertBoxMessage,
+			final String alertBoxButtonText, Stage stage) {
+		uiThread.post(new Runnable() {
+			public void run() {
+				new AlertDialog.Builder(appContext)
+				.setTitle(alertBoxTitle)
+				.setMessage(alertBoxMessage)
+				.setNeutralButton(alertBoxButtonText,
+						new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog,
+							int whichButton) {
+					}
+				}).create().show();
+			}
+		});		
+	}
 	@Override
 	public void openUri(String uri) {
 		Uri myUri = Uri.parse(uri);
@@ -80,6 +98,8 @@ public class AndroidHelp implements UITrick {
 		}
 		return ssid;
 	}
+
+	
 
 
 	
