@@ -2,6 +2,7 @@ package com.me.mygdxgame;
 
 import gameMechanic.Shaman;
 import gameMechanic.Personnage;
+import gameMechanic.Skill;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
@@ -35,26 +37,28 @@ public class CreateCharacterScreen implements Screen {
 	 * design en json place dans les assets de android
 	 * {@link Skin}
 	 */
-	Skin skin;
+	private Skin skin;
 	/**
 	 * {@link Stage}
 	 */
-	Stage stage;
+	private Stage stage;
 	/**
 	 * label pour montrer les fps
 	 */
-	Label fpsLabel;
+	private Label fpsLabel;
 	/**
 	 * objet {@link MyGame} pour pouvoir changer d'ecran et recup des infos generales
 	 */
-	MyGame game;
+	private MyGame game;
 	/**
 	 * objet requis pour dessiner {@link SpriteBatch}
 	 */
-	SpriteBatch			spriteBatch;		// #6
+	private SpriteBatch spriteBatch;		// #6
 
-	
-	
+	private static Window skillWindow;
+	private Skill skillToRender;
+
+
 	public CreateCharacterScreen(MyGame myGame){
 
 		this.game=myGame;
@@ -69,12 +73,12 @@ public class CreateCharacterScreen implements Screen {
 		tfPseudo.setMessageText("Saisir un pseudo!");
 
 		//creation d'un tableau pour stocker les classes
-		String[] tabPersonnage={"Soigneur","Barbare","Mage"};
+		String[] tabPersonnage={"Shaman","Necromencien","Elementaliste 1 ","Elementaliste 2"};
 		//creation d'une select box (appele List ici) avec le tableau ci dessus
 		final List listClasses= new List(tabPersonnage, skin);
 		//ajout de la List dans un scrollPane, pour pouvoir derouler, descendre, monter
 		ScrollPane scrollPaneClass = new ScrollPane(listClasses,skin);
-		
+
 
 		fpsLabel = new Label("fps:", skin);
 
@@ -111,25 +115,48 @@ public class CreateCharacterScreen implements Screen {
 			public void changed (ChangeEvent event, Actor actor) {
 				switch(listClasses.getSelectedIndex()){
 				case 0:
-					System.out.println("new Soigneur");
 					//initialisation du player 
 					game.player = new Shaman(tfPseudo.getText());
+					skillWindow = createSkillWindows();
+					stage.addActor(skillWindow);
 					break;
 				case 1:
-					System.out.println("new Barbare");
 					break;
 				case 2:
-					System.out.println("new Mage");
+					break;
+				case 3:
 					break;
 				default:
 					System.err.println("switch personnage error");
 
 				}
 			}
-		});
-		
-	}
 
+
+		});
+
+	}
+	private Window createSkillWindows() {
+		Window window = new Window("Selection Perso", skin);
+		window.setPosition(100, 200);
+
+		for(final Skill it: game.player.listSkills){
+			TextButton skillButton = new TextButton(it.getSkillName()+" cost:"+it.getSpCost(), skin);
+			skillButton.addListener(new ChangeListener() {
+
+				@Override
+				public void changed(ChangeEvent event, Actor actor) {
+					// TODO Auto-generated method stub
+					skillToRender = it;
+				}
+			});
+			window.add(skillButton).minWidth(100).expandX().fillX().colspan(4);
+			window.row();
+		}
+		window.pack(); 
+
+		return window;
+	}
 	@Override
 	public void resize (int width, int height) {
 		stage.setViewport(width, height, false);
@@ -148,21 +175,28 @@ public class CreateCharacterScreen implements Screen {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
-		
+
 		//dit a l'objet SpriteBatch de se preparer a dessiner
 		spriteBatch.begin();
-		
+
 		//Animation perso skill
 		if(game.player!=null){
-			game.player.listSkills.get(0).effect.draw(spriteBatch, delta);
 			//dessinage du corps du perso
 			spriteBatch.draw(game.player.regions[0],100,100);
-			
+
+		}
+		//si on a un skill a afficher
+		if(skillToRender !=null){
+			skillToRender.getEffect().draw(spriteBatch, delta);
+			//si l'animation est finie on remets à null
+			if(skillToRender.getEffect().isComplete()){
+				skillToRender = null;
+			}
 		}
 		//dit à l'objet SpriteBatch qu'on a finit de dessiner
 		spriteBatch.end();
 
-		
+
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 		stage.draw();
 		Table.drawDebug(stage);

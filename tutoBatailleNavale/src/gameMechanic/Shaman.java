@@ -19,9 +19,9 @@ public class Shaman extends Personnage{
 		super.luk=4;
 		super.sprite=new Texture(Gdx.files.internal("character/acolyte.png"));
 		
-		listSkills.add(new Skill(1, "heal.png","explosion.p"));
-		listSkills.add(new Skill(1, "blessing.png","explosion.p"));
-		listSkills.add(new Skill(1, "shield.png","flame.p"));
+		listSkills.add(new Skill(1, "heal","explosion.p"));
+		listSkills.add(new Skill(1, "blessing","explosion.p"));
+		listSkills.add(new Skill(1, "shield","flame.p"));
 		
 		super.regions[0] = new TextureRegion(super.sprite, 0, 0, 34, 71);          // #3
 		super.regions[1] = new TextureRegion(super.sprite, 0.5f, 0f, 1f, 0.5f);    // #4
