@@ -1,6 +1,7 @@
 package gameMechanic;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 
 public class Skill {
@@ -8,11 +9,13 @@ public class Skill {
 	private int spCost;
 	private String skillName;
 	private ParticleEffect effect;
-
+	private Sound sound;
+	
 	public Skill(int spCost, String skillName, String skillParticuleName) {
 		super();
 		this.spCost = spCost;
-		this.setSkillName(skillName);
+		this.skillName =skillName;
+		this.sound  = Gdx.audio.newSound(Gdx.files.internal("sound/spell.mp3"));
 		effect = new ParticleEffect();
 		effect.load(Gdx.files.internal("effects/"+skillParticuleName), Gdx.files.internal("effects"));
 		effect.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
@@ -47,6 +50,16 @@ public class Skill {
 
 	public void setEffect(ParticleEffect effect) {
 		this.effect = effect;
+	}
+
+
+	public Sound getSound() {
+		return sound;
+	}
+
+
+	public void setSound(Sound sound) {
+		this.sound = sound;
 	}
 	
 }

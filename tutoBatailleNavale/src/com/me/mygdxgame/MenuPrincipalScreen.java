@@ -7,6 +7,7 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -47,11 +48,12 @@ public class MenuPrincipalScreen implements Screen {
 	 */
 	MyGame game;
 
+	private Sound sound;
 
 	public MenuPrincipalScreen(MyGame myGame){
 		this.game=myGame;
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-
+		sound = Gdx.audio.newSound(Gdx.files.internal("sound/CloudTopLoops.mp3"));
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 
 		//nos 3 boutons de selection
@@ -128,7 +130,7 @@ public class MenuPrincipalScreen implements Screen {
 	public void dispose () {
 		stage.dispose();
 		skin.dispose();
-
+		sound.dispose();
 	}
 
 	@Override
@@ -138,17 +140,20 @@ public class MenuPrincipalScreen implements Screen {
 
 		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
 
+		sound.play(0.1f); // play new sound and keep handle for further manipulation
 		//on switch le num du bouton selectionner et son affiche le screen correspondant
 		switch (buttonSelected) {
 		case 1:
-
+			sound.stop();
 			game.setScreen(game.chatScreen);			
 			break;
 		case 2:
 			//			game.setScreen(game.animationScreen);
+			sound.stop();
 
 			break;
 		case 3:
+			sound.stop();
 			game.setScreen(game.createCharacterScreen);			
 			break;
 		default:

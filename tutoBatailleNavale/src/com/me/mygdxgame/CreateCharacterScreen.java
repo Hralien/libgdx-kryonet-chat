@@ -188,6 +188,7 @@ public class CreateCharacterScreen implements Screen {
 		//si on a un skill a afficher
 		if(skillToRender !=null){
 			skillToRender.getEffect().draw(spriteBatch, delta);
+			skillToRender.getSound().play();
 			//si l'animation est finie on remets à null
 			if(skillToRender.getEffect().isComplete()){
 				skillToRender = null;
