@@ -30,6 +30,9 @@ public class Shaman extends Personnage{
 		super.regions[4] = new TextureRegion(super.sprite, 128, 0, 28, 44);
 		super.regions[5] = new TextureRegion(super.sprite, 160, 0, 26, 44);
 		super.regions[6] = new TextureRegion(super.sprite, 191, 0, 30, 44);
+		super.regions[7] = new TextureRegion(super.sprite, 0, 44, 41, 20);
+		super.regions[8] = new TextureRegion(super.sprite, 64, 44, 41, 20);
+
 
 	}
 }

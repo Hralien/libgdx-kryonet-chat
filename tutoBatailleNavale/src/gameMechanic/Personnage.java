@@ -19,7 +19,7 @@ public abstract class Personnage {
 	public String name;
 	public ArrayList<Skill> listSkills;
 	public Texture sprite;
-    public TextureRegion[]	regions = new TextureRegion[7]; // #2
+    public TextureRegion[]	regions = new TextureRegion[9]; // #2
 
 
 	public Personnage(String name){
