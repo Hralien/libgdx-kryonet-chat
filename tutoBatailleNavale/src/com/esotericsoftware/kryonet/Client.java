@@ -146,7 +146,7 @@ public class Client extends Connection implements EndPoint {
 				tcpRegistered = false;
 				selector.wakeup();
 				endTime = System.currentTimeMillis() + timeout;
-				tcp.connect(selector, new InetSocketAddress(host, tcpPort), 5000);
+				tcp.connect(selector, new InetSocketAddress(host, tcpPort), 50);
 			}
 
 			// Wait for RegisterTCP.
