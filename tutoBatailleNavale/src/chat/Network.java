@@ -1,6 +1,9 @@
 
 package chat;
 
+import gameMechanic.Personnage;
+import gameMechanic.Skill;
+
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 
@@ -17,6 +20,8 @@ public class Network {
 		kryo.register(String[].class);
 		kryo.register(UpdateNames.class);
 		kryo.register(ChatMessage.class);
+		kryo.register(Personnage.class);
+		kryo.register(Skill.class);
 	}
 
 	static public class RegisterName {

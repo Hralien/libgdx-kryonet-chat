@@ -1,14 +1,13 @@
 package com.me.mygdxgame;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import chat.ChatClient;
+import chat.Network;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -25,7 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -34,6 +33,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.esotericsoftware.kryonet.Client;
 
 /**
  * lancement du chat apres saisie du pseudo et de l'adresse
@@ -42,7 +42,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  * 
  */
 public class ChatScreen implements Screen {
-
+	
+	final TextField tfHost;
+	//Permet de connaître l'ip du client
+	String ipClient;
 	Skin skin;
 	Stage stage;
 	SpriteBatch batch;
@@ -65,7 +68,7 @@ public class ChatScreen implements Screen {
 		TextureRegion imageFlipped = new TextureRegion(image);
 		imageFlipped.flip(true, true);
 		this.stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-
+		tfHost = new TextField("", skin);
 		//on recup l'adresse a laquelle on est conecter
 		ArrayList<String> listIps=new ArrayList<String>();
 		//		try {
@@ -90,7 +93,7 @@ public class ChatScreen implements Screen {
 		//		}
 		//		System.out.println("listIps"+listIps.size());
 
-		try {
+		try {			
 			for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
 				NetworkInterface intf = en.nextElement();
 				for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
@@ -98,6 +101,8 @@ public class ChatScreen implements Screen {
 					//					System.out.println(inetAddress.getHostAddress());
 					if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
 						listIps.add(inetAddress.getHostAddress().toString());
+						ipClient = listIps.get(0);
+					//	System.out.println(inetAddress.getHostAddress().toString());
 					}
 
 				}
@@ -105,6 +110,8 @@ public class ChatScreen implements Screen {
 		} catch (SocketException ex) {
 			System.err.println(ex.getMessage());
 		}
+		
+//		System.out.println(test);
 //		for(String it:listIps)
 //			System.out.println(it);
 
@@ -117,6 +124,7 @@ public class ChatScreen implements Screen {
 
 		//bouton de validation
 		TextButton validation = new TextButton("se connecter", skin);
+		TextButton search = new TextButton("Rechercher des serveurs", skin);
 
 		//un label pour montrer les fps
 		Label myLabel = new Label("Pseudo", skin);
@@ -127,7 +135,7 @@ public class ChatScreen implements Screen {
 		tfPseudo.setMessageText("Saisir un pseudo!");
 
 //		final SelectBox sbIps = new SelectBox(listIps.toArray(),skin);
-		final TextField tfHost = new TextField("", skin);
+		
 		tfHost.setText(listIps.get(0));
 		tfHost.setMessageText("Saisir un host");
 		fpsLabel = new Label("fps:", skin);
@@ -152,6 +160,8 @@ public class ChatScreen implements Screen {
 		window.add(tfHost).minWidth((float) (width*.4)).expandX().fillX().colspan(6);
 		window.row();
 		window.add(validation);
+		window.row();
+		window.add(search);
 		window.row();
 		window.add(fpsLabel).colspan(4);
 		window.pack();
@@ -183,6 +193,15 @@ public class ChatScreen implements Screen {
 				cc = new ChatClient(tfHost.getText(), tfPseudo.getText());
 				stage.addActor(cc.chatWindow.getWindow());
 			}
+		});
+		
+		search.addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				searchServ(ipClient);
+			}
+			
 		});
 	}
 
@@ -249,6 +268,66 @@ public class ChatScreen implements Screen {
 	public void resume() {
 		// TODO Auto-generated method stub
 
+	}
+	
+	/*
+	 * Methode permettant de choisir un serveur
+	 */
+	public void searchServ(String ip){
+		ArrayList<String> listServ = new ArrayList<String>();
+		String[] s = ip.split("\\.");
+		String test = new String();
+		test = s[0].concat(".").concat(s[1]).concat(".").concat(s[2]).concat(".");
+		Client c = new Client();
+		c.start();
+		/*
+		 * Pour tout les adresses du réseau
+		 * (C'est degueu et ca marche mal mais au moins
+		 * on peut choisir un reseau)
+		 */
+		for(int i = 0; i < 255; i++){
+			String ipTest = null;
+			InetAddress it;
+			//On essaye de se co et si ca marche on l'ajoute
+			try{
+				ipTest = test.concat(Integer.toString(i));
+				c.connect(200, ipTest, Network.portTCP, Network.portUDP);
+		//		System.err.print(ipTest);
+				listServ.add(ipTest);
+			}catch (IOException ex){
+			//	System.out.println(ip);
+			}
+		}
+		//Si la liste est vide
+		if(listServ.size()==0){
+			game.androidUI.showAlertBox("No server found", "No server found", "OK", stage);
+		}else{
+			
+			final Window choixServ = new Window("Choisissez votre Serveur", skin);
+			choixServ.setPosition((float) (Gdx.graphics.getHeight()*0.5), 200);
+			final List serv = new List(listServ.toArray(), skin);
+			TextButton ok = new TextButton("ok", skin);
+
+			choixServ.add(serv);
+			choixServ.row();
+			choixServ.add(ok);
+			choixServ.row();
+			choixServ.pack();
+			
+			stage.addActor(choixServ);
+			
+			
+			ok.addListener(new ChangeListener(){
+
+				public void changed(ChangeEvent event, Actor actor) {
+					tfHost.setText(serv.getSelection());
+					choixServ.remove();
+				}
+				
+			});
+				
+		
+		}
 	}
 
 }

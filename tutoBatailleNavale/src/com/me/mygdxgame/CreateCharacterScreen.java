@@ -54,9 +54,15 @@ public class CreateCharacterScreen implements Screen {
 	 * objet requis pour dessiner {@link SpriteBatch}
 	 */
 	private SpriteBatch spriteBatch;		// #6
-
+	/**
+	 * fenetre listant les skill
+	 */
 	private static Window skillWindow;
+	/**
+	 * skill a afficher
+	 */
 	private Skill skillToRender;
+	private int spriteFrameToRender;
 
 
 	public CreateCharacterScreen(MyGame myGame){
@@ -81,7 +87,16 @@ public class CreateCharacterScreen implements Screen {
 
 
 		fpsLabel = new Label("fps:", skin);
-
+		final TextButton fleche = new TextButton(">", skin);
+		fleche.addListener(new ChangeListener() {
+			public void changed (ChangeEvent event, Actor actor) {
+				if(spriteFrameToRender+1==game.player.regions.length)
+					spriteFrameToRender=0;
+				else {
+					spriteFrameToRender++;					
+				}
+			}
+		});
 
 		// window.debug();
 		Window window = new Window("Selection Perso", skin);
@@ -95,9 +110,12 @@ public class CreateCharacterScreen implements Screen {
 		window.row();
 		window.add(validation);
 		window.row();
+		window.add(fleche);
+		window.row();
 		window.add(fpsLabel).colspan(4);
 		window.pack();
 
+		
 
 
 		// stage.addActor(new Button("Behind Window", skin));
@@ -182,7 +200,7 @@ public class CreateCharacterScreen implements Screen {
 		//Animation perso skill
 		if(game.player!=null){
 			//dessinage du corps du perso
-			spriteBatch.draw(game.player.regions[0],100,100);
+			spriteBatch.draw(game.player.regions[spriteFrameToRender],100,100);
 
 		}
 		//si on a un skill a afficher
