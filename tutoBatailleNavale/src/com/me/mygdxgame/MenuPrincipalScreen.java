@@ -9,6 +9,10 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
@@ -49,13 +53,39 @@ public class MenuPrincipalScreen implements Screen {
 	MyGame game;
 
 	private Sound sound;
+	
+	private Texture bg;
+	private static final int        FRAME_COLS = 8;         // #1
+	private static final int        FRAME_ROWS = 1;         // #2
+	private Animation                       walkAnimation;          // #3
 
+	private TextureRegion[]	walkFrames;             // #5
+	private SpriteBatch batch;
+	
+	private float stateTime;                                        // #8
+	private TextureRegion                   currentFrame;           // #7
+
+	
 	public MenuPrincipalScreen(MyGame myGame){
 		this.game=myGame;
+		
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 		sound = Gdx.audio.newSound(Gdx.files.internal("sound/CloudTopLoops.mp3"));
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-
+		bg = new Texture(Gdx.files.internal("background2.png"));
+		
+		TextureRegion[][] tmp = TextureRegion.split(bg, bg.getWidth() / FRAME_COLS, bg.getHeight() / FRAME_ROWS);                                // #10
+		walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+		int index = 0;
+		for (int i = 0; i < FRAME_ROWS; i++) {
+			for (int j = 0; j < FRAME_COLS; j++) {
+				walkFrames[index++] = tmp[i][j];
+			}
+		}
+		walkAnimation = new Animation(0.25f, walkFrames);              // #11
+		batch = new SpriteBatch();
+		stateTime = 0f;  
+		
 		//nos 3 boutons de selection
 		TextButton tbChat = new TextButton("rejoindre un chat", skin);
 		TextButton tbHost = new TextButton("heberger un chat", skin);
@@ -159,7 +189,15 @@ public class MenuPrincipalScreen implements Screen {
 		default:
 			break;
 		}
+		
+		
+			stateTime += Gdx.graphics.getDeltaTime();                       // #15
+			currentFrame = walkAnimation.getKeyFrame(stateTime, true);      // #16
 
+		batch.begin();
+		batch.draw(currentFrame, 0, 0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());                    
+		batch.end();
+		
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 		stage.draw();
 		Table.drawDebug(stage);

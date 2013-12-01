@@ -1,5 +1,7 @@
 package com.me.mygdxgame;
 
+import java.io.IOException;
+
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -14,5 +16,12 @@ public class MainActivity extends AndroidApplication {
 		cfg.useGL20 = false;
 		
 		initialize(new MyGame(new AndroidHelp(this)), cfg);
+//		AndroidHelp ah = new AndroidHelp(getApplicationContext());
+//		try {
+//			ah.test();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 }
