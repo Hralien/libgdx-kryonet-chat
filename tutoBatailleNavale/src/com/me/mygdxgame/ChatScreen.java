@@ -127,7 +127,7 @@ public class ChatScreen implements Screen {
 		Window window = new Window("Connexion", skin);
 		window.getButtonTable().add(new TextButton("X", skin)).height(window.getPadTop());
 		window.setPosition(width*0, 200);
-		window.defaults().spaceBottom(10);
+		window.defaults().pad(20, 20, 20, 20);
 		window.row().minWidth((float) (width*.4)).fill().expandX();
 		window.row();
 		window.add(checkBox);
@@ -176,20 +176,6 @@ public class ChatScreen implements Screen {
 		});
 	}
 
-	/**
-	 * Verifie que l'adresse est bien une adresse ip (et non mac) et qu'elle est
-	 * différente du localhost
-	 * 
-	 * @param ip
-	 * @return
-	 */
-//	public boolean valideIpAdress(String ip) {
-//		if (ip.equals("127.0.0.1"))
-//			return false;
-//		Pattern pattern = Pattern.compile(IPADDRESS_PATTERN);
-//		Matcher matcher = pattern.matcher(ip);
-//		return matcher.matches();
-//	}
 
 	@Override
 	public void resize(int width, int height) {

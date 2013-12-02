@@ -133,7 +133,7 @@ public class MenuPrincipalScreen implements Screen {
 		Window window = new Window("Selection Perso", skin);
 		window.getButtonTable().add(new TextButton("X", skin)).height(window.getPadTop());
 		window.setPosition(650, 200);
-		window.defaults().spaceBottom(10);
+		window.defaults().pad(20, 20, 20, 20);
 		window.row().fill().expandX();
 		window.row();
 		window.add(tbChat);

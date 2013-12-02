@@ -1,5 +1,8 @@
 package com.me.mygdxgame;
 
+import gameMechanic.MageChaud;
+import gameMechanic.MageFroid;
+import gameMechanic.Necromancien;
 import gameMechanic.Shaman;
 import gameMechanic.Personnage;
 import gameMechanic.Skill;
@@ -57,7 +60,7 @@ public class CreateCharacterScreen implements Screen {
 	/**
 	 * fenetre listant les skill
 	 */
-	private static Window skillWindow;
+	private static Window classDescWindow;
 	/**
 	 * skill a afficher
 	 */
@@ -81,7 +84,7 @@ public class CreateCharacterScreen implements Screen {
 		tfPseudo.setMessageText("Saisir un pseudo!");
 
 		//creation d'un tableau pour stocker les classes
-		String[] tabPersonnage={"Shaman","Necromencien","Elementaliste 1 ","Elementaliste 2"};
+		String[] tabPersonnage={"Shaman","Necromencien","Mage Chaud","Mage Froid"};
 		//creation d'une select box (appele List ici) avec le tableau ci dessus
 		final List listClasses= new List(tabPersonnage, skin);
 		//ajout de la List dans un scrollPane, pour pouvoir derouler, descendre, monter
@@ -140,14 +143,26 @@ public class CreateCharacterScreen implements Screen {
 				case 0:
 					//initialisation du player 
 					game.player = new Shaman(tfPseudo.getText());
-					skillWindow = createSkillWindows();
-					stage.addActor(skillWindow);
+					classDescWindow = createClassDescWindows();
+					stage.addActor(classDescWindow);
 					break;
 				case 1:
+					//initialisation du player 
+					game.player = new Necromancien(tfPseudo.getText());
+					classDescWindow = createClassDescWindows();
+					stage.addActor(classDescWindow);
 					break;
 				case 2:
+					//initialisation du player 
+					game.player = new MageChaud(tfPseudo.getText());
+					classDescWindow = createClassDescWindows();
+					stage.addActor(classDescWindow);
 					break;
 				case 3:
+					//initialisation du player 
+					game.player = new MageFroid(tfPseudo.getText());
+					classDescWindow = createClassDescWindows();
+					stage.addActor(classDescWindow);
 					break;
 				default:
 					System.err.println("switch personnage error");
@@ -155,7 +170,7 @@ public class CreateCharacterScreen implements Screen {
 			}
 		});
 		tbConnecter.addListener(new ChangeListener() {
-			
+
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				// TODO Auto-generated method stub
@@ -168,10 +183,15 @@ public class CreateCharacterScreen implements Screen {
 		});
 
 	}
-	private Window createSkillWindows() {
-		Window window = new Window("Selection Perso", skin);
-		window.setPosition(100, 200);
+	private Window createClassDescWindows() {
+		Label ldesc=new Label(game.player.desc,skin);
+		ldesc.setWrap(true);
+		ScrollPane scrollPaneDesc = new ScrollPane(ldesc, skin);
 
+		Window window = new Window("Description Perso", skin);
+		window.setPosition(100, 200);
+		window.add(scrollPaneDesc).minWidth(200).minHeight(200).colspan(4);
+		window.row();
 		for(final Skill it: game.player.listSkills){
 			TextButton skillButton = new TextButton(it.getSkillName()+" cost:"+it.getSpCost(), skin);
 			skillButton.addListener(new ChangeListener() {
@@ -182,7 +202,7 @@ public class CreateCharacterScreen implements Screen {
 					skillToRender = it;
 				}
 			});
-			window.add(skillButton).minWidth(100).expandX().fillX().colspan(4);
+			window.add(skillButton).fillX();
 			window.row();
 		}
 		window.pack(); 

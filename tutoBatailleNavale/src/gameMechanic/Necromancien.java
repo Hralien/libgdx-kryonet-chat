@@ -19,9 +19,10 @@ public class Necromancien extends Personnage{
 		super.luk=4;
 		super.sprite=new Texture(Gdx.files.internal("character/necromancien.png"));
 		
-		listSkills.add(Skill.volDeVie);
-		listSkills.add(Skill.resurection);
-		listSkills.add(Skill.peur);
+		super.listSkills.add(Skill.volDeVie);
+		super.listSkills.add(Skill.paralysie);
+		super.listSkills.add(Skill.protection);
+		super.listSkills.add(Skill.boost);
 		
 		super.regions[0] = new TextureRegion(super.sprite, 0, 0, 32, 44);
 		super.regions[1] = new TextureRegion(super.sprite, 32, 0, 32, 44);
@@ -32,6 +33,8 @@ public class Necromancien extends Personnage{
 		super.regions[6] = new TextureRegion(super.sprite, 191, 0, 30, 44);
 		super.regions[7] = new TextureRegion(super.sprite, 0, 44, 41, 20);
 		super.regions[8] = new TextureRegion(super.sprite, 64, 44, 41, 20);
+
+		super.desc="Le nécromancien est un support utile mais pas indispensable, il provoque des dégâts non négligeables et peut paralyser les ennemis.";
 
 	}
 }

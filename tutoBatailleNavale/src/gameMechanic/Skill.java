@@ -16,15 +16,27 @@ public class Skill {
 	private ParticleEffect effect;
 	private Sound sound;
 
-	public static Skill heal = new Skill(1, 1, "heal","explosion.p");
-	public static Skill blessing = new Skill(2, 1, "blessing","explosion.p");
-	public static Skill shield = new Skill(3, 1, "shield","flame.p");
-	public static Skill volDeVie= new Skill(4,1, "vol de vie","explosion.p");
-	public static Skill resurection = new Skill(5,1, "resurection","explosion.p");
-	public static Skill peur = new Skill(6,1, "Peur","flame.p");
-	public static Skill decharge =new Skill(7,1, "Décharge d'eclair","explosion.p");
-	public static Skill rocher =new Skill(8,1, "Rocher","explosion.p");
-	public static Skill boule =new Skill(9,1, "boule de feu","flame.p");
+	/**Shaman*/
+	public static Skill donDeVie = new Skill(1, 1, "don de vie","explosion.p");
+	public static Skill soinDeMasse = new Skill(2, 1, "soin de Masse","explosion.p");
+	public static Skill donDeMana = new Skill(3, 1, "don de Mana","flame.p");
+	public static Skill restriction= new Skill(4,1, "restriction","explosion.p");
+	/**Necromencien*/
+	public static Skill volDeVie = new Skill(5,1, "vol de Vie","explosion.p");
+	public static Skill paralysie = new Skill(6,1, "paralysie","flame.p");
+	public static Skill protection =new Skill(7,1, "protection","explosion.p");
+	public static Skill boost =new Skill(8,1, "boost","explosion.p");
+	/**Mage chaud */
+	public static Skill bouleDeFeu =new Skill(9,1, "boule de feu","flame.p");
+	public static Skill lanceArdente =new Skill(9,1, "lance ardente","flame.p");
+	public static Skill chocDeMasse =new Skill(9,1, "choc de masse","flame.p");
+	public static Skill foudroiement =new Skill(9,1, "foudroiement","flame.p");
+	/**Mage froid */
+	public static Skill prisonAcqeuse =new Skill(9,1, "prison aqueuse","flame.p");
+	public static Skill tridenAqueue =new Skill(9,1, "trident à queue","flame.p");
+	public static Skill massedAir =new Skill(9,1, "masse d'air","flame.p");
+	public static Skill cyclone =new Skill(9,1, "cyclone","flame.p");
+
 	public static  ArrayList<Skill> listSkill = new ArrayList<Skill>();
 
 	public Skill(int id, int spCost, String skillName, String skillParticuleName) {
@@ -41,15 +53,26 @@ public class Skill {
 	}
 	
 	public static void initListSkill(){
-		Skill.listSkill.add(Skill.heal);
-		Skill.listSkill.add(Skill.blessing);
-		Skill.listSkill.add(Skill.shield);
+		/**shaman*/
+		Skill.listSkill.add(Skill.donDeVie);
+		Skill.listSkill.add(Skill.soinDeMasse);
+		Skill.listSkill.add(Skill.donDeMana);
+		Skill.listSkill.add(Skill.restriction);
+		/**necro*/
 		Skill.listSkill.add(Skill.volDeVie);
-		Skill.listSkill.add(Skill.resurection);
-		Skill.listSkill.add(Skill.peur);
-		Skill.listSkill.add(Skill.decharge);
-		Skill.listSkill.add(Skill.rocher);
-		Skill.listSkill.add(Skill.boule);
+		Skill.listSkill.add(Skill.paralysie);
+		Skill.listSkill.add(Skill.protection);
+		Skill.listSkill.add(Skill.boost);
+		/**mage chaud*/
+		Skill.listSkill.add(Skill.bouleDeFeu);
+		Skill.listSkill.add(Skill.lanceArdente);
+		Skill.listSkill.add(Skill.chocDeMasse);
+		Skill.listSkill.add(Skill.foudroiement);
+		/**mage froid*/
+		Skill.listSkill.add(Skill.prisonAcqeuse);
+		Skill.listSkill.add(Skill.tridenAqueue);
+		Skill.listSkill.add(Skill.massedAir);
+		Skill.listSkill.add(Skill.cyclone);
 	}
 
 	public static Skill selectSkillFromSkillNumber(SkillNumber skillnum){

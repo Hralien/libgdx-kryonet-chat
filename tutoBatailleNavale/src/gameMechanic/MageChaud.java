@@ -4,10 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class Elementaliste extends Personnage{
+public class MageChaud extends Personnage{
 	
 
-	public Elementaliste(String name) {
+	public MageChaud(String name) {
 		super(name);
 		super.hp=50;
 		super.intel=3;
@@ -19,9 +19,10 @@ public class Elementaliste extends Personnage{
 		super.luk=4;
 		super.sprite=new Texture(Gdx.files.internal("character/necromancien.png"));
 		
-		listSkills.add(Skill.decharge);
-		listSkills.add(Skill.rocher);
-		listSkills.add(Skill.boule);
+		super.listSkills.add(Skill.bouleDeFeu);
+		super.listSkills.add(Skill.lanceArdente);
+		super.listSkills.add(Skill.chocDeMasse);
+		super.listSkills.add(Skill.foudroiement);
 		
 		super.regions[0] = new TextureRegion(super.sprite, 0, 0, 32, 44);
 		super.regions[1] = new TextureRegion(super.sprite, 32, 0, 32, 44);
@@ -32,6 +33,8 @@ public class Elementaliste extends Personnage{
 		super.regions[6] = new TextureRegion(super.sprite, 191, 0, 30, 44);
 		super.regions[7] = new TextureRegion(super.sprite, 0, 44, 41, 20);
 		super.regions[8] = new TextureRegion(super.sprite, 64, 44, 41, 20);
+		
+		super.desc="Le mage chaud est expert dans la maitrise des éléments foudre et feu, il a fini son entrainement et est maintenant prêt pour le combat. Il complète parfaitement un mage froid.";
 
 	}
 }

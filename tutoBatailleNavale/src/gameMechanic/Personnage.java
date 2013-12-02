@@ -17,6 +17,7 @@ public abstract class Personnage {
 	public int vit;
 
 	public String name;
+	public String desc;
 	public ArrayList<Skill> listSkills;
 	public Texture sprite;
     public TextureRegion[]	regions = new TextureRegion[9]; // #2
