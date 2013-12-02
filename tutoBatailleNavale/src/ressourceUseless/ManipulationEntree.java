@@ -74,7 +74,7 @@ public class ManipulationEntree implements ApplicationListener {
 			batch.end();
 		}
 		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
-			cc = new ChatClient(pseudo, host);
+			cc = new ChatClient(pseudo, host,null);
 		}
 	}
 	@Override

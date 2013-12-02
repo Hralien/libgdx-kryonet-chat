@@ -61,13 +61,10 @@ public class ChatScreen implements Screen {
 	Label fpsLabel;
 	ChatClient cc;
 	MyGame game;
-	private static final String IPADDRESS_PATTERN = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
-			+ "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
-			+ "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
-			+ "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
 
-	public ChatScreen(MyGame game){
-		this.game=game;
+
+	public ChatScreen(MyGame myGame){
+		this.game=myGame;
 		this.batch = new SpriteBatch();
 		this.skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 		this.texture1 = new Texture(Gdx.files.internal("data/badlogicsmall.jpg"));
@@ -78,27 +75,6 @@ public class ChatScreen implements Screen {
 		tfHost = new TextField("", skin);
 		//on recup l'adresse a laquelle on est conecter
 		ArrayList<String> listIps=new ArrayList<String>();
-		//		try {
-		//			listIps.add(InetAddress.getLocalHost().getHostAddress());
-		//		} catch (UnknownHostException e1) {
-		//			// TODO Auto-generated catch block
-		//			e1.printStackTrace();
-		//		}
-		//		try {
-		//			InetAddress[] allByName = InetAddress.getAllByName(InetAddress.getLocalHost().getHostName());
-		//
-		//			
-		//			for (int i = 0; i < allByName.length; i++) {
-		//				//test si != localhost et n'est pas une adresse mac
-		//				if(valideIpAdress(allByName[i].getHostAddress())){
-		//					listIps.add(allByName[i].getHostAddress());
-		//				}
-		//			}
-		//		} catch (UnknownHostException e) {
-		//			// TODO Auto-generated catch block
-		//			e.printStackTrace();
-		//		}
-		//		System.out.println("listIps"+listIps.size());
 
 		try {			
 			for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
@@ -118,10 +94,10 @@ public class ChatScreen implements Screen {
 			System.err.println(ex.getMessage());
 		}
 		
-//		System.out.println(test);
 		for(String it:listIps)
 			System.out.println(it);
 
+	
 
 		//bouton avec image inutile
 		ImageButtonStyle style = new ImageButtonStyle(skin.get(ButtonStyle.class));
@@ -199,7 +175,10 @@ public class ChatScreen implements Screen {
 
 		validation.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
-				cc = new ChatClient(tfHost.getText(), tfPseudo.getText());
+				if(game.player!=null)
+				cc = new ChatClient(tfHost.getText(), tfPseudo.getText(),game.player);
+				else
+					cc = new ChatClient(tfHost.getText(), tfPseudo.getText(),null);
 				stage.addActor(cc.chatWindow.getWindow());
 			}
 		});
@@ -258,7 +237,9 @@ public class ChatScreen implements Screen {
 	public void show() {
 		// TODO Auto-generated method stub
 		Gdx.input.setInputProcessor(stage);
-
+		Client client = new Client();
+		java.util.List<InetAddress> addresses = client.discoverHosts(Network.portUDP, 5000);
+		System.out.print(addresses); 
 	}
 
 	@Override

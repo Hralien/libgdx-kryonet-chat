@@ -1,4 +1,3 @@
-
 package com.esotericsoftware.kryonet;
 
 import java.io.IOException;
@@ -13,7 +12,8 @@ import java.nio.channels.Selector;
 import static com.esotericsoftware.minlog.Log.*;
 
 /** @author Nathan Sweet <misc@n4te.com> */
-class UdpConnection {
+class UdpConnection
+{
 	InetSocketAddress connectedAddress;
 	DatagramChannel datagramChannel;
 	int keepAliveMillis = 19000;
@@ -23,34 +23,41 @@ class UdpConnection {
 	private final Object writeLock = new Object();
 	private long lastCommunicationTime;
 
-	public UdpConnection (Serialization serialization, int bufferSize) {
+	public UdpConnection(Serialization serialization, int bufferSize)
+	{
 		this.serialization = serialization;
 		readBuffer = ByteBuffer.allocate(bufferSize);
 		writeBuffer = ByteBuffer.allocateDirect(bufferSize);
 	}
 
-	public void bind (Selector selector, InetSocketAddress localPort) throws IOException {
+	public void bind(Selector selector, InetSocketAddress localPort) throws IOException
+	{
 		close();
 		readBuffer.clear();
 		writeBuffer.clear();
-		try {
+		try
+		{
 			datagramChannel = selector.provider().openDatagramChannel();
 			datagramChannel.socket().bind(localPort);
 			datagramChannel.configureBlocking(false);
 			selectionKey = datagramChannel.register(selector, SelectionKey.OP_READ);
 
 			lastCommunicationTime = System.currentTimeMillis();
-		} catch (IOException ex) {
+		}
+		catch (IOException ex)
+		{
 			close();
 			throw ex;
 		}
 	}
 
-	public void connect (Selector selector, InetSocketAddress remoteAddress) throws IOException {
+	public void connect(Selector selector, InetSocketAddress remoteAddress) throws IOException
+	{
 		close();
 		readBuffer.clear();
 		writeBuffer.clear();
-		try {
+		try
+		{
 			datagramChannel = selector.provider().openDatagramChannel();
 			datagramChannel.socket().bind(null);
 			datagramChannel.socket().connect(remoteAddress);
@@ -61,7 +68,9 @@ class UdpConnection {
 			lastCommunicationTime = System.currentTimeMillis();
 
 			connectedAddress = remoteAddress;
-		} catch (IOException ex) {
+		}
+		catch (IOException ex)
+		{
 			close();
 			IOException ioEx = new IOException("Unable to connect to: " + remoteAddress);
 			ioEx.initCause(ex);
@@ -69,39 +78,54 @@ class UdpConnection {
 		}
 	}
 
-	public InetSocketAddress readFromAddress () throws IOException {
+	public InetSocketAddress readFromAddress() throws IOException
+	{
 		DatagramChannel datagramChannel = this.datagramChannel;
-		if (datagramChannel == null) throw new SocketException("Connection is closed.");
+		if (datagramChannel == null)
+			throw new SocketException("Connection is closed.");
 		lastCommunicationTime = System.currentTimeMillis();
-		return (InetSocketAddress)datagramChannel.receive(readBuffer);
+		return (InetSocketAddress) datagramChannel.receive(readBuffer);
 	}
 
-	public Object readObject (Connection connection) {
+	public Object readObject(Connection connection)
+	{
 		readBuffer.flip();
-		try {
-			try {
+		try
+		{
+			try
+			{
 				Object object = serialization.read(connection, readBuffer);
 				if (readBuffer.hasRemaining())
-					throw new KryoNetException("Incorrect number of bytes (" + readBuffer.remaining()
-						+ " remaining) used to deserialize object: " + object);
+					throw new KryoNetException("Incorrect number of bytes (" + readBuffer.remaining() + " remaining) used to deserialize object: " + object);
 				return object;
-			} catch (Exception ex) {
+			}
+			catch (Exception ex)
+			{
 				throw new KryoNetException("Error during deserialization.", ex);
 			}
-		} finally {
+		}
+		finally
+		{
 			readBuffer.clear();
 		}
 	}
 
 	/** This method is thread safe. */
-	public int send (Connection connection, Object object, SocketAddress address) throws IOException {
+	public int send(Connection connection, Object object, SocketAddress address) throws IOException
+	{
 		DatagramChannel datagramChannel = this.datagramChannel;
-		if (datagramChannel == null) throw new SocketException("Connection is closed.");
-		synchronized (writeLock) {
-			try {
-				try {
+		if (datagramChannel == null)
+			throw new SocketException("Connection is closed.");
+		synchronized (writeLock)
+		{
+			try
+			{
+				try
+				{
 					serialization.write(connection, writeBuffer, object);
-				} catch (Exception ex) {
+				}
+				catch (Exception ex)
+				{
 					throw new KryoNetException("Error serializing object of type: " + object.getClass().getName(), ex);
 				}
 				writeBuffer.flip();
@@ -112,26 +136,36 @@ class UdpConnection {
 
 				boolean wasFullWrite = !writeBuffer.hasRemaining();
 				return wasFullWrite ? length : -1;
-			} finally {
+			}
+			finally
+			{
 				writeBuffer.clear();
 			}
 		}
 	}
 
-	public void close () {
+	public void close()
+	{
 		connectedAddress = null;
-		try {
-			if (datagramChannel != null) {
+		try
+		{
+			if (datagramChannel != null)
+			{
 				datagramChannel.close();
 				datagramChannel = null;
-				if (selectionKey != null) selectionKey.selector().wakeup();
+				if (selectionKey != null)
+					selectionKey.selector().wakeup();
 			}
-		} catch (IOException ex) {
-			if (DEBUG) debug("kryonet", "Unable to close UDP connection.", ex);
+		}
+		catch (IOException ex)
+		{
+			if (DEBUG)
+				debug("kryonet", "Unable to close UDP connection.", ex);
 		}
 	}
 
-	public boolean needsKeepAlive (long time) {
+	public boolean needsKeepAlive(long time)
+	{
 		return connectedAddress != null && keepAliveMillis > 0 && time - lastCommunicationTime > keepAliveMillis;
 	}
 }

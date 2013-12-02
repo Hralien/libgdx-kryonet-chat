@@ -12,16 +12,22 @@ public class MainActivity extends AndroidApplication {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+//		Thread thread = new Thread(new Runnable(){
+//			@Override
+//			public void run() {
+//				AndroidHelp ah = new AndroidHelp(getBaseContext());
+//				try {
+//					ah.test();
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//		thread.start();
 		AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
 		cfg.useGL20 = false;
-		
+
 		initialize(new MyGame(new AndroidHelp(this)), cfg);
-//		AndroidHelp ah = new AndroidHelp(getApplicationContext());
-//		try {
-//			ah.test();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 	}
 }

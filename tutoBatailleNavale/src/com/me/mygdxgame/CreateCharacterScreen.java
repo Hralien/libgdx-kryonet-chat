@@ -63,6 +63,7 @@ public class CreateCharacterScreen implements Screen {
 	 */
 	private Skill skillToRender;
 	private int spriteFrameToRender;
+	private boolean soundIsPlaying;
 
 
 	public CreateCharacterScreen(MyGame myGame){
@@ -73,7 +74,8 @@ public class CreateCharacterScreen implements Screen {
 
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 
-		TextButton validation = new TextButton("creer un perso", skin);
+		TextButton tbvalidation = new TextButton("creer un perso", skin);
+		TextButton  tbConnecter= new TextButton("se connecter", skin);
 
 		final TextField tfPseudo = new TextField("", skin);
 		tfPseudo.setMessageText("Saisir un pseudo!");
@@ -90,10 +92,12 @@ public class CreateCharacterScreen implements Screen {
 		final TextButton fleche = new TextButton(">", skin);
 		fleche.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
-				if(spriteFrameToRender+1==game.player.regions.length)
-					spriteFrameToRender=0;
-				else {
-					spriteFrameToRender++;					
+				if(game.player !=null){
+					if(spriteFrameToRender+1==game.player.regions.length)
+						spriteFrameToRender=0;
+					else {
+						spriteFrameToRender++;					
+					}
 				}
 			}
 		});
@@ -102,20 +106,21 @@ public class CreateCharacterScreen implements Screen {
 		Window window = new Window("Selection Perso", skin);
 		window.getButtonTable().add(new TextButton("X", skin)).height(window.getPadTop());
 		window.setPosition(650, 200);
-		window.defaults().spaceBottom(10);
+		window.defaults().pad(20, 20, 20, 20);
 		window.row().fill().expandX();
 		window.add(tfPseudo).minWidth(100).expandX().fillX().colspan(4);
 		window.row();
 		window.add(scrollPaneClass).minWidth(100).expandX().fillX().colspan(4);
 		window.row();
-		window.add(validation);
+		window.add(tbvalidation);
+		window.add(tbConnecter);
 		window.row();
 		window.add(fleche);
 		window.row();
 		window.add(fpsLabel).colspan(4);
 		window.pack();
 
-		
+
 
 
 		// stage.addActor(new Button("Behind Window", skin));
@@ -129,7 +134,7 @@ public class CreateCharacterScreen implements Screen {
 
 
 
-		validation.addListener(new ChangeListener() {
+		tbvalidation.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
 				switch(listClasses.getSelectedIndex()){
 				case 0:
@@ -146,11 +151,20 @@ public class CreateCharacterScreen implements Screen {
 					break;
 				default:
 					System.err.println("switch personnage error");
-
-				}
+				}	
 			}
-
-
+		});
+		tbConnecter.addListener(new ChangeListener() {
+			
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				// TODO Auto-generated method stub
+				if(game.player!=null){
+					game.setScreen(game.chatScreen);
+				}
+				else
+					game.androidUI.showAlertBox("Erreur", "Veuillez créer un personnage avant", "ok", stage);
+			}
 		});
 
 	}
@@ -206,10 +220,14 @@ public class CreateCharacterScreen implements Screen {
 		//si on a un skill a afficher
 		if(skillToRender !=null){
 			skillToRender.getEffect().draw(spriteBatch, delta);
-			skillToRender.getSound().play();
+			if(!soundIsPlaying){
+				skillToRender.getSound().play();
+				soundIsPlaying=true;
+			}
 			//si l'animation est finie on remets à null
 			if(skillToRender.getEffect().isComplete()){
 				skillToRender = null;
+				soundIsPlaying=false;
 			}
 		}
 		//dit à l'objet SpriteBatch qu'on a finit de dessiner

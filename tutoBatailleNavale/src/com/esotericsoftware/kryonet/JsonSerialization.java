@@ -30,8 +30,6 @@ public class JsonSerialization implements Serialization {
 		json.addClassTag("KeepAlive", KeepAlive.class);
 		json.addClassTag("DiscoverHost", DiscoverHost.class);
 		json.addClassTag("Ping", Ping.class);
-
-		json.setWriter(writer);
 	}
 
 	public void setLogging (boolean logging, boolean prettyPrint) {
@@ -43,7 +41,7 @@ public class JsonSerialization implements Serialization {
 		byteBufferOutputStream.setByteBuffer(buffer);
 		int start = buffer.position();
 		try {
-			json.writeValue(object, Object.class, null);
+			json.toJson(object, Object.class, writer);
 			writer.flush();
 		} catch (Exception ex) {
 			throw new JsonException("Error writing object: " + object, ex);

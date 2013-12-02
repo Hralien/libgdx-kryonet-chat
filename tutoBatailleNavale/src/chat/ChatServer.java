@@ -1,6 +1,8 @@
 
 package chat;
 
+import gameMechanic.Personnage;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -62,7 +64,26 @@ public class ChatServer {
 					updateNames();
 					return;
 				}
-
+				if (object instanceof Personnage) {
+					// Ignore the object if a client has already registered a name. This is
+					// impossible with our client, but a hacker could send messages at any time.
+					if (connection.name != null) return;
+					// Ignore the object if the name is invalid.
+					
+					String name = ((RegisterName)object).name;
+					if (name == null) return;
+					name = name.trim();
+					if (name.length() == 0) return;
+					// Store the name on the connection.
+					connection.name = name;
+					// Send a "connected" message to everyone except the new client.
+					ChatMessage chatMessage = new ChatMessage();
+					chatMessage.text ="Player"+ name + " connected.";
+					server.sendToAllExceptTCP(connection.getID(), chatMessage);
+					// Send everyone a new list of connection names.
+					updateNames();
+					return;
+				}
 				if (object instanceof ChatMessage) {
 					// Ignore the object if a client tries to chat before registering a name.
 					if (connection.name == null) return;
@@ -92,20 +113,6 @@ public class ChatServer {
 		});
 		server.bind(Network.portTCP,Network.portUDP);
 		server.start();
-		if (DEBUG_PC) {
-			// Open a window to provide an easy way to stop the server.
-			JFrame frame = new JFrame("Chat Server");
-			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			frame.addWindowListener(new WindowAdapter() {
-				public void windowClosed (WindowEvent evt) {
-					server.stop();
-				}
-			});
-			frame.getContentPane().add(new JLabel("Close to stop the chat server."));
-			frame.setSize(320, 200);
-			frame.setLocationRelativeTo(null);
-			frame.setVisible(true);
-		}
 //		Client client = new Client();
 //		List<InetAddress> address = client.discoverHosts(Network.portUDP, 5000);
 //		System.out.println("test"+address);

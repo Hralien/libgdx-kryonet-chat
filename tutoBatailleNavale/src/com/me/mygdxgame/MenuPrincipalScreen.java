@@ -82,7 +82,7 @@ public class MenuPrincipalScreen implements Screen {
 				walkFrames[index++] = tmp[i][j];
 			}
 		}
-		walkAnimation = new Animation(0.25f, walkFrames);              // #11
+		walkAnimation = new Animation(0.5f, walkFrames);              // #11
 		batch = new SpriteBatch();
 		stateTime = 0f;  
 		

@@ -140,8 +140,4 @@ public class ChatFrame extends JFrame {
 			}
 		});
 	}
-	public static void main (String[] args) {
-		Log.set(Log.LEVEL_DEBUG);
-		new ChatClient("192.168.229.188", "flo");
-	}
 }

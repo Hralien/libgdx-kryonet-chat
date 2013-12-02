@@ -15,7 +15,7 @@ public class Skill {
 		super();
 		this.spCost = spCost;
 		this.skillName =skillName;
-		this.sound  = Gdx.audio.newSound(Gdx.files.internal("sound/spell.mp3"));
+		this.sound  = Gdx.audio.newSound(Gdx.files.internal("sound/_heal_effect.wav"));
 		effect = new ParticleEffect();
 		effect.load(Gdx.files.internal("effects/"+skillParticuleName), Gdx.files.internal("effects"));
 		effect.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
