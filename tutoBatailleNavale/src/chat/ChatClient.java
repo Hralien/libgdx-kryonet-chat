@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import chat.Network.ChatMessage;
+import chat.Network.ConstantOrder;
 import chat.Network.PersonnageConnection;
 import chat.Network.RegisterName;
 import chat.Network.SkillNumber;
@@ -21,7 +22,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.me.mygdxgame.BeginingScreen;
 import com.me.mygdxgame.ChatScreen;
+import com.me.mygdxgame.MyGame;
 
 
 public class ChatClient {
@@ -31,12 +34,14 @@ public class ChatClient {
 	public ChatWindow chatWindow;
 	private Personnage personnage;
 	private ChatScreen myVue;
+	private MyGame game;
 	
-	public ChatClient (String adresse, String pseudo, Personnage perso, ChatScreen vue) {
+	public ChatClient (String adresse, String pseudo, Personnage perso, ChatScreen vue, MyGame myGame) {
 		this.client = new Client();
 		this.client.start();
 		this.personnage=perso;
 		this.myVue = vue;
+		this.game = myGame;
 		// For consistency, the classes to be sent over the network are
 		// registered by the same method for both the client and server.
 		Network.register(client);
@@ -45,11 +50,12 @@ public class ChatClient {
 			
 			@Override
 			public void connected (Connection connection) {
-				RegisterName registerName = new RegisterName();
-				registerName.name = name;
-				client.sendTCP(registerName);
+//				RegisterName registerName = new RegisterName();
+//				registerName.name = name;
+//				client.sendTCP(registerName);
 				PersonnageConnection pc = new PersonnageConnection();
 				pc.name = personnage.name;
+				System.err.println("pc.name"+pc.name);
 				client.sendTCP(pc);
 
 			}
@@ -73,6 +79,18 @@ public class ChatClient {
 					System.err.println("skillNumber");
 					myVue.showSkillNumber=(SkillNumber) object;
 					return;
+				}
+				
+				if(object instanceof ConstantOrder){
+					int ordre=((ConstantOrder)object).order;
+					switch (ordre) {
+					case ConstantOrder.STARTGAME:
+						game.setScreen(game.beginingScreen);
+						break;
+
+					default:
+						break;
+					}
 				}
 			}
 

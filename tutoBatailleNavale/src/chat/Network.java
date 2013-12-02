@@ -23,6 +23,7 @@ public class Network {
 		kryo.register(PersonnageConnection.class);
 		kryo.register(TestConnection.class);
 		kryo.register(SkillNumber.class);
+		kryo.register(ConstantOrder.class);
 	}
 
 	static public class RegisterName {
@@ -44,10 +45,12 @@ public class Network {
 		public String name;
 	}
 	static public class SkillNumber {
-		public int skillId;
-		
-		
-		
+		public int skillId;		
+	}
+	
+	static public class ConstantOrder{
+		public int order;
+		public static final int STARTGAME=1;
 	}
 
 

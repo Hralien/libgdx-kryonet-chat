@@ -159,9 +159,9 @@ public class ChatScreen implements Screen {
 		validation.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
 				if(game.player!=null)
-				cc = new ChatClient(tfHost.getText(), tfPseudo.getText(),game.player,vue);
+				cc = new ChatClient(tfHost.getText(), tfPseudo.getText(),game.player,vue,game);
 				else
-					cc = new ChatClient(tfHost.getText(), tfPseudo.getText(),null,vue);
+					cc = new ChatClient(tfHost.getText(), tfPseudo.getText(),null,vue,game);
 				stage.addActor(cc.chatWindow.getWindow());
 			}
 		});

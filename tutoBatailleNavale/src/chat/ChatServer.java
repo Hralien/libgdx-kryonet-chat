@@ -6,6 +6,7 @@ import gameMechanic.Skill;
 import java.io.IOException;
 import java.util.ArrayList;
 import chat.Network.ChatMessage;
+import chat.Network.ConstantOrder;
 import chat.Network.PersonnageConnection;
 import chat.Network.RegisterName;
 import chat.Network.SkillNumber;
@@ -20,8 +21,9 @@ public class ChatServer {
 	Server server;
 	public final static boolean DEBUG_PC=false;
 	public ArrayList<PersonnageConnection> listPersonnage;
+	private int nbjoueur;
 
-	public ChatServer () throws IOException {
+	public ChatServer (int nb) throws IOException {
 		server = new Server() {
 			protected Connection newConnection () {
 				// By providing our own connection implementation, we can store per
@@ -29,7 +31,8 @@ public class ChatServer {
 				return new ChatConnection();
 			}
 		};
-		listPersonnage= new ArrayList<PersonnageConnection>();
+		this.nbjoueur = nb;
+		this.listPersonnage= new ArrayList<PersonnageConnection>();
 		// For consistency, the classes to be sent over the network are
 		// registered by the same method for both the client and server.
 		Network.register(server);
@@ -58,25 +61,35 @@ public class ChatServer {
 					return;
 				}
 				if (object instanceof PersonnageConnection) {
-//					if (connection.name != null) return;
-					// Ignore the object if the name is invalid.
+					if (connection.name !=null) return;
+					String name = ((PersonnageConnection)object).name;
+					System.err.println("chatconnection :"+name);
+
+					if (name == null) return;
+					name = name.trim();
+					if (name.length() == 0) return;
+					// Store the name on the connection.
+					connection.name = name;
+					System.err.println("erre");
 					if( listPersonnage.contains(object))
 						return;
-					else 
+					else {
 						listPersonnage.add((PersonnageConnection) object);
-					System.err.println("connect perso connect");
-
-//					String name = ((PersonnageConnection)object).name;
-//					if (name == null) return;
-//					name = name.trim();
-//					if (name.length() == 0) return;
-//					// Store the name on the connection.
-//					connection.name = name;
-					
-					SkillNumber sn =new SkillNumber();
-					sn.skillId=2;
-
-					server.sendToAllTCP(sn);
+					}
+					System.err.println("connect perso");
+					if(listPersonnage.size()>=nbjoueur){
+						ConstantOrder co = new ConstantOrder();
+						co.order=ConstantOrder.STARTGAME;
+						server.sendToAllTCP(co);
+					}
+					else{
+						// Send a "connected" message to everyone except the new client.
+						ChatMessage chatMessage = new ChatMessage();
+						chatMessage.text = name + " connected.";
+						server.sendToAllExceptTCP(connection.getID(), chatMessage);
+						// Send everyone a new list of connection names.
+						updateNames();
+					}
 					return;
 				}
 				if (object instanceof ChatMessage) {
@@ -94,12 +107,12 @@ public class ChatServer {
 					server.sendToAllTCP(chatMessage);
 					return;
 				}
-				
+
 				if (object instanceof TestConnection) {
 					server.sendToAllTCP((TestConnection)object);
 					return;
 				}
-				
+
 			}
 
 			public void disconnected (Connection c) {
@@ -115,10 +128,10 @@ public class ChatServer {
 		});
 		server.bind(Network.portTCP,Network.portUDP);
 		server.start();
-//		Client client = new Client();
-//		List<InetAddress> address = client.discoverHosts(Network.portUDP, 5000);
-//		System.out.println("test"+address);
-		
+		//		Client client = new Client();
+		//		List<InetAddress> address = client.discoverHosts(Network.portUDP, 5000);
+		//		System.out.println("test"+address);
+
 	}
 
 	void updateNames () {
@@ -138,7 +151,7 @@ public class ChatServer {
 	void afficheSkill(Skill s){
 		server.sendToAllTCP(s);
 	}
-	
+
 	// This holds per connection state.
 	static class ChatConnection extends Connection {
 		public String name;

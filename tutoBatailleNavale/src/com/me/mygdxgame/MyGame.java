@@ -15,16 +15,17 @@ import com.badlogic.gdx.Gdx;
 public class MyGame extends Game {
 
 
-	MenuPrincipalScreen mainMenuScreen;
-	AnimationPlayerScreen animationScreen;
-	CreateCharacterScreen createCharacterScreen;
-	ChatScreen chatScreen;
+	public MenuPrincipalScreen mainMenuScreen;
+	public AnimationPlayerScreen animationScreen;
+	public CreateCharacterScreen createCharacterScreen;
+	public ChatScreen chatScreen;
+	public BeginingScreen beginingScreen;
 	/**
 	 * le personnage du joueur initialise lors de la creation
 	 */
 	public Personnage player;
-	public ChatServer chatserver;
-	UITrick androidUI;
+	public UITrick androidUI;
+	public ChatServer chatServer;
 
 
 	public MyGame(UITrick actionResolver) {
@@ -41,6 +42,7 @@ public class MyGame extends Game {
 		animationScreen = new AnimationPlayerScreen(this);
 		createCharacterScreen = new CreateCharacterScreen(this);
 		chatScreen = new ChatScreen(this);
+		beginingScreen = new BeginingScreen(this);
 		setScreen(mainMenuScreen);
 		Skill.initListSkill();
 	}
