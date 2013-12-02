@@ -1,5 +1,7 @@
 package chat;
 
+import gameMechanic.Skill;
+
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
@@ -105,4 +107,6 @@ public  class ChatWindow{
 //			}
 //		});
 	}
+
+
 }

@@ -1,33 +1,25 @@
 
 package chat;
 
-import gameMechanic.Personnage;
+import gameMechanic.Skill;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-
-
 import chat.Network.ChatMessage;
+import chat.Network.PersonnageConnection;
 import chat.Network.RegisterName;
+import chat.Network.SkillNumber;
+import chat.Network.TestConnection;
 import chat.Network.UpdateNames;
 
-import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
-import com.esotericsoftware.minlog.Log;
 
 public class ChatServer {
 	Server server;
 	public final static boolean DEBUG_PC=false;
-
+	public ArrayList<PersonnageConnection> listPersonnage;
 
 	public ChatServer () throws IOException {
 		server = new Server() {
@@ -37,6 +29,7 @@ public class ChatServer {
 				return new ChatConnection();
 			}
 		};
+		listPersonnage= new ArrayList<PersonnageConnection>();
 		// For consistency, the classes to be sent over the network are
 		// registered by the same method for both the client and server.
 		Network.register(server);
@@ -64,27 +57,30 @@ public class ChatServer {
 					updateNames();
 					return;
 				}
-				if (object instanceof Personnage) {
-					// Ignore the object if a client has already registered a name. This is
-					// impossible with our client, but a hacker could send messages at any time.
-					if (connection.name != null) return;
+				if (object instanceof PersonnageConnection) {
+//					if (connection.name != null) return;
 					// Ignore the object if the name is invalid.
+					if( listPersonnage.contains(object))
+						return;
+					else 
+						listPersonnage.add((PersonnageConnection) object);
+					System.err.println("connect perso connect");
+
+//					String name = ((PersonnageConnection)object).name;
+//					if (name == null) return;
+//					name = name.trim();
+//					if (name.length() == 0) return;
+//					// Store the name on the connection.
+//					connection.name = name;
 					
-					String name = ((RegisterName)object).name;
-					if (name == null) return;
-					name = name.trim();
-					if (name.length() == 0) return;
-					// Store the name on the connection.
-					connection.name = name;
-					// Send a "connected" message to everyone except the new client.
-					ChatMessage chatMessage = new ChatMessage();
-					chatMessage.text ="Player"+ name + " connected.";
-					server.sendToAllExceptTCP(connection.getID(), chatMessage);
-					// Send everyone a new list of connection names.
-					updateNames();
+					SkillNumber sn =new SkillNumber();
+					sn.skillId=2;
+
+					server.sendToAllTCP(sn);
 					return;
 				}
 				if (object instanceof ChatMessage) {
+
 					// Ignore the object if a client tries to chat before registering a name.
 					if (connection.name == null) return;
 					ChatMessage chatMessage = (ChatMessage)object;
@@ -98,6 +94,12 @@ public class ChatServer {
 					server.sendToAllTCP(chatMessage);
 					return;
 				}
+				
+				if (object instanceof TestConnection) {
+					server.sendToAllTCP((TestConnection)object);
+					return;
+				}
+				
 			}
 
 			public void disconnected (Connection c) {
@@ -133,13 +135,13 @@ public class ChatServer {
 		server.sendToAllTCP(updateNames);
 	}
 
+	void afficheSkill(Skill s){
+		server.sendToAllTCP(s);
+	}
+	
 	// This holds per connection state.
 	static class ChatConnection extends Connection {
 		public String name;
 	}
 
-	public static void main (String[] args) throws IOException {
-		Log.set(Log.LEVEL_DEBUG);
-		new ChatServer();
-	}
 }

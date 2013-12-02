@@ -1,8 +1,7 @@
 
 package chat;
 
-import gameMechanic.Personnage;
-import gameMechanic.Skill;
+import java.util.ArrayList;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
@@ -20,8 +19,10 @@ public class Network {
 		kryo.register(String[].class);
 		kryo.register(UpdateNames.class);
 		kryo.register(ChatMessage.class);
-		kryo.register(Personnage.class);
-		kryo.register(Skill.class);
+		kryo.register(ArrayList.class);
+		kryo.register(PersonnageConnection.class);
+		kryo.register(TestConnection.class);
+		kryo.register(SkillNumber.class);
 	}
 
 	static public class RegisterName {
@@ -35,4 +36,19 @@ public class Network {
 	static public class ChatMessage {
 		public String text;
 	}
+	
+	static public class TestConnection{
+		public String test;
+	}
+	static public class PersonnageConnection {
+		public String name;
+	}
+	static public class SkillNumber {
+		public int skillId;
+		
+		
+		
+	}
+
+
 }

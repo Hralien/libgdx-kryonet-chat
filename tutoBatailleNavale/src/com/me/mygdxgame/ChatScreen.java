@@ -1,5 +1,7 @@
 package com.me.mygdxgame;
 
+import gameMechanic.Skill;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -13,6 +15,7 @@ import java.util.regex.Pattern;
 
 import chat.ChatClient;
 import chat.Network;
+import chat.Network.SkillNumber;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -56,21 +59,18 @@ public class ChatScreen implements Screen {
 	Skin skin;
 	Stage stage;
 	SpriteBatch batch;
-	Texture texture1;
-	Texture texture2;
+
 	Label fpsLabel;
 	ChatClient cc;
 	MyGame game;
 
+	public SkillNumber showSkillNumber;
 
 	public ChatScreen(MyGame myGame){
 		this.game=myGame;
 		this.batch = new SpriteBatch();
 		this.skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-		this.texture1 = new Texture(Gdx.files.internal("data/badlogicsmall.jpg"));
-		TextureRegion image = new TextureRegion(texture1);
-		TextureRegion imageFlipped = new TextureRegion(image);
-		imageFlipped.flip(true, true);
+
 		this.stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 		tfHost = new TextField("", skin);
 		//on recup l'adresse a laquelle on est conecter
@@ -94,16 +94,9 @@ public class ChatScreen implements Screen {
 			System.err.println(ex.getMessage());
 		}
 		
-		for(String it:listIps)
-			System.out.println(it);
+//		for(String it:listIps)
+//			System.out.println(it);
 
-	
-
-		//bouton avec image inutile
-		ImageButtonStyle style = new ImageButtonStyle(skin.get(ButtonStyle.class));
-		style.imageUp = new TextureRegionDrawable(image);
-		style.imageDown = new TextureRegionDrawable(imageFlipped);
-		ImageButton iconButton = new ImageButton(style);
 
 		//bouton de validation
 		TextButton validation = new TextButton("se connecter", skin);
@@ -136,7 +129,6 @@ public class ChatScreen implements Screen {
 		window.setPosition(width*0, 200);
 		window.defaults().spaceBottom(10);
 		window.row().minWidth((float) (width*.4)).fill().expandX();
-		window.add(iconButton);
 		window.row();
 		window.add(checkBox);
 		window.row();
@@ -162,23 +154,14 @@ public class ChatScreen implements Screen {
 		});
 
 
-		iconButton.addListener(new ChangeListener() {
-			public void changed (ChangeEvent event, Actor actor) {
-				new Dialog("Some Dialog", skin, "dialog") {
-					protected void result (Object object) {
-						System.out.println("Chosen: " + object);
-					}
-				}.text("Are you enjoying this demo?").button("Yes", true).button("No", false).key(Keys.ENTER, true)
-				.key(Keys.ESCAPE, false).show(stage);
-			}
-		});
 
+		final ChatScreen vue = this;
 		validation.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
 				if(game.player!=null)
-				cc = new ChatClient(tfHost.getText(), tfPseudo.getText(),game.player);
+				cc = new ChatClient(tfHost.getText(), tfPseudo.getText(),game.player,vue);
 				else
-					cc = new ChatClient(tfHost.getText(), tfPseudo.getText(),null);
+					cc = new ChatClient(tfHost.getText(), tfPseudo.getText(),null,vue);
 				stage.addActor(cc.chatWindow.getWindow());
 			}
 		});
@@ -217,8 +200,7 @@ public class ChatScreen implements Screen {
 	public void dispose() {
 		stage.dispose();
 		skin.dispose();
-		texture1.dispose();
-		texture2.dispose();
+
 	}
 
 	@Override
@@ -227,7 +209,15 @@ public class ChatScreen implements Screen {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
-
+		batch.begin();
+		if(showSkillNumber!=null){
+			Skill.selectSkillFromSkillNumber(showSkillNumber).getEffect().draw(batch,delta);
+			//si l'animation est finie on remets à null
+			if(Skill.selectSkillFromSkillNumber(showSkillNumber).getEffect().isComplete()){
+				showSkillNumber = null;
+			}
+		}
+		batch.end();
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 		stage.draw();
 		Table.drawDebug(stage);
@@ -237,9 +227,9 @@ public class ChatScreen implements Screen {
 	public void show() {
 		// TODO Auto-generated method stub
 		Gdx.input.setInputProcessor(stage);
-		Client client = new Client();
-		java.util.List<InetAddress> addresses = client.discoverHosts(Network.portUDP, 5000);
-		System.out.print(addresses); 
+//		Client client = new Client();
+//		java.util.List<InetAddress> addresses = client.discoverHosts(Network.portUDP, 5000);
+//		System.out.print(addresses); 
 	}
 
 	@Override
@@ -317,5 +307,6 @@ public class ChatScreen implements Screen {
 				
 		}
 	}
+
 
 }
