@@ -135,11 +135,10 @@ public class ChatClient {
 			}
 		}.start();
 
-		//		List<InetAddress> address = client.discoverHosts(Network.portUDP, 5000);
-		//		System.out.println("test"+address);
+		
 
 	}
-	
+
 	public void searchServer(String ipTest){
 		TestConnection testConnect = new TestConnection();
 		testConnect.test = ipTest;

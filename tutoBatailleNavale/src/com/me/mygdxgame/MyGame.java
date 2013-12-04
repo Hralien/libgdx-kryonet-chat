@@ -18,7 +18,6 @@ public class MyGame extends Game {
 
 
 	public MenuPrincipalScreen mainMenuScreen;
-	public AnimationPlayerScreen animationScreen;
 	public CreateCharacterScreen createCharacterScreen;
 	public ChatScreen chatScreen;
 	public BeginingScreen beginingScreen;
@@ -41,11 +40,10 @@ public class MyGame extends Game {
 	@Override
 	public void create() {
 		mainMenuScreen = new MenuPrincipalScreen(this);
-		animationScreen = new AnimationPlayerScreen(this);
 		createCharacterScreen = new CreateCharacterScreen(this);
 		chatScreen = new ChatScreen(this);
 		beginingScreen = new BeginingScreen(this);
 		setScreen(mainMenuScreen);
-		Skill.initListSkill();
+//		Skill.initListSkill();
 	}
 }

@@ -11,6 +11,7 @@ import java.net.UnknownHostException;
 import java.nio.channels.NetworkChannel;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,7 +35,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -217,7 +217,7 @@ public class ChatScreen implements Screen {
 				//						.concat(".");
 				//				for (int i = 0; i < 255; i++) {
 				//					String testIP = test.concat(Integer.toString(i));
-				searchServ("192.168.229.83");
+				searchServ("192.168.1.62");
 				//				}
 				if (game.listHost.size() == 0) {
 					game.androidUI.showAlertBox("No server found",
@@ -226,7 +226,7 @@ public class ChatScreen implements Screen {
 					final Window choixServ = new Window("Choisissez votre Serveur", skin);
 					choixServ.setPosition((float) (Gdx.graphics.getHeight() * 0.5), 200);
 					System.out.println(game.listHost.size());
-					final List serv = new List(game.listHost.toArray(), skin);
+					final  com.badlogic.gdx.scenes.scene2d.ui.List serv = new  com.badlogic.gdx.scenes.scene2d.ui.List(game.listHost.toArray(), skin);
 					TextButton ok = new TextButton("ok", skin);
 					choixServ.add(serv);
 					choixServ.row();
@@ -279,10 +279,8 @@ public class ChatScreen implements Screen {
 
 							ChatClient searchServTestClient = new ChatClient(ipTest, "name",
 									new Shaman("flo"), null, game);
-							if(searchServTestClient.client.isConnected()){
-								searchServTestClient.searchServer(ipTest);
-								System.err.println("ok");
-							}
+							List<InetAddress> address = searchServTestClient.client.discoverHosts(Network.portUDP, 5000);
+							System.out.println("test"+address);
 						}
 					});
 				}

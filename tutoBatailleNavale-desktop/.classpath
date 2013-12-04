@@ -4,8 +4,8 @@
 	<classpathentry kind="src" path="assets"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/tutoBatailleNavale"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry exported="true" kind="lib" path="libs/gdx-natives.jar"/>
+	<classpathentry kind="lib" path="libs/gdx-natives.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/gdx-backend-lwjgl.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/gdx-backend-lwjgl-natives.jar"/>
+	<classpathentry kind="lib" path="libs/gdx-backend-lwjgl-natives.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

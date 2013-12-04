@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="/tutoBatailleNavale/libs/gdx.jar" sourcepath="/tutoBatailleNavale/libs/gdx-sources.jar"/>
+	<classpathentry kind="lib" path="/tutoBatailleNavale/libs/gdx.jar" sourcepath="/tutoBatailleNavale/libs/gdx-sources.jar"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/tutoBatailleNavale"/>
