@@ -3,39 +3,23 @@ package com.me.mygdxgame;
 import gameMechanic.Shaman;
 import gameMechanic.Skill;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.nio.channels.NetworkChannel;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import chat.ChatClient;
 import chat.Network;
 import chat.Network.SkillNumber;
-import chat.Network.TestConnection;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -43,9 +27,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.esotericsoftware.kryonet.Client;
-import com.esotericsoftware.kryonet.EndPoint;
 
 /**
  * lancement du chat apres saisie du pseudo et de l'adresse
@@ -76,7 +58,6 @@ public class ChatScreen implements Screen {
 		this.stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 		this.tfHost = new TextField("", skin);
 		this.fpsLabel = new Label("fps:", skin);
-
 	}
 
 
@@ -212,41 +193,59 @@ public class ChatScreen implements Screen {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				//				String[] s = ipClient.split("\\.");
-				//				String test = s[0].concat(".").concat(s[1]).concat(".").concat(s[2])
-				//						.concat(".");
-				//				for (int i = 0; i < 255; i++) {
-				//					String testIP = test.concat(Integer.toString(i));
-				searchServ("192.168.1.62");
-				//				}
-				if (game.listHost.size() == 0) {
-					game.androidUI.showAlertBox("No server found",
-							"Why not retry ?", "OK", stage);
-				} else {
-					final Window choixServ = new Window("Choisissez votre Serveur", skin);
-					choixServ.setPosition((float) (Gdx.graphics.getHeight() * 0.5), 200);
-					System.out.println(game.listHost.size());
-					final  com.badlogic.gdx.scenes.scene2d.ui.List serv = new  com.badlogic.gdx.scenes.scene2d.ui.List(game.listHost.toArray(), skin);
-					TextButton ok = new TextButton("ok", skin);
-					choixServ.add(serv);
-					choixServ.row();
-					choixServ.add(ok);
-					choixServ.row();
-					choixServ.pack();
-					stage.addActor(choixServ);
-					ok.addListener(new ChangeListener() {
-
-						public void changed(ChangeEvent event, Actor actor) {
-							tfHost.setText(serv.getSelection());
-							choixServ.remove();
+				try{
+					new Thread(new Runnable() {
+						Client client = new Client();
+						final List<InetAddress> address = client.discoverHosts(Network.portUDP, 5000);
+						
+						@Override
+						public void run() {
+							Gdx.app.postRunnable(new Runnable() {
+								public void run() {
+									System.out.println("test"+address);
+									for(InetAddress it: address)
+										game.listHost.add(it);
+								}
+							});
 						}
-
-					});
+					}).start();
+				} catch (Exception e) {
+					//			e.printStackTrace();
 				}
+				/*			
+				String[] s = ipClient.split("\\.");
+				String test = s[0].concat(".").concat(s[1]).concat(".").concat(s[2])
+						.concat(".");
+				for (int i = 0; i < 255; i++) {
+					String testIP = test.concat(Integer.toString(i));
+					searchServ(testIP);
+				}
+				game.androidUI.showAlertBox("Server","Recherche en cours", "OK", stage);
+				while(true){
+					if (game.listHost.size() != 0) {
+						final Window choixServ = new Window("Choisissez votre Serveur", skin);
+						choixServ.setPosition((float) (Gdx.graphics.getHeight() * 0.5), 200);
+						System.out.println(game.listHost.size());
+						final  com.badlogic.gdx.scenes.scene2d.ui.List serv = new  com.badlogic.gdx.scenes.scene2d.ui.List(game.listHost.toArray(), skin);
+						TextButton ok = new TextButton("ok", skin);
+						choixServ.add(serv);
+						choixServ.row();
+						choixServ.add(ok);
+						choixServ.row();
+						choixServ.pack();
+						stage.addActor(choixServ);
+						ok.addListener(new ChangeListener() {
+							public void changed(ChangeEvent event, Actor actor) {
+								tfHost.setText(serv.getSelection());
+								choixServ.remove();
+							}
+						});
+					}
+				}*/
+
 			}
 		});
 	}
-
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
@@ -279,8 +278,7 @@ public class ChatScreen implements Screen {
 
 							ChatClient searchServTestClient = new ChatClient(ipTest, "name",
 									new Shaman("flo"), null, game);
-							List<InetAddress> address = searchServTestClient.client.discoverHosts(Network.portUDP, 5000);
-							System.out.println("test"+address);
+
 						}
 					});
 				}

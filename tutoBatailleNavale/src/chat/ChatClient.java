@@ -91,10 +91,10 @@ public class ChatClient {
 					}
 				}
 
-				if (object instanceof TestConnection) {
-					game.listHost.add(((TestConnection) object).test);
-					System.err.println("res"+((TestConnection) object).test);
-				}
+//				if (object instanceof TestConnection) {
+//					game.listHost.add(((TestConnection) object).test);
+//					System.err.println("res"+((TestConnection) object).test);
+//				}
 			}
 
 			public void disconnected (Connection connection) {
