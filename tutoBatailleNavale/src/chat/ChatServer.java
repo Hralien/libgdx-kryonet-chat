@@ -40,6 +40,12 @@ public class ChatServer {
 			public void received (Connection c, Object object) {
 				// We know all connections for this server are actually ChatConnections.
 				ChatConnection connection = (ChatConnection)c;
+				
+				if (object instanceof TestConnection) {
+					System.err.println("testConnect reçu");
+					server.sendToAllTCP((TestConnection)object);
+					return;
+				}
 
 				if (object instanceof RegisterName) {
 					// Ignore the object if a client has already registered a name. This is
@@ -63,20 +69,17 @@ public class ChatServer {
 				if (object instanceof PersonnageConnection) {
 					if (connection.name !=null) return;
 					String name = ((PersonnageConnection)object).name;
-					System.err.println("chatconnection :"+name);
 
 					if (name == null) return;
 					name = name.trim();
 					if (name.length() == 0) return;
 					// Store the name on the connection.
 					connection.name = name;
-					System.err.println("erre");
 					if( listPersonnage.contains(object))
 						return;
 					else {
 						listPersonnage.add((PersonnageConnection) object);
 					}
-					System.err.println("connect perso");
 					if(listPersonnage.size()>=nbjoueur){
 						ConstantOrder co = new ConstantOrder();
 						co.order=ConstantOrder.STARTGAME;
@@ -90,10 +93,11 @@ public class ChatServer {
 						// Send everyone a new list of connection names.
 						updateNames();
 					}
+					System.err.println(name);
 					return;
 				}
 				if (object instanceof ChatMessage) {
-
+					System.err.println("cm");
 					// Ignore the object if a client tries to chat before registering a name.
 					if (connection.name == null) return;
 					ChatMessage chatMessage = (ChatMessage)object;
@@ -108,11 +112,7 @@ public class ChatServer {
 					return;
 				}
 
-				if (object instanceof TestConnection) {
-					server.sendToAllTCP((TestConnection)object);
-					return;
-				}
-
+				
 			}
 
 			public void disconnected (Connection c) {

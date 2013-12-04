@@ -78,42 +78,42 @@ public class AndroidHelp implements UITrick {
 
 	@Override
 	public int getConnectedWifi(){
-
-		int ssid = 0;
-		ConnectivityManager connManager = (ConnectivityManager) appContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-		if (networkInfo.isConnected()) {
-			final WifiManager wifiManager = (WifiManager) appContext.getSystemService(Context.WIFI_SERVICE);
-			final WifiInfo connectionInfo = wifiManager.getConnectionInfo();
-			if (connectionInfo != null) {
-				ssid = connectionInfo.getIpAddress();
-			}
-		}
-		return ssid;
+//
+//		int ssid = 0;
+//		ConnectivityManager connManager = (ConnectivityManager) appContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+//		NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+//		if (networkInfo.isConnected()) {
+//			final WifiManager wifiManager = (WifiManager) appContext.getSystemService(Context.WIFI_SERVICE);
+//			final WifiInfo connectionInfo = wifiManager.getConnectionInfo();
+//			if (connectionInfo != null) {
+//				ssid = connectionInfo.getIpAddress();
+//			}
+//		}
+		return -1;
 	}
-	InetAddress getBroadcastAddress() throws IOException {
-		WifiManager wifi = (WifiManager) appContext.getSystemService(Context.WIFI_SERVICE);
-		DhcpInfo dhcp = wifi.getDhcpInfo();
-		// handle null somehow
-
-		int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
-		byte[] quads = new byte[4];
-		for (int k = 0; k < 4; k++)
-			quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
-		return InetAddress.getByAddress(quads);
-	}
-	public void test() throws IOException{
-		DatagramSocket socket = new DatagramSocket(Network.portUDP);
-		socket.setBroadcast(true);
-		
-		byte[] data=new byte[1024];
-		DatagramPacket packet = new DatagramPacket(data, data.length,
-				getBroadcastAddress(), Network.portUDP);
-		socket.send(packet);
-
-		byte[] buf = new byte[1024];
-		DatagramPacket packet1 = new DatagramPacket(buf, buf.length);
-		socket.receive(packet1);
-	}
+//	InetAddress getBroadcastAddress() throws IOException {
+//		WifiManager wifi = (WifiManager) appContext.getSystemService(Context.WIFI_SERVICE);
+//		DhcpInfo dhcp = wifi.getDhcpInfo();
+//		// handle null somehow
+//
+//		int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
+//		byte[] quads = new byte[4];
+//		for (int k = 0; k < 4; k++)
+//			quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
+//		return InetAddress.getByAddress(quads);
+//	}
+//	public void test() throws IOException{
+//		DatagramSocket socket = new DatagramSocket(Network.portUDP);
+//		socket.setBroadcast(true);
+//		
+//		byte[] data=new byte[1024];
+//		DatagramPacket packet = new DatagramPacket(data, data.length,
+//				getBroadcastAddress(), Network.portUDP);
+//		socket.send(packet);
+//
+//		byte[] buf = new byte[1024];
+//		DatagramPacket packet1 = new DatagramPacket(buf, buf.length);
+//		socket.receive(packet1);
+//	}
 
 }

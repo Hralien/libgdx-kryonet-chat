@@ -15,6 +15,7 @@ import chat.Network.ConstantOrder;
 import chat.Network.PersonnageConnection;
 import chat.Network.RegisterName;
 import chat.Network.SkillNumber;
+import chat.Network.TestConnection;
 import chat.Network.UpdateNames;
 
 import com.badlogic.gdx.Screen;
@@ -29,13 +30,13 @@ import com.me.mygdxgame.MyGame;
 
 public class ChatClient {
 	//	ChatFrame chatFrame;
-	Client client;
+	public Client client;
 	String name;
 	public ChatWindow chatWindow;
 	private Personnage personnage;
 	private ChatScreen myVue;
 	private MyGame game;
-	
+
 	public ChatClient (String adresse, String pseudo, Personnage perso, ChatScreen vue, MyGame myGame) {
 		this.client = new Client();
 		this.client.start();
@@ -47,15 +48,14 @@ public class ChatClient {
 		Network.register(client);
 
 		this.client.addListener(new Listener() {
-			
+
 			@Override
 			public void connected (Connection connection) {
-//				RegisterName registerName = new RegisterName();
-//				registerName.name = name;
-//				client.sendTCP(registerName);
+				//				RegisterName registerName = new RegisterName();
+				//				registerName.name = name;
+				//				client.sendTCP(registerName);
 				PersonnageConnection pc = new PersonnageConnection();
 				pc.name = personnage.name;
-				System.err.println("pc.name"+pc.name);
 				client.sendTCP(pc);
 
 			}
@@ -71,16 +71,14 @@ public class ChatClient {
 				if (object instanceof ChatMessage) {
 					ChatMessage chatMessage = (ChatMessage)object;
 					chatWindow.addMessage(chatMessage.text);
-					System.err.println("chatMessage");
 					return;
 				}
-				
+
 				if(object instanceof SkillNumber){
-					System.err.println("skillNumber");
 					myVue.showSkillNumber=(SkillNumber) object;
 					return;
 				}
-				
+
 				if(object instanceof ConstantOrder){
 					int ordre=((ConstantOrder)object).order;
 					switch (ordre) {
@@ -91,6 +89,11 @@ public class ChatClient {
 					default:
 						break;
 					}
+				}
+
+				if (object instanceof TestConnection) {
+					game.listHost.add(((TestConnection) object).test);
+					System.err.println("res"+((TestConnection) object).test);
 				}
 			}
 
@@ -105,7 +108,7 @@ public class ChatClient {
 		if(personnage!=null)
 			name=personnage.name;
 		else name=pseudo;
-		
+
 		final String host = adresse;
 
 		chatWindow = new ChatWindow(host);
@@ -135,6 +138,16 @@ public class ChatClient {
 		//		List<InetAddress> address = client.discoverHosts(Network.portUDP, 5000);
 		//		System.out.println("test"+address);
 
+	}
+	
+	public void searchServer(String ipTest){
+		TestConnection testConnect = new TestConnection();
+		testConnect.test = ipTest;
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.text = chatWindow.getSendText();
+		client.sendTCP(chatMessage);
+		client.sendUDP(chatMessage);
+		System.err.println("testconnection send");
 	}
 
 }

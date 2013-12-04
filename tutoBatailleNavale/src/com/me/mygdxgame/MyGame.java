@@ -1,5 +1,7 @@
 package com.me.mygdxgame;
 
+import java.util.ArrayList;
+
 import gameMechanic.Personnage;
 import gameMechanic.Skill;
 import chat.ChatServer;
@@ -26,7 +28,7 @@ public class MyGame extends Game {
 	public Personnage player;
 	public UITrick androidUI;
 	public ChatServer chatServer;
-
+	public ArrayList<String> listHost = new ArrayList<String>();
 
 	public MyGame(UITrick actionResolver) {
 		super();
