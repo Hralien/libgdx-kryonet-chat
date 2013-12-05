@@ -57,7 +57,9 @@ public class ChatClient {
 				PersonnageConnection pc = new PersonnageConnection();
 				pc.name = personnage.name;
 				client.sendTCP(pc);
+
 			}
+
 			@Override
 			public void received (Connection connection, Object object) {
 				if (object instanceof UpdateNames) {
