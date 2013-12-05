@@ -2,34 +2,23 @@
 package chat;
 
 import gameMechanic.Personnage;
-import gameMechanic.Skill;
-
 import java.awt.EventQueue;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.List;
-
 import chat.Network.ChatMessage;
 import chat.Network.ConstantOrder;
 import chat.Network.PersonnageConnection;
-import chat.Network.RegisterName;
 import chat.Network.SkillNumber;
 import chat.Network.TestConnection;
 import chat.Network.UpdateNames;
 
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import com.me.mygdxgame.BeginingScreen;
 import com.me.mygdxgame.ChatScreen;
 import com.me.mygdxgame.MyGame;
 
 
 public class ChatClient {
-	//	ChatFrame chatFrame;
 	public Client client;
 	String name;
 	public ChatWindow chatWindow;

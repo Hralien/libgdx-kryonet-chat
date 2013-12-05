@@ -1,4 +1,4 @@
-package chat;
+package ressourceUseless;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;

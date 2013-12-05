@@ -1,6 +1,7 @@
 
 package chat;
 
+import gameMechanic.Personnage;
 import gameMechanic.Skill;
 
 import java.io.IOException;
@@ -9,7 +10,6 @@ import chat.Network.ChatMessage;
 import chat.Network.ConstantOrder;
 import chat.Network.PersonnageConnection;
 import chat.Network.RegisterName;
-import chat.Network.SkillNumber;
 import chat.Network.TestConnection;
 import chat.Network.UpdateNames;
 

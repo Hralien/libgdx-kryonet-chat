@@ -78,7 +78,7 @@ public class CreateCharacterScreen implements Screen {
 		this.stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 		this.fpsLabel = new Label("fps:", skin);
 
-		
+
 
 	}
 	private Window createClassDescWindows() {
@@ -137,7 +137,9 @@ public class CreateCharacterScreen implements Screen {
 		}
 		//si on a un skill a afficher
 		if(skillToRender !=null){
-			skillToRender.getEffect().draw(spriteBatch, delta);
+			//skillToRender.getEffect().draw(spriteBatch, delta);
+			spriteBatch.draw(skillToRender.afficheSkill(), 50, 50);                         // #17
+
 			if(!soundIsPlaying){
 				skillToRender.getSound().play();
 				soundIsPlaying=true;

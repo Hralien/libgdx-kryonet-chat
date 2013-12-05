@@ -1,13 +1,10 @@
 package com.me.mygdxgame;
 
-import java.net.InetAddress;
 import java.util.ArrayList;
 
 import gameMechanic.Personnage;
-import gameMechanic.Skill;
 import chat.ChatServer;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 
 /**
  * Ici on initialise tout les screen

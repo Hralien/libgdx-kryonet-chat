@@ -1,8 +1,9 @@
 package chat;
 
-import gameMechanic.Skill;
 
 import java.util.ArrayList;
+
+import chatrmi.IChatFrame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -15,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-public  class ChatWindow{
+public  class ChatWindow implements IChatFrame{
 	private Window window;
 	private Skin skin;
 	private List messageList;
@@ -96,16 +97,12 @@ public  class ChatWindow{
 	}
 
 	public void addMessage (final String message) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run () {
 				ArrayList<String> listMessage= new ArrayList<String>();
 				for(String it: messageList.getItems()){
 					listMessage.add(it);
 				}
 				listMessage.add(message);
 				messageList.setItems(listMessage.toArray());
-//			}
-//		});
 	}
 
 

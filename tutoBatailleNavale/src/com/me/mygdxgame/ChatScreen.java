@@ -1,6 +1,5 @@
 package com.me.mygdxgame;
 
-import gameMechanic.Shaman;
 import gameMechanic.Skill;
 
 import java.net.InetAddress;
@@ -115,7 +114,6 @@ public class ChatScreen implements Screen {
 							&& inetAddress.isSiteLocalAddress()) {
 						listIps.add(inetAddress.getHostAddress().toString());
 						ipClient = listIps.get(0);
-						// System.out.println(inetAddress.getHostAddress().toString());
 					}
 
 				}
@@ -211,7 +209,6 @@ public class ChatScreen implements Screen {
 						public void run() {
 							Gdx.app.postRunnable(new Runnable() {
 								public void run() {
-									System.out.println("test" + address);
 									for (InetAddress it : address)
 										game.listHost.add(it.toString().substring(1,it.toString().length()));
 									if (game.listHost.size() != 0) {
@@ -249,17 +246,7 @@ public class ChatScreen implements Screen {
 				} catch (Exception e) {
 					// e.printStackTrace();
 				}
-				/*
-				 * String[] s = ipClient.split("\\."); String test =
-				 * s[0].concat(".").concat(s[1]).concat(".").concat(s[2])
-				 * .concat("."); for (int i = 0; i < 255; i++) { String testIP =
-				 * test.concat(Integer.toString(i)); searchServ(testIP); }
-				 * game.androidUI.showAlertBox("Server","Recherche en cours",
-				 * "OK", stage); while(true){
-				 * 
-				 * } }
-				 */
-
+				
 			}
 		});
 	}
@@ -279,33 +266,6 @@ public class ChatScreen implements Screen {
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * Methode permettant de choisir un serveur
-	 */
-	public void searchServ(String ip) {
-		try {
-			final String ipTest = ip;
-			Thread bc = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					Gdx.app.postRunnable(new Runnable() {
-						public void run() {
-
-							ChatClient searchServTestClient = new ChatClient(
-									ipTest, "name", new Shaman("flo"), null,
-									game);
-
-						}
-					});
-				}
-			});
-			bc.start();
-		} catch (Exception e) {
-			// e.printStackTrace();
-		}
 
 	}
 

@@ -32,19 +32,19 @@ public class Skill {
 	public static Skill boost =new Skill(8,1, "boost","explosion.p");
 	/**Mage chaud */
 	public static Skill bouleDeFeu =new Skill(9,1, "boule de feu","flame.p");
-	public static Skill lanceArdente =new Skill(9,1, "lance ardente","flame.p");
-	public static Skill chocDeMasse =new Skill(9,1, "choc de masse","flame.p");
-	public static Skill foudroiement =new Skill(9,1, "foudroiement","flame.p");
+	public static Skill lanceArdente =new Skill(10,1, "lance ardente","flame.p");
+	public static Skill chocDeMasse =new Skill(11,1, "cyclone","flame.p");
+	public static Skill foudroiement =new Skill(12,1, "foudroiement","flame.p");
 	/**Mage froid */
-	public static Skill prisonAcqeuse =new Skill(9,1, "prison aqueuse","flame.p");
-	public static Skill tridenAqueue =new Skill(9,1, "trident à queue","flame.p");
-	public static Skill massedAir =new Skill(9,1, "masse d'air","flame.p");
-	public static Skill cyclone =new Skill(9,1, "cyclone","flame.p");
+	public static Skill prisonAcqeuse =new Skill(13,1, "prison aqueuse","flame.p");
+	public static Skill tridenAqueue =new Skill(14,1, "trident à queue","flame.p");
+	public static Skill massedAir =new Skill(15,1, "séisme","seisme");
+	public static Skill cyclone =new Skill(16,1, "cyclone","flame.p");
 
 	public static  ArrayList<Skill> listSkill = new ArrayList<Skill>();
 	/**Skill sprite management*/
-	private static final int        FRAME_COLS = 6;         // #1
-	private static final int        FRAME_ROWS = 5;         // #2
+	private static final int        FRAME_COLS = 5;         // #1
+	private static final int        FRAME_ROWS = 4;         // #2
 
 	Animation                       walkAnimation;          // #3
 	Texture                         walkSheet;              // #4
@@ -64,6 +64,20 @@ public class Skill {
 		effect.load(Gdx.files.internal("effects/"+skillParticuleName), Gdx.files.internal("effects"));
 		effect.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 		effect.start();
+		//skill effect
+		walkSheet = new Texture(Gdx.files.internal("effects/"+skillParticuleName+".png"));     // #9
+		TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth() / 
+				FRAME_COLS, walkSheet.getHeight() / FRAME_ROWS);                                // #10
+		walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+		int index = 0;
+		for (int i = 0; i < FRAME_ROWS; i++) {
+			for (int j = 0; j < FRAME_COLS; j++) {
+				walkFrames[index++] = tmp[i][j];
+			}
+		}
+		walkAnimation = new Animation(0.05f, walkFrames);              // #11
+		spriteBatch = new SpriteBatch();                                // #12
+		stateTime = 0f;                                                 // #13
 
 	}
 	
@@ -141,4 +155,9 @@ public class Skill {
 		this.sound = sound;
 	}
 
+	public TextureRegion afficheSkill(){
+		stateTime += Gdx.graphics.getDeltaTime();                       // #15
+		currentFrame = walkAnimation.getKeyFrame(stateTime, false);      // #16
+		return currentFrame;
+	}
 }

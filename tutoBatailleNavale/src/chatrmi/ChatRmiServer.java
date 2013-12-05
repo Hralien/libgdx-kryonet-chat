@@ -1,5 +1,7 @@
 package chatrmi;
 
+import gameMechanic.Personnage;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -21,14 +23,14 @@ import com.esotericsoftware.minlog.Log;
 // RMI has more overhead (usually 4 bytes) then just sending an object.
 public class ChatRmiServer {
 	Server server;
-	ArrayList<Player> players = new ArrayList<Player>();
+	ArrayList<Personnage> players = new ArrayList<Personnage>();
 
 	public ChatRmiServer () throws IOException {
 		server = new Server() {
 			protected Connection newConnection () {
 				// Each connection represents a player and has fields
 				// to store state and methods to perform actions.
-				Player player = new Player();
+				Personnage player = new Personnage();
 				players.add(player);
 				return player;
 			}
@@ -39,12 +41,12 @@ public class ChatRmiServer {
 
 		server.addListener(new Listener() {
 			public void disconnected (Connection connection) {
-				Player player = (Player)connection;
+				Personnage player = (Personnage)connection;
 				players.remove(player);
 				if (player.name != null) {
 					// Announce to everyone that someone (with a registered name) has left.
 					String message = player.name + " disconnected.";
-					for (Player p : players)
+					for (Personnage p : players)
 						p.frame.addMessage(message);
 					updateNames();
 				}
@@ -69,13 +71,13 @@ public class ChatRmiServer {
 
 	void updateNames () {
 		// Collect the names of each player.
-		ArrayList namesList = new ArrayList(players.size());
-		for (Player player : players)
+		ArrayList<String> namesList = new ArrayList<String>(players.size());
+		for (Personnage player : players)
 			if (player.name != null) namesList.add(player.name);
 		// Set the names on everyone's chat frame.
 		String[] names = (String[])namesList.toArray(new String[namesList.size()]);
-		for (Player player : players)
-			player.frame.setNames(names);
+//		for (Personnage player : players)
+//			player.frame.setNames(names);
 	}
 
 	class Player extends Connection implements IPlayer {
