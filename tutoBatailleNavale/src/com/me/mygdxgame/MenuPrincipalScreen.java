@@ -53,11 +53,11 @@ public class MenuPrincipalScreen implements Screen {
 	 */
 	private MyGame game;
 
-	private Sound sound;
+//	private Sound sound;
 	/**for serveur*/
 	private String message;
 	private int nbjoueur;
-	/**bg*/
+	/**bg
 	private Texture bg;
 	private static final int        FRAME_COLS = 8;         // #1
 	private static final int        FRAME_ROWS = 1;         // #2
@@ -67,28 +67,92 @@ public class MenuPrincipalScreen implements Screen {
 	private SpriteBatch batch;
 
 	private float stateTime;                                        // #8
-	private TextureRegion                   currentFrame;           // #7
+	private TextureRegion                   currentFrame;           // #7*/
 
 
 	public MenuPrincipalScreen(MyGame myGame){
 		this.game=myGame;
 
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-		sound = Gdx.audio.newSound(Gdx.files.internal("sound/CloudTopLoops.mp3"));
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-		bg = new Texture(Gdx.files.internal("background2.png"));
+		fpsLabel = new Label("fps:", skin);
 
-		TextureRegion[][] tmp = TextureRegion.split(bg, bg.getWidth() / FRAME_COLS, bg.getHeight() / FRAME_ROWS);                                // #10
-		walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
-		int index = 0;
-		for (int i = 0; i < FRAME_ROWS; i++) {
-			for (int j = 0; j < FRAME_COLS; j++) {
-				walkFrames[index++] = tmp[i][j];
-			}
+
+	}
+
+
+	@Override
+	public void resize (int width, int height) {
+		stage.setViewport(width, height, false);
+	}
+
+	@Override
+	public void dispose () {
+		stage.dispose();
+		skin.dispose();
+//		sound.dispose();
+	}
+
+	@Override
+	public void render(float delta) {
+		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+
+		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
+
+//		sound.play(0.1f); // play new sound and keep handle for further manipulation
+		//on switch le num du bouton selectionner et son affiche le screen correspondant
+		switch (buttonSelected) {
+		case 1:
+//			sound.stop();
+			game.setScreen(game.chatScreen);			
+			break;
+		case 2:
+			//			game.setScreen(game.animationScreen);
+//			sound.stop();
+
+			break;
+		case 3:
+//			sound.stop();
+			game.setScreen(game.createCharacterScreen);			
+			break;
+		default:
+			break;
 		}
-		walkAnimation = new Animation(0.5f, walkFrames);              // #11
-		batch = new SpriteBatch();
-		stateTime = 0f;  
+
+/*
+		stateTime += Gdx.graphics.getDeltaTime();                       // #15
+		currentFrame = walkAnimation.getKeyFrame(stateTime, true);      // #16
+
+		batch.begin();
+		batch.draw(currentFrame, 0, 0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());   
+
+		batch.end();
+*/
+		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+		stage.draw();
+		Table.drawDebug(stage);
+	}
+
+	@Override
+	public void show() {
+		//on dit a l'appli d'ecouter ce stage quand la methode show est appelee
+		Gdx.input.setInputProcessor(stage);
+		
+//		sound = Gdx.audio.newSound(Gdx.files.internal("sound/CloudTopLoops.mp3"));
+//		bg = new Texture(Gdx.files.internal("background2.png"));
+//
+//		TextureRegion[][] tmp = TextureRegion.split(bg, bg.getWidth() / FRAME_COLS, bg.getHeight() / FRAME_ROWS);                                // #10
+//		walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+//		int index = 0;
+//		for (int i = 0; i < FRAME_ROWS; i++) {
+//			for (int j = 0; j < FRAME_COLS; j++) {
+//				walkFrames[index++] = tmp[i][j];
+//			}
+//		}
+//		walkAnimation = new Animation(0.5f, walkFrames);              // #11
+//		batch = new SpriteBatch();
+//		stateTime = 0f;  
 
 		//nos 3 boutons de selection
 		TextButton tbChat = new TextButton("rejoindre un chat", skin);
@@ -134,7 +198,6 @@ public class MenuPrincipalScreen implements Screen {
 				buttonSelected = 3;
 			}
 		});
-		fpsLabel = new Label("fps:", skin);
 
 
 
@@ -156,67 +219,6 @@ public class MenuPrincipalScreen implements Screen {
 
 		// stage.addActor(new Button("Behind Window", skin));
 		stage.addActor(window);
-
-	}
-
-
-	@Override
-	public void resize (int width, int height) {
-		stage.setViewport(width, height, false);
-	}
-
-	@Override
-	public void dispose () {
-		stage.dispose();
-		skin.dispose();
-		sound.dispose();
-	}
-
-	@Override
-	public void render(float delta) {
-		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
-		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
-
-		sound.play(0.1f); // play new sound and keep handle for further manipulation
-		//on switch le num du bouton selectionner et son affiche le screen correspondant
-		switch (buttonSelected) {
-		case 1:
-			sound.stop();
-			game.setScreen(game.chatScreen);			
-			break;
-		case 2:
-			//			game.setScreen(game.animationScreen);
-			sound.stop();
-
-			break;
-		case 3:
-			sound.stop();
-			game.setScreen(game.createCharacterScreen);			
-			break;
-		default:
-			break;
-		}
-
-
-		stateTime += Gdx.graphics.getDeltaTime();                       // #15
-		currentFrame = walkAnimation.getKeyFrame(stateTime, true);      // #16
-
-		batch.begin();
-		batch.draw(currentFrame, 0, 0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());   
-
-		batch.end();
-
-		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-		stage.draw();
-		Table.drawDebug(stage);
-	}
-
-	@Override
-	public void show() {
-		//on dit a l'appli d'ecouter ce stage quand la methode show est appelee
-		Gdx.input.setInputProcessor(stage);
 
 	}
 

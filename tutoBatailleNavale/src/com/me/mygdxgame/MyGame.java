@@ -1,5 +1,8 @@
 package com.me.mygdxgame;
 
+import java.net.InetAddress;
+import java.util.ArrayList;
+
 import gameMechanic.Personnage;
 import gameMechanic.Skill;
 import chat.ChatServer;
@@ -16,7 +19,6 @@ public class MyGame extends Game {
 
 
 	public MenuPrincipalScreen mainMenuScreen;
-	public AnimationPlayerScreen animationScreen;
 	public CreateCharacterScreen createCharacterScreen;
 	public ChatScreen chatScreen;
 	public BeginingScreen beginingScreen;
@@ -26,7 +28,7 @@ public class MyGame extends Game {
 	public Personnage player;
 	public UITrick androidUI;
 	public ChatServer chatServer;
-
+	public ArrayList<InetAddress> listHost = new ArrayList<InetAddress>();
 
 	public MyGame(UITrick actionResolver) {
 		super();
@@ -39,11 +41,10 @@ public class MyGame extends Game {
 	@Override
 	public void create() {
 		mainMenuScreen = new MenuPrincipalScreen(this);
-		animationScreen = new AnimationPlayerScreen(this);
 		createCharacterScreen = new CreateCharacterScreen(this);
 		chatScreen = new ChatScreen(this);
 		beginingScreen = new BeginingScreen(this);
 		setScreen(mainMenuScreen);
-		Skill.initListSkill();
+//		Skill.initListSkill();
 	}
 }

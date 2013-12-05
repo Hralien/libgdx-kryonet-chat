@@ -72,115 +72,13 @@ public class CreateCharacterScreen implements Screen {
 	public CreateCharacterScreen(MyGame myGame){
 
 		this.game=myGame;
-		spriteBatch = new SpriteBatch();
-		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+		this.spriteBatch = new SpriteBatch();
+		this.skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
-		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+		this.stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+		this.fpsLabel = new Label("fps:", skin);
 
-		TextButton tbvalidation = new TextButton("creer un perso", skin);
-		TextButton  tbConnecter= new TextButton("se connecter", skin);
-
-		final TextField tfPseudo = new TextField("", skin);
-		tfPseudo.setMessageText("Saisir un pseudo!");
-
-		//creation d'un tableau pour stocker les classes
-		String[] tabPersonnage={"Shaman","Necromencien","Mage Chaud","Mage Froid"};
-		//creation d'une select box (appele List ici) avec le tableau ci dessus
-		final List listClasses= new List(tabPersonnage, skin);
-		//ajout de la List dans un scrollPane, pour pouvoir derouler, descendre, monter
-		ScrollPane scrollPaneClass = new ScrollPane(listClasses,skin);
-
-
-		fpsLabel = new Label("fps:", skin);
-		final TextButton fleche = new TextButton(">", skin);
-		fleche.addListener(new ChangeListener() {
-			public void changed (ChangeEvent event, Actor actor) {
-				if(game.player !=null){
-					if(spriteFrameToRender+1==game.player.regions.length)
-						spriteFrameToRender=0;
-					else {
-						spriteFrameToRender++;					
-					}
-				}
-			}
-		});
-
-		// window.debug();
-		Window window = new Window("Selection Perso", skin);
-		window.getButtonTable().add(new TextButton("X", skin)).height(window.getPadTop());
-		window.setPosition(650, 200);
-		window.defaults().pad(20, 20, 20, 20);
-		window.row().fill().expandX();
-		window.add(tfPseudo).minWidth(100).expandX().fillX().colspan(4);
-		window.row();
-		window.add(scrollPaneClass).minWidth(100).expandX().fillX().colspan(4);
-		window.row();
-		window.add(tbvalidation);
-		window.add(tbConnecter);
-		window.row();
-		window.add(fleche);
-		window.row();
-		window.add(fpsLabel).colspan(4);
-		window.pack();
-
-
-
-
-		// stage.addActor(new Button("Behind Window", skin));
-		stage.addActor(window);
-
-		tfPseudo.setTextFieldListener(new TextFieldListener() {
-			public void keyTyped (TextField textField, char key) {
-				if (key == '\n') textField.getOnscreenKeyboard().show(false);
-			}
-		});
-
-
-
-		tbvalidation.addListener(new ChangeListener() {
-			public void changed (ChangeEvent event, Actor actor) {
-				switch(listClasses.getSelectedIndex()){
-				case 0:
-					//initialisation du player 
-					game.player = new Shaman(tfPseudo.getText());
-					classDescWindow = createClassDescWindows();
-					stage.addActor(classDescWindow);
-					break;
-				case 1:
-					//initialisation du player 
-					game.player = new Necromancien(tfPseudo.getText());
-					classDescWindow = createClassDescWindows();
-					stage.addActor(classDescWindow);
-					break;
-				case 2:
-					//initialisation du player 
-					game.player = new MageChaud(tfPseudo.getText());
-					classDescWindow = createClassDescWindows();
-					stage.addActor(classDescWindow);
-					break;
-				case 3:
-					//initialisation du player 
-					game.player = new MageFroid(tfPseudo.getText());
-					classDescWindow = createClassDescWindows();
-					stage.addActor(classDescWindow);
-					break;
-				default:
-					System.err.println("switch personnage error");
-				}	
-			}
-		});
-		tbConnecter.addListener(new ChangeListener() {
-
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				// TODO Auto-generated method stub
-				if(game.player!=null){
-					game.setScreen(game.chatScreen);
-				}
-				else
-					game.androidUI.showAlertBox("Erreur", "Veuillez créer un personnage avant", "ok", stage);
-			}
-		});
+		
 
 	}
 	private Window createClassDescWindows() {
@@ -263,7 +161,107 @@ public class CreateCharacterScreen implements Screen {
 	public void show() {
 		//on dit a l'appli d'ecouter ce stage quand la methode show est appelee
 		Gdx.input.setInputProcessor(stage);
+		TextButton tbvalidation = new TextButton("creer un perso", skin);
+		TextButton  tbConnecter= new TextButton("se connecter", skin);
 
+		final TextField tfPseudo = new TextField("", skin);
+		tfPseudo.setMessageText("Saisir un pseudo!");
+
+		//creation d'un tableau pour stocker les classes
+		String[] tabPersonnage={"Shaman","Necromencien","Mage Chaud","Mage Froid"};
+		//creation d'une select box (appele List ici) avec le tableau ci dessus
+		final List listClasses= new List(tabPersonnage, skin);
+		//ajout de la List dans un scrollPane, pour pouvoir derouler, descendre, monter
+		ScrollPane scrollPaneClass = new ScrollPane(listClasses,skin);
+
+
+		final TextButton fleche = new TextButton(">", skin);
+		fleche.addListener(new ChangeListener() {
+			public void changed (ChangeEvent event, Actor actor) {
+				if(game.player !=null){
+					if(spriteFrameToRender+1==game.player.regions.length)
+						spriteFrameToRender=0;
+					else {
+						spriteFrameToRender++;					
+					}
+				}
+			}
+		});
+
+		// window.debug();
+		Window window = new Window("Selection Perso", skin);
+		window.getButtonTable().add(new TextButton("X", skin)).height(window.getPadTop());
+		window.setPosition(650, 200);
+		window.defaults().pad(20, 20, 20, 20);
+		window.row().fill().expandX();
+		window.add(tfPseudo).minWidth(100).expandX().fillX().colspan(4);
+		window.row();
+		window.add(scrollPaneClass).minWidth(100).expandX().fillX().colspan(4);
+		window.row();
+		window.add(tbvalidation);
+		window.add(tbConnecter);
+		window.row();
+		window.add(fleche);
+		window.row();
+		window.add(fpsLabel).colspan(4);
+		window.pack();
+
+
+		// stage.addActor(new Button("Behind Window", skin));
+		stage.addActor(window);
+
+		tfPseudo.setTextFieldListener(new TextFieldListener() {
+			public void keyTyped (TextField textField, char key) {
+				if (key == '\n') textField.getOnscreenKeyboard().show(false);
+			}
+		});
+
+
+
+		tbvalidation.addListener(new ChangeListener() {
+			public void changed (ChangeEvent event, Actor actor) {
+				switch(listClasses.getSelectedIndex()){
+				case 0:
+					//initialisation du player 
+					game.player = new Shaman(tfPseudo.getText());
+					classDescWindow = createClassDescWindows();
+					stage.addActor(classDescWindow);
+					break;
+				case 1:
+					//initialisation du player 
+					game.player = new Necromancien(tfPseudo.getText());
+					classDescWindow = createClassDescWindows();
+					stage.addActor(classDescWindow);
+					break;
+				case 2:
+					//initialisation du player 
+					game.player = new MageChaud(tfPseudo.getText());
+					classDescWindow = createClassDescWindows();
+					stage.addActor(classDescWindow);
+					break;
+				case 3:
+					//initialisation du player 
+					game.player = new MageFroid(tfPseudo.getText());
+					classDescWindow = createClassDescWindows();
+					stage.addActor(classDescWindow);
+					break;
+				default:
+					System.err.println("switch personnage error");
+				}	
+			}
+		});
+		tbConnecter.addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				// TODO Auto-generated method stub
+				if(game.player!=null){
+					game.setScreen(game.chatScreen);
+				}
+				else
+					game.androidUI.showAlertBox("Erreur", "Veuillez créer un personnage avant", "ok", stage);
+			}
+		});
 	}
 
 	@Override
