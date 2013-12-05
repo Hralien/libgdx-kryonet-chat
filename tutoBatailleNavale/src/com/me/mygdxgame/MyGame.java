@@ -28,7 +28,7 @@ public class MyGame extends Game {
 	public Personnage player;
 	public UITrick androidUI;
 	public ChatServer chatServer;
-	public ArrayList<InetAddress> listHost = new ArrayList<InetAddress>();
+	public ArrayList<String> listHost = new ArrayList<String>();
 
 	public MyGame(UITrick actionResolver) {
 		super();

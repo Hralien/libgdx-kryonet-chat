@@ -38,7 +38,7 @@ import com.esotericsoftware.kryonet.Client;
 public class ChatScreen implements Screen {
 
 	final TextField tfHost;
-	//Permet de connaître l'ip du client
+	// Permet de connaître l'ip du client
 	String ipClient;
 	Skin skin;
 	Stage stage;
@@ -50,16 +50,16 @@ public class ChatScreen implements Screen {
 
 	public SkillNumber showSkillNumber;
 
-	public ChatScreen(MyGame myGame){
-		this.game=myGame;
+	public ChatScreen(MyGame myGame) {
+		this.game = myGame;
 		this.batch = new SpriteBatch();
 		this.skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
-		this.stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+		this.stage = new Stage(Gdx.graphics.getWidth(),
+				Gdx.graphics.getHeight(), false);
 		this.tfHost = new TextField("", skin);
 		this.fpsLabel = new Label("fps:", skin);
 	}
-
 
 	@Override
 	public void resize(int width, int height) {
@@ -80,10 +80,12 @@ public class ChatScreen implements Screen {
 
 		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
 		batch.begin();
-		if(showSkillNumber!=null){
-			Skill.selectSkillFromSkillNumber(showSkillNumber).getEffect().draw(batch,delta);
-			//si l'animation est finie on remets à null
-			if(Skill.selectSkillFromSkillNumber(showSkillNumber).getEffect().isComplete()){
+		if (showSkillNumber != null) {
+			Skill.selectSkillFromSkillNumber(showSkillNumber).getEffect()
+					.draw(batch, delta);
+			// si l'animation est finie on remets à null
+			if (Skill.selectSkillFromSkillNumber(showSkillNumber).getEffect()
+					.isComplete()) {
 				showSkillNumber = null;
 			}
 		}
@@ -97,19 +99,23 @@ public class ChatScreen implements Screen {
 	public void show() {
 		// TODO Auto-generated method stub
 		Gdx.input.setInputProcessor(stage);
-		//on recup l'adresse a laquelle on est conecter
-		ArrayList<String> listIps=new ArrayList<String>();
+		// on recup l'adresse a laquelle on est conecter
+		ArrayList<String> listIps = new ArrayList<String>();
 
-		try {			
-			for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+		try {
+			for (Enumeration<NetworkInterface> en = NetworkInterface
+					.getNetworkInterfaces(); en.hasMoreElements();) {
 				NetworkInterface intf = en.nextElement();
-				for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+				for (Enumeration<InetAddress> enumIpAddr = intf
+						.getInetAddresses(); enumIpAddr.hasMoreElements();) {
 					InetAddress inetAddress = enumIpAddr.nextElement();
-					//					System.out.println(inetAddress.getHostAddress());
-					if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.isSiteLocalAddress()) {
+					// System.out.println(inetAddress.getHostAddress());
+					if (!inetAddress.isLoopbackAddress()
+							&& !inetAddress.isLinkLocalAddress()
+							&& inetAddress.isSiteLocalAddress()) {
 						listIps.add(inetAddress.getHostAddress().toString());
 						ipClient = listIps.get(0);
-						//	System.out.println(inetAddress.getHostAddress().toString());
+						// System.out.println(inetAddress.getHostAddress().toString());
 					}
 
 				}
@@ -118,15 +124,14 @@ public class ChatScreen implements Screen {
 			System.err.println(ex.getMessage());
 		}
 
-		//		for(String it:listIps)
-		//			System.out.println(it);
+		// for(String it:listIps)
+		// System.out.println(it);
 
-
-		//bouton de validation
+		// bouton de validation
 		TextButton validation = new TextButton("se connecter", skin);
 		TextButton search = new TextButton("Rechercher des serveurs", skin);
 
-		//un label pour montrer les fps
+		// un label pour montrer les fps
 		Label myLabel = new Label("Pseudo", skin);
 		myLabel.setWrap(true);
 
@@ -134,30 +139,32 @@ public class ChatScreen implements Screen {
 		final TextField tfPseudo = new TextField("", skin);
 		tfPseudo.setMessageText("Saisir un pseudo!");
 
-		//		final SelectBox sbIps = new SelectBox(listIps.toArray(),skin);
-		if(! listIps.isEmpty())
+		// final SelectBox sbIps = new SelectBox(listIps.toArray(),skin);
+		if (!listIps.isEmpty())
 			tfHost.setText(listIps.get(0));
-		else 
+		else
 			tfHost.setText("");
 		tfHost.setMessageText("Saisir un host");
 
-		//recuperation des dimensions de l'ecran
+		// recuperation des dimensions de l'ecran
 		float width = Gdx.graphics.getWidth();
 		float height = Gdx.graphics.getHeight();
 
-
 		// window.debug();
 		Window window = new Window("Connexion", skin);
-		window.getButtonTable().add(new TextButton("X", skin)).height(window.getPadTop());
-		window.setPosition(width*0, 200);
+		window.getButtonTable().add(new TextButton("X", skin))
+				.height(window.getPadTop());
+		window.setPosition(width * 0, 200);
 		window.defaults().pad(20, 20, 20, 20);
-		window.row().minWidth((float) (width*.4)).fill().expandX();
+		window.row().minWidth((float) (width * .4)).fill().expandX();
 		window.row();
 		window.add(checkBox);
 		window.row();
-		window.add(tfPseudo).minWidth((float) (width*.4)).expandX().fillX().colspan(6);
+		window.add(tfPseudo).minWidth((float) (width * .4)).expandX().fillX()
+				.colspan(6);
 		window.row();
-		window.add(tfHost).minWidth((float) (width*.4)).expandX().fillX().colspan(6);
+		window.add(tfHost).minWidth((float) (width * .4)).expandX().fillX()
+				.colspan(6);
 		window.row();
 		window.add(validation);
 		window.row();
@@ -169,22 +176,23 @@ public class ChatScreen implements Screen {
 		// stage.addActor(new Button("Behind Window", skin));
 		stage.addActor(window);
 
-		//ajouts des listeners sur nos boutons
+		// ajouts des listeners sur nos boutons
 		tfPseudo.setTextFieldListener(new TextFieldListener() {
-			public void keyTyped (TextField textField, char key) {
-				if (key == '\n') textField.getOnscreenKeyboard().show(false);
+			public void keyTyped(TextField textField, char key) {
+				if (key == '\n')
+					textField.getOnscreenKeyboard().show(false);
 			}
 		});
 
-
-
 		final ChatScreen vue = this;
 		validation.addListener(new ChangeListener() {
-			public void changed (ChangeEvent event, Actor actor) {
-				if(game.player!=null)
-					cc = new ChatClient(tfHost.getText(), tfPseudo.getText(),game.player,vue,game);
+			public void changed(ChangeEvent event, Actor actor) {
+				if (game.player != null)
+					cc = new ChatClient(tfHost.getText(), tfPseudo.getText(),
+							game.player, vue, game);
 				else
-					cc = new ChatClient(tfHost.getText(), tfPseudo.getText(),null,vue,game);
+					cc = new ChatClient(tfHost.getText(), tfPseudo.getText(),
+							null, vue, game);
 				stage.addActor(cc.chatWindow.getWindow());
 			}
 		});
@@ -193,59 +201,69 @@ public class ChatScreen implements Screen {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				try{
+				try {
 					new Thread(new Runnable() {
 						Client client = new Client();
-						final List<InetAddress> address = client.discoverHosts(Network.portUDP, 5000);
-						
+						final List<InetAddress> address = client.discoverHosts(
+								Network.portUDP, 5000);
+
 						@Override
 						public void run() {
 							Gdx.app.postRunnable(new Runnable() {
 								public void run() {
-									System.out.println("test"+address);
-									for(InetAddress it: address)
-										game.listHost.add(it);
+									System.out.println("test" + address);
+									for (InetAddress it : address)
+										game.listHost.add(it.toString().substring(1,it.toString().length()));
+									if (game.listHost.size() != 0) {
+										final Window choixServ = new Window(
+												"Choisissez votre Serveur",
+												skin);
+										choixServ.setPosition(
+												(float) (Gdx.graphics
+														.getHeight() * 0.5),
+												200);
+										final com.badlogic.gdx.scenes.scene2d.ui.List serv = new com.badlogic.gdx.scenes.scene2d.ui.List(
+												game.listHost.toArray(), skin);
+										TextButton ok = new TextButton("ok",
+												skin);
+										choixServ.add(serv);
+										choixServ.row();
+										choixServ.add(ok);
+										choixServ.row();
+										choixServ.pack();
+										stage.addActor(choixServ);
+										ok.addListener(new ChangeListener() {
+											public void changed(
+													ChangeEvent event,
+													Actor actor) {
+												tfHost.setText(serv
+														.getSelection());
+												choixServ.remove();
+											}
+										});
+									}
 								}
 							});
 						}
 					}).start();
 				} catch (Exception e) {
-					//			e.printStackTrace();
+					// e.printStackTrace();
 				}
-				/*			
-				String[] s = ipClient.split("\\.");
-				String test = s[0].concat(".").concat(s[1]).concat(".").concat(s[2])
-						.concat(".");
-				for (int i = 0; i < 255; i++) {
-					String testIP = test.concat(Integer.toString(i));
-					searchServ(testIP);
-				}
-				game.androidUI.showAlertBox("Server","Recherche en cours", "OK", stage);
-				while(true){
-					if (game.listHost.size() != 0) {
-						final Window choixServ = new Window("Choisissez votre Serveur", skin);
-						choixServ.setPosition((float) (Gdx.graphics.getHeight() * 0.5), 200);
-						System.out.println(game.listHost.size());
-						final  com.badlogic.gdx.scenes.scene2d.ui.List serv = new  com.badlogic.gdx.scenes.scene2d.ui.List(game.listHost.toArray(), skin);
-						TextButton ok = new TextButton("ok", skin);
-						choixServ.add(serv);
-						choixServ.row();
-						choixServ.add(ok);
-						choixServ.row();
-						choixServ.pack();
-						stage.addActor(choixServ);
-						ok.addListener(new ChangeListener() {
-							public void changed(ChangeEvent event, Actor actor) {
-								tfHost.setText(serv.getSelection());
-								choixServ.remove();
-							}
-						});
-					}
-				}*/
+				/*
+				 * String[] s = ipClient.split("\\."); String test =
+				 * s[0].concat(".").concat(s[1]).concat(".").concat(s[2])
+				 * .concat("."); for (int i = 0; i < 255; i++) { String testIP =
+				 * test.concat(Integer.toString(i)); searchServ(testIP); }
+				 * game.androidUI.showAlertBox("Server","Recherche en cours",
+				 * "OK", stage); while(true){
+				 * 
+				 * } }
+				 */
 
 			}
 		});
 	}
+
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
@@ -276,8 +294,9 @@ public class ChatScreen implements Screen {
 					Gdx.app.postRunnable(new Runnable() {
 						public void run() {
 
-							ChatClient searchServTestClient = new ChatClient(ipTest, "name",
-									new Shaman("flo"), null, game);
+							ChatClient searchServTestClient = new ChatClient(
+									ipTest, "name", new Shaman("flo"), null,
+									game);
 
 						}
 					});
@@ -285,10 +304,9 @@ public class ChatScreen implements Screen {
 			});
 			bc.start();
 		} catch (Exception e) {
-			//			e.printStackTrace();
+			// e.printStackTrace();
 		}
 
 	}
-
 
 }
