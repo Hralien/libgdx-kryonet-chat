@@ -80,11 +80,9 @@ public class ChatScreen implements Screen {
 		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
 		batch.begin();
 		if (showSkillNumber != null) {
-			Skill.selectSkillFromSkillNumber(showSkillNumber).getEffect()
-					.draw(batch, delta);
+			batch.draw(Skill.selectSkillFromSkillNumber(showSkillNumber).afficheSkill(), 100,100);
 			// si l'animation est finie on remets à null
-			if (Skill.selectSkillFromSkillNumber(showSkillNumber).getEffect()
-					.isComplete()) {
+			if (Skill.selectSkillFromSkillNumber(showSkillNumber).isSkillEffectEnded()) {
 				showSkillNumber = null;
 			}
 		}

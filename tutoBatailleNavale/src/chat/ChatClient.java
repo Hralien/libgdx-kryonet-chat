@@ -2,6 +2,8 @@
 package chat;
 
 import gameMechanic.Personnage;
+import gameMechanic.Shaman;
+
 import java.awt.EventQueue;
 import java.io.IOException;
 import chat.Network.ChatMessage;
@@ -11,6 +13,7 @@ import chat.Network.SkillNumber;
 import chat.Network.TestConnection;
 import chat.Network.UpdateNames;
 
+import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -35,7 +38,10 @@ public class ChatClient {
 		// For consistency, the classes to be sent over the network are
 		// registered by the same method for both the client and server.
 		Network.register(client);
-
+		
+		Kryo kryo = client.getKryo();
+	    kryo.register(Shaman.class);
+	    
 		this.client.addListener(new Listener() {
 
 			@Override
@@ -44,7 +50,7 @@ public class ChatClient {
 				//				registerName.name = name;
 				//				client.sendTCP(registerName);
 				PersonnageConnection pc = new PersonnageConnection();
-				pc.name = personnage.name;
+				pc.name = personnage.getName();
 				client.sendTCP(pc);
 
 			}
@@ -95,7 +101,7 @@ public class ChatClient {
 			}
 		});
 		if(personnage!=null)
-			name=personnage.name;
+			name=personnage.getName();
 		else name=pseudo;
 
 		final String host = adresse;
@@ -128,14 +134,6 @@ public class ChatClient {
 
 	}
 
-	public void searchServer(String ipTest){
-		TestConnection testConnect = new TestConnection();
-		testConnect.test = ipTest;
-		ChatMessage chatMessage = new ChatMessage();
-		chatMessage.text = chatWindow.getSendText();
-		client.sendTCP(chatMessage);
-		client.sendUDP(chatMessage);
-		System.err.println("testconnection send");
-	}
+
 
 }
