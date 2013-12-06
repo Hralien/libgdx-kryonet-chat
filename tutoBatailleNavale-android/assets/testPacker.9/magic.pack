@@ -1,0 +1,29 @@
+
+magic.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+title
+  rotate: false
+  xy: 1, 67
+  size: 512, 256
+  split: 32, 29, 32, 23
+  orig: 512, 256
+  offset: 0, 0
+  index: -1
+magic_button
+  rotate: false
+  xy: 1, 1
+  size: 256, 64
+  split: 81, 77, 15, 15
+  orig: 256, 64
+  offset: 0, 0
+  index: -1
+button
+  rotate: false
+  xy: 515, 291
+  size: 64, 32
+  split: 8, 8, 8, 8
+  orig: 64, 32
+  offset: 0, 0
+  index: -1

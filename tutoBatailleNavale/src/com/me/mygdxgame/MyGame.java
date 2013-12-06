@@ -1,10 +1,18 @@
 package com.me.mygdxgame;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import gameMechanic.Personnage;
 import chat.ChatServer;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Screen;
 
 /**
  * Ici on initialise tout les screen
@@ -12,13 +20,21 @@ import com.badlogic.gdx.Game;
  * @author Florian
  *
  */
-public class MyGame extends Game {
+public class MyGame extends Game{
 
 
-	public MenuPrincipalScreen mainMenuScreen;
-	public CreateCharacterScreen createCharacterScreen;
-	public ChatScreen chatScreen;
-	public BeginingScreen beginingScreen;
+	private Hashtable<Integer,Screen> screenHashtable;
+
+//	public MenuPrincipalScreen mainMenuScreen;
+//	public CreateCharacterScreen createCharacterScreen;
+//	public ChatScreen chatScreen;
+//	public BeginingScreen beginingScreen;
+	
+	public final static int MENUSCREEN = 0;
+	public final static int NEWCHARACTERSCREEN = 1;
+	public final static int CHATSCREEN = 2;
+	public final static int BEGINSCREEN = 3;
+
 	/**
 	 * le personnage du joueur initialise lors de la creation
 	 */
@@ -27,7 +43,7 @@ public class MyGame extends Game {
 	public ChatServer chatServer;
 	public ArrayList<String> listHost ;
 	public ArrayList<Personnage> playersConnected;
-	
+
 	public MyGame(UITrick actionResolver) {
 		super();
 		this.androidUI = actionResolver;
@@ -39,11 +55,17 @@ public class MyGame extends Game {
 
 	@Override
 	public void create() {
-		mainMenuScreen = new MenuPrincipalScreen(this);
-		createCharacterScreen = new CreateCharacterScreen(this);
-		chatScreen = new ChatScreen(this);
-		beginingScreen = new BeginingScreen(this);
-		setScreen(mainMenuScreen);
-//		Skill.initListSkill();
+		screenHashtable = new Hashtable<Integer, Screen>();
+		screenHashtable.put(MENUSCREEN, new MenuPrincipalScreen(this));
+		screenHashtable.put(NEWCHARACTERSCREEN,new CreateCharacterScreen(this));
+		screenHashtable.put(CHATSCREEN,new ChatScreen(this));
+		screenHashtable.put(BEGINSCREEN,new BeginingScreen(this));
+		changeScreen(0);
 	}
+
+	public void changeScreen(int nextScreen){
+		if(screenHashtable.containsKey(nextScreen))
+			setScreen(screenHashtable.get(nextScreen));
+	}
+
 }

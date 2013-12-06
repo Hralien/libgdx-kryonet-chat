@@ -8,7 +8,10 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -39,30 +42,25 @@ public class BeginingScreen implements Screen {
 	private MyGame game;
 
 	private Sound sound;
-	
+
 	private SpriteBatch batch;
-	
+
 	private Texture bg;
 
-	
+
 	public BeginingScreen(MyGame myGame){
 		this.game=myGame;
-		
+
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-		sound = Gdx.audio.newSound(Gdx.files.internal("sound/CornFields.mp3"));
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 		bg = new Texture(Gdx.files.internal("moon.png"));
-		
-		
+
+
 		batch = new SpriteBatch();
 
 		fpsLabel = new Label("fps:", skin);
-
-
-
-		
-
 	}
+
 
 
 	@Override
@@ -84,15 +82,10 @@ public class BeginingScreen implements Screen {
 
 		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
 
-		
-
 		batch.begin();
 		batch.draw(bg, 0, 0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-		for(Personnage it : game.playersConnected){
-			batch.draw(game.player.dessine()[0], 100, 100);
-		}
 		batch.end();
-		
+
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 		stage.draw();
 		Table.drawDebug(stage);
@@ -100,9 +93,29 @@ public class BeginingScreen implements Screen {
 
 	@Override
 	public void show() {
+		for(Personnage it : game.playersConnected){
+			stage.addActor(it);
+		}
 		//on dit a l'appli d'ecouter ce stage quand la methode show est appelee
 		Gdx.input.setInputProcessor(stage);
-
+		int i=0;
+		for(Personnage it : game.playersConnected){
+//			batch.draw(it.dessine()[0], 100+i, 100+i);
+			it.setVisible(true);
+			it.setOrigin(100+i, 100+i);
+			it.setBounds(100+i, 100+i, it.dessine()[0].getRegionWidth(), it.dessine()[0].getRegionHeight());
+			it.addListener(new InputListener() {
+				public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+					System.out.println("down");
+					return true;
+				}
+				
+				public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+					System.out.println("up");
+				}
+			});
+			i+=50;
+		}
 	}
 
 	@Override

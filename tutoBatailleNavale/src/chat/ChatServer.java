@@ -39,9 +39,10 @@ public class ChatServer {
 			public void received (Connection c, Object object) {
 				// We know all connections for this server are actually ChatConnections.
 				ChatConnection connection = (ChatConnection)c;
-				System.err.println("[serveur]: quelque chose reçu");
+				System.out.println("[serveur]: reçu "+object.getClass());
 
 				if (object instanceof RegisterName) {
+					System.out.println("[serveur]: reçu RegisterName");
 					// Ignore the object if a client has already registered a name. This is
 					// impossible with our client, but a hacker could send messages at any time.
 					if (connection.name != null) return;
@@ -61,7 +62,7 @@ public class ChatServer {
 					return;
 				}
 				if (object instanceof Personnage) {
-					System.err.println("[serveur]: reçu personnage");
+					System.out.println("[serveur]: reçu personnage");
 					if (connection.name !=null) return;
 					String name = ((Personnage)object).getName();
 
@@ -97,7 +98,7 @@ public class ChatServer {
 					return;
 				}
 				if (object instanceof ChatMessage) {
-					System.err.println("[serveur]: reçu chatmessage");
+					System.out.println("[serveur]: reçu chatmessage");
 					// Ignore the object if a client tries to chat before registering a name.
 					if (connection.name == null) return;
 					ChatMessage chatMessage = (ChatMessage)object;

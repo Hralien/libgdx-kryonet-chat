@@ -12,6 +12,7 @@ public class Main {
 		cfg.useGL20 = false;
 		cfg.width = 1024;
 		cfg.height = 780;
+
 		
 		new LwjglApplication(new MyGame(new JavaHelp()), cfg);
 

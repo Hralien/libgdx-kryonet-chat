@@ -33,7 +33,6 @@ public class Shaman extends Personnage {
 
 	@Override
 	public void write(Kryo kryo, Output output) {
-		// output.setBuffer(new byte[128]);
 		kryo.writeClassAndObject(output, name);
 		output.writeShort(hp);
 		output.writeShort(sp);
@@ -43,9 +42,7 @@ public class Shaman extends Personnage {
 		output.writeShort(dex);
 		output.writeShort(luk);
 		output.writeShort(vit);
-		// output.writeString(name);
-		// output.close();
-		// kryo.writeClassAndObject(output, name);
+
 
 	}
 
@@ -60,10 +57,7 @@ public class Shaman extends Personnage {
 		dex = input.readShort();
 		luk = input.readShort();
 		vit = input.readShort();
-		// name = input.readString();
 
-		// name = (String) kryo.readClassAndObject(input);
-		// desc = DESCRIPTION;
 
 	}
 

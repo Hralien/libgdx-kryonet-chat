@@ -3,10 +3,12 @@ package chat;
 
 import gameMechanic.Personnage;
 import gameMechanic.Shaman;
+
 import java.util.ArrayList;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 // This class is a convenient place to keep things common to both the client and server.
 public class Network {
@@ -26,7 +28,7 @@ public class Network {
 		kryo.register(SkillNumber.class);
 		kryo.register(ConstantOrder.class);
 		kryo.register(ArrayList.class);
-//		kryo.register(Personnage.class);
+		kryo.register(Personnage.class);
 		kryo.register(Shaman.class);
 	}
 
