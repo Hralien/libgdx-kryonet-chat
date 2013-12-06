@@ -135,10 +135,9 @@ public class CreateCharacterScreen implements Screen {
 		spriteBatch.begin();
 
 		// Animation perso skill
-		if (game.player != null && game.player.dessine()!=null) {
-			// dessinage du corps du perso
-			spriteBatch.draw(game.player.dessine()[spriteFrameToRender], 100, 100);
-
+		if (game.player != null) {
+			game.player.setOrigin(100, 100);
+			game.player.setVisible(true);
 		}
 		// si on a un skill a afficher
 		if (skillToRender != null && !skillToRender.isSkillEffectEnded()) {
@@ -251,6 +250,7 @@ public class CreateCharacterScreen implements Screen {
 				game.player.setName(tfPseudo.getText());
 				classDescWindow = createClassDescWindows();
 				stage.addActor(classDescWindow);
+				stage.addActor(game.player);
 			}
 		});
 		tbConnecter.addListener(new ChangeListener() {

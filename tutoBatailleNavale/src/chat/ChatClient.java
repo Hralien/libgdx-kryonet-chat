@@ -56,14 +56,14 @@ public class ChatClient {
 			@Override
 			public void received (Connection connection, Object object) {
 				if (object instanceof UpdateNames) {
-					System.err.println("[client]: updateNames reçu");
+					System.out.println("[client]: updateNames reçu");
 					UpdateNames updateNames = (UpdateNames)object;
 					chatWindow.setNames(updateNames.names);
 					return;
 				}
 
 				if (object instanceof ChatMessage) {
-					System.err.println("[client]: chat message reçu");
+					System.out.println("[client]: chat message reçu");
 					ChatMessage chatMessage = (ChatMessage)object;
 					chatWindow.addMessage(chatMessage.text);
 					return;
@@ -74,11 +74,11 @@ public class ChatClient {
 					return;
 				}
 				if(object instanceof ArrayList<?>){
-					System.err.println("[client]: arraylist reçu");
+					System.out.println("[client]: arraylist reçu");
 					game.playersConnected = (ArrayList<Personnage>) object;
 				}
 				if(object instanceof ConstantOrder){
-					System.err.println("[client]: ordre reçu");
+					System.out.println("[client]: ordre reçu");
 					int ordre=((ConstantOrder)object).order;
 					switch (ordre) {
 					case ConstantOrder.STARTGAME:
