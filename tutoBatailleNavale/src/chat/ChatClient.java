@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import chat.Network.ChatMessage;
 import chat.Network.ConstantOrder;
 import chat.Network.RegisterName;
+import chat.Network.RequestName;
 import chat.Network.SkillNumber;
 import chat.Network.UpdateNames;
 
@@ -49,12 +50,18 @@ public class ChatClient {
 				//				client.sendTCP(registerName);
 				connection.setName(game.player.getName());
 				//				client.sendTCP(new PersonnageConnection(game.player));
+//				client.sendTCP(new RequestName());
 				client.sendTCP(game.player);
 
 			}
 
 			@Override
 			public void received (Connection connection, Object object) {
+				
+				if(object instanceof RequestName){
+					System.err.print("trolol");
+				}
+				
 				if (object instanceof UpdateNames) {
 					System.out.println("[client]: updateNames reçu");
 					UpdateNames updateNames = (UpdateNames)object;

@@ -20,24 +20,25 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 /**
- * Menu principal
- * selection de ce qu'on veut faire
+ * Menu principal selection de ce qu'on veut faire
+ * 
  * @author Florian
- *
+ * 
  */
 public class MenuPrincipalScreen implements Screen {
 	/**
-	 * design en json place dans les assets de android
-	 * {@link Skin}
+	 * design en json place dans les assets de android {@link Skin}
 	 */
 	private Skin skin;
 	/**
@@ -53,53 +54,52 @@ public class MenuPrincipalScreen implements Screen {
 	 */
 	private int buttonSelected;
 	/**
-	 * objet {@link MyGame} pour pouvoir changer d'ecran et recup des infos generales
+	 * objet {@link MyGame} pour pouvoir changer d'ecran et recup des infos
+	 * generales
 	 */
 	private MyGame game;
 
-	//	private Sound sound;
-	/**for serveur*/
+	// private Sound sound;
+	/** for serveur */
 	private int nbjoueur;
 
 	private AtlasRegion imgBackground;
-	private SpriteBatch batch ;
-
-	/**bg
-	private Texture bg;
-	private static final int        FRAME_COLS = 8;         // #1
-	private static final int        FRAME_ROWS = 1;         // #2
-	private Animation                       walkAnimation;          // #3
-
-	private TextureRegion[]	walkFrames;             // #5
 	private SpriteBatch batch;
 
-	private float stateTime;                                        // #8
-	private TextureRegion                   currentFrame;           // #7*/
+	/**
+	 * bg private Texture bg; private static final int FRAME_COLS = 8; // #1
+	 * private static final int FRAME_ROWS = 1; // #2 private Animation
+	 * walkAnimation; // #3
+	 * 
+	 * private TextureRegion[] walkFrames; // #5 private SpriteBatch batch;
+	 * 
+	 * private float stateTime; // #8 private TextureRegion currentFrame; // #7
+	 */
 
-
-	public MenuPrincipalScreen(MyGame myGame){
-		this.game=myGame;
+	public MenuPrincipalScreen(MyGame myGame) {
+		this.game = myGame;
 
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),
+				false);
 		fpsLabel = new Label("fps:", skin);
-		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("ui/magic.pack"));
+		TextureAtlas atlas = new TextureAtlas(
+				Gdx.files.internal("ui/magic.pack"));
 		batch = new SpriteBatch();
 		imgBackground = atlas.findRegion("title");
 
 	}
 
-
 	@Override
-	public void resize (int width, int height) {
+	public void resize(int width, int height) {
 		stage.setViewport(width, height, false);
 	}
 
 	@Override
-	public void dispose () {
+	public void dispose() {
 		stage.dispose();
 		skin.dispose();
-		//		sound.dispose();
+		// sound.dispose();
 	}
 
 	@Override
@@ -109,36 +109,39 @@ public class MenuPrincipalScreen implements Screen {
 
 		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
 
-		//on switch le num du bouton selectionner et son affiche le screen correspondant
+		// on switch le num du bouton selectionner et son affiche le screen
+		// correspondant
 		switch (buttonSelected) {
 		case 1:
-			//			sound.stop();
-			game.changeScreen(MyGame.CHATSCREEN);	
+			// sound.stop();
+			game.changeScreen(MyGame.CHATSCREEN);
 			break;
 		case 2:
-			//			game.setScreen(game.animationScreen);
-			//			sound.stop();
+			// game.setScreen(game.animationScreen);
+			// sound.stop();
 
 			break;
 		case 3:
-			//			sound.stop();
-			game.changeScreen(MyGame.NEWCHARACTERSCREEN);	
+			// sound.stop();
+			game.changeScreen(MyGame.NEWCHARACTERSCREEN);
 			break;
 		default:
 			break;
 		}
 		batch.begin();
-		batch.draw(imgBackground, Gdx.graphics.getWidth()/2 - imgBackground.getRegionWidth()/2, Gdx.graphics.getHeight()/2);
+		batch.draw(imgBackground,
+				Gdx.graphics.getWidth() / 2 - imgBackground.getRegionWidth()
+						/ 2, Gdx.graphics.getHeight() / 2);
 		batch.end();
 		/*
-		 * 		sound.play(0.1f); // play new sound and keep handle for further manipulation
-		stateTime += Gdx.graphics.getDeltaTime();                       // #15
-		currentFrame = walkAnimation.getKeyFrame(stateTime, true);      // #16
-
-		batch.begin();
-		batch.draw(currentFrame, 0, 0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());   
-
-		batch.end();
+		 * sound.play(0.1f); // play new sound and keep handle for further
+		 * manipulation stateTime += Gdx.graphics.getDeltaTime(); // #15
+		 * currentFrame = walkAnimation.getKeyFrame(stateTime, true); // #16
+		 * 
+		 * batch.begin(); batch.draw(currentFrame, 0,
+		 * 0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		 * 
+		 * batch.end();
 		 */
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 		stage.draw();
@@ -147,40 +150,42 @@ public class MenuPrincipalScreen implements Screen {
 
 	@Override
 	public void show() {
-		//on dit a l'appli d'ecouter ce stage quand la methode show est appelee
+		// on dit a l'appli d'ecouter ce stage quand la methode show est appelee
 		Gdx.input.setInputProcessor(stage);
 
-		//		sound = Gdx.audio.newSound(Gdx.files.internal("sound/CloudTopLoops.mp3"));
-		//		bg = new Texture(Gdx.files.internal("background2.png"));
+		// sound =
+		// Gdx.audio.newSound(Gdx.files.internal("sound/CloudTopLoops.mp3"));
+		// bg = new Texture(Gdx.files.internal("background2.png"));
 		//
-		//		TextureRegion[][] tmp = TextureRegion.split(bg, bg.getWidth() / FRAME_COLS, bg.getHeight() / FRAME_ROWS);                                // #10
-		//		walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
-		//		int index = 0;
-		//		for (int i = 0; i < FRAME_ROWS; i++) {
-		//			for (int j = 0; j < FRAME_COLS; j++) {
-		//				walkFrames[index++] = tmp[i][j];
-		//			}
-		//		}
-		//		walkAnimation = new Animation(0.5f, walkFrames);              // #11
-		//		batch = new SpriteBatch();
-		//		stateTime = 0f;  
+		// TextureRegion[][] tmp = TextureRegion.split(bg, bg.getWidth() /
+		// FRAME_COLS, bg.getHeight() / FRAME_ROWS); // #10
+		// walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+		// int index = 0;
+		// for (int i = 0; i < FRAME_ROWS; i++) {
+		// for (int j = 0; j < FRAME_COLS; j++) {
+		// walkFrames[index++] = tmp[i][j];
+		// }
+		// }
+		// walkAnimation = new Animation(0.5f, walkFrames); // #11
+		// batch = new SpriteBatch();
+		// stateTime = 0f;
 
-		//nos 3 boutons de selection
-		//		TextButton tbChat = new TextButton("rejoindre un chat", skin);
+		// nos 3 boutons de selection
+		// TextButton tbChat = new TextButton("rejoindre un chat", skin);
 		TextButton tbHost = new TextButton("heberger un chat", skin);
 		TextButton tbJoin = new TextButton("creer un perso", skin);
 
-		//game.androidUI.showAlertBox("Server", "hello", "Button text",stage);
+		// game.androidUI.showAlertBox("Server", "hello", "Button text",stage);
 
-		//nos listeners sur les boutons
-		//		tbChat.addListener(new ChangeListener() {
+		// nos listeners sur les boutons
+		// tbChat.addListener(new ChangeListener() {
 		//
-		//			@Override
-		//			public void changed(ChangeEvent event, Actor actor) {
-		//				// TODO Auto-generated method stub
-		//				buttonSelected = 1;
-		//			}
-		//		});
+		// @Override
+		// public void changed(ChangeEvent event, Actor actor) {
+		// // TODO Auto-generated method stub
+		// buttonSelected = 1;
+		// }
+		// });
 
 		tbHost.addListener(new ChangeListener() {
 
@@ -188,16 +193,48 @@ public class MenuPrincipalScreen implements Screen {
 			public void changed(ChangeEvent event, Actor actor) {
 				// TODO Auto-generated method stub
 				buttonSelected = 2;
-				//TODO:demander nb joueur
-				nbjoueur=2;
-				if(nbjoueur!=0){
-					try {
-						game.chatServer = new ChatServer(nbjoueur);
-						game.androidUI.showAlertBox("Server", "Serveur created", "Button text",stage);
-					} catch (IOException e) {
-						e.printStackTrace();
-						game.androidUI.showAlertBox("Server", "Serveur already created", "Button text",stage);
-					}
+				// TODO:demander nb joueur
+				nbjoueur = 2;
+				if (nbjoueur != 0) {
+
+					final Window creerServer = new Window("Host a game", skin);
+					final TextField nomServ = new TextField("",skin);
+					final TextButton creer = new TextButton("Host", skin);
+					creerServer.add(nomServ);
+					creerServer.row();
+					creerServer.add(creer);
+					creerServer.row();
+					creerServer.pack();
+					creerServer.setPosition(
+							((float) (Gdx.graphics.getHeight() * 0.5)),
+							((float) (Gdx.graphics.getWidth() * 0.5)));
+					stage.addActor(creerServer);
+
+					creer.addListener(new ChangeListener() {
+						public void changed(ChangeEvent arg0, Actor arg1) {
+							
+							try {
+								if (nomServ.getText().length()>0) {
+									game.chatServer = new ChatServer(nbjoueur,
+											nomServ.getMessageText());
+									game.androidUI.showAlertBox("Server",
+											"Serveur created", "Button text",
+											stage);
+									creerServer.remove();
+								}else{
+									game.androidUI.showAlertBox("Server",
+											"Error : server's name invalid", "ok",
+											stage);
+								}
+							} catch (IOException e) {
+								e.printStackTrace();
+								game.androidUI.showAlertBox("Server",
+										"Serveur already created",
+										"Button text", stage);
+							}
+						}
+
+					});
 				}
 			}
 		});
@@ -210,17 +247,17 @@ public class MenuPrincipalScreen implements Screen {
 			}
 		});
 
-
-
 		// window.debug();
 		Window window = new Window("Selection Perso", skin);
-		window.getButtonTable().add(new TextButton("X", skin)).height(window.getPadTop());
-		window.setPosition(Gdx.graphics.getWidth()/3 , Gdx.graphics.getHeight()/4);
+		window.getButtonTable().add(new TextButton("X", skin))
+				.height(window.getPadTop());
+		window.setPosition(Gdx.graphics.getWidth() / 3,
+				Gdx.graphics.getHeight() / 4);
 		window.defaults().pad(20, 20, 20, 20);
 		window.row().fill().expandX();
 		window.row();
-		//		window.add(tbChat);
-		//		window.row();
+		// window.add(tbChat);
+		// window.row();
 		window.add(tbHost);
 		window.row();
 		window.add(tbJoin);
@@ -251,4 +288,3 @@ public class MenuPrincipalScreen implements Screen {
 
 	}
 }
-

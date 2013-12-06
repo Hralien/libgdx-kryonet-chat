@@ -7,6 +7,9 @@ import gameMechanic.Shaman;
 import java.util.ArrayList;
 
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.KryoSerializable;
+import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
@@ -30,6 +33,8 @@ public class Network {
 		kryo.register(ArrayList.class);
 		kryo.register(Personnage.class);
 		kryo.register(Shaman.class);
+		kryo.register(RequestName.class);
+		
 	}
 
 	static public class RegisterName {
@@ -56,6 +61,10 @@ public class Network {
 		public int order;
 		public static final int STARTGAME=1;
 	}
-
+	
+	static public class RequestName{
+		public String name;
+		
+	}
 
 }
