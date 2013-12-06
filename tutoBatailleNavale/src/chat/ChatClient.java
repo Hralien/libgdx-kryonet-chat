@@ -82,7 +82,7 @@ public class ChatClient {
 					int ordre=((ConstantOrder)object).order;
 					switch (ordre) {
 					case ConstantOrder.STARTGAME:
-						game.setScreen(game.beginingScreen);
+						game.changeScreen(MyGame.BEGINSCREEN);
 						break;
 
 					default:

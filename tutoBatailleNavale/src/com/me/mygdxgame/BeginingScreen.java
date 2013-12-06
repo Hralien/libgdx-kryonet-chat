@@ -8,16 +8,13 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
  * Premier ecran en début de partie
@@ -55,7 +52,6 @@ public class BeginingScreen implements Screen {
 		this.game=myGame;
 
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-		sound = Gdx.audio.newSound(Gdx.files.internal("sound/CornFields.mp3"));
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 		bg = new Texture(Gdx.files.internal("moon.png"));
 
@@ -63,12 +59,8 @@ public class BeginingScreen implements Screen {
 		batch = new SpriteBatch();
 
 		fpsLabel = new Label("fps:", skin);
-
-
-
-
-
 	}
+
 
 
 	@Override

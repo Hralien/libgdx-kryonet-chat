@@ -259,8 +259,7 @@ public class CreateCharacterScreen implements Screen {
 			public void changed(ChangeEvent event, Actor actor) {
 				// TODO Auto-generated method stub
 				if (game.player != null) {
-					System.out.println(game.player);
-					game.setScreen(game.chatScreen);
+					game.changeScreen(MyGame.CHATSCREEN);	
 				} else
 					game.androidUI.showAlertBox("Erreur",
 							"Veuillez créer un personnage avant", "ok", stage);
