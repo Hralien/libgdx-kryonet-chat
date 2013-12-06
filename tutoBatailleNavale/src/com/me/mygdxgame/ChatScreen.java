@@ -194,14 +194,14 @@ public class ChatScreen implements Screen {
 			public void changed(ChangeEvent event, Actor actor) {
 				try {
 					new Thread(new Runnable() {
-						Client client = new Client();
-						final List<InetAddress> address = client.discoverHosts(
-								Network.portUDP, 5000);
-
+						
 						@Override
 						public void run() {
 							Gdx.app.postRunnable(new Runnable() {
 								public void run() {
+									Client client = new Client();
+									final List<InetAddress> address = client.discoverHosts(
+											Network.portUDP, 5000);
 									for (InetAddress it : address)
 										game.listHost.add(it.toString().substring(1,it.toString().length()));
 									if (game.listHost.size() != 0) {
