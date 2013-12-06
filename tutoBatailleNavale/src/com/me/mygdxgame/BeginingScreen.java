@@ -88,8 +88,10 @@ public class BeginingScreen implements Screen {
 
 		batch.begin();
 		batch.draw(bg, 0, 0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		int i=0;
 		for(Personnage it : game.playersConnected){
-			batch.draw(game.player.dessine()[0], 100, 100);
+			batch.draw(it.dessine()[0], 100+i, 100+i);
+			i+=50;
 		}
 		batch.end();
 		

@@ -38,18 +38,18 @@ public class ChatClient {
 		// registered by the same method for both the client and server.
 		Network.register(client);
 
-//		game.playersConnected = (ArrayList<Personnage>) ObjectSpace.getRemoteObject(client, Network.PLAYER, gameMechanic.IPlayer.class);
-		
+		//		game.playersConnected = (ArrayList<Personnage>) ObjectSpace.getRemoteObject(client, Network.PLAYER, gameMechanic.IPlayer.class);
+
 		this.client.addListener(new Listener() {
 
 			@Override
 			public void connected (Connection connection) {
-				RegisterName registerName = new RegisterName();
-				registerName.name = game.player.getName();
-				client.sendTCP(registerName);
-
+				//				RegisterName registerName = new RegisterName();
+				//				registerName.name = game.player.getName();
+				//				client.sendTCP(registerName);
+				connection.setName(game.player.getName());
 				//				client.sendTCP(new PersonnageConnection(game.player));
-								client.sendTCP(game.player);
+				client.sendTCP(game.player);
 
 			}
 
