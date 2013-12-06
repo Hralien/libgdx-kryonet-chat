@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import gameMechanic.Personnage;
+import chat.ChatClient;
 import chat.ChatServer;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
@@ -24,11 +25,6 @@ public class MyGame extends Game{
 
 
 	private Hashtable<Integer,Screen> screenHashtable;
-
-//	public MenuPrincipalScreen mainMenuScreen;
-//	public CreateCharacterScreen createCharacterScreen;
-//	public ChatScreen chatScreen;
-//	public BeginingScreen beginingScreen;
 	
 	public final static int MENUSCREEN = 0;
 	public final static int NEWCHARACTERSCREEN = 1;
@@ -39,11 +35,13 @@ public class MyGame extends Game{
 	 * le personnage du joueur initialise lors de la creation
 	 */
 	public Personnage player;
+	public ChatClient chatClient;
+
 	public UITrick androidUI;
 	public ChatServer chatServer;
 	public ArrayList<String> listHost ;
 	public ArrayList<Personnage> playersConnected;
-
+	
 	public MyGame(UITrick actionResolver) {
 		super();
 		this.androidUI = actionResolver;

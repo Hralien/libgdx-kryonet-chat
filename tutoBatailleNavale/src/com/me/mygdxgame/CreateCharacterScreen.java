@@ -4,18 +4,13 @@ import gameMechanic.MageChaud;
 import gameMechanic.MageFroid;
 import gameMechanic.Necromancien;
 import gameMechanic.Shaman;
-import gameMechanic.Personnage;
 import gameMechanic.Skill;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
@@ -27,7 +22,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 
 /**
  * Menu principal selection de ce qu'on veut faire
@@ -186,10 +180,10 @@ public class CreateCharacterScreen implements Screen {
 			public void changed(ChangeEvent event, Actor actor) {
 				if (game.player != null) {
 					if(game.player.dessine()!=null){
-						if (spriteFrameToRender + 1 == game.player.dessine().length)
-							spriteFrameToRender = 0;
+						if (game.player.getFrameToDraw() + 1 == game.player.dessine().length)
+							game.player.setFrameToDraw(0);
 						else {
-							spriteFrameToRender++;
+							game.player.setFrameToDraw(game.player.getFrameToDraw()+1);
 						}
 					}
 				}

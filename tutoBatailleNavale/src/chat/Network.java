@@ -1,6 +1,9 @@
 
 package chat;
 
+import gameMechanic.MageChaud;
+import gameMechanic.MageFroid;
+import gameMechanic.Necromancien;
 import gameMechanic.Personnage;
 import gameMechanic.Shaman;
 
@@ -30,6 +33,11 @@ public class Network {
 		kryo.register(ArrayList.class);
 		kryo.register(Personnage.class);
 		kryo.register(Shaman.class);
+		kryo.register(Necromancien.class);
+		kryo.register(MageChaud.class);
+		kryo.register(MageFroid.class);
+		kryo.register(byte[].class);
+		
 	}
 
 	static public class RegisterName {

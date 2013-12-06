@@ -44,7 +44,6 @@ public class ChatScreen implements Screen {
 	SpriteBatch batch;
 
 	Label fpsLabel;
-	ChatClient cc;
 	MyGame game;
 
 	public SkillNumber showSkillNumber;
@@ -149,7 +148,7 @@ public class ChatScreen implements Screen {
 		// window.debug();
 		Window window = new Window("Connexion", skin);
 		window.getButtonTable().add(new TextButton("X", skin))
-				.height(window.getPadTop());
+		.height(window.getPadTop());
 		window.setPosition(width * 0, 200);
 		window.defaults().pad(20, 20, 20, 20);
 		window.row().minWidth((float) (width * .4)).fill().expandX();
@@ -157,10 +156,10 @@ public class ChatScreen implements Screen {
 		window.add(checkBox);
 		window.row();
 		window.add(tfPseudo).minWidth((float) (width * .4)).expandX().fillX()
-				.colspan(6);
+		.colspan(6);
 		window.row();
 		window.add(tfHost).minWidth((float) (width * .4)).expandX().fillX()
-				.colspan(6);
+		.colspan(6);
 		window.row();
 		window.add(validation);
 		window.row();
@@ -183,9 +182,9 @@ public class ChatScreen implements Screen {
 		final ChatScreen vue = this;
 		validation.addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
-					cc = new ChatClient(tfHost.getText(), vue, game);
+				game.chatClient = new ChatClient(tfHost.getText(), vue, game);
 
-				stage.addActor(cc.chatWindow.getWindow());
+				stage.addActor(game.chatClient.chatWindow.getWindow());
 			}
 		});
 
@@ -212,7 +211,7 @@ public class ChatScreen implements Screen {
 										choixServ.setPosition(
 												(float) (Gdx.graphics
 														.getHeight() * 0.5),
-												200);
+														200);
 										final com.badlogic.gdx.scenes.scene2d.ui.List serv = new com.badlogic.gdx.scenes.scene2d.ui.List(
 												game.listHost.toArray(), skin);
 										TextButton ok = new TextButton("ok",
@@ -240,7 +239,7 @@ public class ChatScreen implements Screen {
 				} catch (Exception e) {
 					// e.printStackTrace();
 				}
-				
+
 			}
 		});
 	}

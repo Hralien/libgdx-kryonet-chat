@@ -1,6 +1,11 @@
 package com.me.mygdxgame;
 
+import java.io.IOException;
+
 import gameMechanic.Personnage;
+
+import chat.Network;
+import chat.Network.ChatMessage;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -15,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.esotericsoftware.kryonet.Client;
 
 /**
  * Premier ecran en début de partie

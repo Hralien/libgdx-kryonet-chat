@@ -37,9 +37,10 @@ public class ChatServer {
 
 		server.addListener(new Listener() {
 			public void received (Connection c, Object object) {
+				System.out.println("[serveur]: reçu "+object.getClass());
+
 				// We know all connections for this server are actually ChatConnections.
 				ChatConnection connection = (ChatConnection)c;
-				System.out.println("[serveur]: reçu "+object.getClass());
 
 				if (object instanceof RegisterName) {
 					System.out.println("[serveur]: reçu RegisterName");
