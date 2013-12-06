@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.esotericsoftware.kryo.KryoSerializable;
 
-public abstract class Personnage extends Actor implements KryoSerializable, IPlayer {
+public abstract class Personnage extends Actor implements KryoSerializable {
 
 	protected int hp;
 	protected int sp;
@@ -26,6 +26,8 @@ public abstract class Personnage extends Actor implements KryoSerializable, IPla
 
 	private int frameToDraw;
 	
+
+
 	public Personnage() {
 		this.listSkills = new ArrayList<Skill>();
         setTouchable(Touchable.enabled);
@@ -33,25 +35,7 @@ public abstract class Personnage extends Actor implements KryoSerializable, IPla
 
 	}
 	
-	@Override
-	public void sayHello(){
-		System.err.println("hello");
-	}
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public ArrayList<Skill> getListSkills() {
-		return listSkills;
-	}
-	public abstract String getDesc();
-	public TextureRegion[] dessine() {
-		return null;
-	}
+	
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		batch.draw(dessine()[frameToDraw],getOriginX(),getOriginY());
@@ -66,5 +50,27 @@ public abstract class Personnage extends Actor implements KryoSerializable, IPla
 		if (touchable && getTouchable() != Touchable.enabled) return null;
 //		System.err.println("[personnage] is hit");
 		return x >= 0 && x < dessine()[frameToDraw].getRegionWidth() && y >= 0 && y < dessine()[frameToDraw].getRegionHeight() ? this : null;
+	}
+	public abstract String getDesc();
+	public TextureRegion[] dessine() {
+		return null;
+	}
+	public int getFrameToDraw() {
+		return frameToDraw;
+	}
+
+	public void setFrameToDraw(int frameToDraw) {
+		this.frameToDraw = frameToDraw;
+	}
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public ArrayList<Skill> getListSkills() {
+		return listSkills;
 	}
 }
