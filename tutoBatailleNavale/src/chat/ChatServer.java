@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import chat.Network.ChatMessage;
 import chat.Network.ConstantOrder;
 import chat.Network.RegisterName;
+import chat.Network.RequestName;
 import chat.Network.UpdateNames;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -19,8 +20,10 @@ public class ChatServer {
 	Server server;
 	public ArrayList<Personnage> listPersonnage;
 	private int nbjoueur;
+	public String nomServ;
 
-	public ChatServer (int nb) throws IOException {
+	public ChatServer (int nb, final String nom) throws IOException {
+		this.nomServ = nom;
 		this.server = new Server() {
 			protected Connection newConnection () {
 				// By providing our own connection implementation, we can store per
@@ -42,6 +45,15 @@ public class ChatServer {
 				// We know all connections for this server are actually ChatConnections.
 				ChatConnection connection = (ChatConnection)c;
 
+				System.out.println("[serveur]: reçu "+object.getClass());
+				
+				if (object instanceof RequestName){
+					RequestName rm = new RequestName();
+					rm.name = nom;
+					c.sendTCP(rm);
+					System.err.println("ololol");
+				}
+
 				if (object instanceof RegisterName) {
 					System.out.println("[serveur]: reçu RegisterName");
 					// Ignore the object if a client has already registered a name. This is
@@ -62,6 +74,7 @@ public class ChatServer {
 					updateNames();
 					return;
 				}
+				
 				if (object instanceof Personnage) {
 					System.out.println("[serveur]: reçu personnage");
 					if (connection.name !=null) return;

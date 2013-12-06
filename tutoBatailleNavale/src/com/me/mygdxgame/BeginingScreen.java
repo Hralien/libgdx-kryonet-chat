@@ -1,11 +1,6 @@
 package com.me.mygdxgame;
 
-import java.io.IOException;
-
 import gameMechanic.Personnage;
-
-import chat.Network;
-import chat.Network.ChatMessage;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
