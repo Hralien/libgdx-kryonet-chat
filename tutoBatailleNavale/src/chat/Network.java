@@ -13,6 +13,7 @@ public class Network {
 	static public final int portTCP = 54555;
 	static public final int portUDP = 54556;
 
+	static public final short PLAYER = 1;
 
 	// This registers objects that are going to be sent over the network.
 	static public void register (EndPoint endPoint) {
@@ -22,13 +23,11 @@ public class Network {
 		kryo.register(UpdateNames.class);
 		kryo.register(ChatMessage.class);
 		kryo.register(ArrayList.class);
-		kryo.register(TestConnection.class);
 		kryo.register(SkillNumber.class);
 		kryo.register(ConstantOrder.class);
 		kryo.register(ArrayList.class);
 //		kryo.register(Personnage.class);
-//		kryo.register(Shaman.class);
-		kryo.register(PersonnageConnection.class);
+		kryo.register(Shaman.class);
 	}
 
 	static public class RegisterName {
@@ -46,9 +45,7 @@ public class Network {
 	static public class TestConnection{
 		public String test;
 	}
-	static public class PersonnageConnection {
-		public String name;
-	}
+
 	static public class SkillNumber {
 		public int skillId;		
 	}

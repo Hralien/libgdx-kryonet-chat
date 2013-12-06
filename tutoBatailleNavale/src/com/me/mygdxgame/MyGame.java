@@ -25,12 +25,14 @@ public class MyGame extends Game {
 	public Personnage player;
 	public UITrick androidUI;
 	public ChatServer chatServer;
-	public ArrayList<String> listHost = new ArrayList<String>();
-
+	public ArrayList<String> listHost ;
+	public ArrayList<Personnage> playersConnected;
+	
 	public MyGame(UITrick actionResolver) {
 		super();
 		this.androidUI = actionResolver;
-		
+		listHost = new ArrayList<String>();
+		playersConnected = new ArrayList<Personnage>();
 	}
 
 

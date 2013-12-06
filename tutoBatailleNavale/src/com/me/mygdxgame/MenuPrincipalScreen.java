@@ -155,21 +155,21 @@ public class MenuPrincipalScreen implements Screen {
 //		stateTime = 0f;  
 
 		//nos 3 boutons de selection
-		TextButton tbChat = new TextButton("rejoindre un chat", skin);
+//		TextButton tbChat = new TextButton("rejoindre un chat", skin);
 		TextButton tbHost = new TextButton("heberger un chat", skin);
 		TextButton tbJoin = new TextButton("creer un perso", skin);
 
 		//game.androidUI.showAlertBox("Server", "hello", "Button text",stage);
 
 		//nos listeners sur les boutons
-		tbChat.addListener(new ChangeListener() {
-
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				// TODO Auto-generated method stub
-				buttonSelected = 1;
-			}
-		});
+//		tbChat.addListener(new ChangeListener() {
+//
+//			@Override
+//			public void changed(ChangeEvent event, Actor actor) {
+//				// TODO Auto-generated method stub
+//				buttonSelected = 1;
+//			}
+//		});
 
 		tbHost.addListener(new ChangeListener() {
 
@@ -208,8 +208,8 @@ public class MenuPrincipalScreen implements Screen {
 		window.defaults().pad(20, 20, 20, 20);
 		window.row().fill().expandX();
 		window.row();
-		window.add(tbChat);
-		window.row();
+//		window.add(tbChat);
+//		window.row();
 		window.add(tbHost);
 		window.row();
 		window.add(tbJoin);

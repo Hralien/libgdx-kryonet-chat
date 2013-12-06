@@ -8,9 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import chat.Network.ChatMessage;
 import chat.Network.ConstantOrder;
-import chat.Network.PersonnageConnection;
 import chat.Network.RegisterName;
-import chat.Network.TestConnection;
 import chat.Network.UpdateNames;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -19,12 +17,11 @@ import com.esotericsoftware.kryonet.Server;
 
 public class ChatServer {
 	Server server;
-	public final static boolean DEBUG_PC=false;
-	public ArrayList<PersonnageConnection> listPersonnage;
+	public ArrayList<Personnage> listPersonnage;
 	private int nbjoueur;
 
 	public ChatServer (int nb) throws IOException {
-		server = new Server() {
+		this.server = new Server() {
 			protected Connection newConnection () {
 				// By providing our own connection implementation, we can store per
 				// connection state without a connection ID to state look up.
@@ -32,15 +29,17 @@ public class ChatServer {
 			}
 		};
 		this.nbjoueur = nb;
-		this.listPersonnage= new ArrayList<PersonnageConnection>();
+		this.listPersonnage= new ArrayList<Personnage>();
+
 		// For consistency, the classes to be sent over the network are
 		// registered by the same method for both the client and server.
 		Network.register(server);
+
 		server.addListener(new Listener() {
 			public void received (Connection c, Object object) {
 				// We know all connections for this server are actually ChatConnections.
 				ChatConnection connection = (ChatConnection)c;
-				
+				System.err.println("[serveur]: quelque chose reçu");
 
 				if (object instanceof RegisterName) {
 					// Ignore the object if a client has already registered a name. This is
@@ -61,36 +60,8 @@ public class ChatServer {
 					updateNames();
 					return;
 				}
-				if (object instanceof PersonnageConnection) {
-					if (connection.name !=null) return;
-					String name = ((PersonnageConnection)object).name;
-
-					if (name == null) return;
-					name = name.trim();
-					if (name.length() == 0) return;
-					// Store the name on the connection.
-					connection.name = name;
-					if( listPersonnage.contains(object))
-						return;
-					else {
-						listPersonnage.add( (PersonnageConnection) object);
-					}
-					if(listPersonnage.size()>=nbjoueur){
-						ConstantOrder co = new ConstantOrder();
-						co.order=ConstantOrder.STARTGAME;
-						server.sendToAllTCP(co);
-					}
-					else{
-						// Send a "connected" message to everyone except the new client.
-						ChatMessage chatMessage = new ChatMessage();
-						chatMessage.text = name + " connected.";
-						server.sendToAllExceptTCP(connection.getID(), chatMessage);
-						// Send everyone a new list of connection names.
-						updateNames();
-					}
-					return;
-				}
 				if (object instanceof Personnage) {
+					System.err.println("[serveur]: reçu personnage");
 					if (connection.name !=null) return;
 					String name = ((Personnage)object).getName();
 
@@ -99,12 +70,18 @@ public class ChatServer {
 					if (name.length() == 0) return;
 					// Store the name on the connection.
 					connection.name = name;
-					if( listPersonnage.contains(object))
+					if( listPersonnage.contains(object)){
+						System.out.println("[serveur]: perso deja la");
 						return;
+					}
 					else {
-//						listPersonnage.add( (Personnage) object);
+						listPersonnage.add((Personnage) object);
+						System.out.println("[serveur]: perso ajouter");
 					}
 					if(listPersonnage.size()>=nbjoueur){
+						System.out.println("[serveur]:depassement limite atteinte");
+
+						server.sendToAllTCP(listPersonnage);
 						ConstantOrder co = new ConstantOrder();
 						co.order=ConstantOrder.STARTGAME;
 						server.sendToAllTCP(co);
@@ -117,11 +94,10 @@ public class ChatServer {
 						// Send everyone a new list of connection names.
 						updateNames();
 					}
-					System.err.println(object);
 					return;
 				}
 				if (object instanceof ChatMessage) {
-					System.err.println("cm");
+					System.err.println("[serveur]: reçu chatmessage");
 					// Ignore the object if a client tries to chat before registering a name.
 					if (connection.name == null) return;
 					ChatMessage chatMessage = (ChatMessage)object;
@@ -136,7 +112,7 @@ public class ChatServer {
 					return;
 				}
 
-				
+
 			}
 
 			public void disconnected (Connection c) {

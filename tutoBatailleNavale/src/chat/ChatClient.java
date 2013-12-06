@@ -2,68 +2,68 @@
 package chat;
 
 import gameMechanic.Personnage;
-import gameMechanic.Shaman;
-
 import java.awt.EventQueue;
 import java.io.IOException;
+import java.util.ArrayList;
+
 import chat.Network.ChatMessage;
 import chat.Network.ConstantOrder;
-import chat.Network.PersonnageConnection;
+import chat.Network.RegisterName;
 import chat.Network.SkillNumber;
-import chat.Network.TestConnection;
 import chat.Network.UpdateNames;
 
-import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.esotericsoftware.kryonet.rmi.ObjectSpace;
 import com.me.mygdxgame.ChatScreen;
 import com.me.mygdxgame.MyGame;
 
 
 public class ChatClient {
 	public Client client;
-	String name;
 	public ChatWindow chatWindow;
-	private Personnage personnage;
 	private ChatScreen myVue;
 	private MyGame game;
+	public 	String name;
 
-	public ChatClient (String adresse, String pseudo, Personnage perso, ChatScreen vue, MyGame myGame) {
+	@SuppressWarnings("unchecked")
+	public ChatClient (final String adresse, ChatScreen vue, MyGame myGame) {
 		this.client = new Client();
 		this.client.start();
-		this.personnage=perso;
 		this.myVue = vue;
 		this.game = myGame;
+		this.name = game.player.getName();
 		// For consistency, the classes to be sent over the network are
 		// registered by the same method for both the client and server.
 		Network.register(client);
+
+//		game.playersConnected = (ArrayList<Personnage>) ObjectSpace.getRemoteObject(client, Network.PLAYER, gameMechanic.IPlayer.class);
 		
-		Kryo kryo = client.getKryo();
-	    kryo.register(Shaman.class);
-	    
 		this.client.addListener(new Listener() {
 
 			@Override
 			public void connected (Connection connection) {
-				//				RegisterName registerName = new RegisterName();
-				//				registerName.name = name;
-				//				client.sendTCP(registerName);
-				PersonnageConnection pc = new PersonnageConnection();
-				pc.name = personnage.getName();
-				client.sendTCP(pc);
+				RegisterName registerName = new RegisterName();
+				registerName.name = game.player.getName();
+				client.sendTCP(registerName);
+
+				//				client.sendTCP(new PersonnageConnection(game.player));
+								client.sendTCP(game.player);
 
 			}
 
 			@Override
 			public void received (Connection connection, Object object) {
 				if (object instanceof UpdateNames) {
+					System.err.println("[client]: updateNames reçu");
 					UpdateNames updateNames = (UpdateNames)object;
 					chatWindow.setNames(updateNames.names);
 					return;
 				}
 
 				if (object instanceof ChatMessage) {
+					System.err.println("[client]: chat message reçu");
 					ChatMessage chatMessage = (ChatMessage)object;
 					chatWindow.addMessage(chatMessage.text);
 					return;
@@ -73,8 +73,12 @@ public class ChatClient {
 					myVue.showSkillNumber=(SkillNumber) object;
 					return;
 				}
-
+				if(object instanceof ArrayList<?>){
+					System.err.println("[client]: arraylist reçu");
+					game.playersConnected = (ArrayList<Personnage>) object;
+				}
 				if(object instanceof ConstantOrder){
+					System.err.println("[client]: ordre reçu");
 					int ordre=((ConstantOrder)object).order;
 					switch (ordre) {
 					case ConstantOrder.STARTGAME:
@@ -85,11 +89,6 @@ public class ChatClient {
 						break;
 					}
 				}
-
-//				if (object instanceof TestConnection) {
-//					game.listHost.add(((TestConnection) object).test);
-//					System.err.println("res"+((TestConnection) object).test);
-//				}
 			}
 
 			public void disconnected (Connection connection) {
@@ -100,13 +99,9 @@ public class ChatClient {
 				});
 			}
 		});
-		if(personnage!=null)
-			name=personnage.getName();
-		else name=pseudo;
 
-		final String host = adresse;
 
-		chatWindow = new ChatWindow(host);
+		chatWindow = new ChatWindow(adresse);
 		chatWindow.setSendListener(new Runnable() {
 			public void run () {
 				ChatMessage chatMessage = new ChatMessage();
@@ -121,7 +116,7 @@ public class ChatClient {
 		new Thread("Connect") {
 			public void run () {
 				try {
-					client.connect(5000, host, Network.portTCP,Network.portUDP);
+					client.connect(5000, adresse, Network.portTCP,Network.portUDP);
 					// Server communication after connection can go here, or in Listener#connected().
 				} catch (IOException ex) {
 					ex.printStackTrace();
@@ -130,7 +125,7 @@ public class ChatClient {
 			}
 		}.start();
 
-		
+
 
 	}
 

@@ -1,5 +1,7 @@
 package com.me.mygdxgame;
 
+import gameMechanic.Personnage;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
@@ -85,7 +87,10 @@ public class BeginingScreen implements Screen {
 		
 
 		batch.begin();
-		batch.draw(bg, 0, 0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());                    
+		batch.draw(bg, 0, 0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		for(Personnage it : game.playersConnected){
+			batch.draw(game.player.dessine()[0], 100, 100);
+		}
 		batch.end();
 		
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));

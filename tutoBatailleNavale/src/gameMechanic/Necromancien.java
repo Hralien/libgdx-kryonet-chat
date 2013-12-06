@@ -7,7 +7,12 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 
-public class Necromancien extends Personnage{
+public class Necromancien extends Personnage {
+	
+	private final static String DESCRIPTION = "Le nécromancien est un support utile mais pas indispensable, il provoque des dégâts non négligeables et peut paralyser les ennemis.";
+	private static volatile TextureRegion[] regions = null;
+
+	
 	
 	public Necromancien() {
 		super();
@@ -19,24 +24,13 @@ public class Necromancien extends Personnage{
 		super.vit=3;
 		super.dex=3;
 		super.luk=4;
-		super.sprite=new Texture(Gdx.files.internal("character/necromancien.png"));
 		
 		super.listSkills.add(Skill.volDeVie);
 		super.listSkills.add(Skill.paralysie);
 		super.listSkills.add(Skill.protection);
 		super.listSkills.add(Skill.boost);
 		
-		super.getRegions()[0] = new TextureRegion(super.sprite, 0, 0, 32, 44);
-		super.getRegions()[1] = new TextureRegion(super.sprite, 32, 0, 32, 44);
-		super.getRegions()[2] = new TextureRegion(super.sprite, 64, 0, 32, 44);
-		super.getRegions()[3] = new TextureRegion(super.sprite, 96, 0, 32, 44);
-		super.getRegions()[4] = new TextureRegion(super.sprite, 128, 0, 28, 44);
-		super.getRegions()[5] = new TextureRegion(super.sprite, 160, 0, 26, 44);
-		super.getRegions()[6] = new TextureRegion(super.sprite, 191, 0, 30, 44);
-		super.getRegions()[7] = new TextureRegion(super.sprite, 0, 44, 41, 20);
-		super.getRegions()[8] = new TextureRegion(super.sprite, 64, 44, 41, 20);
-
-		super.desc="Le nécromancien est un support utile mais pas indispensable, il provoque des dégâts non négligeables et peut paralyser les ennemis.";
+		
 
 	}
 	@Override
@@ -50,7 +44,6 @@ public class Necromancien extends Personnage{
 		output.writeInt(luk, true);
 		output.writeInt(vit, true);
 		output.writeString(name);
-		output.writeString(getDesc());
 
 	}
 
@@ -66,6 +59,40 @@ public class Necromancien extends Personnage{
 		vit = input.readInt();
 
 		name = input.readString();
-		desc =input.readString();
+	}
+	@Override
+	public String getDesc() {
+		// TODO Auto-generated method stub
+		return DESCRIPTION;
+	}
+	/**
+	 * Méthode permettant de renvoyer une instance de la classe Singleton
+	 * @return Retourne l'instance du singleton.
+	 */
+	public TextureRegion[] dessine() {
+		//Le "Double-Checked Singleton"/"Singleton doublement vérifié" permet 
+		//d'éviter un appel coûteux à synchronized, 
+		//une fois que l'instanciation est faite.
+		if (Necromancien.regions == null) {
+			// Le mot-clé synchronized sur ce bloc empêche toute instanciation
+			// multiple même par différents "threads".
+			// Il est TRES important.
+			synchronized(Necromancien.class) {
+				if (Necromancien.regions == null) {
+					Texture sprite = new Texture(Gdx.files.internal("character/necromancien.png"));
+					regions = new TextureRegion[9]; 
+					regions[0] = new TextureRegion(sprite, 0, 0, 32, 44);
+					regions[1] = new TextureRegion(sprite, 32, 0, 32, 44);
+					regions[2] = new TextureRegion(sprite, 64, 0, 32, 44);
+					regions[3] = new TextureRegion(sprite, 96, 0, 32, 44);
+					regions[4] = new TextureRegion(sprite, 128, 0, 28, 44);
+					regions[5] = new TextureRegion(sprite, 160, 0, 26, 44);
+					regions[6] = new TextureRegion(sprite, 191, 0, 30, 44);
+					regions[7] = new TextureRegion(sprite, 0, 44, 41, 20);
+					regions[8] = new TextureRegion(sprite, 64, 44, 41, 20);
+				}
+			}
+		}
+		return Necromancien.regions;
 	}
 }

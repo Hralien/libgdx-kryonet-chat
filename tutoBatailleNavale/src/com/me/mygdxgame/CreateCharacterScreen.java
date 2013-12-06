@@ -135,9 +135,9 @@ public class CreateCharacterScreen implements Screen {
 		spriteBatch.begin();
 
 		// Animation perso skill
-		if (game.player != null && game.player.getRegions()[0] != null) {
+		if (game.player != null && game.player.dessine()!=null) {
 			// dessinage du corps du perso
-			spriteBatch.draw(game.player.getRegions()[spriteFrameToRender], 100, 100);
+			spriteBatch.draw(game.player.dessine()[spriteFrameToRender], 100, 100);
 
 		}
 		// si on a un skill a afficher
@@ -186,8 +186,8 @@ public class CreateCharacterScreen implements Screen {
 		fleche.addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
 				if (game.player != null) {
-					if(game.player.getRegions()!=null){
-						if (spriteFrameToRender + 1 == game.player.getRegions().length)
+					if(game.player.dessine()!=null){
+						if (spriteFrameToRender + 1 == game.player.dessine().length)
 							spriteFrameToRender = 0;
 						else {
 							spriteFrameToRender++;
@@ -259,6 +259,7 @@ public class CreateCharacterScreen implements Screen {
 			public void changed(ChangeEvent event, Actor actor) {
 				// TODO Auto-generated method stub
 				if (game.player != null) {
+					System.out.println(game.player);
 					game.setScreen(game.chatScreen);
 				} else
 					game.androidUI.showAlertBox("Erreur",
