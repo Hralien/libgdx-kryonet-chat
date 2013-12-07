@@ -560,7 +560,7 @@ public class Client extends Connection implements EndPoint {
 								InetAddress.getByAddress(ip), udpPort));
 					} catch (Exception ignored) {
 					}
-					ip[2] = (byte) 207; // 255.255.0.0
+					ip[2] = (byte) 231; // 255.255.0.0
 					System.out.println(InetAddress.getByAddress(ip));
 					try {
 						socket.send(new DatagramPacket(data, data.length,
