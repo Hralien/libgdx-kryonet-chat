@@ -74,11 +74,12 @@ public class BeginingScreen implements Screen {
 		stage.dispose();
 		skin.dispose();
 		sound.dispose();
+		batch.dispose();
 	}
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
+		Gdx.gl.glClearColor(1,1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());

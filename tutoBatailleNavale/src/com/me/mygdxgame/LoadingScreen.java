@@ -1,10 +1,17 @@
 package com.me.mygdxgame;
 
 
+import gameMechanic.Citation;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -31,9 +38,22 @@ public class LoadingScreen implements Screen {
     private Actor loadingBar;
     
     private MyGame game;
+    
+    private SpriteBatch batch;
+    private BitmapFont font;
+    
+    private ArrayList<Citation> citationList;
 
     public LoadingScreen(MyGame game) {
         this.game = game;
+        this.batch = new SpriteBatch();
+        this.font = new BitmapFont(Gdx.files.internal("data/delicious.fnt"), false);
+        citationList = new ArrayList<Citation>();
+        citationList.add(new Citation("Elle est où la poulette ? ", "Kaamelott - Cadoc"));
+        citationList.add(new Citation("C’est pas faux ! ", "Kaamelott - Perceval"));
+        citationList.add(new Citation("Je ne mange pas de graines !! ", "Kaamelott - Maitre d'arme"));
+        citationList.add(new Citation("Le gras c’est la vie !", "Kaamelott - Karadoc"));
+
     }
 
     @Override
@@ -91,7 +111,7 @@ public class LoadingScreen implements Screen {
 
         // Place the loading frame in the middle of the screen
         loadingFrame.setX((stage.getWidth() - loadingFrame.getWidth()) / 2);
-        loadingFrame.setY((stage.getHeight() - loadingFrame.getHeight()) / 2);
+        loadingFrame.setY((stage.getHeight() - loadingFrame.getHeight()) / 3);
 
         // Place the loading bar at the same spot as the frame, adjusted a few px
         loadingBar.setX(loadingFrame.getX() + 15);
@@ -113,6 +133,7 @@ public class LoadingScreen implements Screen {
     @Override
     public void render(float delta) {
         // Clear the screen
+    	Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
         if (MyGame.manager.update()) { // Load some, will return true if done loading
@@ -130,20 +151,32 @@ public class LoadingScreen implements Screen {
         loadingBg.setWidth(450 - 450 * percent);
         loadingBg.invalidate();
 
+        
         // Show the loading screen
         stage.act();
         stage.draw();
+        //draw tips
+        batch.begin();
+        int index= (int) Math.random()*(citationList.size());
+        font.draw(batch, citationList.get(index).getPhrase(), 100, 100);
+        font.draw(batch, citationList.get(index).getAuteur(), 100, 80);
+
+        batch.end();
+        batch.flush();
+        Gdx.gl10.glDisable(GL10.GL_ALPHA_TEST);
     }
 
     @Override
     public void hide() {
         // Dispose the loading assets as we no longer need them
-        MyGame.manager.unload("ui/loading.pack");
+//        MyGame.manager.unload("ui/loading.pack");
     }
 
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
+		stage.dispose();
+		batch.dispose();
 		
 	}
 

@@ -114,7 +114,8 @@ public class CreateCharacterScreen implements Screen {
 	public void dispose() {
 		stage.dispose();
 		skin.dispose();
-
+		spriteBatch.dispose();
+		
 	}
 
 	@Override

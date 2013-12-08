@@ -35,20 +35,20 @@ public class Skill implements Cloneable{
 	public static Skill donDeMana = new Skill(3, 1, "don de Mana", "dondemana", 5,10);
 	public static Skill restriction = new Skill(4, 1, "restriction", "eclair",5, 10);
 	/** Necromencien */
-	public static Skill volDeVie = new Skill(5, 1, "vol de Vie", "voldevie", 5, 4);
-	public static Skill paralysie = new Skill(6, 1, "paralysie", "paralysie", 5, 4);
-	public static Skill protection = new Skill(7, 1, "protection", "protection", 5,	4);
-	public static Skill boost = new Skill(8, 1, "boost", "boost", 5, 4);
+	public static Skill volDeVie = new Skill(5, 1, "vol de Vie", "voldevie", 5, 5);
+	public static Skill paralysie = new Skill(6, 1, "paralysie", "paralysie", 5, 6);
+	public static Skill protection = new Skill(7, 1, "protection", "protection", 5,	5);
+	public static Skill boost = new Skill(8, 1, "boost", "boost", 5, 5);
 	/** Mage chaud */
 	public static Skill bouleDeFeu = new Skill(9, 1, "boule de feu", "brasier",5, 4);
-	public static Skill lanceArdente = new Skill(10, 1, "lance ardente","brulure", 5, 4);
-	public static Skill chocDeMasse = new Skill(11, 1, "cyclone", "cyclone", 5,4);
-	public static Skill foudroiement = new Skill(12, 1, "foudroiement","tonnerre", 5, 4);
+	public static Skill lanceArdente = new Skill(10, 1, "lance ardente","brulure", 5, 8);
+	public static Skill chocDeMasse = new Skill(11, 1, "cyclone", "cyclone", 5,6);
+	public static Skill foudroiement = new Skill(12, 1, "foudroiement","tonnerre", 5, 6);
 	/** Mage froid */
-	public static Skill prisonAcqeuse = new Skill(13, 1, "prison aqueuse","prisonaqueuse", 5, 4);
-	public static Skill tridenAqueue = new Skill(14, 1, "hydrocanon","hydrocanon", 5, 4);
+	public static Skill prisonAcqeuse = new Skill(13, 1, "prison aqueuse","prisonaqueuse", 5, 5);
+	public static Skill tridenAqueue = new Skill(14, 1, "hydrocanon","hydrocanon", 5, 6);
 	public static Skill massedAir = new Skill(15, 1, "séisme", "seisme", 5, 4);
-	public static Skill cyclone = new Skill(16, 1, "blizard", "blizard", 5, 4);
+	public static Skill cyclone = new Skill(16, 1, "blizard", "blizard", 5, 6);
 
 	public static ArrayList<Skill> listSkill = new ArrayList<Skill>();
 
@@ -82,6 +82,20 @@ public class Skill implements Cloneable{
 		this.frame_cols = frame_cols;
 		this.frame_rows = frame_rows;
 
+//		Array<AtlasRegion> ar = getInstance().findRegions(skillEffect);
+//		System.err.println(ar.size);
+//		for(AtlasRegion it :ar){
+//			TextureRegion[][] tmp = TextureRegion.split(it.getTexture(), it.getRegionWidth()/this.frame_cols, it.getRegionHeight()/this.frame_rows);
+//			TextureRegion[] walkFrames = new TextureRegion[this.frame_cols*this.frame_rows];
+//			int index = 0;
+//			for (int i = 0; i < this.frame_rows; i++) {
+//				for (int j = 0; j < this.frame_cols; j++) {
+//					walkFrames[index++] = tmp[i][j];
+//				}
+//			}
+//			
+//		}
+		
 		AtlasRegion ar = getInstance().findRegion(skillEffect);
 		TextureRegion[][] tmp = TextureRegion.split(ar.getTexture(), ar.getRegionWidth()/this.frame_cols, ar.getRegionHeight()/this.frame_rows);
 		TextureRegion[] walkFrames = new TextureRegion[this.frame_cols*this.frame_rows];
@@ -91,10 +105,10 @@ public class Skill implements Cloneable{
 				walkFrames[index++] = tmp[i][j];
 			}
 		}
-
-
 		walkAnimation = new Animation(0.05f, walkFrames);
 		stateTime = 0f; // #13
+
+		
 
 	}
 

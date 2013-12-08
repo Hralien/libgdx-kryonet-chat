@@ -95,11 +95,18 @@ explosion
   orig: 960, 960
   offset: 0, 0
   index: -1
-paralysie
-  rotate: true
+prisonaqueuse
+  rotate: false
   xy: 1, 1
-  size: 960, 1152
-  orig: 960, 1152
+  size: 960, 960
+  orig: 960, 960
+  offset: 0, 0
+  index: -1
+protection
+  rotate: false
+  xy: 963, 1
+  size: 960, 960
+  orig: 960, 960
   offset: 0, 0
   index: -1
 
@@ -107,23 +114,16 @@ skill5.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-prisonaqueuse
+paralysie
   rotate: false
-  xy: 1, 963
-  size: 960, 960
-  orig: 960, 960
-  offset: 0, 0
-  index: -1
-protection
-  rotate: false
-  xy: 963, 963
-  size: 960, 960
-  orig: 960, 960
+  xy: 1, 1
+  size: 960, 1152
+  orig: 960, 1152
   offset: 0, 0
   index: -1
 tonnerre
-  rotate: true
-  xy: 1, 1
+  rotate: false
+  xy: 963, 1
   size: 960, 1152
   orig: 960, 1152
   offset: 0, 0

@@ -10,25 +10,34 @@ import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 /**
  * Menu principal selection de ce qu'on veut faire
@@ -54,18 +63,31 @@ public class MenuPrincipalScreen implements Screen {
 	 */
 	private int buttonSelected;
 	/**
-	 * objet {@link MyGame} pour pouvoir changer d'ecran et recup des infos
-	 * generales
+	 * objet {@link MyGame} pour pouvoir changer d'ecran et recup des infos generales
 	 */
 	private MyGame game;
 
 	// private Sound sound;
-	/** for serveur */
+	/** 
+	 * nb of players for serveur
+	 */
 	private int nbjoueur;
-
-	private AtlasRegion imgBackground;
+	/**
+	 *  {@link AtlasRegion} to get the logo
+	 */
+	private Sprite imgBackground;
+	/** 
+	 * {@link SpriteBatch} to draw
+	 */
 	private SpriteBatch batch;
-
+	/** 
+	 * to get the shake effect => current rotation value
+	 */
+	private float rot;
+	/**
+	 * camera
+	 */
+	private OrthographicCamera camera;
 	/**
 	 * bg private Texture bg; private static final int FRAME_COLS = 8; // #1
 	 * private static final int FRAME_ROWS = 1; // #2 private Animation
@@ -80,13 +102,12 @@ public class MenuPrincipalScreen implements Screen {
 		this.game = myGame;
 
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),
-				false);
+		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),false);
 		fpsLabel = new Label("fps:", skin);
-		TextureAtlas atlas = new TextureAtlas(
-				Gdx.files.internal("ui/magic.pack"));
+		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("ui/magic.pack"));
 		batch = new SpriteBatch();
-		imgBackground = atlas.findRegion("title");
+		imgBackground = new Sprite(atlas.findRegion("title"));
+		imgBackground.setPosition((int)(Gdx.graphics.getWidth()*0.2), (int)(Gdx.graphics.getHeight()*0.5));
 
 	}
 
@@ -99,12 +120,13 @@ public class MenuPrincipalScreen implements Screen {
 	public void dispose() {
 		stage.dispose();
 		skin.dispose();
+		batch.dispose();
 		// sound.dispose();
 	}
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
+		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
@@ -128,10 +150,15 @@ public class MenuPrincipalScreen implements Screen {
 		default:
 			break;
 		}
+
+//		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		batch.draw(imgBackground,
-				Gdx.graphics.getWidth() / 2 - imgBackground.getRegionWidth()
-						/ 2, Gdx.graphics.getHeight() / 2);
+		float degressPerSecond = 10.0f;
+		rot = (rot + Gdx.graphics.getDeltaTime() *degressPerSecond) % 360;
+		final float shakeAmplitudeInDegrees = 5.0f;
+		float shake = MathUtils.sin(rot) * shakeAmplitudeInDegrees;
+		imgBackground.setRotation(shake);
+		imgBackground.draw(batch);
 		batch.end();
 		/*
 		 * sound.play(0.1f); // play new sound and keep handle for further
@@ -153,8 +180,7 @@ public class MenuPrincipalScreen implements Screen {
 		// on dit a l'appli d'ecouter ce stage quand la methode show est appelee
 		Gdx.input.setInputProcessor(stage);
 
-		// sound =
-		// Gdx.audio.newSound(Gdx.files.internal("sound/CloudTopLoops.mp3"));
+		//sound = Gdx.audio.newMusic(Gdx.files.internal("sound/CloudTopLoops.mp3"));
 		// bg = new Texture(Gdx.files.internal("background2.png"));
 		//
 		// TextureRegion[][] tmp = TextureRegion.split(bg, bg.getWidth() /
@@ -171,22 +197,23 @@ public class MenuPrincipalScreen implements Screen {
 		// stateTime = 0f;
 
 		// nos 3 boutons de selection
-		// TextButton tbChat = new TextButton("rejoindre un chat", skin);
-		TextButton tbHost = new TextButton("heberger un chat", skin);
-		TextButton tbJoin = new TextButton("creer un perso", skin);
+		float w = Gdx.graphics.getWidth();
+		float h = Gdx.graphics.getHeight();
+		camera = new OrthographicCamera(1, h / w);
 
-		// game.androidUI.showAlertBox("Server", "hello", "Button text",stage);
+		TextureAtlas atlas = MyGame.manager.get("ui/loading.pack", TextureAtlas.class);
+		TextureRegion image = new TextureRegion(atlas.findRegion("magic_button2"));
 
-		// nos listeners sur les boutons
-		// tbChat.addListener(new ChangeListener() {
-		//
-		// @Override
-		// public void changed(ChangeEvent event, Actor actor) {
-		// // TODO Auto-generated method stub
-		// buttonSelected = 1;
-		// }
-		// });
 
+		TextButtonStyle style = new TextButtonStyle();
+		style.up = new TextureRegionDrawable(image);
+		style.font = new BitmapFont();
+
+		
+		TextButton tbHost = new TextButton("heberger un chat", style);
+		TextButton tbJoin = new TextButton("creer un perso", style);
+
+		
 		tbHost.addListener(new ChangeListener() {
 
 			@Override
@@ -212,7 +239,7 @@ public class MenuPrincipalScreen implements Screen {
 
 					creer.addListener(new ChangeListener() {
 						public void changed(ChangeEvent arg0, Actor arg1) {
-							
+
 							try {
 								if (nomServ.getText().length()>0) {
 									game.chatServer = new ChatServer(nbjoueur,
@@ -250,10 +277,10 @@ public class MenuPrincipalScreen implements Screen {
 		// window.debug();
 		Window window = new Window("Selection Perso", skin);
 		window.getButtonTable().add(new TextButton("X", skin))
-				.height(window.getPadTop());
+		.height(window.getPadTop());
 		window.setPosition(Gdx.graphics.getWidth() / 3,
 				Gdx.graphics.getHeight() / 4);
-		window.defaults().pad(20, 20, 20, 20);
+		window.defaults().pad(5, 5, 5, 5);
 		window.row().fill().expandX();
 		window.row();
 		// window.add(tbChat);
