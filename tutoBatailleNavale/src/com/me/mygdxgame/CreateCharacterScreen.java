@@ -1,7 +1,7 @@
 package com.me.mygdxgame;
 
-import gameMechanic.MageChaud;
-import gameMechanic.MageFroid;
+import gameMechanic.Pyromancien;
+import gameMechanic.Aquamancien;
 import gameMechanic.Necromancien;
 import gameMechanic.Shaman;
 import gameMechanic.Skill;
@@ -59,7 +59,6 @@ public class CreateCharacterScreen implements Screen {
 	 * skill a afficher
 	 */
 	private Skill skillToRender;
-	private int spriteFrameToRender;
 	private boolean soundIsPlaying;
 
 	public CreateCharacterScreen(MyGame myGame) {
@@ -168,7 +167,7 @@ public class CreateCharacterScreen implements Screen {
 
 		// creation d'un tableau pour stocker les classes
 		String[] tabPersonnage = { "Shaman", "Necromencian", "Mage Chaud",
-		"Mage Froid" };
+		"Aquamancien" };
 		// creation d'une select box (appele List ici) avec le tableau ci dessus
 		final List listClasses = new List(tabPersonnage, skin);
 		// ajout de la List dans un scrollPane, pour pouvoir derouler,
@@ -221,6 +220,7 @@ public class CreateCharacterScreen implements Screen {
 
 		tbvalidation.addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
+				stage.getRoot().removeActor(game.player);
 				switch (listClasses.getSelectedIndex()) {
 				case 0:
 					// initialisation du player
@@ -232,11 +232,11 @@ public class CreateCharacterScreen implements Screen {
 					break;
 				case 2:
 					// initialisation du player
-					game.player = new MageChaud();
+					game.player = new Pyromancien();
 					break;
 				case 3:
 					// initialisation du player
-					game.player = new MageFroid();
+					game.player = new Aquamancien();
 					break;
 				default:
 					System.err.println("switch personnage error");

@@ -7,12 +7,12 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 
-public class MageChaud extends Personnage {
+public class Pyromancien extends Personnage {
 	
 	private final static String DESCRIPTION = "Le mage chaud est expert dans la maitrise des éléments foudre et feu, il a fini son entrainement et est maintenant prêt pour le combat. Il complète parfaitement un mage froid.";
 	private static volatile TextureRegion[] regions = null;
 
-	public MageChaud() {
+	public Pyromancien() {
 		super();
 		super.hp=50;
 		super.intel=3;
@@ -72,26 +72,26 @@ public class MageChaud extends Personnage {
 		//Le "Double-Checked Singleton"/"Singleton doublement vérifié" permet 
 		//d'éviter un appel coûteux à synchronized, 
 		//une fois que l'instanciation est faite.
-		if (MageChaud.regions == null) {
+		if (Pyromancien.regions == null) {
 			// Le mot-clé synchronized sur ce bloc empêche toute instanciation
 			// multiple même par différents "threads".
 			// Il est TRES important.
-			synchronized(MageChaud.class) {
-				if (MageChaud.regions == null) {
-					Texture sprite = new Texture(Gdx.files.internal("character/necromancien.png"));
+			synchronized(Pyromancien.class) {
+				if (Pyromancien.regions == null) {
+					Texture sprite = new Texture(Gdx.files.internal("character/pyromancien.png"));
 					regions = new TextureRegion[9]; 
 					regions[0] = new TextureRegion(sprite, 0, 0, 32, 44);
-					regions[1] = new TextureRegion(sprite, 32, 0, 32, 44);
-					regions[2] = new TextureRegion(sprite, 64, 0, 32, 44);
-					regions[3] = new TextureRegion(sprite, 96, 0, 32, 44);
-					regions[4] = new TextureRegion(sprite, 128, 0, 28, 44);
+					regions[1] = new TextureRegion(sprite, 32, 0, 29, 44);
+					regions[2] = new TextureRegion(sprite, 61, 0, 33, 44);
+					regions[3] = new TextureRegion(sprite, 93, 0, 32, 44);
+					regions[4] = new TextureRegion(sprite, 125, 0, 34, 44);
 					regions[5] = new TextureRegion(sprite, 160, 0, 26, 44);
-					regions[6] = new TextureRegion(sprite, 191, 0, 30, 44);
-					regions[7] = new TextureRegion(sprite, 0, 44, 41, 20);
-					regions[8] = new TextureRegion(sprite, 64, 44, 41, 20);
+					regions[6] = new TextureRegion(sprite, 190, 0, 32, 44);
+					regions[7] = new TextureRegion(sprite, 0, 44, 49, 27);
+					regions[8] = new TextureRegion(sprite, 70, 44, 49, 27);
 				}
 			}
 		}
-		return MageChaud.regions;
+		return Pyromancien.regions;
 	}
 }

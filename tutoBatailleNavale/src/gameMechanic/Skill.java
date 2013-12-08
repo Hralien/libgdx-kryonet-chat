@@ -19,6 +19,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.KryoSerializable;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import com.me.mygdxgame.MyGame;
 
 public class Skill implements Cloneable{
 
@@ -92,7 +93,7 @@ public class Skill implements Cloneable{
 		}
 
 
-		walkAnimation = new Animation(0.25f, walkFrames);
+		walkAnimation = new Animation(0.05f, walkFrames);
 		stateTime = 0f; // #13
 
 	}
@@ -134,7 +135,7 @@ public class Skill implements Cloneable{
 		currentFrame = walkAnimation.getKeyFrame(stateTime, false); // #16
 		if (walkAnimation.isAnimationFinished(stateTime)) {
 			setSkillEffectEnded(true);
-			System.err.println("eneded");
+			System.err.println("ended");
 		}
 		return currentFrame;
 	}
@@ -152,7 +153,7 @@ public class Skill implements Cloneable{
 			// Il est TRES important.
 			synchronized(Skill.class) {
 				if (Skill.atlas == null) {
-					Skill.atlas = new TextureAtlas(Gdx.files.internal("effects/skill.pack"));
+					Skill.atlas = MyGame.manager.get("effects/skill.pack", TextureAtlas.class);
 				}
 			}
 		}
