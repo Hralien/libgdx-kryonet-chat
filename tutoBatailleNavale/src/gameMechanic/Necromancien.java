@@ -9,7 +9,7 @@ import com.esotericsoftware.kryo.io.Output;
 
 public class Necromancien extends Personnage {
 	
-	private final static String DESCRIPTION = "Le nécromancien est un support utile mais pas indispensable, il provoque des dégâts non négligeables et peut paralyser les ennemis.";
+	private final static String DESCRIPTION = "Le nécromancien est un adepte de la magie noire et utilise la manipulation pour parvenir à détruire plus facilement son adversaire.";
 	private static volatile TextureRegion[] regions = null;
 
 	

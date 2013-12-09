@@ -105,8 +105,9 @@ public class MenuPrincipalScreen implements Screen {
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),false);
 		fpsLabel = new Label("fps:", skin);
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("ui/magic.pack"));
+		TextureAtlas atlas2 = new TextureAtlas(Gdx.files.internal("ui/loading.pack"));/**:D*/
 		batch = new SpriteBatch();
-		imgBackground = new Sprite(atlas.findRegion("title"));
+		imgBackground = new Sprite(atlas2.findRegion("TitleM4ges"));
 		imgBackground.setPosition((int)(Gdx.graphics.getWidth()*0.2), (int)(Gdx.graphics.getHeight()*0.5));
 
 	}

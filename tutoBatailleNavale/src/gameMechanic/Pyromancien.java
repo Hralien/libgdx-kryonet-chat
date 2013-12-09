@@ -9,7 +9,7 @@ import com.esotericsoftware.kryo.io.Output;
 
 public class Pyromancien extends Personnage {
 	
-	private final static String DESCRIPTION = "Le mage chaud est expert dans la maitrise des éléments foudre et feu, il a fini son entrainement et est maintenant prêt pour le combat. Il complète parfaitement un mage froid.";
+	private final static String DESCRIPTION = "Le pyromancien est un adepte de la puissance. Aspirant à la destruction, mieux vaut ne pas l'énerver";
 	private static volatile TextureRegion[] regions = null;
 
 	public Pyromancien() {

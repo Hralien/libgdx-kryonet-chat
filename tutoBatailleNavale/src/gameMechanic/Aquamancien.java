@@ -9,7 +9,7 @@ import com.esotericsoftware.kryo.io.Output;
 
 public class Aquamancien extends Personnage {
 	
-	private final static String DESCRIPTION = "Le mage froid est expert dans la maitrise des éléments air et eau, il a fini son entrainement et est maintenant prêt pour le combat. Il complète parfaitement un mage chaud.";
+	private final static String DESCRIPTION = "L'aqueromancien ne paye peut être pas de mine, mais son pouvoir de destruction, combiné à celui d'un pyromancien, en font un adversaire redoutable.";
 	private static volatile TextureRegion[] regions = null;
 
 	public Aquamancien() {

@@ -9,7 +9,7 @@ import com.esotericsoftware.kryo.io.Output;
 
 public class Shaman extends Personnage {
 
-	private final static String DESCRIPTION = "Les shamans sont les piliers d’un bon groupe de combattant, leurs techniques de soutien sont indispensables pour sortir victorieux de la bataille. De par ses pouvoirs, un shaman ne peut s’aventurer seul car il est incapable de se défendre par ses propres moyens.";
+	private final static String DESCRIPTION = "Le shamane est l'élément vital du groupe, son but étant de garder ses alliés en vie par tous les moyens.";
 
 	private static volatile TextureRegion[] regions = null;
 	
