@@ -2,6 +2,7 @@ package com.me.mygdxgame;
 
 
 import gameMechanic.Citation;
+import gameMechanic.Skill;
 
 import java.util.ArrayList;
 import java.util.Hashtable;

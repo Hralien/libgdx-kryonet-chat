@@ -25,7 +25,10 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 	protected ArrayList<Skill> listSkills;
 
 	private int frameToDraw;
-	
+	public static final int SHAMAN=0;
+	public static final int NECROMANCIEN=1;
+	public static final int AQUAMANCIEN=2;
+	public static final int PYROMANCIEN=3;
 
 
 	public Personnage() {
@@ -41,10 +44,6 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 		batch.draw(dessine()[frameToDraw],getOriginX(),getOriginY());
 	}
 
-	public static boolean pointInRectangle (TextureRegion sprite,float spriteX, float spriteY,  float touchX, float touchY) {
-		System.err.println("sprite width"+sprite.getRegionWidth()+"sprite height"+sprite.getRegionHeight()+"spriteX"+spriteX+"spriteY"+spriteY+"touchX"+touchX+"touchY"+touchY);
-	    return spriteX <= touchX && spriteX + sprite.getRegionWidth() >= touchX && spriteY <= touchY && spriteY + sprite.getRegionHeight() >= touchY;
-	}
 	@Override
 	public Actor hit (float x, float y, boolean touchable) {
 		if (touchable && getTouchable() != Touchable.enabled) return null;

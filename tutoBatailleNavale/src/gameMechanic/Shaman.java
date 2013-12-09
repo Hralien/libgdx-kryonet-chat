@@ -24,16 +24,13 @@ public class Shaman extends Personnage {
 		super.luk=4;
 		super.vit=3;
 
-		super.listSkills.add(Skill.donDeVie);
-		super.listSkills.add(Skill.soinDeMasse);
-		super.listSkills.add(Skill.donDeMana);
-		super.listSkills.add(Skill.restriction);
+		super.listSkills=Skill.getSkillForClass(Personnage.SHAMAN);
+
 
 	}
 
 	@Override
 	public void write(Kryo kryo, Output output) {
-		kryo.writeClassAndObject(output, name);
 		output.writeShort(hp);
 		output.writeShort(sp);
 		output.writeShort(str);
@@ -42,13 +39,13 @@ public class Shaman extends Personnage {
 		output.writeShort(dex);
 		output.writeShort(luk);
 		output.writeShort(vit);
+		kryo.writeClassAndObject(output, name);
 
 
 	}
 
 	@Override
 	public void read(Kryo kryo, Input input) {
-		name = (String) kryo.readClassAndObject(input);
 		hp = input.readShort();
 		sp = input.readShort();
 		str = input.readShort();
@@ -58,6 +55,7 @@ public class Shaman extends Personnage {
 		luk = input.readShort();
 		vit = input.readShort();
 
+		name = (String) kryo.readClassAndObject(input);
 
 	}
 

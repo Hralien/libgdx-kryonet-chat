@@ -23,40 +23,37 @@ public class Pyromancien extends Personnage {
 		super.dex=3;
 		super.luk=4;
 		
-		super.listSkills.add(Skill.bouleDeFeu);
-		super.listSkills.add(Skill.lanceArdente);
-		super.listSkills.add(Skill.chocDeMasse);
-		super.listSkills.add(Skill.foudroiement);
+		super.listSkills=Skill.getSkillForClass(Personnage.PYROMANCIEN);
 		
 		
 		
 	}
 	@Override
 	public void write(Kryo kryo, Output output) {
-		output.writeInt(hp, true);
-		output.writeInt(sp, true);
-		output.writeInt(str, true);
-		output.writeInt(agi, true);
-		output.writeInt(intel, true);
-		output.writeInt(dex, true);
-		output.writeInt(luk, true);
-		output.writeInt(vit, true);
-		output.writeString(name);
+		output.writeShort(hp);
+		output.writeShort(sp);
+		output.writeShort(str);
+		output.writeShort(agi);
+		output.writeShort(intel);
+		output.writeShort(dex);
+		output.writeShort(luk);
+		output.writeShort(vit);
+		kryo.writeClassAndObject(output, name);
 
 	}
 
 	@Override
 	public void read(Kryo kryo, Input input) {
-		hp = input.readInt();
-		sp = input.readInt();
-		str = input.readInt();
-		agi = input.readInt();
-		intel = input.readInt();
-		dex = input.readInt();
-		luk = input.readInt();
-		vit = input.readInt();
+		hp = input.readShort();
+		sp = input.readShort();
+		str = input.readShort();
+		agi = input.readShort();
+		intel = input.readShort();
+		dex = input.readShort();
+		luk = input.readShort();
+		vit = input.readShort();
 
-		name = input.readString();
+		name = (String) kryo.readClassAndObject(input);
 	}
 
 	@Override

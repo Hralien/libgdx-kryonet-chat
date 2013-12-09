@@ -3,18 +3,18 @@ skill.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-dondemana
+Foudre
   rotate: false
   xy: 1, 1
   size: 960, 1920
   orig: 960, 1920
   offset: 0, 0
   index: -1
-eclair
+Combustion
   rotate: false
-  xy: 963, 1
-  size: 960, 1920
-  orig: 960, 1920
+  xy: 963, 385
+  size: 960, 1536
+  orig: 960, 1536
   offset: 0, 0
   index: -1
 
@@ -22,21 +22,28 @@ skill2.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-brulure
+Choc_sismique
   rotate: false
-  xy: 1, 387
-  size: 960, 1536
-  orig: 960, 1536
+  xy: 1, 771
+  size: 960, 768
+  orig: 960, 768
   offset: 0, 0
   index: -1
-blizard
+Deflagration
   rotate: false
   xy: 963, 771
-  size: 960, 1152
-  orig: 960, 1152
+  size: 960, 768
+  orig: 960, 768
   offset: 0, 0
   index: -1
-brasier
+Resistance
+  rotate: false
+  xy: 1, 1
+  size: 960, 768
+  orig: 960, 768
+  offset: 0, 0
+  index: -1
+Soin
   rotate: false
   xy: 963, 1
   size: 960, 768
@@ -48,32 +55,25 @@ skill3.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-cyclone
+Empoisonnement
   rotate: false
-  xy: 1, 771
-  size: 960, 1152
-  orig: 960, 1152
+  xy: 1, 963
+  size: 960, 960
+  orig: 960, 960
   offset: 0, 0
   index: -1
-hydrocanon
+Perturbation
   rotate: false
-  xy: 963, 771
-  size: 960, 1152
-  orig: 960, 1152
+  xy: 963, 963
+  size: 960, 960
+  orig: 960, 960
   offset: 0, 0
   index: -1
-heal
+Rafale
   rotate: false
   xy: 1, 1
-  size: 960, 768
-  orig: 960, 768
-  offset: 0, 0
-  index: -1
-seisme
-  rotate: false
-  xy: 963, 1
-  size: 960, 768
-  orig: 960, 768
+  size: 960, 960
+  orig: 960, 960
   offset: 0, 0
   index: -1
 
@@ -81,32 +81,18 @@ skill4.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-boost
-  rotate: false
-  xy: 1, 963
-  size: 960, 960
-  orig: 960, 960
-  offset: 0, 0
-  index: -1
-explosion
-  rotate: false
-  xy: 963, 963
-  size: 960, 960
-  orig: 960, 960
-  offset: 0, 0
-  index: -1
-prisonaqueuse
+Motivation
   rotate: false
   xy: 1, 1
-  size: 960, 960
-  orig: 960, 960
+  size: 960, 1344
+  orig: 960, 1344
   offset: 0, 0
   index: -1
-protection
+Resurrection
   rotate: false
   xy: 963, 1
-  size: 960, 960
-  orig: 960, 960
+  size: 960, 1344
+  orig: 960, 1344
   offset: 0, 0
   index: -1
 
@@ -114,14 +100,14 @@ skill5.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-paralysie
+Abimes
   rotate: false
   xy: 1, 1
   size: 960, 1152
   orig: 960, 1152
   offset: 0, 0
   index: -1
-tonnerre
+Gel
   rotate: false
   xy: 963, 1
   size: 960, 1152
@@ -133,16 +119,28 @@ skill6.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-ultima
+Geyser
   rotate: false
   xy: 1, 1
   size: 960, 1152
   orig: 960, 1152
   offset: 0, 0
   index: -1
-voldevie
+Malediction
   rotate: false
   xy: 963, 1
+  size: 960, 1152
+  orig: 960, 1152
+  offset: 0, 0
+  index: -1
+
+skill7.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Tornade
+  rotate: false
+  xy: 1, 1
   size: 960, 1152
   orig: 960, 1152
   offset: 0, 0

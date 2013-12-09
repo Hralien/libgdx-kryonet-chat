@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import gameMechanic.Personnage;
+import gameMechanic.Skill;
 import chat.ChatClient;
 import chat.ChatServer;
 import com.badlogic.gdx.Game;

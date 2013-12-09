@@ -11,6 +11,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
@@ -60,6 +61,10 @@ public class CreateCharacterScreen implements Screen {
 	 */
 	private Skill skillToRender;
 	private boolean soundIsPlaying;
+	private boolean renderASkill;
+
+	Group fg = new Group();
+	Group bg = new Group();
 
 	public CreateCharacterScreen(MyGame myGame) {
 
@@ -67,9 +72,14 @@ public class CreateCharacterScreen implements Screen {
 		this.spriteBatch = new SpriteBatch();
 		this.skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
-		this.stage = new Stage(Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight(), false);
 		this.fpsLabel = new Label("fps:", skin);
+
+		this.fg = new Group();
+
+		this.stage = new Stage(Gdx.graphics.getWidth(),	Gdx.graphics.getHeight(), false);
+		this.stage.addActor(fg);
+		this.stage.addActor(bg);
+
 
 	}
 
@@ -78,10 +88,10 @@ public class CreateCharacterScreen implements Screen {
 		ldesc.setWrap(true);
 		ScrollPane scrollPaneDesc = new ScrollPane(ldesc, skin);
 
-		Window window = new Window("Description Perso", skin);
-		window.setPosition(100, 200);
-		window.add(scrollPaneDesc).minWidth(200).minHeight(200).colspan(4);
-		window.row();
+		Window classWindow = new Window("Description Perso", skin);
+		classWindow.setPosition(100, 200);
+		classWindow.add(scrollPaneDesc).minWidth(200).minHeight(200).colspan(4);
+		classWindow.row();
 		for (final Skill it : game.player.getListSkills()) {
 			TextButton skillButton = new TextButton(it.getSkillName()
 					+ " cost:" + it.getSpCost(), skin);
@@ -89,20 +99,18 @@ public class CreateCharacterScreen implements Screen {
 
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
-					try {
-						skillToRender = (Skill) it.clone();
-					} catch (CloneNotSupportedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					skillToRender=it;
+					it.resetAnimation();
+					it.setSize(it.getCurrentFrame().getRegionWidth(), it.getCurrentFrame().getRegionHeight());
+					fg.addActor(it);
 				}
 			});
-			window.add(skillButton).fillX();
-			window.row();
+			classWindow.add(skillButton).fillX();
+			classWindow.row();
 		}
-		window.pack();
+		classWindow.pack();
 
-		return window;
+		return classWindow;
 	}
 
 	@Override
@@ -115,7 +123,7 @@ public class CreateCharacterScreen implements Screen {
 		stage.dispose();
 		skin.dispose();
 		spriteBatch.dispose();
-		
+
 	}
 
 	@Override
@@ -125,41 +133,25 @@ public class CreateCharacterScreen implements Screen {
 
 		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
 
-		// dit a l'objet SpriteBatch de se preparer a dessiner
-		spriteBatch.begin();
-
 		// Animation perso skill
 		if (game.player != null) {
 			game.player.setOrigin(100, 100);
 			game.player.setVisible(true);
 		}
-		// si on a un skill a afficher
-		if (skillToRender != null && !skillToRender.isSkillEffectEnded()) {
-			// skillToRender.getEffect().draw(spriteBatch, delta);
-			spriteBatch.draw(skillToRender.afficheSkill(), 50, 50); // #17
-
-			if (!soundIsPlaying) {
-				skillToRender.getSound().play();
-				soundIsPlaying = true;
-			}
-			// si l'animation est finie on remets à null
-			if (skillToRender.isSkillEffectEnded()) {
-				soundIsPlaying = false;
-				skillToRender = null;
-			}
+		if(skillToRender!=null && skillToRender.isAnimationFinished()){
+			fg.clear();
 		}
-		// dit à l'objet SpriteBatch qu'on a finit de dessiner
-		spriteBatch.end();
 
-		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+		stage.act();
 		stage.draw();
-		Table.drawDebug(stage);
+		//		Table.drawDebug(stage);
 	}
 
 	@Override
 	public void show() {
 		// on dit a l'appli d'ecouter ce stage quand la methode show est appelee
 		Gdx.input.setInputProcessor(stage);
+
 		TextButton tbvalidation = new TextButton("creer un perso", skin);
 		TextButton tbConnecter = new TextButton("se connecter", skin);
 
@@ -167,8 +159,7 @@ public class CreateCharacterScreen implements Screen {
 		tfPseudo.setMessageText("Saisir un pseudo!");
 
 		// creation d'un tableau pour stocker les classes
-		String[] tabPersonnage = { "Shaman", "Necromencian", "Mage Chaud",
-		"Aquamancien" };
+		String[] tabPersonnage = { "Shaman", "Necromencian", "Pyromancien",	"Aquamancien" };
 		// creation d'une select box (appele List ici) avec le tableau ci dessus
 		final List listClasses = new List(tabPersonnage, skin);
 		// ajout de la List dans un scrollPane, pour pouvoir derouler,
@@ -192,8 +183,7 @@ public class CreateCharacterScreen implements Screen {
 
 		// window.debug();
 		Window window = new Window("Selection Perso", skin);
-		window.getButtonTable().add(new TextButton("X", skin))
-		.height(window.getPadTop());
+		window.getButtonTable().add(new TextButton("X", skin)).height(window.getPadTop());
 		window.setPosition(650, 200);
 		window.defaults().pad(20, 20, 20, 20);
 		window.row().fill().expandX();
@@ -243,8 +233,9 @@ public class CreateCharacterScreen implements Screen {
 					System.err.println("switch personnage error");
 				}
 				game.player.setName(tfPseudo.getText());
+				bg.clear();
 				classDescWindow = createClassDescWindows();
-				stage.addActor(classDescWindow);
+				bg.addActor(classDescWindow);
 				stage.addActor(game.player);
 			}
 		});
@@ -260,6 +251,7 @@ public class CreateCharacterScreen implements Screen {
 							"Veuillez créer un personnage avant", "ok", stage);
 			}
 		});
+
 	}
 
 	@Override
