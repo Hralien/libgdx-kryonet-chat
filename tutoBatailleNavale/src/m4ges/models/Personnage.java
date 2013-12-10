@@ -27,8 +27,8 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 	private int frameToDraw;
 	public static final int SHAMANE=0;
 	public static final int NECROMANCIEN=1;
-	public static final int AQUAMANCIEN=2;
-	public static final int PYROMANCIEN=3;
+	public static final int PYROMANCIEN=2;
+	public static final int AQUAMANCIEN=3;
 
 
 	public Personnage() {
