@@ -15,58 +15,42 @@ public class Shaman extends Personnage {
 	
 	public Shaman() {
 		super();
-		super.hp = 50;
-		super.sp=50;
-		super.str=3;
-		super.agi=2;
-		super.intel=3;
-		super.dex=3;
-		super.luk=4;
-		super.vit=3;
-
+		/*Ses stats font office de moyenne*/
+		super.hp=100;
+		super.mana=100;
+		super.strength=10;
+		super.speed=10;
+		
 		super.listSkills=Skill.getSkillForClass(Personnage.SHAMANE);
 
-
 	}
-
 	@Override
 	public void write(Kryo kryo, Output output) {
 		output.writeShort(hp);
-		output.writeShort(sp);
-		output.writeShort(str);
-		output.writeShort(agi);
-		output.writeShort(intel);
-		output.writeShort(dex);
-		output.writeShort(luk);
-		output.writeShort(vit);
+		output.writeShort(mana);
+		output.writeShort(strength);
+		output.writeShort(speed);
 		kryo.writeClassAndObject(output, name);
-
 
 	}
 
 	@Override
 	public void read(Kryo kryo, Input input) {
 		hp = input.readShort();
-		sp = input.readShort();
-		str = input.readShort();
-		agi = input.readShort();
-		intel = input.readShort();
-		dex = input.readShort();
-		luk = input.readShort();
-		vit = input.readShort();
+		mana = input.readShort();
+		strength = input.readShort();
+		speed = input.readShort();
 
 		name = (String) kryo.readClassAndObject(input);
 
 	}
 
+	
 	@Override
 	public String toString() {
-		return "Shaman [hp=" + hp + ", sp=" + sp + ", str=" + str + ", agi="
-				+ agi + ", intel=" + intel + ", dex=" + dex + ", luk=" + luk
-				+ ", vit=" + vit + ", name=" + name + ", desc=" + DESCRIPTION
-				+ "]";
+		return "Shaman [hp=" + hp + ", mana=" + mana + ", strength=" + strength
+				+ ", speed=" + speed + ", name=" + name + "]";
 	}
-
 	@Override
 	public String getDesc() {
 		// TODO Auto-generated method stub

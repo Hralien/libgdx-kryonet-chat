@@ -12,13 +12,9 @@ import com.esotericsoftware.kryo.KryoSerializable;
 public abstract class Personnage extends Actor implements KryoSerializable {
 
 	protected int hp;
-	protected int sp;
-	protected int str;
-	protected int agi;
-	protected int intel;
-	protected int dex;
-	protected int luk;
-	protected int vit;
+	protected int mana;
+	protected int strength;
+	protected int speed;
 	
 	protected String name;
 

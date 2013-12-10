@@ -16,14 +16,10 @@ public class Necromancien extends Personnage {
 	
 	public Necromancien() {
 		super();
-		super.hp=50;
-		super.intel=3;
-		super.sp=5*super.intel;
-		super.str=3;
-		super.agi=2;
-		super.vit=3;
-		super.dex=3;
-		super.luk=4;
+		super.hp=70;
+		super.mana=110;
+		super.strength=13;
+		super.speed=10;
 		
 		super.listSkills=Skill.getSkillForClass(Personnage.NECROMANCIEN);
 
@@ -31,13 +27,9 @@ public class Necromancien extends Personnage {
 	@Override
 	public void write(Kryo kryo, Output output) {
 		output.writeShort(hp);
-		output.writeShort(sp);
-		output.writeShort(str);
-		output.writeShort(agi);
-		output.writeShort(intel);
-		output.writeShort(dex);
-		output.writeShort(luk);
-		output.writeShort(vit);
+		output.writeShort(mana);
+		output.writeShort(strength);
+		output.writeShort(speed);
 		kryo.writeClassAndObject(output, name);
 
 	}
@@ -45,13 +37,9 @@ public class Necromancien extends Personnage {
 	@Override
 	public void read(Kryo kryo, Input input) {
 		hp = input.readShort();
-		sp = input.readShort();
-		str = input.readShort();
-		agi = input.readShort();
-		intel = input.readShort();
-		dex = input.readShort();
-		luk = input.readShort();
-		vit = input.readShort();
+		mana = input.readShort();
+		strength = input.readShort();
+		speed = input.readShort();
 
 		name = (String) kryo.readClassAndObject(input);
 	}
