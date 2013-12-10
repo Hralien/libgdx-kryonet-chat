@@ -1,6 +1,5 @@
-package com.me.mygdxgame;
+package m4ges.views;
 
-import gameMechanic.Skill;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -8,6 +7,10 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+
+import m4ges.controllers.AbstractScreen;
+import m4ges.controllers.MyGame;
+import m4ges.models.Skill;
 import chat.ChatClient;
 import chat.Network;
 import chat.Network.SkillNumber;
@@ -34,7 +37,7 @@ import com.esotericsoftware.kryonet.Client;
  * @author Florian
  * 
  */
-public class ChatScreen implements Screen {
+public class ChatScreen extends AbstractScreen {
 
 	final TextField tfHost;
 	// Permet de connaître l'ip du client
@@ -44,12 +47,11 @@ public class ChatScreen implements Screen {
 	SpriteBatch batch;
 
 	Label fpsLabel;
-	MyGame game;
 
 	public SkillNumber showSkillNumber;
 
 	public ChatScreen(MyGame myGame) {
-		this.game = myGame;
+		super(myGame);
 		this.batch = new SpriteBatch();
 		this.skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
@@ -74,8 +76,7 @@ public class ChatScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        super.render( delta );
 
 		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
 		batch.begin();

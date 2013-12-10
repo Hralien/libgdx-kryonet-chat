@@ -6,6 +6,8 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
+import m4ges.controllers.UITrick;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;

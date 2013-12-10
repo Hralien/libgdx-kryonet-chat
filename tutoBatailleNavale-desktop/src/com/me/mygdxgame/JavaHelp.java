@@ -6,6 +6,8 @@ import java.net.UnknownHostException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import m4ges.controllers.UITrick;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;

@@ -1,7 +1,9 @@
-package gameMechanic;
+package m4ges.models;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import m4ges.controllers.MyGame;
 
 import chat.Network.SkillNumber;
 
@@ -23,7 +25,6 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.KryoSerializable;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.me.mygdxgame.MyGame;
 
 public class Skill extends Actor implements Cloneable{
 

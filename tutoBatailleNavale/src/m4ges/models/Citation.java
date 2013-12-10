@@ -1,4 +1,4 @@
-package gameMechanic;
+package m4ges.models;
 
 public class Citation {
 	

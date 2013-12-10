@@ -1,6 +1,8 @@
-package com.me.mygdxgame;
+package m4ges.views;
 
-import gameMechanic.Personnage;
+import m4ges.controllers.AbstractScreen;
+import m4ges.controllers.MyGame;
+import m4ges.models.Personnage;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -22,7 +24,7 @@ import com.esotericsoftware.kryonet.Client;
  * @author Florian
  *
  */
-public class BeginingScreen implements Screen {
+public class BeginingScreen extends AbstractScreen {
 	/**
 	 * design en json place dans les assets de android
 	 * {@link Skin}
@@ -37,11 +39,6 @@ public class BeginingScreen implements Screen {
 	 */
 	private Label fpsLabel;
 
-	/**
-	 * objet {@link MyGame} pour pouvoir changer d'ecran et recup des infos generales
-	 */
-	private MyGame game;
-
 	private Sound sound;
 
 	private SpriteBatch batch;
@@ -50,7 +47,7 @@ public class BeginingScreen implements Screen {
 
 
 	public BeginingScreen(MyGame myGame){
-		this.game=myGame;
+		super(myGame);
 
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
@@ -79,8 +76,7 @@ public class BeginingScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+
 
 		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
 
@@ -95,13 +91,13 @@ public class BeginingScreen implements Screen {
 
 	@Override
 	public void show() {
-		for(Personnage it : game.playersConnected){
+		for(Personnage it : super.game.playersConnected){
 			stage.addActor(it);
 		}
 		//on dit a l'appli d'ecouter ce stage quand la methode show est appelee
 		Gdx.input.setInputProcessor(stage);
 		int i=0;
-		for(Personnage it : game.playersConnected){
+		for(Personnage it : super.game.playersConnected){
 //			batch.draw(it.dessine()[0], 100+i, 100+i);
 			it.setVisible(true);
 			it.setOrigin(100+i, 100+i);
@@ -137,5 +133,6 @@ public class BeginingScreen implements Screen {
 		// TODO Auto-generated method stub
 
 	}
+
 }
 

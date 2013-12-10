@@ -1,4 +1,4 @@
-package com.me.mygdxgame;
+package m4ges.controllers;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 

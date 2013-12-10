@@ -1,4 +1,4 @@
-package com.me.mygdxgame;
+package m4ges.views;
 
 
 import com.badlogic.gdx.graphics.g2d.Animation;

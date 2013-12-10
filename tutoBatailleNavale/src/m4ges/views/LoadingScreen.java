@@ -1,11 +1,14 @@
-package com.me.mygdxgame;
+package m4ges.views;
 
 
-import gameMechanic.Citation;
-import gameMechanic.Skill;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+
+import m4ges.controllers.AbstractScreen;
+import m4ges.controllers.MyGame;
+import m4ges.models.Citation;
+import m4ges.models.Skill;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -23,7 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 /**
  * @author Mats Svensson
  */
-public class LoadingScreen implements Screen {
+public class LoadingScreen extends AbstractScreen {
 
     private Stage stage;
 
@@ -37,16 +40,14 @@ public class LoadingScreen implements Screen {
     private float percent;
 
     private Actor loadingBar;
-    
-    private MyGame game;
-    
+        
     private SpriteBatch batch;
     private BitmapFont font;
     
     private ArrayList<Citation> citationList;
 
     public LoadingScreen(MyGame game) {
-        this.game = game;
+        super(game);
         this.batch = new SpriteBatch();
         this.font = new BitmapFont(Gdx.files.internal("data/delicious.fnt"), false);
         citationList = new ArrayList<Citation>();
@@ -140,7 +141,7 @@ public class LoadingScreen implements Screen {
 
         if (MyGame.manager.update()) { // Load some, will return true if done loading
             if (Gdx.input.isTouched()) { // If the screen is touched after the game is done loading, go to the main menu screen
-                game.changeScreen(MyGame.MENUSCREEN);
+                super.game.changeScreen(MyGame.MENUSCREEN);
             }
         }
 

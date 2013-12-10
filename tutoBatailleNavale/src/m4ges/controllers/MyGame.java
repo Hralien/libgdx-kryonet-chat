@@ -1,4 +1,4 @@
-package com.me.mygdxgame;
+package m4ges.controllers;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -9,8 +9,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import gameMechanic.Personnage;
-import gameMechanic.Skill;
+import m4ges.models.Personnage;
+import m4ges.models.Skill;
+import m4ges.views.BeginingScreen;
+import m4ges.views.ChatScreen;
+import m4ges.views.CreateCharacterScreen;
+import m4ges.views.LoadingScreen;
+import m4ges.views.MenuPrincipalScreen;
+
 import chat.ChatClient;
 import chat.ChatServer;
 import com.badlogic.gdx.Game;

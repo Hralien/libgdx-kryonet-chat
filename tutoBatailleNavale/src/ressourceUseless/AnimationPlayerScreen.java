@@ -1,4 +1,6 @@
-package com.me.mygdxgame;
+package ressourceUseless;
+import m4ges.controllers.MyGame;
+
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;

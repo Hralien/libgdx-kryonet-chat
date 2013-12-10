@@ -2,6 +2,8 @@ package com.me.mygdxgame;
 
 import java.io.IOException;
 
+import m4ges.controllers.MyGame;
+
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;

@@ -1,10 +1,12 @@
-package com.me.mygdxgame;
+package m4ges.views;
 
-import gameMechanic.Pyromancien;
-import gameMechanic.Aquamancien;
-import gameMechanic.Necromancien;
-import gameMechanic.Shaman;
-import gameMechanic.Skill;
+import m4ges.controllers.AbstractScreen;
+import m4ges.controllers.MyGame;
+import m4ges.models.Aquamancien;
+import m4ges.models.Necromancien;
+import m4ges.models.Pyromancien;
+import m4ges.models.Shaman;
+import m4ges.models.Skill;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -30,7 +32,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
  * @author Florian
  * 
  */
-public class CreateCharacterScreen implements Screen {
+public class CreateCharacterScreen extends AbstractScreen {
 	/**
 	 * design en json place dans les assets de android {@link Skin}
 	 */
@@ -43,11 +45,6 @@ public class CreateCharacterScreen implements Screen {
 	 * label pour montrer les fps
 	 */
 	private Label fpsLabel;
-	/**
-	 * objet {@link MyGame} pour pouvoir changer d'ecran et recup des infos
-	 * generales
-	 */
-	private MyGame game;
 	/**
 	 * objet requis pour dessiner {@link SpriteBatch}
 	 */
@@ -68,7 +65,7 @@ public class CreateCharacterScreen implements Screen {
 
 	public CreateCharacterScreen(MyGame myGame) {
 
-		this.game = myGame;
+		super(myGame);
 		this.spriteBatch = new SpriteBatch();
 		this.skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
@@ -84,7 +81,7 @@ public class CreateCharacterScreen implements Screen {
 	}
 
 	private Window createClassDescWindows() {
-		Label ldesc = new Label(game.player.getDesc(), skin);
+		Label ldesc = new Label(super.game.player.getDesc(), skin);
 		ldesc.setWrap(true);
 		ScrollPane scrollPaneDesc = new ScrollPane(ldesc, skin);
 
@@ -92,7 +89,7 @@ public class CreateCharacterScreen implements Screen {
 		classWindow.setPosition(100, 200);
 		classWindow.add(scrollPaneDesc).minWidth(200).minHeight(200).colspan(4);
 		classWindow.row();
-		for (final Skill it : game.player.getListSkills()) {
+		for (final Skill it : super.game.player.getListSkills()) {
 			TextButton skillButton = new TextButton(it.getSkillName()
 					+ " cost:" + it.getSpCost(), skin);
 			skillButton.addListener(new ChangeListener() {
@@ -134,9 +131,9 @@ public class CreateCharacterScreen implements Screen {
 		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
 
 		// Animation perso skill
-		if (game.player != null) {
-			game.player.setOrigin(100, 100);
-			game.player.setVisible(true);
+		if (super.game.player != null) {
+			super.game.player.setOrigin(100, 100);
+			super.game.player.setVisible(true);
 		}
 		if(skillToRender!=null && skillToRender.isAnimationFinished()){
 			fg.clear();

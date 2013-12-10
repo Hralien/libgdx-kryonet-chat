@@ -1,13 +1,14 @@
 
 package chat;
 
-import gameMechanic.Pyromancien;
-import gameMechanic.Aquamancien;
-import gameMechanic.Necromancien;
-import gameMechanic.Personnage;
-import gameMechanic.Shaman;
 
 import java.util.ArrayList;
+
+import m4ges.models.Aquamancien;
+import m4ges.models.Necromancien;
+import m4ges.models.Personnage;
+import m4ges.models.Pyromancien;
+import m4ges.models.Shaman;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.KryoSerializable;

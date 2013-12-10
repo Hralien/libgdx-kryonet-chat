@@ -1,11 +1,12 @@
 
 package chat;
 
-import gameMechanic.Personnage;
-import gameMechanic.Skill;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import m4ges.models.Personnage;
+import m4ges.models.Skill;
 import chat.Network.ChatMessage;
 import chat.Network.ConstantOrder;
 import chat.Network.RegisterName;

@@ -1,10 +1,13 @@
 
 package chat;
 
-import gameMechanic.Personnage;
 import java.awt.EventQueue;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import m4ges.controllers.MyGame;
+import m4ges.models.Personnage;
+import m4ges.views.ChatScreen;
 
 import chat.Network.ChatMessage;
 import chat.Network.ConstantOrder;
@@ -17,8 +20,6 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
-import com.me.mygdxgame.ChatScreen;
-import com.me.mygdxgame.MyGame;
 
 
 public class ChatClient {
