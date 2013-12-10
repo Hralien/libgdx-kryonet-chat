@@ -18,6 +18,7 @@ public class Aquamancien extends Personnage {
 		super.mana=110;
 		super.strength=8;
 		super.speed=11;
+		super.intel=12;
 		
 		super.listSkills=Skill.getSkillForClass(Personnage.AQUAMANCIEN);
 
@@ -28,6 +29,7 @@ public class Aquamancien extends Personnage {
 		output.writeShort(mana);
 		output.writeShort(strength);
 		output.writeShort(speed);
+		output.writeShort(intel);
 		kryo.writeClassAndObject(output, name);
 
 	}
@@ -38,6 +40,7 @@ public class Aquamancien extends Personnage {
 		mana = input.readShort();
 		strength = input.readShort();
 		speed = input.readShort();
+		intel = input.readShort();
 
 		name = (String) kryo.readClassAndObject(input);
 	}

@@ -20,6 +20,7 @@ public class Shaman extends Personnage {
 		super.mana=100;
 		super.strength=10;
 		super.speed=10;
+		super.intel=10;
 		
 		super.listSkills=Skill.getSkillForClass(Personnage.SHAMANE);
 
@@ -30,6 +31,7 @@ public class Shaman extends Personnage {
 		output.writeShort(mana);
 		output.writeShort(strength);
 		output.writeShort(speed);
+		output.writeShort(intel);
 		kryo.writeClassAndObject(output, name);
 
 	}
@@ -40,6 +42,7 @@ public class Shaman extends Personnage {
 		mana = input.readShort();
 		strength = input.readShort();
 		speed = input.readShort();
+		intel = input.readShort();
 
 		name = (String) kryo.readClassAndObject(input);
 

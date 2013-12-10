@@ -18,8 +18,9 @@ public class Necromancien extends Personnage {
 		super();
 		super.hp=70;
 		super.mana=110;
-		super.strength=13;
+		super.strength=8;
 		super.speed=10;
+		super.intel=13;
 		
 		super.listSkills=Skill.getSkillForClass(Personnage.NECROMANCIEN);
 
@@ -30,6 +31,7 @@ public class Necromancien extends Personnage {
 		output.writeShort(mana);
 		output.writeShort(strength);
 		output.writeShort(speed);
+		output.writeShort(intel);
 		kryo.writeClassAndObject(output, name);
 
 	}
@@ -40,6 +42,7 @@ public class Necromancien extends Personnage {
 		mana = input.readShort();
 		strength = input.readShort();
 		speed = input.readShort();
+		intel = input.readShort();
 
 		name = (String) kryo.readClassAndObject(input);
 	}

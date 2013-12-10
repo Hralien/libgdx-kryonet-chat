@@ -15,6 +15,7 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 	protected int mana;
 	protected int strength;
 	protected int speed;
+	protected int intel;
 	
 	protected String name;
 
