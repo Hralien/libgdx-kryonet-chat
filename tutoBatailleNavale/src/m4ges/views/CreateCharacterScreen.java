@@ -156,7 +156,7 @@ public class CreateCharacterScreen extends AbstractScreen {
 		tfPseudo.setMessageText("Saisir un pseudo!");
 
 		// creation d'un tableau pour stocker les classes
-		String[] tabPersonnage = { "Shaman", "Necromencian", "Pyromancien",	"Aquamancien" };
+		String[] tabPersonnage = { "Chamane", "Necromancien", "Pyromancien",	"Aquamancien" };
 		// creation d'une select box (appele List ici) avec le tableau ci dessus
 		final List listClasses = new List(tabPersonnage, skin);
 		// ajout de la List dans un scrollPane, pour pouvoir derouler,

@@ -9,7 +9,7 @@ import com.esotericsoftware.kryo.io.Output;
 
 public class Shaman extends Personnage {
 
-	private final static String DESCRIPTION = "Le shamane est l'élément vital du groupe, son but étant de garder ses alliés en vie par tous les moyens.";
+	private final static String DESCRIPTION = "Le chamane est l'élément vital du groupe, son but étant de garder ses alliés en vie par tous les moyens.";
 
 	private static volatile TextureRegion[] regions = null;
 	
