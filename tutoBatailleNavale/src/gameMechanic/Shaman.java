@@ -24,7 +24,7 @@ public class Shaman extends Personnage {
 		super.luk=4;
 		super.vit=3;
 
-		super.listSkills=Skill.getSkillForClass(Personnage.SHAMAN);
+		super.listSkills=Skill.getSkillForClass(Personnage.SHAMANE);
 
 
 	}

@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -67,7 +68,6 @@ public class MenuPrincipalScreen implements Screen {
 	 */
 	private MyGame game;
 
-	// private Sound sound;
 	/** 
 	 * nb of players for serveur
 	 */
@@ -75,7 +75,7 @@ public class MenuPrincipalScreen implements Screen {
 	/**
 	 *  {@link AtlasRegion} to get the logo
 	 */
-	private Sprite imgBackground;
+	private Sprite imgTitle;
 	/** 
 	 * {@link SpriteBatch} to draw
 	 */
@@ -88,15 +88,19 @@ public class MenuPrincipalScreen implements Screen {
 	 * camera
 	 */
 	private OrthographicCamera camera;
-	/**
-	 * bg private Texture bg; private static final int FRAME_COLS = 8; // #1
-	 * private static final int FRAME_ROWS = 1; // #2 private Animation
-	 * walkAnimation; // #3
-	 * 
-	 * private TextureRegion[] walkFrames; // #5 private SpriteBatch batch;
-	 * 
-	 * private float stateTime; // #8 private TextureRegion currentFrame; // #7
-	 */
+
+	private Texture bg;
+	private static final int FRAME_COLS = 1; // #1
+	private static final int FRAME_ROWS = 90; // #2 
+	private Animation walkAnimation; // #3
+
+	private TextureRegion[] walkFrames; // #5 
+
+	private float stateTime; // #8 
+	private TextureRegion currentFrame; // #7
+
+	private Music music;
+
 
 	public MenuPrincipalScreen(MyGame myGame) {
 		this.game = myGame;
@@ -104,12 +108,8 @@ public class MenuPrincipalScreen implements Screen {
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),false);
 		fpsLabel = new Label("fps:", skin);
-		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("ui/magic.pack"));
-		TextureAtlas atlas2 = new TextureAtlas(Gdx.files.internal("ui/loading.pack"));/**:D*/
 		batch = new SpriteBatch();
-		imgBackground = new Sprite(atlas2.findRegion("TitleM4ges"));
-		imgBackground.setPosition((int)(Gdx.graphics.getWidth()*0.2), (int)(Gdx.graphics.getHeight()*0.5));
-
+		
 	}
 
 	@Override
@@ -122,7 +122,7 @@ public class MenuPrincipalScreen implements Screen {
 		stage.dispose();
 		skin.dispose();
 		batch.dispose();
-		// sound.dispose();
+		music.dispose();
 	}
 
 	@Override
@@ -136,7 +136,7 @@ public class MenuPrincipalScreen implements Screen {
 		// correspondant
 		switch (buttonSelected) {
 		case 1:
-			// sound.stop();
+			music.stop();
 			game.changeScreen(MyGame.CHATSCREEN);
 			break;
 		case 2:
@@ -145,32 +145,24 @@ public class MenuPrincipalScreen implements Screen {
 
 			break;
 		case 3:
-			// sound.stop();
+			music.stop();
 			game.changeScreen(MyGame.NEWCHARACTERSCREEN);
 			break;
 		default:
 			break;
 		}
 
-//		batch.setProjectionMatrix(camera.combined);
+		//		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		float degressPerSecond = 10.0f;
-		rot = (rot + Gdx.graphics.getDeltaTime() *degressPerSecond) % 360;
-		final float shakeAmplitudeInDegrees = 5.0f;
-		float shake = MathUtils.sin(rot) * shakeAmplitudeInDegrees;
-		imgBackground.setRotation(shake);
-		imgBackground.draw(batch);
+		
+		stateTime += Gdx.graphics.getDeltaTime(); // #15
+		currentFrame = walkAnimation.getKeyFrame(stateTime, true); // #16
+
+		batch.draw(currentFrame, 0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		imgTitle.draw(batch);
+
 		batch.end();
-		/*
-		 * sound.play(0.1f); // play new sound and keep handle for further
-		 * manipulation stateTime += Gdx.graphics.getDeltaTime(); // #15
-		 * currentFrame = walkAnimation.getKeyFrame(stateTime, true); // #16
-		 * 
-		 * batch.begin(); batch.draw(currentFrame, 0,
-		 * 0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-		 * 
-		 * batch.end();
-		 */
+
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 		stage.draw();
 		Table.drawDebug(stage);
@@ -181,21 +173,21 @@ public class MenuPrincipalScreen implements Screen {
 		// on dit a l'appli d'ecouter ce stage quand la methode show est appelee
 		Gdx.input.setInputProcessor(stage);
 
-		//sound = Gdx.audio.newMusic(Gdx.files.internal("sound/CloudTopLoops.mp3"));
-		// bg = new Texture(Gdx.files.internal("background2.png"));
-		//
-		// TextureRegion[][] tmp = TextureRegion.split(bg, bg.getWidth() /
-		// FRAME_COLS, bg.getHeight() / FRAME_ROWS); // #10
-		// walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
-		// int index = 0;
-		// for (int i = 0; i < FRAME_ROWS; i++) {
-		// for (int j = 0; j < FRAME_COLS; j++) {
-		// walkFrames[index++] = tmp[i][j];
-		// }
-		// }
-		// walkAnimation = new Animation(0.5f, walkFrames); // #11
-		// batch = new SpriteBatch();
-		// stateTime = 0f;
+		bg = new Texture(Gdx.files.internal("ui/bg.png"));
+
+		TextureRegion[][] tmp = TextureRegion.split(bg, bg.getWidth() /
+				FRAME_COLS, bg.getHeight() / FRAME_ROWS); // #10
+		walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+		int index = 0;
+		for (int i = 0; i < FRAME_ROWS; i++) {
+			for (int j = 0; j < FRAME_COLS; j++) {
+				walkFrames[index++] = tmp[i][j];
+			}
+		}
+		walkAnimation = new Animation(0.1f, walkFrames); // #11
+		walkAnimation.setPlayMode(Animation.LOOP_PINGPONG);
+		batch = new SpriteBatch();
+		stateTime = 0f;
 
 		// nos 3 boutons de selection
 		float w = Gdx.graphics.getWidth();
@@ -210,11 +202,13 @@ public class MenuPrincipalScreen implements Screen {
 		style.up = new TextureRegionDrawable(image);
 		style.font = new BitmapFont();
 
-		
+
 		TextButton tbHost = new TextButton("heberger un chat", style);
 		TextButton tbJoin = new TextButton("creer un perso", style);
 
-		
+		imgTitle = new Sprite(atlas.findRegion("TitleM4ges"));
+		imgTitle.setPosition((int)(Gdx.graphics.getWidth()*0.2), (int)(Gdx.graphics.getHeight()*0.5));
+
 		tbHost.addListener(new ChangeListener() {
 
 			@Override
@@ -233,9 +227,8 @@ public class MenuPrincipalScreen implements Screen {
 					creerServer.add(creer);
 					creerServer.row();
 					creerServer.pack();
-					creerServer.setPosition(
-							((float) (Gdx.graphics.getHeight() * 0.5)),
-							((float) (Gdx.graphics.getWidth() * 0.5)));
+					creerServer.setPosition(((float) (Gdx.graphics.getWidth() * 0.5)-creerServer.getWidth()),
+							((float) (Gdx.graphics.getHeight() * 0.5)));
 					stage.addActor(creerServer);
 
 					creer.addListener(new ChangeListener() {
@@ -295,6 +288,14 @@ public class MenuPrincipalScreen implements Screen {
 
 		// stage.addActor(new Button("Behind Window", skin));
 		stage.addActor(window);
+		
+		music = Gdx.audio.newMusic(Gdx.files.internal("sound/CloudTopLoops.mp3"));
+		music.play(); // play new sound and keep handle for further
+		music.setVolume(0.5f);                 // sets the volume to half the maximum volume
+		music.setLooping(true);                // will repeat playback until music.stop() is called
+		music.stop();                          // stops the playback
+		music.pause();                         // pauses the playback
+		music.play();                          // resumes the playback
 
 	}
 

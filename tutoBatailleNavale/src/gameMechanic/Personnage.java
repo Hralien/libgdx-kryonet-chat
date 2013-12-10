@@ -25,7 +25,7 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 	protected ArrayList<Skill> listSkills;
 
 	private int frameToDraw;
-	public static final int SHAMAN=0;
+	public static final int SHAMANE=0;
 	public static final int NECROMANCIEN=1;
 	public static final int AQUAMANCIEN=2;
 	public static final int PYROMANCIEN=3;
@@ -35,7 +35,6 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 		this.listSkills = new ArrayList<Skill>();
         setTouchable(Touchable.enabled);
         this.setOrigin(50, 50);
-
 	}
 	
 	

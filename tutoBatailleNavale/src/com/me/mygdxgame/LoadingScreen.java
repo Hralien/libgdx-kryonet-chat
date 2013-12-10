@@ -70,6 +70,7 @@ public class LoadingScreen implements Screen {
         TextureAtlas atlas = MyGame.manager.get("ui/loading.pack", TextureAtlas.class);
         // Grab the regions from the atlas and create some images
         logo = new Image(atlas.findRegion("TitleM4ges"));
+        logo.setSize((float)(Gdx.graphics.getWidth()*.35),(float)( Gdx.graphics.getHeight()*.25));
         loadingFrame = new Image(atlas.findRegion("loading-frame"));
         loadingBarHidden = new Image(atlas.findRegion("loading-bar-hidden"));
         screenBg = new Image(atlas.findRegion("screen-bg"));
