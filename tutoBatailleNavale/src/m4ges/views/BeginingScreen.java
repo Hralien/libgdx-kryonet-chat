@@ -1,8 +1,11 @@
 package m4ges.views;
 
+import java.util.ArrayList;
+
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
 import m4ges.models.Personnage;
+import m4ges.models.Skeleton;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -34,11 +37,6 @@ public class BeginingScreen extends AbstractScreen {
 	 * {@link Stage}
 	 */
 	private Stage stage;
-	/**
-	 * label pour montrer les fps
-	 */
-	private Label fpsLabel;
-
 	private Sound sound;
 
 	private SpriteBatch batch;
@@ -49,14 +47,10 @@ public class BeginingScreen extends AbstractScreen {
 	public BeginingScreen(MyGame myGame){
 		super(myGame);
 
-		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 		bg = new Texture(Gdx.files.internal("moon.png"));
 
-
 		batch = new SpriteBatch();
-
-		fpsLabel = new Label("fps:", skin);
 	}
 
 
@@ -76,9 +70,7 @@ public class BeginingScreen extends AbstractScreen {
 
 	@Override
 	public void render(float delta) {
-
-
-		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
+		super.render(delta);
 
 		batch.begin();
 		batch.draw(bg, 0, 0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
@@ -87,32 +79,54 @@ public class BeginingScreen extends AbstractScreen {
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 		stage.draw();
 		Table.drawDebug(stage);
+
 	}
 
 	@Override
 	public void show() {
-		for(Personnage it : super.game.playersConnected){
-			stage.addActor(it);
-		}
 		//on dit a l'appli d'ecouter ce stage quand la methode show est appelee
 		Gdx.input.setInputProcessor(stage);
+		float width = Gdx.graphics.getWidth();
+		float height = Gdx.graphics.getHeight();
 		int i=0;
-		for(Personnage it : super.game.playersConnected){
+		for(final Personnage it : super.game.playersConnected){
 //			batch.draw(it.dessine()[0], 100+i, 100+i);
 			it.setVisible(true);
-			it.setOrigin(100+i, 100+i);
-			it.setBounds(100+i, 100+i, it.dessine()[0].getRegionWidth(), it.dessine()[0].getRegionHeight());
+			it.setOrigin(width/2+i, height/3+i);
+			it.setBounds(width/2+i, height/3+i, it.dessine()[0].getRegionWidth(), it.dessine()[0].getRegionHeight());
 			it.addListener(new InputListener() {
 				public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-					System.out.println("down");
+					System.out.println("["+it.getName()+"]"+"down");
 					return true;
 				}
 				
 				public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-					System.out.println("up");
+					System.out.println("["+it.getName()+"]"+"up");
 				}
 			});
 			i+=50;
+			stage.addActor(it);
+		}
+		ArrayList<Personnage> mob = new ArrayList<Personnage>();
+		mob.add(new Skeleton());
+		i=0;
+
+		for(final Personnage it: mob){
+			it.setVisible(true);
+			it.setOrigin(width/3+i, height/2+i);
+			it.setBounds(width/3+i, height/2+i, it.dessine()[0].getRegionWidth(), it.dessine()[0].getRegionHeight());
+			it.addListener(new InputListener() {
+				public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+					System.out.println("["+it.getName()+"]"+"down");
+					return true;
+				}
+				
+				public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+					System.out.println("["+it.getName()+"]"+"up");
+				}
+			});
+			i+=50;
+			stage.addActor(it);
 		}
 	}
 

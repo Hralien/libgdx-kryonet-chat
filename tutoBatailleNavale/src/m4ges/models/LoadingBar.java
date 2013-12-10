@@ -1,4 +1,4 @@
-package m4ges.views;
+package m4ges.models;
 
 
 import com.badlogic.gdx.graphics.g2d.Animation;

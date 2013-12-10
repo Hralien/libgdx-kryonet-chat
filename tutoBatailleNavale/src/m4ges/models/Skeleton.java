@@ -9,7 +9,7 @@ import com.esotericsoftware.kryo.io.Output;
 
 public class Skeleton extends Personnage {
 	
-	private final static String DESCRIPTION = "Le nécromancien est un adepte de la magie noire et utilise la manipulation pour parvenir à détruire plus facilement son adversaire.";
+	private final static String DESCRIPTION = "Le Skeleton est ou n'est pas ...";
 	private static volatile TextureRegion[] regions = null;
 
 	
@@ -18,12 +18,10 @@ public class Skeleton extends Personnage {
 		super();
 		super.hp=50;
 		super.intel=3;
-		super.sp=5*super.intel;
-		super.str=3;
-		super.agi=2;
-		super.vit=3;
-		super.dex=3;
-		super.luk=4;
+		super.mana=5*super.intel;
+		super.strength=3;
+		super.speed=2;
+
 		
 		super.listSkills=Skill.getSkillForClass(Personnage.NECROMANCIEN);
 
@@ -31,13 +29,11 @@ public class Skeleton extends Personnage {
 	@Override
 	public void write(Kryo kryo, Output output) {
 		output.writeShort(hp);
-		output.writeShort(sp);
-		output.writeShort(str);
-		output.writeShort(agi);
+		output.writeShort(mana);
+		output.writeShort(strength);
+		output.writeShort(speed);
 		output.writeShort(intel);
-		output.writeShort(dex);
-		output.writeShort(luk);
-		output.writeShort(vit);
+
 		kryo.writeClassAndObject(output, name);
 
 	}
@@ -45,13 +41,11 @@ public class Skeleton extends Personnage {
 	@Override
 	public void read(Kryo kryo, Input input) {
 		hp = input.readShort();
-		sp = input.readShort();
-		str = input.readShort();
-		agi = input.readShort();
+		mana = input.readShort();
+		strength = input.readShort();
+		speed = input.readShort();
 		intel = input.readShort();
-		dex = input.readShort();
-		luk = input.readShort();
-		vit = input.readShort();
+
 
 		name = (String) kryo.readClassAndObject(input);
 	}
@@ -73,20 +67,24 @@ public class Skeleton extends Personnage {
 			// Il est TRES important.
 			synchronized(Skeleton.class) {
 				if (Skeleton.regions == null) {
-					Texture sprite = new Texture(Gdx.files.internal("character/necromancien.png"));
-					regions = new TextureRegion[9]; 
-					regions[0] = new TextureRegion(sprite, 0, 0, 31, 46);
-					regions[1] = new TextureRegion(sprite, 31, 0, 32, 46);
-					regions[2] = new TextureRegion(sprite, 64, 0, 32, 46);
-					regions[3] = new TextureRegion(sprite, 95, 0, 33, 46);
-					regions[4] = new TextureRegion(sprite, 128, 0, 33, 46);
-					regions[5] = new TextureRegion(sprite, 160, 0, 26, 46);
-					regions[6] = new TextureRegion(sprite, 192, 0, 30, 46);
-					regions[7] = new TextureRegion(sprite, 0, 46, 48, 26);
-					regions[8] = new TextureRegion(sprite, 69, 46, 48, 26);
+					Texture sprite = new Texture(Gdx.files.internal("character/skeleton.png"));
+					regions = new TextureRegion[8]; 
+					regions[0] = new TextureRegion(sprite, 0, 0, 128, 100);
+					regions[1] = new TextureRegion(sprite, 128, 0, 128, 100);
+					regions[2] = new TextureRegion(sprite, 256, 0, 128, 100);
+					regions[3] = new TextureRegion(sprite, 384, 0, 128, 100);
+					regions[4] = new TextureRegion(sprite, 0, 100, 128, 200);
+					regions[5] = new TextureRegion(sprite, 128, 100, 128, 200);
+					regions[6] = new TextureRegion(sprite, 256, 100, 128, 200);
+					regions[7] = new TextureRegion(sprite, 384, 100, 128, 200);
+
 				}
 			}
 		}
 		return Skeleton.regions;
+	}
+	@Override
+	public String getName(){
+		return getClass().getSimpleName();
 	}
 }

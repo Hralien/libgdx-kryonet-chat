@@ -51,17 +51,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  */
 public class MenuPrincipalScreen extends AbstractScreen {
 	/**
-	 * design en json place dans les assets de android {@link Skin}
-	 */
-	private Skin skin;
-	/**
 	 * {@link Stage}
 	 */
 	private Stage stage;
-	/**
-	 * label pour montrer les fps
-	 */
-	private Label fpsLabel;
 	/**
 	 * numero du bouton selectionne
 	 */
@@ -104,9 +96,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	public MenuPrincipalScreen(MyGame myGame) {
 		super(myGame);
 
-		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),false);
-		fpsLabel = new Label("fps:", skin);
 		batch = new SpriteBatch();
 
 	}
@@ -127,8 +117,6 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
         super.render( delta );
-
-		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
 
 		// on switch le num du bouton selectionner et son affiche le screen
 		// correspondant

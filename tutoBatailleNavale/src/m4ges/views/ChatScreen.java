@@ -42,23 +42,16 @@ public class ChatScreen extends AbstractScreen {
 	final TextField tfHost;
 	// Permet de connaître l'ip du client
 	String ipClient;
-	Skin skin;
 	Stage stage;
 	SpriteBatch batch;
-
-	Label fpsLabel;
 
 	public SkillNumber showSkillNumber;
 
 	public ChatScreen(MyGame myGame) {
 		super(myGame);
 		this.batch = new SpriteBatch();
-		this.skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-
-		this.stage = new Stage(Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight(), false);
+		this.stage = new Stage(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), false);
 		this.tfHost = new TextField("", skin);
-		this.fpsLabel = new Label("fps:", skin);
 	}
 
 	@Override
@@ -77,8 +70,6 @@ public class ChatScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
         super.render( delta );
-
-		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
 		batch.begin();
 		if (showSkillNumber != null) {
 			stage.addActor(Skill.selectSkillFromSkillNumber(showSkillNumber));
@@ -166,8 +157,6 @@ public class ChatScreen extends AbstractScreen {
 		window.add(validation);
 		window.row();
 		window.add(search);
-		window.row();
-		window.add(fpsLabel).colspan(4);
 		window.pack();
 
 		// stage.addActor(new Button("Behind Window", skin));

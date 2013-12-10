@@ -8,6 +8,7 @@ import java.util.Hashtable;
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
 import m4ges.models.Citation;
+import m4ges.models.LoadingBar;
 import m4ges.models.Skill;
 
 import com.badlogic.gdx.Gdx;
@@ -136,8 +137,7 @@ public class LoadingScreen extends AbstractScreen {
     @Override
     public void render(float delta) {
         // Clear the screen
-    	Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+    	super.render(delta);
 
         if (MyGame.manager.update()) { // Load some, will return true if done loading
             if (Gdx.input.isTouched()) { // If the screen is touched after the game is done loading, go to the main menu screen
@@ -160,7 +160,7 @@ public class LoadingScreen extends AbstractScreen {
         stage.draw();
         //draw tips
         batch.begin();
-        int index= (int) Math.random()*(citationList.size());
+        int index= (int)( Math.random()*citationList.size());
         font.draw(batch, citationList.get(index).getPhrase(), 100, 100);
         font.draw(batch, citationList.get(index).getAuteur(), 100, 80);
 

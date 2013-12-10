@@ -16,6 +16,7 @@ import chat.Network.RequestName;
 import chat.Network.SkillNumber;
 import chat.Network.UpdateNames;
 
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -51,18 +52,18 @@ public class ChatClient {
 				//				client.sendTCP(registerName);
 				connection.setName(game.player.getName());
 				//				client.sendTCP(new PersonnageConnection(game.player));
-//				client.sendTCP(new RequestName());
+				//				client.sendTCP(new RequestName());
 				client.sendTCP(game.player);
 
 			}
 
 			@Override
 			public void received (Connection connection, Object object) {
-				
+
 				if(object instanceof RequestName){
 					System.err.print("trolol");
 				}
-				
+
 				if (object instanceof UpdateNames) {
 					System.out.println("[client]: updateNames reçu");
 					UpdateNames updateNames = (UpdateNames)object;
@@ -90,23 +91,27 @@ public class ChatClient {
 					int ordre=((ConstantOrder)object).order;
 					switch (ordre) {
 					case ConstantOrder.STARTGAME:
-						game.changeScreen(MyGame.BEGINSCREEN);
+						Gdx.app.postRunnable(new Runnable() {
+							public void run() {
+								game.changeScreen(MyGame.BEGINSCREEN);
+							}
+						});
 						break;
 
 					default:
 						break;
+						}
 					}
 				}
-			}
 
-			public void disconnected (Connection connection) {
-				EventQueue.invokeLater(new Runnable() {
-					public void run () {
+				public void disconnected (Connection connection) {
+					EventQueue.invokeLater(new Runnable() {
+						public void run () {
 
-					}
-				});
-			}
-		});
+						}
+					});
+				}
+			});
 
 
 		chatWindow = new ChatWindow(adresse);
@@ -135,8 +140,8 @@ public class ChatClient {
 
 
 
+		}
+
+
+
 	}
-
-
-
-}

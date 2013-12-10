@@ -34,17 +34,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
  */
 public class CreateCharacterScreen extends AbstractScreen {
 	/**
-	 * design en json place dans les assets de android {@link Skin}
-	 */
-	private Skin skin;
-	/**
 	 * {@link Stage}
 	 */
 	private Stage stage;
-	/**
-	 * label pour montrer les fps
-	 */
-	private Label fpsLabel;
+
 	/**
 	 * objet requis pour dessiner {@link SpriteBatch}
 	 */
@@ -64,13 +57,8 @@ public class CreateCharacterScreen extends AbstractScreen {
 	Group bg = new Group();
 
 	public CreateCharacterScreen(MyGame myGame) {
-
 		super(myGame);
 		this.spriteBatch = new SpriteBatch();
-		this.skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-
-		this.fpsLabel = new Label("fps:", skin);
-
 		this.fg = new Group();
 
 		this.stage = new Stage(Gdx.graphics.getWidth(),	Gdx.graphics.getHeight(), false);
@@ -125,11 +113,7 @@ public class CreateCharacterScreen extends AbstractScreen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
-		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
-
+		super.render(delta);
 		// Animation perso skill
 		if (super.game.player != null) {
 			super.game.player.setOrigin(100, 100);
@@ -192,8 +176,6 @@ public class CreateCharacterScreen extends AbstractScreen {
 		window.add(tbConnecter);
 		window.row();
 		window.add(fleche);
-		window.row();
-		window.add(fpsLabel).colspan(4);
 		window.pack();
 
 		// stage.addActor(new Button("Behind Window", skin));

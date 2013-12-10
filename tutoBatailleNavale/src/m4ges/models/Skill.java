@@ -68,7 +68,7 @@ public class Skill extends Actor implements Cloneable{
 		this.frame_rows = frame_rows;
 
 		AtlasRegion spritesheet = getInstance().findRegion(skillEffect);
-		System.err.println("name:"+skillEffect+"width"+spritesheet.getRegionWidth()+"hieght"+spritesheet.getRegionHeight());
+//		System.err.println("name:"+skillEffect+"width"+spritesheet.getRegionWidth()+"hieght"+spritesheet.getRegionHeight());
 		TextureRegion[] walkFrames = new TextureRegion[this.frame_cols*this.frame_rows];
 		int width=spritesheet.getRegionWidth()/this.frame_cols;
 		int height = spritesheet.getRegionHeight()/this.frame_rows;
@@ -76,15 +76,15 @@ public class Skill extends Actor implements Cloneable{
 		for(int i = 0; i<this.frame_cols;i++){
 			for(int j=0;j<this.frame_rows;j++){
 				walkFrames[index] = new TextureRegion(spritesheet,i*width,j*height,width,height); 
-				System.err.println("index:"+index);
+//				System.err.println("index:"+index);
 				index++;
 
 			}
 		}
 
-		System.err.println(walkFrames.length);
+//		System.err.println(walkFrames.length);
 		skillAnimation = new Animation(0.1f, walkFrames);
-		System.err.println("skillanim"+skillName+"lenght"+skillAnimation.animationDuration);
+//		System.err.println("skillanim"+skillName+"lenght"+skillAnimation.animationDuration);
 		skillAnimation.setPlayMode(Animation.NORMAL);
 		stateTime = 0f; // #13
 		currentFrame = skillAnimation.getKeyFrame(0);
