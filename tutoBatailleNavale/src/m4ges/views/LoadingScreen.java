@@ -1,18 +1,10 @@
 package m4ges.views;
 
-
-
-import java.util.ArrayList;
-import java.util.Hashtable;
-
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
 import m4ges.models.Citation;
 import m4ges.models.LoadingBar;
-import m4ges.models.Skill;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -42,20 +34,13 @@ public class LoadingScreen extends AbstractScreen {
 
     private Actor loadingBar;
         
-    private SpriteBatch batch;
     private BitmapFont font;
     
-    private ArrayList<Citation> citationList;
 
     public LoadingScreen(MyGame game) {
         super(game);
-        this.batch = new SpriteBatch();
         this.font = new BitmapFont(Gdx.files.internal("data/delicious.fnt"), false);
-        citationList = new ArrayList<Citation>();
-        citationList.add(new Citation("Elle est où la poulette ? ", "Kaamelott - Cadoc"));
-        citationList.add(new Citation("C’est pas faux ! ", "Kaamelott - Perceval"));
-        citationList.add(new Citation("Je ne mange pas de graines !! ", "Kaamelott - Maitre d'arme"));
-        citationList.add(new Citation("Le gras c’est la vie !", "Kaamelott - Karadoc"));
+        Citation.buildList();
 
     }
 
@@ -63,6 +48,7 @@ public class LoadingScreen extends AbstractScreen {
     public void show() {
         // Tell the manager to load assets for the loading screen
         MyGame.manager.load("ui/loading.pack", TextureAtlas.class);
+        
         // Wait until they are finished loading
         MyGame.manager.finishLoading();
 
@@ -96,6 +82,8 @@ public class LoadingScreen extends AbstractScreen {
 
         // Add everything to be loaded, for instance:
         MyGame.manager.load("effects/skill.pack", TextureAtlas.class);
+        MyGame.manager.load("ui/battleui.pack", TextureAtlas.class);
+        MyGame.manager.load("character/personnage.pack", TextureAtlas.class);
 
     }
 
@@ -158,11 +146,11 @@ public class LoadingScreen extends AbstractScreen {
         // Show the loading screen
         stage.act();
         stage.draw();
+        
         //draw tips
         batch.begin();
-        int index= (int)( Math.random()*citationList.size());
-        font.draw(batch, citationList.get(index).getPhrase(), 100, 100);
-        font.draw(batch, citationList.get(index).getAuteur(), 100, 80);
+        font.draw(batch, Citation.citationAuHasard().getPhrase(), 100, 100);
+        font.draw(batch, Citation.citationAuHasard().getAuteur(), 100, 80);
 
         batch.end();
         batch.flush();

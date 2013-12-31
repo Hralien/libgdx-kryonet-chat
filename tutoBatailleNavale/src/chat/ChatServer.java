@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 import m4ges.models.Personnage;
 import m4ges.models.Skill;
+import m4ges.util.Constants;
 import chat.Network.ChatMessage;
-import chat.Network.ConstantOrder;
 import chat.Network.RegisterName;
 import chat.Network.RequestName;
 import chat.Network.UpdateNames;
@@ -98,9 +98,7 @@ public class ChatServer {
 						System.out.println("[serveur]:depassement limite atteinte");
 
 						server.sendToAllTCP(listPersonnage);
-						ConstantOrder co = new ConstantOrder();
-						co.order=ConstantOrder.STARTGAME;
-						server.sendToAllTCP(co);
+						server.sendToAllTCP(Constants.STARTGAME);
 					}
 					else{
 						// Send a "connected" message to everyone except the new client.

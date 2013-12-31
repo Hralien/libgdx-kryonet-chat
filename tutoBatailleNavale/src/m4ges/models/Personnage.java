@@ -68,4 +68,24 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 	public ArrayList<Skill> getListSkills() {
 		return listSkills;
 	}
+
+
+	public int getHp() {
+		return hp;
+	}
+
+
+	public void setHp(int hp) {
+		this.hp = hp;
+	}
+
+
+	public int getMana() {
+		return mana;
+	}
+
+
+	public void setMana(int mana) {
+		this.mana = mana;
+	}
 }

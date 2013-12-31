@@ -159,8 +159,6 @@ public class Skill extends Actor implements Cloneable{
 
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
-		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		stateTime += Gdx.graphics.getDeltaTime();                       // #15
 		System.err.println(stateTime);
 		if((stateTime<=skillAnimation.animationDuration/5)){

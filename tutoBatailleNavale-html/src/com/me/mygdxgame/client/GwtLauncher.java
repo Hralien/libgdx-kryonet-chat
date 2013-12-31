@@ -1,7 +1,6 @@
 package com.me.mygdxgame.client;
 
-import ressourceUseless.MyGdxGame;
-import ressourceUseless.UITest;
+import m4ges.controllers.MyGame;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
@@ -16,6 +15,6 @@ public class GwtLauncher extends GwtApplication {
 
 	@Override
 	public ApplicationListener getApplicationListener () {
-		return new UITest();
+		return new MyGame(new JavaHelp());
 	}
 }

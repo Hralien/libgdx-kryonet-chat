@@ -15,7 +15,6 @@ public class Shaman extends Personnage {
 	
 	public Shaman() {
 		super();
-		/*Ses stats font office de moyenne*/
 		super.hp=100;
 		super.mana=100;
 		super.strength=10;
@@ -27,8 +26,8 @@ public class Shaman extends Personnage {
 	}
 	@Override
 	public void write(Kryo kryo, Output output) {
-		output.writeShort(hp);
-		output.writeShort(mana);
+		output.writeShort(getHp());
+		output.writeShort(getMana());
 		output.writeShort(strength);
 		output.writeShort(speed);
 		output.writeShort(intel);
@@ -38,8 +37,8 @@ public class Shaman extends Personnage {
 
 	@Override
 	public void read(Kryo kryo, Input input) {
-		hp = input.readShort();
-		mana = input.readShort();
+		setHp(input.readShort());
+		setMana(input.readShort());
 		strength = input.readShort();
 		speed = input.readShort();
 		intel = input.readShort();
@@ -51,7 +50,7 @@ public class Shaman extends Personnage {
 	
 	@Override
 	public String toString() {
-		return "Shaman [hp=" + hp + ", mana=" + mana + ", strength=" + strength
+		return "Shaman [hp=" + getHp() + ", mana=" + getMana() + ", strength=" + strength
 				+ ", speed=" + speed + ", name=" + name + "]";
 	}
 	@Override

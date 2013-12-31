@@ -1,7 +1,11 @@
 package m4ges.models;
 
+import m4ges.controllers.MyGame;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
@@ -28,8 +32,8 @@ public class Skeleton extends Personnage {
 	}
 	@Override
 	public void write(Kryo kryo, Output output) {
-		output.writeShort(hp);
-		output.writeShort(mana);
+		output.writeShort(getHp());
+		output.writeShort(getMana());
 		output.writeShort(strength);
 		output.writeShort(speed);
 		output.writeShort(intel);
@@ -40,8 +44,8 @@ public class Skeleton extends Personnage {
 
 	@Override
 	public void read(Kryo kryo, Input input) {
-		hp = input.readShort();
-		mana = input.readShort();
+		setHp(input.readShort());
+		setMana(input.readShort());
 		strength = input.readShort();
 		speed = input.readShort();
 		intel = input.readShort();
@@ -67,7 +71,8 @@ public class Skeleton extends Personnage {
 			// Il est TRES important.
 			synchronized(Skeleton.class) {
 				if (Skeleton.regions == null) {
-					Texture sprite = new Texture(Gdx.files.internal("character/skeleton.png"));
+					TextureAtlas atlas = MyGame.manager.get("character/personnage.pack", TextureAtlas.class);
+					AtlasRegion sprite = atlas.findRegion("skeleton");
 					regions = new TextureRegion[8]; 
 					regions[0] = new TextureRegion(sprite, 0, 0, 128, 100);
 					regions[1] = new TextureRegion(sprite, 128, 0, 128, 100);

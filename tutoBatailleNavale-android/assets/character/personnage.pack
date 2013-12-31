@@ -1,0 +1,61 @@
+
+personnage.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+skeleton
+  rotate: false
+  xy: 1, 233
+  size: 512, 256
+  orig: 512, 256
+  offset: 0, 0
+  index: -1
+lutin
+  rotate: false
+  xy: 1, 131
+  size: 512, 100
+  orig: 512, 100
+  offset: 0, 0
+  index: -1
+aquamancien
+  rotate: false
+  xy: 515, 361
+  size: 256, 128
+  orig: 256, 128
+  offset: 0, 0
+  index: -1
+flower
+  rotate: false
+  xy: 1, 1
+  size: 256, 128
+  orig: 256, 128
+  offset: 0, 0
+  index: -1
+necromancien
+  rotate: false
+  xy: 515, 231
+  size: 256, 128
+  orig: 256, 128
+  offset: 0, 0
+  index: -1
+pyromancien
+  rotate: false
+  xy: 259, 1
+  size: 256, 128
+  orig: 256, 128
+  offset: 0, 0
+  index: -1
+shaman
+  rotate: false
+  xy: 515, 165
+  size: 256, 64
+  orig: 256, 64
+  offset: 0, 0
+  index: -1
+phantom
+  rotate: false
+  xy: 517, 63
+  size: 256, 100
+  orig: 256, 100
+  offset: 0, 0
+  index: -1

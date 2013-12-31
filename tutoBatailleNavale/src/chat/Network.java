@@ -9,6 +9,7 @@ import m4ges.models.Necromancien;
 import m4ges.models.Personnage;
 import m4ges.models.Pyromancien;
 import m4ges.models.Shaman;
+import m4ges.util.Constants;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.KryoSerializable;
@@ -33,7 +34,7 @@ public class Network {
 		kryo.register(ChatMessage.class);
 		kryo.register(ArrayList.class);
 		kryo.register(SkillNumber.class);
-		kryo.register(ConstantOrder.class);
+		kryo.register(Constants.class);
 		kryo.register(ArrayList.class);
 		kryo.register(Personnage.class);
 		kryo.register(Shaman.class);
@@ -63,11 +64,6 @@ public class Network {
 
 	static public class SkillNumber {
 		public int skillId;		
-	}
-	
-	static public class ConstantOrder{
-		public int order;
-		public static final int STARTGAME=1;
 	}
 	
 	static public class RequestName{

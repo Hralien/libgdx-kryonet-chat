@@ -43,7 +43,6 @@ public class ChatScreen extends AbstractScreen {
 	// Permet de connaître l'ip du client
 	String ipClient;
 	Stage stage;
-	SpriteBatch batch;
 
 	public SkillNumber showSkillNumber;
 

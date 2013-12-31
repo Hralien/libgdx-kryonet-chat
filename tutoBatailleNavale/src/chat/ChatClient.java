@@ -7,11 +7,10 @@ import java.util.ArrayList;
 
 import m4ges.controllers.MyGame;
 import m4ges.models.Personnage;
+import m4ges.util.Constants;
 import m4ges.views.ChatScreen;
 
 import chat.Network.ChatMessage;
-import chat.Network.ConstantOrder;
-import chat.Network.RegisterName;
 import chat.Network.RequestName;
 import chat.Network.SkillNumber;
 import chat.Network.UpdateNames;
@@ -20,7 +19,6 @@ import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import com.esotericsoftware.kryonet.rmi.ObjectSpace;
 
 
 public class ChatClient {
@@ -86,11 +84,11 @@ public class ChatClient {
 					System.out.println("[client]: arraylist reçu");
 					game.playersConnected = (ArrayList<Personnage>) object;
 				}
-				if(object instanceof ConstantOrder){
+				if(object instanceof Integer){
 					System.out.println("[client]: ordre reçu");
-					int ordre=((ConstantOrder)object).order;
+					int ordre= (Integer) object;
 					switch (ordre) {
-					case ConstantOrder.STARTGAME:
+					case Constants.STARTGAME:
 						Gdx.app.postRunnable(new Runnable() {
 							public void run() {
 								game.changeScreen(MyGame.BEGINSCREEN);

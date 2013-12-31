@@ -25,8 +25,8 @@ public class Pyromancien extends Personnage {
 	}
 	@Override
 	public void write(Kryo kryo, Output output) {
-		output.writeShort(hp);
-		output.writeShort(mana);
+		output.writeShort(getHp());
+		output.writeShort(getMana());
 		output.writeShort(strength);
 		output.writeShort(speed);
 		output.writeShort(intel);
@@ -36,8 +36,8 @@ public class Pyromancien extends Personnage {
 
 	@Override
 	public void read(Kryo kryo, Input input) {
-		hp = input.readShort();
-		mana = input.readShort();
+		setHp(input.readShort());
+		setMana(input.readShort());
 		strength = input.readShort();
 		speed = input.readShort();
 		intel = input.readShort();

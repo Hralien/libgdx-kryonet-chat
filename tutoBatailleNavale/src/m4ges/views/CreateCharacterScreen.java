@@ -39,10 +39,6 @@ public class CreateCharacterScreen extends AbstractScreen {
 	private Stage stage;
 
 	/**
-	 * objet requis pour dessiner {@link SpriteBatch}
-	 */
-	private SpriteBatch spriteBatch; // #6
-	/**
 	 * fenetre listant les skill
 	 */
 	private static Window classDescWindow;
@@ -58,7 +54,6 @@ public class CreateCharacterScreen extends AbstractScreen {
 
 	public CreateCharacterScreen(MyGame myGame) {
 		super(myGame);
-		this.spriteBatch = new SpriteBatch();
 		this.fg = new Group();
 
 		this.stage = new Stage(Gdx.graphics.getWidth(),	Gdx.graphics.getHeight(), false);
@@ -107,7 +102,7 @@ public class CreateCharacterScreen extends AbstractScreen {
 	public void dispose() {
 		stage.dispose();
 		skin.dispose();
-		spriteBatch.dispose();
+		batch.dispose();
 
 	}
 
@@ -122,7 +117,6 @@ public class CreateCharacterScreen extends AbstractScreen {
 		if(skillToRender!=null && skillToRender.isAnimationFinished()){
 			fg.clear();
 		}
-
 		stage.act();
 		stage.draw();
 		//		Table.drawDebug(stage);
