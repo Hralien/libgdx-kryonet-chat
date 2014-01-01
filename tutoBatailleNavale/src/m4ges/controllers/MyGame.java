@@ -11,6 +11,7 @@ import java.util.Set;
 
 import m4ges.models.Personnage;
 import m4ges.models.Skill;
+import m4ges.util.GamePreferences;
 import m4ges.views.BeginingScreen;
 import m4ges.views.ChatScreen;
 import m4ges.views.CreateCharacterScreen;
@@ -58,6 +59,7 @@ public class MyGame extends Game{
 		listHost = new ArrayList<String>();
 		playersConnected = new ArrayList<Personnage>();
 		manager = new AssetManager();
+
 	}
 
 
