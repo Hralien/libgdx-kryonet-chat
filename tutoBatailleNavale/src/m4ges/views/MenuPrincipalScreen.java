@@ -12,19 +12,15 @@ import java.io.IOException;
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
 import m4ges.util.AudioManager;
-import m4ges.util.Constants;
 import m4ges.util.GamePreferences;
 import chat.ChatServer;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -38,7 +34,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -72,10 +67,6 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 */
 	private Image imgTitle;
 
-	/**
-	 * camera
-	 */
-	private OrthographicCamera camera;
 
 	private Texture bg;
 	private static final int FRAME_COLS = 1; // #1
@@ -101,8 +92,15 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	private Slider sldMusic;
 	private CheckBox chkShowFpsCounter;
 	private CheckBox chkUseMonochromeShader;
+	//server setup
+	private Window winServer;
+	private TextField tfServerName;
+	
 
-
+	/**
+	 * 
+	 * @param myGame
+	 */
 	public MenuPrincipalScreen(MyGame myGame) {
 		super(myGame);
 
@@ -148,10 +146,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		
-		camera = new OrthographicCamera(1, h / w);
-
 		TextureAtlas atlas = MyGame.manager.get("ui/loading.pack", TextureAtlas.class);
-		
 		
 		//Background initialisation
 		buildBackgroundLayer();
@@ -163,11 +158,65 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		stack.setSize(w,h);
 		stack.add(buildTitleLayer(atlas));
 		stack.add(buildControlLayer(atlas));
+		stage.addActor(buildServerSetup(atlas));
 		stage.addActor(buildOptionsWindowLayer());
 		AudioManager.instance.play(Gdx.audio.newMusic(Gdx.files.internal("sound/CloudTopLoops.mp3")));
 
 
 	}
+	/**
+	 * 
+	 * @param atlas
+	 * @return
+	 */
+	private Table buildServerSetup(TextureAtlas atlas) {
+		winServer = new Window("Host a game", skin);
+		Label lblServerName= new Label("Serveur name", skin); 
+		tfServerName = new TextField("",skin);
+		final TextButton valider = new TextButton("Valider", skin);
+		winServer.add(lblServerName);
+		winServer.add(tfServerName);
+		winServer.row();
+		winServer.add(valider);
+		winServer.row();
+		winServer.pack();
+		winServer.setPosition(((float) (Gdx.graphics.getWidth() * 0.5)-winServer.getWidth()/2),((float) (Gdx.graphics.getHeight() * 0.5)));
+
+		valider.addListener(new ChangeListener() {
+			public void changed(ChangeEvent arg0, Actor arg1) {
+				try {
+					if (tfServerName.getText().length()>0) {
+						game.chatServer = new ChatServer(nbjoueur,
+								tfServerName.getMessageText());
+						game.androidUI.showAlertBox("Server",
+								"Serveur created", "Button text",
+								stage);
+						winServer.remove();
+						showMenuButtons(true);
+
+					}else{
+						game.androidUI.showAlertBox("Server",
+								"Error : server's name invalid", "ok",
+								stage);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+					game.androidUI.showAlertBox("Server",
+							"Serveur already created",
+							"Button text", stage);
+					winServer.remove();
+					showMenuButtons(true);
+				}
+			}
+		});
+		showServerWindow(false, false);
+		return winServer;
+	}
+	/**
+	 * 
+	 * @param atlas
+	 * @return
+	 */
 	private Table buildTitleLayer(TextureAtlas atlas){
 		Table layer = new Table();
 		imgTitle = new Image(atlas.findRegion("TitleM4ges"));
@@ -178,6 +227,11 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		layer.padLeft((float)(Gdx.graphics.getWidth())/2-imgTitle.getWidth()/2);
 		return layer;
 	}
+	/**
+	 * 
+	 * @param atlas
+	 * @return
+	 */
 	private Table buildControlLayer(TextureAtlas atlas){
 		Table layer = new Table();
 
@@ -187,7 +241,6 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		style.font = new BitmapFont();
 
 		//buttons with style
-
 		btnMenuHost =  buildBtnMenuHost(style);
 		btnMenuPlay =  buildBtnMenuPlay(style);
 		btnMenuOptions = buildBtnMenuOption(style);
@@ -204,6 +257,11 @@ public class MenuPrincipalScreen extends AbstractScreen {
 
 		return layer;
 	}
+	/**
+	 * 
+	 * @param style
+	 * @return
+	 */
 	private TextButton buildBtnMenuPlay(TextButtonStyle style) {
 		TextButton tbJoin = new TextButton("Créer un perso", style);
 		tbJoin.addListener(new ChangeListener() {
@@ -217,7 +275,11 @@ public class MenuPrincipalScreen extends AbstractScreen {
 
 		return tbJoin;
 	}
-	
+	/**
+	 * 
+	 * @param style
+	 * @return
+	 */
 	private TextButton buildBtnMenuOption(TextButtonStyle style) {
 		TextButton tbOption = new TextButton("Options", style);
 		tbOption.addListener(new ChangeListener() {
@@ -232,55 +294,22 @@ public class MenuPrincipalScreen extends AbstractScreen {
 
 		return tbOption;
 	}
-
+	/**
+	 * 
+	 * @param style
+	 * @return
+	 */
 	private TextButton buildBtnMenuHost(TextButtonStyle style) {
 		TextButton tbHost = new TextButton("Héberger une partie", style);
 		tbHost.addListener(new ChangeListener() {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				
 				// TODO:demander nb joueur
 				nbjoueur = 2;
-				if (nbjoueur != 0) {
-
-					final Window creerServer = new Window("Host a game", skin);
-					final TextField nomServ = new TextField("",skin);
-					final TextButton creer = new TextButton("Host", skin);
-					creerServer.add(nomServ);
-					creerServer.row();
-					creerServer.add(creer);
-					creerServer.row();
-					creerServer.pack();
-					creerServer.setPosition(((float) (Gdx.graphics.getWidth() * 0.5)-creerServer.getWidth()),
-							((float) (Gdx.graphics.getHeight() * 0.5)));
-					stage.addActor(creerServer);
-
-					creer.addListener(new ChangeListener() {
-						public void changed(ChangeEvent arg0, Actor arg1) {
-
-							try {
-								if (nomServ.getText().length()>0) {
-									game.chatServer = new ChatServer(nbjoueur,
-											nomServ.getMessageText());
-									game.androidUI.showAlertBox("Server",
-											"Serveur created", "Button text",
-											stage);
-									creerServer.remove();
-								}else{
-									game.androidUI.showAlertBox("Server",
-											"Error : server's name invalid", "ok",
-											stage);
-								}
-							} catch (IOException e) {
-								e.printStackTrace();
-								game.androidUI.showAlertBox("Server",
-										"Serveur already created",
-										"Button text", stage);
-							}
-						}
-
-					});
+				if (nbjoueur != 0){
+					showMenuButtons(false);
+					showServerWindow(true, true);
 				}
 			}
 		});
@@ -419,18 +448,25 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		winOptions.setPosition(Gdx.graphics.getWidth() - winOptions.getWidth() - 50, 50);
 		return winOptions;
 	}
-
+	/**
+	 * 
+	 */
 	private void onSaveClicked() {
 		saveSettings();
 		onCancelClicked();
 		AudioManager.instance.onSettingsUpdated();
 	}
-
+	/**
+	 * 
+	 */
 	private void onCancelClicked() {
 		showMenuButtons(true);
 		showOptionsWindow(false, true);
 		AudioManager.instance.onSettingsUpdated();
 	}
+	/**
+	 * 
+	 */
 	private void loadSettings() {
 		GamePreferences prefs = GamePreferences.instance;
 		prefs.load();
@@ -441,7 +477,9 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		chkShowFpsCounter.setChecked(prefs.showFpsCounter);
 		chkUseMonochromeShader.setChecked(prefs.useMonochromeShader);
 	}
-
+	/**
+	 * 
+	 */
 	private void saveSettings() {
 		GamePreferences prefs = GamePreferences.instance;
 		prefs.sound = chkSound.isChecked();
@@ -452,7 +490,10 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		prefs.useMonochromeShader = chkUseMonochromeShader.isChecked();
 		prefs.save();
 	}
-
+	/**
+	 * 
+	 * @param visible
+	 */
 	private void showMenuButtons (boolean visible) {
 		float moveDuration = 1.0f;
 		Interpolation moveEasing = Interpolation.swing;
@@ -476,15 +517,31 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		}));
 		stage.addAction(seq);
 	}
-
+	/**
+	 * 
+	 * @param visible
+	 * @param animated
+	 */
 	private void showOptionsWindow (boolean visible, boolean animated) {
 		float alphaTo = visible ? 0.8f : 0.0f;
 		float duration = animated ? 1.0f : 0.0f;
 		Touchable touchEnabled = visible ? Touchable.enabled : Touchable.disabled;
 		winOptions.addAction(sequence(touchable(touchEnabled), alpha(alphaTo, duration)));
 	}
-	
-
+	/**
+	 * 
+	 * @param visible
+	 * @param animated
+	 */
+	private void showServerWindow (boolean visible, boolean animated) {
+		float alphaTo = visible ? 0.8f : 0.0f;
+		float duration = animated ? 1.0f : 0.0f;
+		Touchable touchEnabled = visible ? Touchable.enabled : Touchable.disabled;
+		winServer.addAction(sequence(touchable(touchEnabled), alpha(alphaTo, duration)));
+	}	
+	/**
+	 * 
+	 */
 	private void goToNewCharacter(){
 		AudioManager.instance.stopMusic();
 		super.game.changeScreen(MyGame.NEWCHARACTERSCREEN);
