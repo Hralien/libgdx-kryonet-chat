@@ -5,6 +5,7 @@ import m4ges.controllers.MyGame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -16,8 +17,8 @@ import com.esotericsoftware.kryo.io.Output;
 public class Phantom extends Personnage {
 	
 	private final static String DESCRIPTION = "Le Phantom est ou n'est pas ...";
-	private static volatile TextureRegion[] regions = null;
-	
+	protected static volatile Animation animation;
+
 	public Phantom() {
 		super();
 		super.hp=50;
@@ -61,19 +62,19 @@ public class Phantom extends Personnage {
 	 * Méthode permettant de renvoyer une instance de la classe Singleton
 	 * @return Retourne l'instance du singleton.
 	 */
-	public TextureRegion[] dessine() {
+	public Animation animate() {
 		//Le "Double-Checked Singleton"/"Singleton doublement vérifié" permet 
 		//d'éviter un appel coûteux à synchronized, 
 		//une fois que l'instanciation est faite.
-		if (Phantom.regions == null) {
+		if (Phantom.animation == null) {
 			// Le mot-clé synchronized sur ce bloc empêche toute instanciation
 			// multiple même par différents "threads".
 			// Il est TRES important.
 			synchronized(Phantom.class) {
-				if (Phantom.regions == null) {
+				if (Phantom.animation == null) {
 			        TextureAtlas atlas = MyGame.manager.get("character/personnage.pack", TextureAtlas.class);
 			        AtlasRegion sprite = atlas.findRegion("phantom");
-					regions = new TextureRegion[8]; 
+			        TextureRegion[] regions = new TextureRegion[8]; 
 					regions[0] = new TextureRegion(sprite, 0, 0, 32, 50);
 					regions[1] = new TextureRegion(sprite, 63, 0, 42, 50);
 					regions[2] = new TextureRegion(sprite, 128, 0, 51, 50);
@@ -82,11 +83,14 @@ public class Phantom extends Personnage {
 					regions[5] = new TextureRegion(sprite, 63, 50, 42, 50);
 					regions[6] = new TextureRegion(sprite, 128, 50, 51, 50);
 					regions[7] = new TextureRegion(sprite, 192, 50, 64, 50);
+					
+					animation = new Animation(0.1f, regions);              // #11
+
 
 				}
 			}
 		}
-		return Phantom.regions;
+		return Phantom.animation;
 	}
 	@Override
 	public String getName(){

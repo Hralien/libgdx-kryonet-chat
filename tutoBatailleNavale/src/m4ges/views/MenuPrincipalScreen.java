@@ -57,7 +57,6 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 * {@link Stage}
 	 */
 	private Stage stage;
-
 	/** 
 	 * nb of players for serveur
 	 */
@@ -66,15 +65,9 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 *  {@link AtlasRegion} to get the logo
 	 */
 	private Image imgTitle;
-
-
-	private Texture bg;
-	private static final int FRAME_COLS = 1; // #1
-	private static final int FRAME_ROWS = 90; // #2 
-	private Animation walkAnimation; // #3
-
-	private TextureRegion[] walkFrames; // #5 
-
+	
+	private Animation bgAnimation; // #3
+	private TextureRegion[] bgFrames; // #5 
 	private float stateTime; // #8 
 	private TextureRegion currentFrame; // #7
 
@@ -124,9 +117,9 @@ public class MenuPrincipalScreen extends AbstractScreen {
 
 	@Override
 	public void render(float delta) {
-
+		super.render(delta);
 		stateTime += Gdx.graphics.getDeltaTime(); // #15
-		currentFrame = walkAnimation.getKeyFrame(stateTime, true); // #16
+		currentFrame = bgAnimation.getKeyFrame(stateTime, true); // #16
 		
 		batch.begin();
 		batch.draw(currentFrame, 0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
@@ -189,14 +182,13 @@ public class MenuPrincipalScreen extends AbstractScreen {
 						game.chatServer = new ChatServer(nbjoueur,
 								tfServerName.getMessageText());
 						game.androidUI.showAlertBox("Server",
-								"Serveur created", "Button text",
+								"Serveur created", "Ok",
 								stage);
 						winServer.remove();
 						showMenuButtons(true);
-
-					}else{
+					}else{ 
 						game.androidUI.showAlertBox("Server",
-								"Error : server's name invalid", "ok",
+								"Error : server's name invalid", "Ok",
 								stage);
 					}
 				} catch (IOException e) {
@@ -265,7 +257,6 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	private TextButton buildBtnMenuPlay(TextButtonStyle style) {
 		TextButton tbJoin = new TextButton("Créer un perso", style);
 		tbJoin.addListener(new ChangeListener() {
-
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				goToNewCharacter();
@@ -283,7 +274,6 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	private TextButton buildBtnMenuOption(TextButtonStyle style) {
 		TextButton tbOption = new TextButton("Options", style);
 		tbOption.addListener(new ChangeListener() {
-
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				loadSettings();
@@ -291,7 +281,6 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				showOptionsWindow(true, true);
 			}
 		});
-
 		return tbOption;
 	}
 	/**
@@ -320,17 +309,19 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 * 
 	 */
 	private void buildBackgroundLayer() {
-	 	bg = new Texture(Gdx.files.internal("ui/bg.png"));
+	 	Texture bg = new Texture(Gdx.files.internal("ui/bg.png"));
+		int FRAME_COLS = 1; // #1
+		int FRAME_ROWS = 90; // #2 
 		TextureRegion[][] tmp = TextureRegion.split(bg, bg.getWidth() /	FRAME_COLS, bg.getHeight() / FRAME_ROWS); // #10
-		walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+		bgFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 		int index = 0; 
 		for (int i = 0; i < FRAME_ROWS; i++) {
 			for (int j = 0; j < FRAME_COLS; j++) {
-				walkFrames[index++] = tmp[i][j];
+				bgFrames[index++] = tmp[i][j];
 			}
 		}
-		walkAnimation = new Animation(0.1f, walkFrames); // #11
-		walkAnimation.setPlayMode(Animation.LOOP_PINGPONG);
+		bgAnimation = new Animation(0.1f, bgFrames); // #11
+		bgAnimation.setPlayMode(Animation.LOOP_PINGPONG);
 		stateTime = 0f;
 	}
 	/**

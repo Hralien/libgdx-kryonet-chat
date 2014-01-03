@@ -4,6 +4,7 @@ import m4ges.controllers.MyGame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -14,10 +15,8 @@ import com.esotericsoftware.kryo.io.Output;
 public class Flower extends Personnage {
 	
 	private final static String DESCRIPTION = "Le Flower est ou n'est pas ...";
-	private static volatile TextureRegion[] regions = null;
+	protected static volatile Animation animation;
 
-	
-	
 	public Flower() {
 		super();
 		super.hp=50;
@@ -61,19 +60,19 @@ public class Flower extends Personnage {
 	 * Méthode permettant de renvoyer une instance de la classe Singleton
 	 * @return Retourne l'instance du singleton.
 	 */
-	public TextureRegion[] dessine() {
+	public Animation animate() {
 		//Le "Double-Checked Singleton"/"Singleton doublement vérifié" permet 
 		//d'éviter un appel coûteux à synchronized, 
 		//une fois que l'instanciation est faite.
-		if (Flower.regions == null) {
+		if (Flower.animation == null) {
 			// Le mot-clé synchronized sur ce bloc empêche toute instanciation
 			// multiple même par différents "threads".
 			// Il est TRES important.
 			synchronized(Flower.class) {
-				if (Flower.regions == null) {
+				if (Flower.animation == null) {
 					TextureAtlas atlas = MyGame.manager.get("character/personnage.pack", TextureAtlas.class);
 					AtlasRegion sprite = atlas.findRegion("flower");
-					regions = new TextureRegion[8]; 
+					TextureRegion[] regions = new TextureRegion[8]; 
 					regions[0] = new TextureRegion(sprite, 0, 0, 64, 64);
 					regions[1] = new TextureRegion(sprite, 64, 0, 64, 64);
 					regions[2] = new TextureRegion(sprite, 128, 0, 64, 64);
@@ -82,11 +81,12 @@ public class Flower extends Personnage {
 					regions[5] = new TextureRegion(sprite, 64, 64, 64, 64);
 					regions[6] = new TextureRegion(sprite, 128, 64, 64, 64);
 					regions[7] = new TextureRegion(sprite, 192, 64, 64, 64);
+					animation = new Animation(0.1f, regions);              // #11
 
 				}
 			}
 		}
-		return Flower.regions;
+		return Flower.animation;
 	}
 	@Override
 	public String getName(){

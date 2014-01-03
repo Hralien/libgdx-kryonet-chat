@@ -23,6 +23,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -30,6 +31,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -55,13 +57,14 @@ public class BeginingScreen extends AbstractScreen {
 	private Skill skillToRender;
 	private TextureRegion battle_info;
 	private TextureRegion battle_skill;
+	private ArrayList<Personnage> mobList;
+	private Group fg;
 	
 	public BeginingScreen(MyGame myGame){
 		super(myGame);
-
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-        
-		batch = new SpriteBatch();
+        fg = new Group();
+
 	}
 
 
@@ -90,7 +93,7 @@ public class BeginingScreen extends AbstractScreen {
 
 		stage.act(delta);
 		stage.draw();
-		Table.drawDebug(stage);
+		//Table.drawDebug(stage);
 
 	}
 
@@ -98,66 +101,33 @@ public class BeginingScreen extends AbstractScreen {
 	public void show() {
 		//on dit a l'appli d'ecouter ce stage quand la methode show est appelee
 		Gdx.input.setInputProcessor(stage);
-		float width = Gdx.graphics.getWidth();
-		float height = Gdx.graphics.getHeight();
+
 		TextureAtlas atlas = MyGame.manager.get("ui/battleui.pack", TextureAtlas.class);
 
         battle_bg = new TextureRegion(atlas.findRegion("battle_background"));
         battle_info = new TextureRegion(atlas.findRegion("battle_ui"));
         battle_skill = new TextureRegion(atlas.findRegion("battle_ui_spell"));
 
-		int i=0;
-		for(final Personnage it : super.game.playersConnected){
-//			batch.draw(it.dessine()[0], 100+i, 100+i);
-			it.setVisible(true);
-			it.setOrigin(width/2+i, height/3+i);
-			it.setBounds(width/2+i, height/3+i, it.dessine()[0].getRegionWidth(), it.dessine()[0].getRegionHeight());
-			it.addListener(new InputListener() {
-				public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-					System.out.println("["+it.getName()+"]"+"down");
-					return true;
-				}
-				
-				public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-					System.out.println("["+it.getName()+"]"+"up");
-				}
-			});
-			i+=50;
-			stage.addActor(it);
-		}
-		ArrayList<Personnage> mobList = new ArrayList<Personnage>();
+		mobList = new ArrayList<Personnage>();
 		mobList.add(new Skeleton());
 		mobList.add(new Flower());
 		mobList.add(new Lutin());
 		mobList.add(new Phantom());
 		
-		i=0;
+		Stack stack = new Stack();
+		stack.add(buildPersoLayer());
+		stack.add(buildMonsterLayer());
+		this.stage.addActor(stack);
+		this.stage.addActor(createMySkillWindows());
+		this.stage.addActor(createMyInfoWindows());
+		this.stage.addActor(fg);
 
-		for(final Personnage it: mobList){
-			it.setVisible(true);
-			it.setOrigin(width/3+i, height/2+i);
-			it.setBounds(width/3+i, height/2+i, it.dessine()[0].getRegionWidth(), it.dessine()[0].getRegionHeight());
-			it.addListener(new InputListener() {
-				public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-					System.out.println("["+it.getName()+"]"+"down");
-					return true;
-				}
-				
-				public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-					System.out.println("["+it.getName()+"]"+"up");
-				}
-			});
-			i+=50;
-			stage.addActor(it);
-		}
-		stage.addActor(createMySkillWindows());
-		stage.addActor(createMyInfoWindows());
 	}
 
 	private Table createMySkillWindows() {
 		WindowStyle ws = new WindowStyle(new BitmapFont(), Color.BLACK, new TextureRegionDrawable(battle_skill));
 		Window skillWindow = new Window("",ws);
-		int i=1;
+		int i=0;
 		for (final Skill it : super.game.player.getListSkills()) {
 			TextButton skillButton = new TextButton(it.getSkillName()
 					+ " cost:" + it.getSpCost(), skin);
@@ -165,14 +135,14 @@ public class BeginingScreen extends AbstractScreen {
 
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
-					skillToRender=it;
+					fg.clear();
 					it.resetAnimation();
 					it.setSize(it.getCurrentFrame().getRegionWidth(), it.getCurrentFrame().getRegionHeight());
-					stage.addActor(it);
+					fg.addActor(it);
 				}
 			});
 			skillWindow.add(skillButton);
-			if(i%1==0)
+			if(i%2==1)
 			skillWindow.row();
 			i++;
 		}
@@ -190,6 +160,55 @@ public class BeginingScreen extends AbstractScreen {
 		infoWindow.pack();
 		infoWindow.setBounds(0, 0, battle_info.getRegionWidth(),battle_info.getRegionHeight());
 		return infoWindow;
+	}
+	private Table buildPersoLayer(){
+		float width = Gdx.graphics.getWidth();
+		float height = Gdx.graphics.getHeight();
+		
+		Table layer=new Table();
+		int i=0;
+		for(final Personnage it : super.game.playersConnected){
+			it.setVisible(true);
+			it.setOrigin(100+width/3+i, 50+height/2+i);
+
+			it.addListener(new InputListener() {
+				public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+					System.out.println("["+it.getName()+"]"+"down");
+					return true;
+				}
+				
+				public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+					System.out.println("["+it.getName()+"]"+"up");
+				}
+			});
+			i+=50;
+			layer.addActor(it);
+		}
+		return layer;
+	}
+	private Table buildMonsterLayer(){
+		float width = Gdx.graphics.getWidth();
+		float height = Gdx.graphics.getHeight();
+		
+		Table layer = new Table();
+		int i=0;
+		for(final Personnage it: mobList){
+			it.setVisible(true);
+			it.setOrigin(width/3+i, height/2+i);
+			it.addListener(new InputListener() {
+				public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+					System.out.println("["+it.getName()+"]"+"down");
+					return true;
+				}
+				
+				public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+					System.out.println("["+it.getName()+"]"+"up");
+				}
+			});
+			i+=50;
+			layer.addActor(it);
+		}
+		return layer;
 	}
 	@Override
 	public void hide() {

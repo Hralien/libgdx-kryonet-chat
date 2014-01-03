@@ -9,6 +9,7 @@ import m4ges.controllers.MyGame;
 import m4ges.models.Personnage;
 import m4ges.util.Constants;
 import m4ges.views.ChatScreen;
+import m4ges.views.ChatWindow;
 
 import chat.Network.ChatMessage;
 import chat.Network.RequestName;
@@ -39,7 +40,7 @@ public class ChatClient {
 		// registered by the same method for both the client and server.
 		Network.register(client);
 
-		//		game.playersConnected = (ArrayList<Personnage>) ObjectSpace.getRemoteObject(client, Network.PLAYER, gameMechanic.IPlayer.class);
+		//game.playersConnected = (ArrayList<Personnage>) ObjectSpace.getRemoteObject(client, Network.PLAYER, gameMechanic.IPlayer.class);
 
 		this.client.addListener(new Listener() {
 
@@ -101,7 +102,9 @@ public class ChatClient {
 						}
 					}
 				}
-
+				/**
+				 * 
+				 */
 				public void disconnected (Connection connection) {
 					EventQueue.invokeLater(new Runnable() {
 						public void run () {
@@ -120,7 +123,6 @@ public class ChatClient {
 				client.sendTCP(chatMessage);
 			}
 		});
-		//		}
 
 		// We'll do the connect on a new thread so the ChatFrame can show a progress bar.
 		// Connecting to localhost is usually so fast you won't see the progress bar.
@@ -135,11 +137,5 @@ public class ChatClient {
 				}
 			}
 		}.start();
-
-
-
-		}
-
-
-
 	}
+}

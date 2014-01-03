@@ -70,7 +70,7 @@ public class Skill extends Actor implements Cloneable{
 		AtlasRegion spritesheet = getInstance().findRegion(skillEffect);
 //		System.err.println("name:"+skillEffect+"width"+spritesheet.getRegionWidth()+"hieght"+spritesheet.getRegionHeight());
 		TextureRegion[] walkFrames = new TextureRegion[this.frame_cols*this.frame_rows];
-		int width=spritesheet.getRegionWidth()/this.frame_cols;
+		int width = spritesheet.getRegionWidth()/this.frame_cols;
 		int height = spritesheet.getRegionHeight()/this.frame_rows;
 		int index = 0;
 		for(int i = 0; i<this.frame_cols;i++){
@@ -125,29 +125,6 @@ public class Skill extends Actor implements Cloneable{
 		}
 		return list;
 	}
-
-	//	public static void initListSkill() {
-	//		/** shaman */
-	//		Skill.listSkill.add(Skill.soin);
-	//		Skill.listSkill.add(Skill.motivation);
-	//		Skill.listSkill.add(Skill.ressistance);
-	//		Skill.listSkill.add(Skill.resurrection);
-	//		/** necro */
-	//		Skill.listSkill.add(Skill.abimes);
-	//		Skill.listSkill.add(Skill.malediction);
-	//		Skill.listSkill.add(Skill.empoisonement);
-	//		Skill.listSkill.add(Skill.perturbation);
-	//		/** mage chaud */
-	//		Skill.listSkill.add(Skill.deflagration);
-	//		Skill.listSkill.add(Skill.foudre);
-	//		Skill.listSkill.add(Skill.chocSismique);
-	//		Skill.listSkill.add(Skill.combustion);
-	//		/** mage froid */
-	//		Skill.listSkill.add(Skill.geyser);
-	//		Skill.listSkill.add(Skill.gel);
-	//		Skill.listSkill.add(Skill.tornade);
-	//		Skill.listSkill.add(Skill.rafale);
-	//	}
 
 	public static Skill selectSkillFromSkillNumber(SkillNumber skillnum) {
 		for (Skill it : listSkill) {

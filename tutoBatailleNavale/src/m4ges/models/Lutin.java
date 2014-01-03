@@ -4,6 +4,7 @@ import m4ges.controllers.MyGame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -14,8 +15,7 @@ import com.esotericsoftware.kryo.io.Output;
 public class Lutin extends Personnage {
 	
 	private final static String DESCRIPTION = "Le Lutin est ou n'est pas ...";
-	private static volatile TextureRegion[] regions = null;
-
+	protected static volatile Animation animation;
 	
 	
 	public Lutin() {
@@ -61,19 +61,19 @@ public class Lutin extends Personnage {
 	 * Méthode permettant de renvoyer une instance de la classe Singleton
 	 * @return Retourne l'instance du singleton.
 	 */
-	public TextureRegion[] dessine() {
+	public Animation animate() {
 		//Le "Double-Checked Singleton"/"Singleton doublement vérifié" permet 
 		//d'éviter un appel coûteux à synchronized, 
 		//une fois que l'instanciation est faite.
-		if (Lutin.regions == null) {
+		if (Lutin.animation == null) {
 			// Le mot-clé synchronized sur ce bloc empêche toute instanciation
 			// multiple même par différents "threads".
 			// Il est TRES important.
 			synchronized(Lutin.class) {
-				if (Lutin.regions == null) {
+				if (Lutin.animation == null) {
 					TextureAtlas atlas = MyGame.manager.get("character/personnage.pack", TextureAtlas.class);
 					AtlasRegion sprite = atlas.findRegion("lutin");
-					regions = new TextureRegion[8]; 
+					TextureRegion[] regions = new TextureRegion[8]; 
 					regions[0] = new TextureRegion(sprite, 0, 0, 64, 50);
 					regions[1] = new TextureRegion(sprite, 128, 0, 64, 50);
 					regions[2] = new TextureRegion(sprite, 270, 0, 64, 50);
@@ -82,11 +82,14 @@ public class Lutin extends Personnage {
 					regions[5] = new TextureRegion(sprite, 128, 50, 78, 50);
 					regions[6] = new TextureRegion(sprite, 263, 50, 73, 50);
 					regions[7] = new TextureRegion(sprite, 402, 50, 78, 50);
+					
+					animation = new Animation(0.1f, regions);              // #11
+
 
 				}
 			}
 		}
-		return Lutin.regions;
+		return Lutin.animation;
 	}
 	@Override
 	public String getName(){

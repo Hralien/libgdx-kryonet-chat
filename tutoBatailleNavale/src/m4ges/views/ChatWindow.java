@@ -1,4 +1,4 @@
-package chat;
+package m4ges.views;
 
 
 import java.util.ArrayList;

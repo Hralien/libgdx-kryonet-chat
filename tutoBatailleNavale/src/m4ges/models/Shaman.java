@@ -2,6 +2,7 @@ package m4ges.models;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
@@ -10,8 +11,8 @@ import com.esotericsoftware.kryo.io.Output;
 public class Shaman extends Personnage {
 
 	private final static String DESCRIPTION = "Le chamane est l'élément vital du groupe, son but étant de garder ses alliés en vie par tous les moyens.";
+	protected static volatile Animation animation;
 
-	private static volatile TextureRegion[] regions = null;
 	
 	public Shaman() {
 		super();
@@ -62,18 +63,18 @@ public class Shaman extends Personnage {
 	 * Méthode permettant de renvoyer une instance de la classe Singleton
 	 * @return Retourne l'instance du singleton.
 	 */
-	public  TextureRegion[] dessine() {
+	public Animation animate() {
 		//Le "Double-Checked Singleton"/"Singleton doublement vérifié" permet 
 		//d'éviter un appel coûteux à synchronized, 
 		//une fois que l'instanciation est faite.
-		if (Shaman.regions == null) {
+		if (Shaman.animation == null) {
 			// Le mot-clé synchronized sur ce bloc empêche toute instanciation
 			// multiple même par différents "threads".
 			// Il est TRES important.
 			synchronized(Shaman.class) {
-				if (Shaman.regions == null) {
+				if (Shaman.animation == null) {
 					Texture sprite = new Texture(Gdx.files.internal("character/shaman.png"));
-					regions = new TextureRegion[9]; 
+					TextureRegion[] regions = new TextureRegion[9]; 
 					regions[0] = new TextureRegion(sprite, 0, 0, 32, 44);
 					regions[1] = new TextureRegion(sprite, 32, 0, 32, 44);
 					regions[2] = new TextureRegion(sprite, 64, 0, 32, 44);
@@ -83,10 +84,13 @@ public class Shaman extends Personnage {
 					regions[6] = new TextureRegion(sprite, 191, 0, 30, 44);
 					regions[7] = new TextureRegion(sprite, 0, 44, 41, 20);
 					regions[8] = new TextureRegion(sprite, 64, 44, 41, 20);
+					
+					animation = new Animation(0.1f, regions);              // #11
+
 				}
 			}
 		}
-		return Shaman.regions;
+		return Shaman.animation;
 	}
 
 }
