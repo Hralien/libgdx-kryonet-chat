@@ -1,27 +1,34 @@
-package m4ges.models;
+package m4ges.models.monster;
+
+import m4ges.controllers.MyGame;
+import m4ges.models.Personnage;
+import m4ges.models.Skill;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 
-public class Aquamancien extends Personnage {
+public class Flower extends Personnage {
 	
-	private final static String DESCRIPTION = "L'aqueromancien ne paye peut être pas de mine, mais son pouvoir de destruction, combiné à celui d'un pyromancien, en font un adversaire redoutable.";
+	private final static String DESCRIPTION = "Le Flower est ou n'est pas ...";
 	protected static volatile Animation animation;
 
-	public Aquamancien() {
+	public Flower() {
 		super();
-		super.hp=90;
-		super.mana=110;
-		super.strength=8;
-		super.speed=11;
-		super.intel=12;
+		super.hp=50;
+		super.intel=3;
+		super.mana=5*super.intel;
+		super.strength=3;
+		super.speed=2;
+
 		
-		super.listSkills=Skill.getSkillForClass(Personnage.AQUAMANCIEN);
+		super.listSkills=Skill.getSkillForClass(Personnage.NECROMANCIEN);
 
 	}
 	@Override
@@ -31,6 +38,7 @@ public class Aquamancien extends Personnage {
 		output.writeShort(strength);
 		output.writeShort(speed);
 		output.writeShort(intel);
+
 		kryo.writeClassAndObject(output, name);
 
 	}
@@ -43,11 +51,11 @@ public class Aquamancien extends Personnage {
 		speed = input.readShort();
 		intel = input.readShort();
 
+
 		name = (String) kryo.readClassAndObject(input);
 	}
 	@Override
 	public String getDesc() {
-		// TODO Auto-generated method stub
 		return DESCRIPTION;
 	}
 	/**
@@ -58,28 +66,32 @@ public class Aquamancien extends Personnage {
 		//Le "Double-Checked Singleton"/"Singleton doublement vérifié" permet 
 		//d'éviter un appel coûteux à synchronized, 
 		//une fois que l'instanciation est faite.
-		if (Aquamancien.animation == null) {
+		if (Flower.animation == null) {
 			// Le mot-clé synchronized sur ce bloc empêche toute instanciation
 			// multiple même par différents "threads".
 			// Il est TRES important.
-			synchronized(Aquamancien.class) {
-				if (Aquamancien.animation == null) {
-					Texture sprite = new Texture(Gdx.files.internal("character/aquamancien.png"));
-					TextureRegion[] regions = new TextureRegion[9]; 
-					regions[0] = new TextureRegion(sprite, 0, 0, 30, 50);
-					regions[1] = new TextureRegion(sprite, 30, 0, 33, 50);
-					regions[2] = new TextureRegion(sprite, 64, 0, 32, 50);
-					regions[3] = new TextureRegion(sprite, 95, 0, 32, 50);
-					regions[4] = new TextureRegion(sprite, 127, 0, 33, 50);
-					regions[5] = new TextureRegion(sprite, 160, 0, 29, 50);
-					regions[6] = new TextureRegion(sprite, 189, 0, 30, 50);
-					regions[7] = new TextureRegion(sprite, 0, 50, 51, 26);
-					regions[8] = new TextureRegion(sprite, 70, 50, 51, 26);
+			synchronized(Flower.class) {
+				if (Flower.animation == null) {
+					TextureAtlas atlas = MyGame.manager.get("character/personnage.pack", TextureAtlas.class);
+					AtlasRegion sprite = atlas.findRegion("flower");
+					TextureRegion[] regions = new TextureRegion[8]; 
+					regions[0] = new TextureRegion(sprite, 0, 0, 64, 64);
+					regions[1] = new TextureRegion(sprite, 64, 0, 64, 64);
+					regions[2] = new TextureRegion(sprite, 128, 0, 64, 64);
+					regions[3] = new TextureRegion(sprite, 192, 0, 64, 64);
+					regions[4] = new TextureRegion(sprite, 0, 64, 64, 64);
+					regions[5] = new TextureRegion(sprite, 64, 64, 64, 64);
+					regions[6] = new TextureRegion(sprite, 128, 64, 64, 64);
+					regions[7] = new TextureRegion(sprite, 192, 64, 64, 64);
 					animation = new Animation(0.1f, regions);              // #11
 
 				}
 			}
 		}
-		return Aquamancien.animation;
+		return Flower.animation;
+	}
+	@Override
+	public String getName(){
+		return getClass().getSimpleName();
 	}
 }

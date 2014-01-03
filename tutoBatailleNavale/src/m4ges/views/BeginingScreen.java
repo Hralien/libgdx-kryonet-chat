@@ -1,25 +1,23 @@
 package m4ges.views;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.touchable;
+
 import java.util.ArrayList;
 
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
-import m4ges.models.Flower;
-import m4ges.models.Lutin;
 import m4ges.models.Personnage;
-import m4ges.models.Phantom;
-import m4ges.models.Skeleton;
 import m4ges.models.Skill;
+import m4ges.models.monster.Flower;
+import m4ges.models.monster.Lutin;
+import m4ges.models.monster.Phantom;
+import m4ges.models.monster.Skeleton;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -27,19 +25,15 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.esotericsoftware.kryonet.Client;
 
 /**
  * Premier ecran en début de partie
@@ -52,13 +46,24 @@ public class BeginingScreen extends AbstractScreen {
 	 * {@link Stage}
 	 */
 	private Stage stage;
-	private Sound sound;
+	/**
+	 * fond
+	 */
 	private TextureRegion battle_bg;
-	private Skill skillToRender;
 	private TextureRegion battle_info;
 	private TextureRegion battle_skill;
+	/**
+	 * 
+	 */
 	private ArrayList<Personnage> mobList;
+	/**
+	 * premier plan
+	 */
 	private Group fg;
+	/**
+	 * 
+	 */
+	private Window winVagueInfo;
 	
 	public BeginingScreen(MyGame myGame){
 		super(myGame);
@@ -78,7 +83,6 @@ public class BeginingScreen extends AbstractScreen {
 	public void dispose () {
 		stage.dispose();
 		skin.dispose();
-		sound.dispose();
 		batch.dispose();
 	}
 
@@ -94,7 +98,6 @@ public class BeginingScreen extends AbstractScreen {
 		stage.act(delta);
 		stage.draw();
 		//Table.drawDebug(stage);
-
 	}
 
 	@Override
@@ -117,12 +120,20 @@ public class BeginingScreen extends AbstractScreen {
 		Stack stack = new Stack();
 		stack.add(buildPersoLayer());
 		stack.add(buildMonsterLayer());
+		stack.add(buildVagueInfo());
+		stack.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+
 		this.stage.addActor(stack);
 		this.stage.addActor(createMySkillWindows());
 		this.stage.addActor(createMyInfoWindows());
 		this.stage.addActor(fg);
+		showNewCharacterWindow();
 
 	}
+
+
+
+
 
 	private Table createMySkillWindows() {
 		WindowStyle ws = new WindowStyle(new BitmapFont(), Color.BLACK, new TextureRegionDrawable(battle_skill));
@@ -210,10 +221,27 @@ public class BeginingScreen extends AbstractScreen {
 		}
 		return layer;
 	}
+	private Window buildVagueInfo() {
+		winVagueInfo = new Window("Info", skin);
+		Label lblVague = new Label("vague 1", skin);
+		winVagueInfo.add(lblVague);
+		winVagueInfo.setSize(300,200);
+		winVagueInfo.setPosition(((float) (Gdx.graphics.getWidth() * 0.5)-winVagueInfo.getWidth()/2),((float) (Gdx.graphics.getHeight() * 0.5)));
+		return winVagueInfo;
+	}
+	/**
+	 * 
+	 * @param visible
+	 * @param animated
+	 */
+	private void showNewCharacterWindow() {
+		winVagueInfo.addAction(sequence(touchable(Touchable.disabled), alpha(0.8f, 4.0f)));
+		winVagueInfo.addAction(sequence(touchable(Touchable.disabled), alpha(0.0f, 4.0f)));
+	}
+
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override

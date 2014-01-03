@@ -1,4 +1,7 @@
-package m4ges.models;
+package m4ges.models.classes;
+
+import m4ges.models.Personnage;
+import m4ges.models.Skill;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

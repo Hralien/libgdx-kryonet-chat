@@ -1,4 +1,7 @@
-package m4ges.models;
+package m4ges.models.classes;
+
+import m4ges.models.Personnage;
+import m4ges.models.Skill;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,21 +11,20 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 
-public class Pyromancien extends Personnage {
+public class Necromancien extends Personnage {
 	
-	private final static String DESCRIPTION = "Le pyromancien est un adepte de la puissance. Aspirant à la destruction, mieux vaut ne pas l'énerver";
+	private final static String DESCRIPTION = "Le nécromancien est un adepte de la magie noire et utilise la manipulation pour parvenir à détruire plus facilement son adversaire.";
 	protected static volatile Animation animation;
 
-	public Pyromancien() {
+	
+	public Necromancien() {
 		super();
-		super.hp=90;
+		super.hp=70;
 		super.mana=110;
 		super.strength=8;
-		super.speed=11;
-		super.intel=12;
-		
-		super.listSkills=Skill.getSkillForClass(Personnage.PYROMANCIEN);
-
+		super.speed=10;
+		super.intel=13;
+		super.listSkills=Skill.getSkillForClass(Personnage.NECROMANCIEN);		
 	}
 	@Override
 	public void write(Kryo kryo, Output output) {
@@ -32,7 +34,6 @@ public class Pyromancien extends Personnage {
 		output.writeShort(speed);
 		output.writeShort(intel);
 		kryo.writeClassAndObject(output, name);
-
 	}
 
 	@Override
@@ -42,13 +43,10 @@ public class Pyromancien extends Personnage {
 		strength = input.readShort();
 		speed = input.readShort();
 		intel = input.readShort();
-
 		name = (String) kryo.readClassAndObject(input);
 	}
-
 	@Override
 	public String getDesc() {
-		// TODO Auto-generated method stub
 		return DESCRIPTION;
 	}
 	/**
@@ -59,29 +57,28 @@ public class Pyromancien extends Personnage {
 		//Le "Double-Checked Singleton"/"Singleton doublement vérifié" permet 
 		//d'éviter un appel coûteux à synchronized, 
 		//une fois que l'instanciation est faite.
-		if (Pyromancien.animation == null) {
+		if (Necromancien.animation == null) {
 			// Le mot-clé synchronized sur ce bloc empêche toute instanciation
 			// multiple même par différents "threads".
 			// Il est TRES important.
-			synchronized(Pyromancien.class) {
-				if (Pyromancien.animation == null) {
-					Texture sprite = new Texture(Gdx.files.internal("character/pyromancien.png"));
+			synchronized(Necromancien.class) {
+				if (Necromancien.animation == null) {
+					Texture sprite = new Texture(Gdx.files.internal("character/necromancien.png"));
 					TextureRegion[] regions = new TextureRegion[9]; 
-					regions[0] = new TextureRegion(sprite, 0, 0, 32, 44);
-					regions[1] = new TextureRegion(sprite, 32, 0, 29, 44);
-					regions[2] = new TextureRegion(sprite, 61, 0, 33, 44);
-					regions[3] = new TextureRegion(sprite, 93, 0, 32, 44);
-					regions[4] = new TextureRegion(sprite, 125, 0, 34, 44);
-					regions[5] = new TextureRegion(sprite, 160, 0, 26, 44);
-					regions[6] = new TextureRegion(sprite, 190, 0, 32, 44);
-					regions[7] = new TextureRegion(sprite, 0, 44, 49, 27);
-					regions[8] = new TextureRegion(sprite, 70, 44, 49, 27);
+					regions[0] = new TextureRegion(sprite, 0, 0, 31, 46);
+					regions[1] = new TextureRegion(sprite, 31, 0, 32, 46);
+					regions[2] = new TextureRegion(sprite, 64, 0, 32, 46);
+					regions[3] = new TextureRegion(sprite, 95, 0, 33, 46);
+					regions[4] = new TextureRegion(sprite, 128, 0, 33, 46);
+					regions[5] = new TextureRegion(sprite, 160, 0, 26, 46);
+					regions[6] = new TextureRegion(sprite, 192, 0, 30, 46);
+					regions[7] = new TextureRegion(sprite, 0, 46, 48, 26);
+					regions[8] = new TextureRegion(sprite, 69, 46, 48, 26);
 					
 					animation = new Animation(0.1f, regions);              // #11
-
 				}
 			}
 		}
-		return Pyromancien.animation;
+		return Necromancien.animation;
 	}
 }

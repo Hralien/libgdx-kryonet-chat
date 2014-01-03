@@ -4,11 +4,11 @@ package chat;
 
 import java.util.ArrayList;
 
-import m4ges.models.Aquamancien;
-import m4ges.models.Necromancien;
 import m4ges.models.Personnage;
-import m4ges.models.Pyromancien;
-import m4ges.models.Shaman;
+import m4ges.models.classes.Aquamancien;
+import m4ges.models.classes.Necromancien;
+import m4ges.models.classes.Pyromancien;
+import m4ges.models.classes.Shaman;
 import m4ges.util.Constants;
 
 import com.esotericsoftware.kryo.Kryo;

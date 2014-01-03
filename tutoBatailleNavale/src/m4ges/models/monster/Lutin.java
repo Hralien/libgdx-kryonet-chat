@@ -1,6 +1,8 @@
-package m4ges.models;
+package m4ges.models.monster;
 
 import m4ges.controllers.MyGame;
+import m4ges.models.Personnage;
+import m4ges.models.Skill;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,13 +14,13 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 
-public class Skeleton extends Personnage {
+public class Lutin extends Personnage {
 	
-	private final static String DESCRIPTION = "Le Skeleton est ou n'est pas ...";
+	private final static String DESCRIPTION = "Le Lutin est ou n'est pas ...";
 	protected static volatile Animation animation;
-
 	
-	public Skeleton() {
+	
+	public Lutin() {
 		super();
 		super.hp=50;
 		super.intel=3;
@@ -65,30 +67,31 @@ public class Skeleton extends Personnage {
 		//Le "Double-Checked Singleton"/"Singleton doublement vérifié" permet 
 		//d'éviter un appel coûteux à synchronized, 
 		//une fois que l'instanciation est faite.
-		if (Skeleton.animation == null) {
+		if (Lutin.animation == null) {
 			// Le mot-clé synchronized sur ce bloc empêche toute instanciation
 			// multiple même par différents "threads".
 			// Il est TRES important.
-			synchronized(Skeleton.class) {
-				if (Skeleton.animation == null) {
+			synchronized(Lutin.class) {
+				if (Lutin.animation == null) {
 					TextureAtlas atlas = MyGame.manager.get("character/personnage.pack", TextureAtlas.class);
-					AtlasRegion sprite = atlas.findRegion("skeleton");
+					AtlasRegion sprite = atlas.findRegion("lutin");
 					TextureRegion[] regions = new TextureRegion[8]; 
-					regions[0] = new TextureRegion(sprite, 0, 0, 128, 100);
-					regions[1] = new TextureRegion(sprite, 128, 0, 128, 100);
-					regions[2] = new TextureRegion(sprite, 256, 0, 128, 100);
-					regions[3] = new TextureRegion(sprite, 384, 0, 128, 100);
-					regions[4] = new TextureRegion(sprite, 0, 100, 128, 200);
-					regions[5] = new TextureRegion(sprite, 128, 100, 128, 200);
-					regions[6] = new TextureRegion(sprite, 256, 100, 128, 200);
-					regions[7] = new TextureRegion(sprite, 384, 100, 128, 200);
-
+					regions[0] = new TextureRegion(sprite, 0, 0, 64, 50);
+					regions[1] = new TextureRegion(sprite, 128, 0, 64, 50);
+					regions[2] = new TextureRegion(sprite, 270, 0, 64, 50);
+					regions[3] = new TextureRegion(sprite, 402, 0, 78, 50);
+					regions[4] = new TextureRegion(sprite, 0, 50, 64, 50);
+					regions[5] = new TextureRegion(sprite, 128, 50, 78, 50);
+					regions[6] = new TextureRegion(sprite, 263, 50, 73, 50);
+					regions[7] = new TextureRegion(sprite, 402, 50, 78, 50);
+					
 					animation = new Animation(0.1f, regions);              // #11
+
 
 				}
 			}
 		}
-		return Skeleton.animation;
+		return Lutin.animation;
 	}
 	@Override
 	public String getName(){
