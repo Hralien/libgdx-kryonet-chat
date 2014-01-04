@@ -9,11 +9,12 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.touchable;
 
 import java.io.IOException;
 
+import reseau.GameServer;
+
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
 import m4ges.util.AudioManager;
 import m4ges.util.GamePreferences;
-import chat.ChatServer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -173,13 +174,13 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		winServer.add(valider);
 		winServer.row();
 		winServer.pack();
-		winServer.setPosition(((float) (Gdx.graphics.getWidth() * 0.5)-winServer.getWidth()/2),((float) (Gdx.graphics.getHeight() * 0.5)));
+		winServer.setPosition((float) (Gdx.graphics.getWidth()/2 - winServer.getWidth()), Gdx.graphics.getHeight()/2);
 
 		valider.addListener(new ChangeListener() {
 			public void changed(ChangeEvent arg0, Actor arg1) {
 				try {
 					if (tfServerName.getText().length()>0) {
-						game.chatServer = new ChatServer(nbjoueur,
+						game.chatServer = new GameServer(nbjoueur,
 								tfServerName.getMessageText());
 						game.androidUI.showAlertBox("Server",
 								"Serveur created", "Ok",
@@ -436,7 +437,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		// Let TableLayout recalculate widget sizes and positions
 		winOptions.pack();
 		// Move options window to bottom right corner
-		winOptions.setPosition(Gdx.graphics.getWidth() - winOptions.getWidth() - 50, 50);
+		winOptions.setPosition(Gdx.graphics.getWidth()/2 - winOptions.getWidth() - 50, 50);
 		return winOptions;
 	}
 	/**

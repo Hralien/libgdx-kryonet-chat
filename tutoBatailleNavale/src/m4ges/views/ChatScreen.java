@@ -8,12 +8,13 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import reseau.GameClient;
+import reseau.Network;
+import reseau.Network.SkillNumber;
+
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
 import m4ges.models.Skill;
-import chat.ChatClient;
-import chat.Network;
-import chat.Network.SkillNumber;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -115,13 +116,8 @@ public class ChatScreen extends AbstractScreen {
 		TextButton validation = new TextButton("se connecter", skin);
 		TextButton search = new TextButton("Rechercher des serveurs", skin);
 
-		// un label pour montrer les fps
-		Label myLabel = new Label("Pseudo", skin);
-		myLabel.setWrap(true);
-
-		CheckBox checkBox = new CheckBox("Memoriser", skin);
-		final TextField tfPseudo = new TextField("", skin);
-		tfPseudo.setMessageText("Saisir un pseudo!");
+		Label lblHost = new Label("Host", skin);
+		lblHost.setWrap(true);
 
 		// final SelectBox sbIps = new SelectBox(listIps.toArray(),skin);
 		if (!listIps.isEmpty())
@@ -140,15 +136,8 @@ public class ChatScreen extends AbstractScreen {
 		.height(window.getPadTop());
 		window.setPosition(width * 0, 200);
 		window.defaults().pad(20, 20, 20, 20);
-		window.row().minWidth((float) (width * .4)).fill().expandX();
-		window.row();
-		window.add(checkBox);
-		window.row();
-		window.add(tfPseudo).minWidth((float) (width * .4)).expandX().fillX()
-		.colspan(6);
-		window.row();
-		window.add(tfHost).minWidth((float) (width * .4)).expandX().fillX()
-		.colspan(6);
+		window.add(lblHost);
+		window.add(tfHost);
 		window.row();
 		window.add(validation);
 		window.row();
@@ -158,18 +147,10 @@ public class ChatScreen extends AbstractScreen {
 		// stage.addActor(new Button("Behind Window", skin));
 		stage.addActor(window);
 
-		// ajouts des listeners sur nos boutons
-		tfPseudo.setTextFieldListener(new TextFieldListener() {
-			public void keyTyped(TextField textField, char key) {
-				if (key == '\n')
-					textField.getOnscreenKeyboard().show(false);
-			}
-		});
-
 		final ChatScreen vue = this;
 		validation.addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
-				game.chatClient = new ChatClient(tfHost.getText(), vue, game);
+				game.chatClient = new GameClient(tfHost.getText(), vue, game);
 
 				stage.addActor(game.chatClient.chatWindow.getWindow());
 			}

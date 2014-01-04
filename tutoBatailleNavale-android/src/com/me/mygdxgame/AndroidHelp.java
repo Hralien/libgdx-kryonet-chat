@@ -6,6 +6,8 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
+import reseau.Network;
+
 import m4ges.controllers.UITrick;
 
 import android.app.AlertDialog;
@@ -21,7 +23,6 @@ import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.widget.Toast;
 
-import chat.Network;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 

@@ -1,35 +1,36 @@
 
-package chat;
+package reseau;
 
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+import reseau.Network.ChatMessage;
+import reseau.Network.RegisterName;
+import reseau.Network.RequestName;
+import reseau.Network.UpdateNames;
+
 import m4ges.models.Personnage;
 import m4ges.models.Skill;
 import m4ges.util.Constants;
-import chat.Network.ChatMessage;
-import chat.Network.RegisterName;
-import chat.Network.RequestName;
-import chat.Network.UpdateNames;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
-public class ChatServer {
+public class GameServer {
 	Server server;
 	public ArrayList<Personnage> listPersonnage;
 	private int nbjoueur;
 	public String nomServ;
 
-	public ChatServer (int nb, final String nom) throws IOException {
+	public GameServer (int nb, final String nom) throws IOException {
 		this.nomServ = nom;
 		this.server = new Server() {
 			protected Connection newConnection () {
 				// By providing our own connection implementation, we can store per
 				// connection state without a connection ID to state look up.
-				return new ChatConnection();
+				return new GameConnection();
 			}
 		};
 		this.nbjoueur = nb;
@@ -44,7 +45,7 @@ public class ChatServer {
 				System.out.println("[serveur]: reçu "+object.getClass());
 
 				// We know all connections for this server are actually ChatConnections.
-				ChatConnection connection = (ChatConnection)c;
+				GameConnection connection = (GameConnection)c;
 
 				System.out.println("[serveur]: reçu "+object.getClass());
 				
@@ -130,7 +131,7 @@ public class ChatServer {
 			}
 
 			public void disconnected (Connection c) {
-				ChatConnection connection = (ChatConnection)c;
+				GameConnection connection = (GameConnection)c;
 				if (connection.name != null) {
 					// Announce to everyone that someone (with a registered name) has left.
 					ChatMessage chatMessage = new ChatMessage();
@@ -153,7 +154,7 @@ public class ChatServer {
 		Connection[] connections = server.getConnections();
 		ArrayList<String> names = new ArrayList<String>(connections.length);
 		for (int i = connections.length - 1; i >= 0; i--) {
-			ChatConnection connection = (ChatConnection)connections[i];
+			GameConnection connection = (GameConnection)connections[i];
 			names.add(connection.name);
 		}
 		// Send the names to everyone.
@@ -167,7 +168,7 @@ public class ChatServer {
 	}
 
 	// This holds per connection state.
-	static class ChatConnection extends Connection {
+	static class GameConnection extends Connection {
 		public String name;
 	}
 

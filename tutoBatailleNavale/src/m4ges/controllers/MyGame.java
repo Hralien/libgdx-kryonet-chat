@@ -2,6 +2,9 @@ package m4ges.controllers;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+
+import reseau.GameClient;
+import reseau.GameServer;
 import m4ges.models.Personnage;
 import m4ges.views.BeginingScreen;
 import m4ges.views.ChatScreen;
@@ -9,8 +12,6 @@ import m4ges.views.CreateCharacterScreen;
 import m4ges.views.LoadingScreen;
 import m4ges.views.MenuPrincipalScreen;
 
-import chat.ChatClient;
-import chat.ChatServer;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -36,10 +37,10 @@ public class MyGame extends Game{
 	 * le personnage du joueur initialise lors de la creation
 	 */
 	public Personnage player;
-	public ChatClient chatClient;
+	public GameClient chatClient;
 
 	public UITrick androidUI;
-	public ChatServer chatServer;
+	public GameServer chatServer;
 	public ArrayList<String> listHost ;
 	public ArrayList<Personnage> playersConnected;
 

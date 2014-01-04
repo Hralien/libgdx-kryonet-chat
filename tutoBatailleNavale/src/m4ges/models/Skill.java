@@ -3,9 +3,10 @@ package m4ges.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import reseau.Network.SkillNumber;
+
 import m4ges.controllers.MyGame;
 
-import chat.Network.SkillNumber;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;

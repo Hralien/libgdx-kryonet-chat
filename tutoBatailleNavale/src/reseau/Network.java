@@ -1,5 +1,5 @@
 
-package chat;
+package reseau;
 
 
 import java.util.ArrayList;

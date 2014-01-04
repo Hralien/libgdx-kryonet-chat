@@ -120,14 +120,14 @@ public class BeginingScreen extends AbstractScreen {
 		Stack stack = new Stack();
 		stack.add(buildPersoLayer());
 		stack.add(buildMonsterLayer());
-		stack.add(buildVagueInfo());
 		stack.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
 		this.stage.addActor(stack);
-		this.stage.addActor(createMySkillWindows());
 		this.stage.addActor(createMyInfoWindows());
+		this.stage.addActor(createMySkillWindows());
 		this.stage.addActor(fg);
-		showNewCharacterWindow();
+		this.fg.addActor(buildVagueInfo());
+		showVagueWindow();
 
 	}
 
@@ -234,9 +234,9 @@ public class BeginingScreen extends AbstractScreen {
 	 * @param visible
 	 * @param animated
 	 */
-	private void showNewCharacterWindow() {
-		winVagueInfo.addAction(sequence(touchable(Touchable.disabled), alpha(0.8f, 4.0f)));
-		winVagueInfo.addAction(sequence(touchable(Touchable.disabled), alpha(0.0f, 4.0f)));
+	private void showVagueWindow() {
+		winVagueInfo.addAction(sequence(touchable(Touchable.disabled), alpha(0.8f, 2.5f)));
+		winVagueInfo.addAction(sequence(touchable(Touchable.disabled), alpha(0.0f, 2.5f)));
 	}
 
 	@Override

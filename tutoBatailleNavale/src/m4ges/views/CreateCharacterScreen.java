@@ -83,9 +83,10 @@ public class CreateCharacterScreen extends AbstractScreen {
 		Gdx.input.setInputProcessor(stage);
 
 		this.stage.clear();
-		this.stage.addActor(fg);
 		this.stage.addActor(buildCreateCharacterWindow());
 		this.stage.addActor(buildClassDescWindow());
+		this.stage.addActor(fg);
+
 
 	}
 	private Window buildCreateCharacterWindow(){
@@ -205,7 +206,7 @@ public class CreateCharacterScreen extends AbstractScreen {
 	}
 	private void classDescUpdate(){
 		winClassDesc.clear();
-		winClassDesc.add(buildSpClasseDesc()).minWidth(200).minHeight(200).colspan(4);
+		winClassDesc.add(buildSpClasseDesc()).minWidth(200).minHeight(200);
 		winClassDesc.row();
 		winClassDesc.add(buildSkillLayout());
 		winClassDesc.setPosition(100, 200);

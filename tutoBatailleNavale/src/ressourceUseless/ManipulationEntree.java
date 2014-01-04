@@ -1,7 +1,7 @@
 package ressourceUseless;
 
 
-import chat.ChatClient;
+import reseau.GameClient;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -19,7 +19,7 @@ public class ManipulationEntree implements ApplicationListener {
 	private String titreBoiteDialogue;
 	private String message;
 	private boolean afficher,connection;
-	private ChatClient cc;
+	private GameClient cc;
 	private String pseudo;
 	private String host;
 

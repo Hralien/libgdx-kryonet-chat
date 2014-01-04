@@ -1,9 +1,14 @@
 
-package chat;
+package reseau;
 
 import java.awt.EventQueue;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import reseau.Network.ChatMessage;
+import reseau.Network.RequestName;
+import reseau.Network.SkillNumber;
+import reseau.Network.UpdateNames;
 
 import m4ges.controllers.MyGame;
 import m4ges.models.Personnage;
@@ -11,10 +16,6 @@ import m4ges.util.Constants;
 import m4ges.views.ChatScreen;
 import m4ges.views.ChatWindow;
 
-import chat.Network.ChatMessage;
-import chat.Network.RequestName;
-import chat.Network.SkillNumber;
-import chat.Network.UpdateNames;
 
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
@@ -22,7 +23,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
 
-public class ChatClient {
+public class GameClient {
 	public Client client;
 	public ChatWindow chatWindow;
 	private ChatScreen myVue;
@@ -30,7 +31,7 @@ public class ChatClient {
 	public 	String name;
 
 	@SuppressWarnings("unchecked")
-	public ChatClient (final String adresse, ChatScreen vue, MyGame myGame) {
+	public GameClient (final String adresse, ChatScreen vue, MyGame myGame) {
 		this.client = new Client();
 		this.client.start();
 		this.myVue = vue;

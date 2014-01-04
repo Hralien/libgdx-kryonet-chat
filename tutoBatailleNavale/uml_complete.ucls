@@ -3,7 +3,7 @@
   associations="true" dependencies="false" nesting-relationships="true">  
   <class id="1" language="java" name="m4ges.controllers.AbstractScreen" project="tutoBatailleNavale" 
     file="/tutoBatailleNavale/src/m4ges/controllers/AbstractScreen.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="297" width="185" x="757" y="37"/>    
+    <position height="297" width="185" x="1201" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -12,7 +12,7 @@
   </class>  
   <class id="2" language="java" name="m4ges.controllers.MyGame" project="tutoBatailleNavale" 
     file="/tutoBatailleNavale/src/m4ges/controllers/MyGame.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1229" y="950"/>    
+    <position height="279" width="244" x="697" y="374"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -21,7 +21,7 @@
   </class>  
   <class id="3" language="java" name="m4ges.models.monster.Lutin" project="tutoBatailleNavale" 
     file="/tutoBatailleNavale/src/m4ges/models/monster/Lutin.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="711" y="2634"/>    
+    <position height="207" width="140" x="867" y="2159"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -30,7 +30,7 @@
   </class>  
   <class id="4" language="java" name="m4ges.models.monster.Flower" project="tutoBatailleNavale" 
     file="/tutoBatailleNavale/src/m4ges/models/monster/Flower.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1851" y="2634"/>    
+    <position height="207" width="140" x="1587" y="2159"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -39,7 +39,7 @@
   </class>  
   <class id="5" language="java" name="m4ges.models.classes.Necromancien" project="tutoBatailleNavale" 
     file="/tutoBatailleNavale/src/m4ges/models/classes/Necromancien.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2041" y="2625"/>    
+    <position height="189" width="140" x="41" y="2159"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -48,7 +48,7 @@
   </class>  
   <class id="6" language="java" name="m4ges.models.monster.Skeleton" project="tutoBatailleNavale" 
     file="/tutoBatailleNavale/src/m4ges/models/monster/Skeleton.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1281" y="2634"/>    
+    <position height="207" width="140" x="1227" y="2159"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -57,7 +57,7 @@
   </class>  
   <class id="7" language="java" name="m4ges.models.monster.Phantom" project="tutoBatailleNavale" 
     file="/tutoBatailleNavale/src/m4ges/models/monster/Phantom.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1471" y="2634"/>    
+    <position height="207" width="140" x="1407" y="2159"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -66,7 +66,7 @@
   </class>  
   <class id="8" language="java" name="m4ges.models.Skill" project="tutoBatailleNavale" 
     file="/tutoBatailleNavale/src/m4ges/models/Skill.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="477" width="236" x="249" y="2159"/>    
+    <position height="477" width="236" x="221" y="2159"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -75,7 +75,7 @@
   </class>  
   <class id="9" language="java" name="m4ges.models.classes.Pyromancien" project="tutoBatailleNavale" 
     file="/tutoBatailleNavale/src/m4ges/models/classes/Pyromancien.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="901" y="2625"/>    
+    <position height="189" width="140" x="1047" y="2159"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -84,7 +84,7 @@
   </class>  
   <class id="10" language="java" name="m4ges.models.classes.Aquamancien" project="tutoBatailleNavale" 
     file="/tutoBatailleNavale/src/m4ges/models/classes/Aquamancien.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1091" y="2625"/>    
+    <position height="189" width="140" x="507" y="2159"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -93,7 +93,7 @@
   </class>  
   <class id="11" language="java" name="m4ges.models.classes.Shaman" project="tutoBatailleNavale" 
     file="/tutoBatailleNavale/src/m4ges/models/classes/Shaman.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1661" y="2634"/>    
+    <position height="207" width="140" x="687" y="2159"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -102,7 +102,7 @@
   </class>  
   <class id="12" language="java" name="m4ges.models.Personnage" project="tutoBatailleNavale" 
     file="/tutoBatailleNavale/src/m4ges/models/Personnage.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="978" y="2207"/>    
+    <position height="567" width="168" x="718" y="1552"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -111,7 +111,7 @@
   </class>  
   <class id="13" language="java" name="m4ges.views.MenuPrincipalScreen" project="tutoBatailleNavale" 
     file="/tutoBatailleNavale/src/m4ges/views/MenuPrincipalScreen.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="563" y="837"/>    
+    <position height="927" width="258" x="1695" y="374"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -120,7 +120,7 @@
   </class>  
   <class id="14" language="java" name="m4ges.views.CreateCharacterScreen" project="tutoBatailleNavale" 
     file="/tutoBatailleNavale/src/m4ges/views/CreateCharacterScreen.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="213" y="541"/>    
+    <position height="513" width="275" x="1154" y="374"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -129,7 +129,7 @@
   </class>  
   <class id="15" language="java" name="m4ges.views.ChatScreen" project="tutoBatailleNavale" 
     file="/tutoBatailleNavale/src/m4ges/views/ChatScreen.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="261" width="133" x="983" y="374"/>    
+    <position height="261" width="133" x="981" y="374"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -138,308 +138,352 @@
   </class>  
   <class id="16" language="java" name="m4ges.views.BeginingScreen" project="tutoBatailleNavale" 
     file="/tutoBatailleNavale/src/m4ges/views/BeginingScreen.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="333" width="186" x="757" y="374"/>    
+    <position height="441" width="186" x="1469" y="374"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="17" language="java" name="chat.Network.ChatMessage" project="tutoBatailleNavale" 
-    file="/tutoBatailleNavale/src/chat/Network.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="99" width="102" x="223" y="1395"/>    
+  <class id="17" language="java" name="reseau.Network.ChatMessage" project="tutoBatailleNavale" 
+    file="/tutoBatailleNavale/src/reseau/Network.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="102" x="1851" y="1341"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="18" language="java" name="chat.ChatServer" project="tutoBatailleNavale" 
-    file="/tutoBatailleNavale/src/chat/ChatServer.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="171" width="131" x="983" y="1395"/>    
+  <class id="18" language="java" name="reseau.Network.SkillNumber" project="tutoBatailleNavale" 
+    file="/tutoBatailleNavale/src/reseau/Network.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="93" x="1422" y="1341"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="19" language="java" name="chat.Network.SkillNumber" project="tutoBatailleNavale" 
-    file="/tutoBatailleNavale/src/chat/Network.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="99" width="93" x="826" y="1395"/>    
+  <class id="19" language="java" name="reseau.Network.TestConnection" project="tutoBatailleNavale" 
+    file="/tutoBatailleNavale/src/reseau/Network.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="112" x="1699" y="1341"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="20" language="java" name="chat.Network.TestConnection" project="tutoBatailleNavale" 
-    file="/tutoBatailleNavale/src/chat/Network.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="99" width="112" x="365" y="1395"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="21" language="java" name="m4ges.views.ChatWindow" project="tutoBatailleNavale" 
+  <class id="20" language="java" name="m4ges.views.ChatWindow" project="tutoBatailleNavale" 
     file="/tutoBatailleNavale/src/m4ges/views/ChatWindow.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="279" width="181" x="1440" y="374"/>    
+    <position height="279" width="181" x="476" y="374"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="22" language="java" name="chat.Network.RequestName" project="tutoBatailleNavale" 
-    file="/tutoBatailleNavale/src/chat/Network.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="99" width="104" x="517" y="1395"/>    
+  <class id="21" language="java" name="reseau.Network.RequestName" project="tutoBatailleNavale" 
+    file="/tutoBatailleNavale/src/reseau/Network.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="104" x="1555" y="1341"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="23" language="java" name="chat.Network" project="tutoBatailleNavale" 
-    file="/tutoBatailleNavale/src/chat/Network.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="557" y="1656"/>    
+  <class id="22" language="java" name="reseau.Network" project="tutoBatailleNavale" 
+    file="/tutoBatailleNavale/src/reseau/Network.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="153" width="135" x="1993" y="374"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="24" language="java" name="chat.Network.UpdateNames" project="tutoBatailleNavale" 
-    file="/tutoBatailleNavale/src/chat/Network.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="99" width="104" x="661" y="1395"/>    
+  <class id="23" language="java" name="reseau.Network.UpdateNames" project="tutoBatailleNavale" 
+    file="/tutoBatailleNavale/src/reseau/Network.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="104" x="2138" y="1341"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="25" language="java" name="chat.Network.RegisterName" project="tutoBatailleNavale" 
-    file="/tutoBatailleNavale/src/chat/Network.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="99" width="105" x="78" y="1395"/>    
+  <class id="24" language="java" name="reseau.Network.RegisterName" project="tutoBatailleNavale" 
+    file="/tutoBatailleNavale/src/reseau/Network.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="105" x="1993" y="1341"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="26" language="java" name="chat.ChatServer.ChatConnection" project="tutoBatailleNavale" 
-    file="/tutoBatailleNavale/src/chat/ChatServer.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="852" y="1703"/>    
+  <class id="25" language="java" name="reseau.GameServer.GameConnection" project="tutoBatailleNavale" 
+    file="/tutoBatailleNavale/src/reseau/GameServer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="121" x="539" y="1552"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="27" language="java" name="chat.ChatClient" project="tutoBatailleNavale" 
-    file="/tutoBatailleNavale/src/chat/ChatClient.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="117" width="215" x="1156" y="37"/>    
+  <class id="26" language="java" name="reseau.GameServer" project="tutoBatailleNavale" 
+    file="/tutoBatailleNavale/src/reseau/GameServer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="171" width="137" x="539" y="1341"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <generalization id="28">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="12"/>  
-  </generalization>  
-  <generalization id="29">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="12"/>  
-  </generalization>  
-  <nesting id="30">    
-    <end type="SOURCE" refId="23"/>    
-    <end type="TARGET" refId="20"/>  
+  <class id="27" language="java" name="reseau.GameClient" project="tutoBatailleNavale" 
+    file="/tutoBatailleNavale/src/reseau/GameClient.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="117" width="221" x="697" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="28" language="java" name="m4ges.models.Vague" project="tutoBatailleNavale" 
+    file="/tutoBatailleNavale/src/m4ges/models/Vague.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="153" width="329" x="758" y="1341"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="29" language="java" name="m4ges.util.GamePreferences" project="tutoBatailleNavale" 
+    file="/tutoBatailleNavale/src/m4ges/util/GamePreferences.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="279" width="185" x="399" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="30" language="java" name="m4ges.util.Constants" project="tutoBatailleNavale" 
+    file="/tutoBatailleNavale/src/m4ges/util/Constants.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="243" width="203" x="958" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="31" language="java" name="m4ges.util.AudioManager" project="tutoBatailleNavale" 
+    file="/tutoBatailleNavale/src/m4ges/util/AudioManager.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="243" width="180" x="105" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <nesting id="32">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="21"/>  
   </nesting>  
-  <association id="31">    
+  <generalization id="33">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <association id="34">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="35" name="listSkills"/>      
+      <multiplicity id="36" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="37">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="12"/>  
+  </generalization>  
+  <association id="38">    
     <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="32" name="chatClient"/>      
-      <multiplicity id="33" minimum="0" maximum="1"/>    
+      <attribute id="39" name="chatClient"/>      
+      <multiplicity id="40" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="27" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="34">    
-    <end type="SOURCE" refId="23"/>    
-    <end type="TARGET" refId="24"/>  
-  </nesting>  
-  <association id="35">    
-    <bendpoint x="1127" y="1771"/>    
-    <bendpoint x="1058" y="1869"/>    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="36" name="playersConnected"/>      
-      <multiplicity id="37" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="38">    
+  <association id="41">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="39" name="game"/>      
-      <multiplicity id="40" minimum="0" maximum="1"/>    
+      <attribute id="42" name="game"/>      
+      <multiplicity id="43" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="41">    
-    <bendpoint x="1200" y="1394"/>    
-    <bendpoint x="1197" y="1832"/>    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="42" name="player"/>      
-      <multiplicity id="43" minimum="0" maximum="1"/>    
+  <association id="44">    
+    <end type="SOURCE" refId="28" navigable="false">      
+      <attribute id="45" name="listMonstrePossible"/>      
+      <multiplicity id="46" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="12" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="44">    
-    <bendpoint x="453" y="249"/>    
+  <generalization id="47">    
     <end type="SOURCE" refId="14"/>    
     <end type="TARGET" refId="1"/>  
   </generalization>  
-  <association id="45">    
-    <bendpoint x="47" y="1395"/>    
-    <bendpoint x="47" y="1606"/>    
-    <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="46" name="skillToRender"/>      
-      <multiplicity id="47" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="48">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="12"/>  
-  </generalization>  
-  <association id="49">    
-    <bendpoint x="877" y="1856"/>    
-    <end type="SOURCE" refId="18" navigable="false">      
-      <attribute id="50" name="listPersonnage"/>      
-      <multiplicity id="51" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="52">    
-    <end type="SOURCE" refId="16"/>    
-    <end type="TARGET" refId="1"/>  
-  </generalization>  
-  <generalization id="53">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="12"/>  
-  </generalization>  
-  <generalization id="54">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="12"/>  
-  </generalization>  
-  <generalization id="55">    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="12"/>  
-  </generalization>  
-  <nesting id="56">    
-    <end type="SOURCE" refId="23"/>    
-    <end type="TARGET" refId="17"/>  
-  </nesting>  
-  <association id="57">    
+  <association id="48">    
     <end type="SOURCE" refId="27" navigable="false">      
-      <attribute id="58" name="chatWindow"/>      
-      <multiplicity id="59" minimum="0" maximum="1"/>    
+      <attribute id="49" name="chatWindow"/>      
+      <multiplicity id="50" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="21" navigable="true"/>    
+    <end type="TARGET" refId="20" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="60">    
-    <end type="SOURCE" refId="27" navigable="false">      
-      <attribute id="61" name="game"/>      
-      <multiplicity id="62" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="63">    
-    <bendpoint x="795" y="1395"/>    
-    <bendpoint x="795" y="1606"/>    
-    <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="64" name="skillToRender"/>      
-      <multiplicity id="65" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="66">    
-    <end type="SOURCE" refId="13"/>    
-    <end type="TARGET" refId="1"/>  
-  </generalization>  
-  <generalization id="67">    
-    <end type="SOURCE" refId="15"/>    
-    <end type="TARGET" refId="1"/>  
-  </generalization>  
-  <nesting id="68">    
-    <end type="SOURCE" refId="23"/>    
-    <end type="TARGET" refId="22"/>  
-  </nesting>  
-  <association id="69">    
-    <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="70" name="listSkills"/>      
-      <multiplicity id="71" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="72">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="12"/>  
-  </generalization>  
-  <nesting id="73">    
-    <end type="SOURCE" refId="18"/>    
-    <end type="TARGET" refId="26"/>  
-  </nesting>  
-  <association id="74">    
+  <association id="51">    
     <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="75" name="listSkill"/>      
-      <multiplicity id="76" minimum="0" maximum="2147483647"/>    
+      <attribute id="52" name="listSkill"/>      
+      <multiplicity id="53" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="8" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="77">    
-    <end type="SOURCE" refId="23"/>    
-    <end type="TARGET" refId="25"/>  
-  </nesting>  
-  <association id="78">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="79" name="chatServer"/>      
-      <multiplicity id="80" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="18" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="81">    
-    <end type="SOURCE" refId="23"/>    
-    <end type="TARGET" refId="19"/>  
-  </nesting>  
-  <association id="82">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="83" name="showSkillNumber"/>      
-      <multiplicity id="84" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="19" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="85">    
+  <association id="54">    
     <end type="SOURCE" refId="27" navigable="false">      
-      <attribute id="86" name="myVue"/>      
-      <multiplicity id="87" minimum="0" maximum="1"/>    
+      <attribute id="55" name="myVue"/>      
+      <multiplicity id="56" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="15" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="88">    
+  <generalization id="57">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <association id="58">    
+    <end type="SOURCE" refId="31" navigable="false">      
+      <attribute id="59" name="instance"/>      
+      <multiplicity id="60" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="31" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="61">    
+    <end type="SOURCE" refId="28" navigable="false">      
+      <attribute id="62" name="listMonstrePresent"/>      
+      <multiplicity id="63" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="64">    
+    <bendpoint x="706" y="1341"/>    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="65" name="playersConnected"/>      
+      <multiplicity id="66" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="67">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="12"/>  
+  </generalization>  
+  <nesting id="68">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="24"/>  
+  </nesting>  
+  <generalization id="69">    
     <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="12"/>  
+  </generalization>  
+  <association id="70">    
+    <bendpoint x="727" y="1341"/>    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="71" name="player"/>      
+      <multiplicity id="72" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="73">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <association id="74">    
+    <end type="SOURCE" refId="27" navigable="false">      
+      <attribute id="75" name="game"/>      
+      <multiplicity id="76" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="77">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="78" name="chatServer"/>      
+      <multiplicity id="79" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="26" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="80">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="12"/>  
+  </generalization>  
+  <generalization id="81">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="12"/>  
+  </generalization>  
+  <association id="82">    
+    <end type="SOURCE" refId="26" navigable="false">      
+      <attribute id="83" name="listPersonnage"/>      
+      <multiplicity id="84" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="85">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="86" name="showSkillNumber"/>      
+      <multiplicity id="87" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="88">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="12"/>  
+  </generalization>  
+  <association id="89">    
+    <end type="SOURCE" refId="29" navigable="false">      
+      <attribute id="90" name="instance"/>      
+      <multiplicity id="91" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="29" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="92">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="23"/>  
+  </nesting>  
+  <nesting id="93">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="19"/>  
+  </nesting>  
+  <generalization id="94">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="12"/>  
+  </generalization>  
+  <nesting id="95">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="17"/>  
+  </nesting>  
+  <nesting id="96">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="18"/>  
+  </nesting>  
+  <nesting id="97">    
+    <end type="SOURCE" refId="26"/>    
+    <end type="TARGET" refId="25"/>  
+  </nesting>  
+  <generalization id="98">    
+    <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="12"/>  
   </generalization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
