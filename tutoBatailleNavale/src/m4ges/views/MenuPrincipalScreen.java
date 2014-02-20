@@ -13,10 +13,12 @@ import reseau.GameServer;
 
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
+import m4ges.models.Vague;
 import m4ges.util.AudioManager;
 import m4ges.util.GamePreferences;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -27,6 +29,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -130,6 +134,9 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		stage.act(delta);
 		stage.draw();
 		Table.drawDebug(stage);
+		if(Gdx.input.isKeyPressed(Keys.V)){
+			Vague.loadVague(1);
+		}
 
 	}
 
@@ -154,6 +161,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		stack.add(buildControlLayer(atlas));
 		stage.addActor(buildServerSetup(atlas));
 		stage.addActor(buildOptionsWindowLayer());
+		
 		AudioManager.instance.play(Gdx.audio.newMusic(Gdx.files.internal("sound/CloudTopLoops.mp3")));
 
 

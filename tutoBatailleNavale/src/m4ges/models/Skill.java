@@ -58,8 +58,7 @@ public class Skill extends Actor implements Cloneable{
 	 * @param frame_cols number of colone
 	 * @param frame_rows number of rows
 	 */
-	public Skill(int id, int spCost, String skillName, String skillEffect,
-			int frame_cols, int frame_rows) {
+	public Skill(int id, int spCost, String skillName, String skillEffect,int frame_cols, int frame_rows) {
 		super();
 		this.id = id;
 		this.spCost = spCost;

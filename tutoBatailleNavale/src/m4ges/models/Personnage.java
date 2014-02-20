@@ -14,7 +14,7 @@ import com.esotericsoftware.jsonbeans.JsonSerializable;
 import com.esotericsoftware.jsonbeans.JsonValue;
 import com.esotericsoftware.kryo.KryoSerializable;
 
-public abstract class Personnage extends Actor implements KryoSerializable, JsonSerializable {
+public abstract class Personnage extends Actor implements KryoSerializable {
 
 	//classe
 	public static final int SHAMANE=0;
@@ -51,24 +51,6 @@ public abstract class Personnage extends Actor implements KryoSerializable, Json
 		setTouchable(Touchable.enabled);
 		this.setOrigin(50, 50);
 	}
-	@Override
-	public void write (Json json) {
-        json.writeValue(hp);
-        json.writeValue(mana);
-        json.writeValue(strength);
-        json.writeValue(speed);
-        json.writeValue(intel);
-        json.writeValue(name);
-     }
-	@Override
-     public void read (Json json, JsonValue jsonMap) {
-        hp = jsonMap.child().asInt();
-        mana = jsonMap.child().asInt();
-        strength = jsonMap.child().asInt();
-        speed = jsonMap.child().asInt();
-        intel = jsonMap.child().asInt();
-        name = jsonMap.child().asString();
-     }
 
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
@@ -128,5 +110,14 @@ public abstract class Personnage extends Actor implements KryoSerializable, Json
 
 	public void setMana(int mana) {
 		this.mana = mana;
+	}
+
+	@Override
+	public String toString() {
+		return "Personnage [hp=" + hp + ", mana=" + mana + ", strength="
+				+ strength + ", speed=" + speed + ", intel=" + intel
+				+ ", name=" + name + ", listSkills=" + listSkills + ", state="
+				+ state + ", currentFrame=" + currentFrame + ", stateTime="
+				+ stateTime + "]";
 	}
 }

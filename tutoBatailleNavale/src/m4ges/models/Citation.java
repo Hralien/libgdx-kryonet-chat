@@ -9,7 +9,7 @@ public class Citation {
 	private static ArrayList<Citation> citationList = new ArrayList<Citation>();
     private static final int index = (int)( Math.random()*citationList.size());
 
-	private Citation(String phrase, String auteur) {
+	public Citation(String phrase, String auteur) {
 		super();
 		this.phrase = phrase;
 		this.auteur = auteur;

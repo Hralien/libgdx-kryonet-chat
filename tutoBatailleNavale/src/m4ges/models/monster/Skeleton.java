@@ -27,9 +27,7 @@ public class Skeleton extends Personnage {
 		super.mana=5*super.intel;
 		super.strength=3;
 		super.speed=2;
-
-		
-		super.listSkills=Skill.getSkillForClass(Personnage.NECROMANCIEN);
+		//super.listSkills=Skill.getSkillForClass(Personnage.NECROMANCIEN);
 
 	}
 	@Override
@@ -41,20 +39,19 @@ public class Skeleton extends Personnage {
 		output.writeShort(intel);
 
 		kryo.writeClassAndObject(output, name);
-
 	}
 
 	@Override
 	public void read(Kryo kryo, Input input) {
-		setHp(input.readShort());
-		setMana(input.readShort());
+		hp = input.readShort();
+		mana = input.readShort();
 		strength = input.readShort();
 		speed = input.readShort();
 		intel = input.readShort();
-
-
 		name = (String) kryo.readClassAndObject(input);
+		listSkills=Skill.getSkillForClass(Personnage.NECROMANCIEN);
 	}
+	
 	@Override
 	public String getDesc() {
 		return DESCRIPTION;
