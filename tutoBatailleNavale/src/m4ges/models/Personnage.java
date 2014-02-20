@@ -1,23 +1,21 @@
 package m4ges.models;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.esotericsoftware.jsonbeans.Json;
-import com.esotericsoftware.jsonbeans.JsonSerializable;
-import com.esotericsoftware.jsonbeans.JsonValue;
 import com.esotericsoftware.kryo.KryoSerializable;
 
 public abstract class Personnage extends Actor implements KryoSerializable {
 
 	//classe
-	public static final int SHAMANE=0;
+	public static final int SHAMAN=0;
 	public static final int NECROMANCIEN=1;
 	public static final int PYROMANCIEN=2;
 	public static final int AQUAMANCIEN=3;
@@ -120,4 +118,15 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 				+ state + ", currentFrame=" + currentFrame + ", stateTime="
 				+ stateTime + "]";
 	}
+	
+	private void writeObject(ObjectOutputStream io) throws IOException{
+		io.writeBytes(name);
+		io.writeInt(hp);
+	}
+	
+	public byte[] getBytes(){
+		//Cette méthode ne devrait pas etre appeler
+		return null;
+	}
+	
 }

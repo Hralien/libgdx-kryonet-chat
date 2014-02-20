@@ -2,6 +2,7 @@ package m4ges.models.classes;
 
 import m4ges.models.Personnage;
 import m4ges.models.Skill;
+import m4ges.util.Constants;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -86,5 +87,21 @@ public class Pyromancien extends Personnage {
 			}
 		}
 		return Pyromancien.animation;
+	}
+	
+	/**
+	 *  Sur les deux premiers octets : les infos
+	 *  sur le reste le pseudo du joueur
+	 * @return les donnees a envoyer
+	 */
+	public byte[] getBytes(){
+		byte data[] = new byte[2+this.name.length()];
+		data[0] = Constants.CONNEXION;
+		data[1] = Personnage.PYROMANCIEN;
+		byte[] pseudo = this.name.getBytes();
+		for(int i = 2; i < pseudo.length+2;i++){
+			data[i] = pseudo[i-2];
+		}
+		return data;
 	}
 }
