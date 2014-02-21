@@ -89,12 +89,13 @@ public class Necromancien extends Personnage {
 	 * @return les donnees a envoyer
 	 */
 	public byte[] getBytes(){
-		byte data[] = new byte[2+this.name.length()];
+		byte data[] = new byte[3+this.name.length()];
 		data[0] = Constants.CONNEXION;
 		data[1] = Personnage.NECROMANCIEN;
-		byte[] pseudo = this.name.getBytes();
-		for(int i = 2; i < pseudo.length+2;i++){
-			data[i] = pseudo[i-2];
+		//Et oui, on doit mettre l'ip apres :(
+		data[2] = (byte) this.name.length();
+		for(int i = 3; i < name.length()+3;i++){
+			data[i] = (byte) name.charAt(i-3);
 		}
 		return data;
 	}

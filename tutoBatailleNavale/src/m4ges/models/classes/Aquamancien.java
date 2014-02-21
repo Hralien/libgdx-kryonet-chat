@@ -93,12 +93,14 @@ public class Aquamancien extends Personnage {
 	 * @return les donnees a envoyer
 	 */
 	public byte[] getBytes(){
-		byte data[] = new byte[2+this.name.length()];
+		byte data[] = new byte[3+this.name.length()];
 		data[0] = Constants.CONNEXION;
 		data[1] = Personnage.AQUAMANCIEN;
+		//Et oui, on peut doit l'ip apres :(
+		data[2] = (byte) this.name.length();
 		byte[] pseudo = this.name.getBytes();
-		for(int i = 2; i < pseudo.length+2;i++){
-			data[i] = pseudo[i-2];
+		for(int i = 3; i < pseudo.length+3;i++){
+			data[i] = pseudo[i-3];
 		}
 		return data;
 	}
