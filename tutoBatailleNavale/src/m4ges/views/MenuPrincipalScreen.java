@@ -304,7 +304,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 * @return
 	 */
 	private TextButton buildBtnMenuTest(TextButtonStyle style) {
-		TextButton tbOption = new TextButton("Options", style);
+		TextButton tbOption = new TextButton("Test", style);
 		tbOption.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
