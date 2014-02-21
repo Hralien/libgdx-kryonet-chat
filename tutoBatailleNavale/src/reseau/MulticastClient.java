@@ -40,7 +40,10 @@ public class MulticastClient {
 		joueurs = new ArrayList<Personnage>();
 		joueurs.add(game.player);
 		monstres = new ArrayList<Personnage>();
+
 		try {
+			ms = new MulticastSocket(PORT);
+			msIp = new InetSocketAddress("228.5.6.7", PORT);
 			join();
 			System.out.println("ok co");
 			sendData(Constants.CONNEXION);
@@ -66,7 +69,6 @@ public class MulticastClient {
 		case Constants.CONNEXION:
 			data = this.game.player.getBytes();
 			dp = new DatagramPacket(data, data.length, msIp);
-			System.out.println(ms.getInetAddress());
 			ms.send(dp);
 			break;
 
@@ -81,8 +83,7 @@ public class MulticastClient {
 	 * @throws IOException
 	 */
 	private void join() throws IOException {
-		ms = new MulticastSocket(PORT);
-		msIp = new InetSocketAddress("228.5.6.7", PORT);
+
 		// On recupere notre addresse
 		NetworkInterface netif = NetworkInterface.getByInetAddress(InetAddress
 				.getLocalHost());
@@ -121,13 +122,14 @@ public class MulticastClient {
 	 *            donnees a traiter
 	 */
 	private void traiterData(byte[] data) {
+		System.out.println(dp.getAddress());
 		int action = (int) data[0];
 		switch (action) {
 		case Constants.CONNEXION:
 			// System.out.println("Nouveau joueur");
 			// System.out.println(data[1]);
 			String pseudo;
-			pseudo = new String(data, 2, data.length);
+			pseudo = new String(data, 2, data.length-2);
 			switch (data[1]) {
 			case Personnage.AQUAMANCIEN:
 				Aquamancien a = new Aquamancien();
@@ -150,8 +152,8 @@ public class MulticastClient {
 				joueurs.add(p);
 				break;
 			}
-			System.out.println("Nouveau joueur de classe : " + joueurs.get(joueurs.size()) 
-					+ " et de pseudo : " + joueurs.get(joueurs.size()).getName());
+			System.out.println("Nouveau joueur de classe : " + joueurs.get(joueurs.size()-1) 
+					+ " et de pseudo : " + joueurs.get(joueurs.size()-1).getName());
 			
 			break;
 		default:
