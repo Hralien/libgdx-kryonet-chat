@@ -133,18 +133,22 @@ public class MulticastClient {
 				Aquamancien a = new Aquamancien();
 				a.setName(pseudo);
 				joueurs.add(a);
+				break;
 			case Personnage.NECROMANCIEN:
 				Necromancien n = new Necromancien();
 				n.setName(pseudo);
 				joueurs.add(n);
+				break;
 			case Personnage.SHAMAN:
 				Shaman s = new Shaman();
 				s.setName(pseudo);
 				joueurs.add(s);
+				break;
 			case Personnage.PYROMANCIEN:
 				Pyromancien p = new Pyromancien();
 				p.setName(pseudo);
 				joueurs.add(p);
+				break;
 			}
 			System.out.println("Nouveau joueur de classe : " + joueurs.get(joueurs.size()) 
 					+ " et de pseudo : " + joueurs.get(joueurs.size()).getName());

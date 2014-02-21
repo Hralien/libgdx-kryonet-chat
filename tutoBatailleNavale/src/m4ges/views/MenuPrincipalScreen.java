@@ -82,6 +82,8 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	private Button btnMenuHost;
 	private Button btnMenuPlay;
 	private Button btnMenuOptions;
+	private Button btnMenuTest;
+
 	// options
 	private Window winOptions;
 	private TextButton btnWinOptSave;
@@ -247,13 +249,15 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		btnMenuHost =  buildBtnMenuHost(style);
 		btnMenuPlay =  buildBtnMenuPlay(style);
 		btnMenuOptions = buildBtnMenuOption(style);
-		
+		btnMenuTest = buildBtnMenuTest(style);
 	
 		layer.add(btnMenuHost);
 		layer.row();
 		layer.add(btnMenuPlay);
 		layer.row();
 		layer.add(btnMenuOptions);
+		layer.row();
+		layer.add(btnMenuTest);
 		layer.left();
 		layer.padLeft((float)(Gdx.graphics.getWidth())/2-image.getRegionWidth()/2);
 		layer.padTop((float)(Gdx.graphics.getHeight())/2-layer.getHeight());
@@ -290,9 +294,23 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				loadSettings();
 				showMenuButtons(false);
 				showOptionsWindow(true, true);
-//				game.player = new Necromancien();
-//				game.player.setName("salut");
-//				MulticastClient mc = new MulticastClient(game);
+			}
+		});
+		return tbOption;
+	}
+	/**
+	 * 
+	 * @param style
+	 * @return
+	 */
+	private TextButton buildBtnMenuTest(TextButtonStyle style) {
+		TextButton tbOption = new TextButton("Options", style);
+		tbOption.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				game.player = new Necromancien();
+				game.player.setName("salut");
+				MulticastClient mc = new MulticastClient(game);
 			}
 		});
 		return tbOption;
