@@ -14,11 +14,14 @@ public class Constants {
 	public static final String TEXTURE_ATLAS_UI = "images/canyonbunny-ui.pack";
 	public static final String TEXTURE_ATLAS_LIBGDX_UI = "images/uiskin.atlas";
 
+
 	// Game preferences file
 	public static final String PREFERENCES = "m4ges.prefs";
 
 	//Game state
 	public static final int STARTGAME=1;
 
+	//Action
+	public static final int CONNEXION=1;
 
 }

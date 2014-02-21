@@ -10,10 +10,12 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.touchable;
 import java.io.IOException;
 
 import reseau.GameServer;
+import reseau.MulticastClient;
 
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
 import m4ges.models.Vague;
+import m4ges.models.classes.Necromancien;
 import m4ges.util.AudioManager;
 import m4ges.util.GamePreferences;
 
@@ -288,6 +290,9 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				loadSettings();
 				showMenuButtons(false);
 				showOptionsWindow(true, true);
+//				game.player = new Necromancien();
+//				game.player.setName("salut");
+//				MulticastClient mc = new MulticastClient(game);
 			}
 		});
 		return tbOption;

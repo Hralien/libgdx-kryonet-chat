@@ -28,6 +28,8 @@ public class MulticastClient {
 	ArrayList<Personnage> monstres;
 	// Le jeu
 	MyGame game;
+	// Datagram
+	DatagramPacket dp;
 
 	public MulticastClient(MyGame g) {
 		this.game = g;
@@ -39,21 +41,23 @@ public class MulticastClient {
 			sendData(Constants.CONNEXION);
 			System.out.println("ok send");
 		} catch (IOException e) {
-			System.err.println("Probleme lors de la jointure au ms ou de la " +
-					"transmission du pseudo");
+			System.err.println("Probleme lors de la jointure au ms ou de la "
+					+ "transmission du pseudo");
 		}
 	}
+
 	/**
 	 * Permet d'envoyer les donnees
-	 * @param action    l'action a effectuer
+	 * 
+	 * @param action
+	 *            l'action a effectuer
 	 * @throws IOException
 	 */
 	private void sendData(int action) throws IOException {
-		DatagramPacket dp;
 		byte[] data;
-		//On switch sur l'action
+		// On switch sur l'action
 		switch (action) {
-		//Pour la connexion
+		// Pour la connexion
 		case Constants.CONNEXION:
 			data = this.game.player.getBytes();
 			dp = new DatagramPacket(data, data.length, msIp);
@@ -90,7 +94,7 @@ public class MulticastClient {
 				while (true) {
 					// tableau de 1024octet
 					byte[] data = new byte[1024];
-					DatagramPacket dp = new DatagramPacket(data, data.length);
+					dp = new DatagramPacket(data, data.length);
 					try {
 						// recepetion
 						ms.receive(dp);
@@ -115,11 +119,15 @@ public class MulticastClient {
 		int action = (int) data[0];
 		switch (action) {
 		case Constants.CONNEXION:
-//			System.out.println("Nouveau joueur");
-//			System.out.println(data[1]);
-//			for(int i = 2; i < data.length; i++)
-//				System.out.print((char)data[i]);
-//			break;
+			// System.out.println("Nouveau joueur");
+			// System.out.println(data[1]);
+			String pseudo;
+			pseudo = new String(data, 2, data.length);
+			switch (data[1]) {
+			case Personnage.AQUAMANCIEN:
+
+			}
+			break;
 		default:
 			System.err.println("Action non reconnue");
 			break;

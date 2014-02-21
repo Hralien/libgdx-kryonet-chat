@@ -14,7 +14,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 
-public class Lutin extends Personnage {
+public class Lutin extends Personnage{
 	
 	private final static String DESCRIPTION = "Le Lutin est ou n'est pas ...";
 	protected static volatile Animation animation;
