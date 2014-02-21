@@ -71,6 +71,12 @@ public class MulticastClient {
 			dp = new DatagramPacket(data, data.length, msIp);
 			ms.send(dp);
 			break;
+		case Constants.NOUVEAU:
+			data = this.game.player.getBytes();
+			dp = new DatagramPacket(data, data.length);
+			dp.setAddress(dp.getAddress());
+			ms.send(dp);
+			break;
 
 		default:
 			break;
@@ -120,8 +126,9 @@ public class MulticastClient {
 	 * 
 	 * @param data
 	 *            donnees a traiter
+	 * @throws IOException 
 	 */
-	private void traiterData(byte[] data) {
+	private void traiterData(byte[] data) throws IOException {
 		System.out.println(dp.getAddress());
 		int action = (int) data[0];
 		switch (action) {
@@ -152,9 +159,12 @@ public class MulticastClient {
 				joueurs.add(p);
 				break;
 			}
-			System.out.println("Nouveau joueur de classe : " + joueurs.get(joueurs.size()-1) 
-					+ " et de pseudo : " + joueurs.get(joueurs.size()-1).getName());
+//			System.out.println("Nouveau joueur de classe : " + joueurs.get(joueurs.size()-1) 
+//					+ " et de pseudo : " + joueurs.get(joueurs.size()-1).getName());
+			System.out.println(joueurs.size());
 			
+			//C'est une connexion, il faut donc renvoyer en 2 !
+			sendData(Constants.NOUVEAU);
 			break;
 		default:
 			System.err.println("Action non reconnue");
