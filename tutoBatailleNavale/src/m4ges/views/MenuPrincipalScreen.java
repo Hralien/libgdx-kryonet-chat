@@ -50,6 +50,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 
 
 
@@ -72,32 +73,90 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 *  {@link AtlasRegion} to get the logo
 	 */
 	private Image imgTitle;
-	
+	/**
+	 * animation du background
+	 */
 	private Animation bgAnimation; // #3
+	/**
+	 * texture animation background
+	 */
 	private TextureRegion[] bgFrames; // #5 
+	/**
+	 * temps pour l'animation background
+	 */
 	private float stateTime; // #8 
+	/**
+	 * texture actuel du background
+	 */
 	private TextureRegion currentFrame; // #7
 
 	//menu
+	/**
+	 * bouton pour heberger une partie
+	 */
 	private Button btnMenuHost;
+	/**
+	 * bouton pour join une partie
+	 */
 	private Button btnMenuPlay;
+	/**
+	 * bouton pour afficher options
+	 */
 	private Button btnMenuOptions;
+	/**
+	 * bouton pour afficher les tests
+	 */
 	private Button btnMenuTest;
 
 	// options
+	/**
+	 * fenetre des options
+	 */
 	private Window winOptions;
+	/**
+	 * bouton pour save les options
+	 */
 	private TextButton btnWinOptSave;
+	/**
+	 * bouton pour annuler les modifs
+	 */
 	private TextButton btnWinOptCancel;
+	/**
+	 * checkbox pour le son
+	 */
 	private CheckBox chkSound;
+	/**
+	 * slider pour volume son
+	 */
 	private Slider sldSound;
+	/**
+	 * checkbox pour music
+	 */
 	private CheckBox chkMusic;
+	/**
+	 * slider pour volume music
+	 */
 	private Slider sldMusic;
+	/**
+	 * checkbox pour voir fps
+	 */
 	private CheckBox chkShowFpsCounter;
 	private CheckBox chkUseMonochromeShader;
+
 	//server setup
+	/**
+	 * fenetre pour creation serveur
+	 */
 	private Window winServer;
+	/**
+	 * input pour nom serveur
+	 */
 	private TextField tfServerName;
-	
+
+	//test fenetre
+	private Window winTest;
+
+
 
 	/**
 	 * 
@@ -129,10 +188,10 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		super.render(delta);
 		stateTime += Gdx.graphics.getDeltaTime(); // #15
 		currentFrame = bgAnimation.getKeyFrame(stateTime, true); // #16
-		
+
 		batch.begin();
 		batch.draw(currentFrame, 0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-//		imgTitle.draw(batch, delta);
+		//		imgTitle.draw(batch, delta);
 		batch.end();
 
 		stage.act(delta);
@@ -150,12 +209,12 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		Gdx.input.setInputProcessor(stage);
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
-		
+
 		TextureAtlas atlas = MyGame.manager.get("ui/loading.pack", TextureAtlas.class);
-		
+
 		//Background initialisation
 		buildBackgroundLayer();
-		
+
 		stage.clear();
 		Stack stack = new Stack();
 		stage.addActor(stack);
@@ -164,14 +223,60 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		stack.add(buildTitleLayer(atlas));
 		stack.add(buildControlLayer(atlas));
 		stage.addActor(buildServerSetup(atlas));
+		stage.addActor(buildTestsSetup(atlas));
+
 		stage.addActor(buildOptionsWindowLayer());
-		
+
 		AudioManager.instance.play(Gdx.audio.newMusic(Gdx.files.internal("sound/CloudTopLoops.mp3")));
 
 
 	}
 	/**
-	 * 
+	 * Construction de la fenetre de creation du server
+	 * @param atlas
+	 * @return
+	 */
+	private Table buildTestsSetup(TextureAtlas atlas) {
+		winTest = new Window("Test", skin);
+		final TextButton testMulti = new TextButton("testMulti", skin);
+		final TextButton testVague = new TextButton("testVague", skin);
+		final TextButton close = new TextButton("X", skin);
+		winTest.getButtonTable().add(close).height(winTest.getPadTop());
+
+		winTest.add(testMulti);
+		winTest.row();
+		winTest.add(testVague);
+		winTest.row();
+		winTest.pack();
+		winTest.setPosition((float) (Gdx.graphics.getWidth()/2 - winServer.getWidth()), Gdx.graphics.getHeight()/2);
+
+		close.addListener(new ChangeListener() {
+			
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				winTest.remove();
+				showMenuButtons(true);
+			}
+		});
+		testMulti.addListener(new ChangeListener() {
+			public void changed(ChangeEvent arg0, Actor arg1) {
+				game.player = new Necromancien();
+				game.player.setName("salut");
+				MulticastClient mc = new MulticastClient(game);
+
+
+			}
+		});
+		testVague.addListener(new ChangeListener() {
+			public void changed(ChangeEvent arg0, Actor arg1) {
+				Vague.loadVague(1);
+			}
+		});
+		showTestWindow(false, false);
+		return winTest;
+	}
+	/**
+	 * Construction de la fenetre de creation du server
 	 * @param atlas
 	 * @return
 	 */
@@ -218,7 +323,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		return winServer;
 	}
 	/**
-	 * 
+	 * creation de l'image du titre
 	 * @param atlas
 	 * @return
 	 */
@@ -233,7 +338,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		return layer;
 	}
 	/**
-	 * 
+	 * creation des differents bouton
 	 * @param atlas
 	 * @return
 	 */
@@ -250,7 +355,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		btnMenuPlay =  buildBtnMenuPlay(style);
 		btnMenuOptions = buildBtnMenuOption(style);
 		btnMenuTest = buildBtnMenuTest(style);
-	
+
 		layer.add(btnMenuHost);
 		layer.row();
 		layer.add(btnMenuPlay);
@@ -308,9 +413,8 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		tbOption.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				game.player = new Necromancien();
-				game.player.setName("salut");
-				MulticastClient mc = new MulticastClient(game);
+				showMenuButtons(false);
+				showTestWindow(true, true);
 			}
 		});
 		return tbOption;
@@ -341,7 +445,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 * 
 	 */
 	private void buildBackgroundLayer() {
-	 	Texture bg = new Texture(Gdx.files.internal("ui/bg.png"));
+		Texture bg = new Texture(Gdx.files.internal("ui/bg.png"));
 		int FRAME_COLS = 1; // #1
 		int FRAME_ROWS = 90; // #2 
 		TextureRegion[][] tmp = TextureRegion.split(bg, bg.getWidth() /	FRAME_COLS, bg.getHeight() / FRAME_ROWS); // #10
@@ -514,7 +618,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		prefs.save();
 	}
 	/**
-	 * 
+	 * gere l'affichage des boutons du menu principal
 	 * @param visible
 	 */
 	private void showMenuButtons (boolean visible) {
@@ -528,6 +632,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		btnMenuHost.addAction(moveBy(moveX, moveY, moveDuration, moveEasing));
 		btnMenuPlay.addAction(sequence(delay(delayOptionsButton), moveBy(moveX, moveY, moveDuration, moveEasing)));
 		btnMenuOptions.addAction(sequence(delay(delayOptionsButton*2), moveBy(moveX, moveY, moveDuration, moveEasing)));
+		btnMenuTest.addAction(sequence(delay(delayOptionsButton*2), moveBy(moveX, moveY, moveDuration, moveEasing)));
 
 		SequenceAction seq = sequence();
 		if (visible) seq.addAction(delay(delayOptionsButton + moveDuration));
@@ -536,12 +641,13 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				btnMenuHost.setTouchable(touchEnabled);
 				btnMenuPlay.setTouchable(touchEnabled);
 				btnMenuOptions.setTouchable(touchEnabled);
+				btnMenuTest.setTouchable(touchEnabled);
 			}
 		}));
 		stage.addAction(seq);
 	}
 	/**
-	 * 
+	 * affiche la fenetre d'option
 	 * @param visible
 	 * @param animated
 	 */
@@ -552,7 +658,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		winOptions.addAction(sequence(touchable(touchEnabled), alpha(alphaTo, duration)));
 	}
 	/**
-	 * 
+	 * affiche la fenetre de config du serv
 	 * @param visible
 	 * @param animated
 	 */
@@ -561,6 +667,17 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		float duration = animated ? 1.0f : 0.0f;
 		Touchable touchEnabled = visible ? Touchable.enabled : Touchable.disabled;
 		winServer.addAction(sequence(touchable(touchEnabled), alpha(alphaTo, duration)));
+	}	
+	/**
+	 * 
+	 * @param visible
+	 * @param animated
+	 */
+	private void showTestWindow(boolean visible, boolean animated) {
+		float alphaTo = visible ? 0.8f : 0.0f;
+		float duration = animated ? 1.0f : 0.0f;
+		Touchable touchEnabled = visible ? Touchable.enabled : Touchable.disabled;
+		winTest.addAction(sequence(touchable(touchEnabled), alpha(alphaTo, duration)));
 	}	
 	/**
 	 * 

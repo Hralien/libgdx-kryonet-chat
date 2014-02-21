@@ -6,6 +6,7 @@ import java.util.List;
 import reseau.Network.SkillNumber;
 
 import m4ges.controllers.MyGame;
+import m4ges.util.Constants;
 
 
 import com.badlogic.gdx.Gdx;
@@ -218,4 +219,11 @@ public class Skill extends Actor implements Cloneable{
 		return currentFrame;
 	}
 
+	public byte[] getBytes(Personnage lanceur, Personnage dest){
+		byte[] data = new byte[5];
+		data[0] = Constants.LANCERSKILL;
+		data[1] = (byte) id;
+//		data[2] = lanceur.;
+		return data;
+	}
 }

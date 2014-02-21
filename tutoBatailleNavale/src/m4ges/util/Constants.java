@@ -24,5 +24,6 @@ public class Constants {
 	//Action
 	public static final int CONNEXION=1;
 	public static final int NOUVEAU=2;
+	public static final int LANCERSKILL = 3;
 
 }

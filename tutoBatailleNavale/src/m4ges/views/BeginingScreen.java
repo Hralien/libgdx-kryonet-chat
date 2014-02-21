@@ -65,6 +65,12 @@ public class BeginingScreen extends AbstractScreen {
 	 */
 	private Window winVagueInfo;
 	
+	private Label Info;
+	
+	/**
+	 * 
+	 * @param myGame
+	 */
 	public BeginingScreen(MyGame myGame){
 		super(myGame);
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
@@ -132,7 +138,10 @@ public class BeginingScreen extends AbstractScreen {
 
 
 
-
+	/**
+	 * 
+	 * @return
+	 */
 	private Table createMySkillWindows() {
 		WindowStyle ws = new WindowStyle(new BitmapFont(), Color.BLACK, new TextureRegionDrawable(battle_skill));
 		Window skillWindow = new Window("",ws);
@@ -159,6 +168,10 @@ public class BeginingScreen extends AbstractScreen {
 		
 		return skillWindow;
 	}
+	/**
+	 * 
+	 * @return
+	 */
 	private Window createMyInfoWindows() {
 		WindowStyle ws = new WindowStyle(new BitmapFont(), Color.BLACK, new TextureRegionDrawable(battle_info));
 		Window infoWindow = new Window("", ws);
@@ -170,6 +183,10 @@ public class BeginingScreen extends AbstractScreen {
 		infoWindow.setBounds(0, 0, battle_info.getRegionWidth(),battle_info.getRegionHeight());
 		return infoWindow;
 	}
+	/**
+	 * 
+	 * @return
+	 */
 	private Table buildPersoLayer(){
 		float width = Gdx.graphics.getWidth();
 		float height = Gdx.graphics.getHeight();
@@ -195,6 +212,10 @@ public class BeginingScreen extends AbstractScreen {
 		}
 		return layer;
 	}
+	/**
+	 * 
+	 * @return
+	 */
 	private Table buildMonsterLayer(){
 		float width = Gdx.graphics.getWidth();
 		float height = Gdx.graphics.getHeight();
@@ -219,6 +240,10 @@ public class BeginingScreen extends AbstractScreen {
 		}
 		return layer;
 	}
+	/**
+	 * 
+	 * @return
+	 */
 	private Window buildVagueInfo() {
 		winVagueInfo = new Window("Info", skin);
 		Label lblVague = new Label("vague 1", skin);
