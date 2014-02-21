@@ -10,6 +10,10 @@ import java.util.ArrayList;
 
 import m4ges.controllers.MyGame;
 import m4ges.models.Personnage;
+import m4ges.models.classes.Aquamancien;
+import m4ges.models.classes.Necromancien;
+import m4ges.models.classes.Pyromancien;
+import m4ges.models.classes.Shaman;
 import m4ges.util.Constants;
 
 public class MulticastClient {
@@ -34,6 +38,7 @@ public class MulticastClient {
 	public MulticastClient(MyGame g) {
 		this.game = g;
 		joueurs = new ArrayList<Personnage>();
+		joueurs.add(game.player);
 		monstres = new ArrayList<Personnage>();
 		try {
 			join();
@@ -125,8 +130,25 @@ public class MulticastClient {
 			pseudo = new String(data, 2, data.length);
 			switch (data[1]) {
 			case Personnage.AQUAMANCIEN:
-
+				Aquamancien a = new Aquamancien();
+				a.setName(pseudo);
+				joueurs.add(a);
+			case Personnage.NECROMANCIEN:
+				Necromancien n = new Necromancien();
+				n.setName(pseudo);
+				joueurs.add(n);
+			case Personnage.SHAMAN:
+				Shaman s = new Shaman();
+				s.setName(pseudo);
+				joueurs.add(s);
+			case Personnage.PYROMANCIEN:
+				Pyromancien p = new Pyromancien();
+				p.setName(pseudo);
+				joueurs.add(p);
 			}
+			System.out.println("Nouveau joueur de classe : " + joueurs.get(joueurs.size()) 
+					+ " et de pseudo : " + joueurs.get(joueurs.size()).getName());
+			
 			break;
 		default:
 			System.err.println("Action non reconnue");
