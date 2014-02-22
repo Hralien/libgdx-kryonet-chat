@@ -37,8 +37,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="m4ges.views.BeginingScreen" project="tutoBatailleNavale" 
-    file="/tutoBatailleNavale/src/m4ges/views/BeginingScreen.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="5" language="java" name="m4ges.views.BattleScreen" project="tutoBatailleNavale" 
+    file="/tutoBatailleNavale/src/m4ges/views/BattleScreen.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1385" y="903"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      

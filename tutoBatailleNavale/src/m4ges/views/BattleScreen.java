@@ -10,6 +10,7 @@ import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
 import m4ges.models.Personnage;
 import m4ges.models.Skill;
+import m4ges.models.Vague;
 import m4ges.models.monster.Flower;
 import m4ges.models.monster.Lutin;
 import m4ges.models.monster.Phantom;
@@ -40,38 +41,45 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  * @author Florian
  *
  */
-public class BeginingScreen extends AbstractScreen {
+public class BattleScreen extends AbstractScreen {
 
+	private int numeroVague=1;
 	/**
 	 * {@link Stage}
 	 */
 	private Stage stage;
 	/**
-	 * fond
+	 * image de fond
 	 */
 	private TextureRegion battle_bg;
 	private TextureRegion battle_info;
 	private TextureRegion battle_skill;
+	private TextureRegion battle_arrow;
 	/**
-	 * 
+	 * liste des mobs
 	 */
-	private ArrayList<Personnage> mobList;
+	private Vague currentVague;
 	/**
 	 * premier plan
 	 */
 	private Group fg;
 	/**
-	 * 
+	 * fenetre d'affichage du numero de la vague
 	 */
 	private Window winVagueInfo;
-	
+	/**
+	 * label pour afficher un message
+	 */
 	private Label Info;
-	
+	/**
+	 * personnage selectionner
+	 */
+	private Personnage selected;
 	/**
 	 * 
 	 * @param myGame
 	 */
-	public BeginingScreen(MyGame myGame){
+	public BattleScreen(MyGame myGame){
 		super(myGame);
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         fg = new Group();
@@ -97,6 +105,9 @@ public class BeginingScreen extends AbstractScreen {
 		
 		batch.begin();
 		batch.draw(battle_bg, 0, battle_info.getRegionHeight(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		if(selected!=null){
+			batch.draw(battle_arrow, selected.getOriginX(), selected.getOriginY()-selected.getHeight());
+		}
 		batch.end();
 
 		stage.act(delta);
@@ -114,12 +125,10 @@ public class BeginingScreen extends AbstractScreen {
         battle_bg = new TextureRegion(atlas.findRegion("battle_background"));
         battle_info = new TextureRegion(atlas.findRegion("battle_ui"));
         battle_skill = new TextureRegion(atlas.findRegion("battle_ui_spell"));
+        battle_arrow = new TextureRegion(atlas.findRegion("fleche"));
 
-		mobList = new ArrayList<Personnage>();
-		mobList.add(new Skeleton());
-		mobList.add(new Flower());
-		mobList.add(new Lutin());
-		mobList.add(new Phantom());
+		currentVague = Vague.loadVague(numeroVague);
+
 		
 		Stack stack = new Stack();
 		stack.add(buildPersoLayer());
@@ -127,8 +136,9 @@ public class BeginingScreen extends AbstractScreen {
 		stack.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
 		this.stage.addActor(stack);
-		this.stage.addActor(createMyInfoWindows());
 		this.stage.addActor(createMySkillWindows());
+		this.stage.addActor(createMyInfoWindows());
+
 		this.stage.addActor(fg);
 		this.fg.addActor(buildVagueInfo());
 		showVagueWindow();
@@ -196,10 +206,11 @@ public class BeginingScreen extends AbstractScreen {
 		for(final Personnage it : super.game.playersConnected){
 			it.setVisible(true);
 			it.setOrigin(100+width/3+i, 50+height/2+i);
-
+			it.setBounds(it.getOriginX(), it.getOriginY(), it.getWidth(), it.getHeight());
 			it.addListener(new InputListener() {
 				public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 					System.out.println("["+it.getName()+"]"+"down");
+					selected = it;
 					return true;
 				}
 				
@@ -222,12 +233,13 @@ public class BeginingScreen extends AbstractScreen {
 		
 		Table layer = new Table();
 		int i=0;
-		for(final Personnage it: mobList){
+		for(final Personnage it: currentVague.getMonsters()){
 			it.setVisible(true);
 			it.setOrigin(width/3+i, height/2+i);
 			it.addListener(new InputListener() {
 				public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 					System.out.println("["+it.getName()+"]"+"down");
+					selected = it;
 					return true;
 				}
 				
@@ -246,14 +258,14 @@ public class BeginingScreen extends AbstractScreen {
 	 */
 	private Window buildVagueInfo() {
 		winVagueInfo = new Window("Info", skin);
-		Label lblVague = new Label("vague 1", skin);
+		Label lblVague = new Label("Vague "+numeroVague, skin);
 		winVagueInfo.add(lblVague);
 		winVagueInfo.setSize(300,200);
 		winVagueInfo.setPosition(((float) (Gdx.graphics.getWidth() * 0.5)-winVagueInfo.getWidth()/2),((float) (Gdx.graphics.getHeight() * 0.5)));
 		return winVagueInfo;
 	}
 	/**
-	 * 
+	 * affiche la fenetre d'info de la vague
 	 * @param visible
 	 * @param animated
 	 */
@@ -277,6 +289,14 @@ public class BeginingScreen extends AbstractScreen {
 	public void resume() {
 		// TODO Auto-generated method stub
 
+	}
+
+	public int getNumeroVague() {
+		return numeroVague;
+	}
+
+	public void setNumeroVague(int numeroVague) {
+		this.numeroVague = numeroVague;
 	}
 
 }

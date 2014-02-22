@@ -6,7 +6,7 @@ import java.util.Hashtable;
 import reseau.GameClient;
 import reseau.GameServer;
 import m4ges.models.Personnage;
-import m4ges.views.BeginingScreen;
+import m4ges.views.BattleScreen;
 import m4ges.views.ChatScreen;
 import m4ges.views.CreateCharacterScreen;
 import m4ges.views.LoadingScreen;
@@ -63,7 +63,7 @@ public class MyGame extends Game{
 		screenHashtable.put(MENUSCREEN, new MenuPrincipalScreen(this));
 		screenHashtable.put(NEWCHARACTERSCREEN,new CreateCharacterScreen(this));
 		screenHashtable.put(CHATSCREEN,new ChatScreen(this));
-		screenHashtable.put(BEGINSCREEN,new BeginingScreen(this));
+		screenHashtable.put(BEGINSCREEN,new BattleScreen(this));
 
 
 		changeScreen(0);

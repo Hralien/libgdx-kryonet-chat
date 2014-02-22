@@ -68,14 +68,14 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 			break;
 		}
 		this.setSize(currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
+		this.setBounds(getOriginX(), getOriginY(), currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
 	}
 
 //	@Override
-//	public Actor hit (float x, float y, boolean touchable) {
-//		if (touchable && getTouchable() != Touchable.enabled) return null;
-//		//		System.err.println("[personnage] is hit");
-//		return x >= 0 && x < currentFrame.getRegionWidth() && y >= 0 && y < currentFrame.getRegionHeight() ? this : null;
-//	}
+	public Actor hit (float x, float y, boolean touchable) {
+		if (touchable && getTouchable() != Touchable.enabled) return null;
+		return x >= 0 && x < this.getWidth() && y >= 0 && y < this.getHeight() ? this : null;
+	}
 	public abstract String getDesc();
 	public abstract Animation animate();
 	public String getName() {

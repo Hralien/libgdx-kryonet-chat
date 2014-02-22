@@ -39,12 +39,7 @@ public class Vague {
 	}
 
 	
-	public ArrayList<Personnage> getListMonstrePresent() {
-		return monsters;
-	}
-	public void setListMonstrePresent(ArrayList<Personnage> listMonstrePresent) {
-		this.monsters = listMonstrePresent;
-	}
+	
 	public String getNameVague() {
 		return nameVague;
 	}
@@ -57,7 +52,13 @@ public class Vague {
 	public void setIdVague(int idVague) {
 		this.idVague = idVague;
 	}
+	public ArrayList<Personnage> getMonsters() {
+		return monsters;
+	}
 
+	public void setMonsters(ArrayList<Personnage> monsters) {
+		this.monsters = monsters;
+	}
 	@Override
 	public String toString() {
 		return "Vague [idVague=" + idVague + ", nameVague=" + nameVague
