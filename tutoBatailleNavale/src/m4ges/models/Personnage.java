@@ -129,4 +129,9 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 		return null;
 	}
 	
+	//TODO a faire (hey oui)
+	public void attaque(Personnage p, Skill s){
+		System.out.println("Methode attaque appele !");
+	}
+	
 }

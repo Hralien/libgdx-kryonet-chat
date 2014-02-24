@@ -153,6 +153,14 @@ public class MulticastClient {
 			break;
 		case Constants.LANCERSKILL:
 			Skill s = Skill.getSkill(data[1]);
+			//l'ip commence a 2 et la taille est de : Taille data - l'id du monstre - action - id skill
+			ip = new String(data, 2, data.length-1-2);
+			//DEBUG 
+			System.out.println("Lancer skill : " + s.getName() + " ip : " + ip);
+			//On recupere la cible et l'attaquant
+			Personnage cible = monstres.get(data[data.length-1]);
+			Personnage attaquant = joueurs.get(ip);
+			attaquant.attaque(cible, s);
 			
 		default:
 			System.err.println("Action non reconnue");
