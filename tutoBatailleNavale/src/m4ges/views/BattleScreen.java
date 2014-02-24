@@ -75,6 +75,7 @@ public class BattleScreen extends AbstractScreen {
 	 * personnage selectionner
 	 */
 	private Personnage selected;
+	private Window selectWindow;
 	/**
 	 * 
 	 * @param myGame
@@ -82,7 +83,7 @@ public class BattleScreen extends AbstractScreen {
 	public BattleScreen(MyGame myGame){
 		super(myGame);
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-        fg = new Group();
+		fg = new Group();
 
 	}
 
@@ -102,11 +103,11 @@ public class BattleScreen extends AbstractScreen {
 	public void render(float delta) {
 		super.render(delta);
 		batch.setProjectionMatrix(stage.getCamera().combined);
-		
+
 		batch.begin();
 		batch.draw(battle_bg, 0, battle_info.getRegionHeight(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		if(selected!=null){
-			batch.draw(battle_arrow, selected.getOriginX(), selected.getOriginY()-selected.getHeight());
+			batch.draw(battle_arrow, selected.getOriginX(), selected.getOriginY()+selected.getHeight());
 		}
 		batch.end();
 
@@ -122,14 +123,13 @@ public class BattleScreen extends AbstractScreen {
 
 		TextureAtlas atlas = MyGame.manager.get("ui/battleui.pack", TextureAtlas.class);
 
-        battle_bg = new TextureRegion(atlas.findRegion("battle_background"));
-        battle_info = new TextureRegion(atlas.findRegion("battle_ui"));
-        battle_skill = new TextureRegion(atlas.findRegion("battle_ui_spell"));
-        battle_arrow = new TextureRegion(atlas.findRegion("fleche"));
+		battle_bg = new TextureRegion(atlas.findRegion("battle_background"));
+		battle_info = new TextureRegion(atlas.findRegion("battle_ui"));
+		battle_skill = new TextureRegion(atlas.findRegion("battle_ui_spell"));
+		battle_arrow = new TextureRegion(atlas.findRegion("fleche"));
 
 		currentVague = Vague.loadVague(numeroVague);
 
-		
 		Stack stack = new Stack();
 		stack.add(buildPersoLayer());
 		stack.add(buildMonsterLayer());
@@ -138,7 +138,7 @@ public class BattleScreen extends AbstractScreen {
 		this.stage.addActor(stack);
 		this.stage.addActor(createMySkillWindows());
 		this.stage.addActor(createMyInfoWindows());
-
+		this.stage.addActor(createSelectedWindows());
 		this.stage.addActor(fg);
 		this.fg.addActor(buildVagueInfo());
 		showVagueWindow();
@@ -146,10 +146,8 @@ public class BattleScreen extends AbstractScreen {
 	}
 
 
-
-
 	/**
-	 * 
+	 * affiche la liste des skill du player
 	 * @return
 	 */
 	private Table createMySkillWindows() {
@@ -171,15 +169,15 @@ public class BattleScreen extends AbstractScreen {
 			});
 			skillWindow.add(skillButton);
 			if(i%2==1)
-			skillWindow.row();
+				skillWindow.row();
 			i++;
 		}
 		skillWindow.setBounds(battle_info.getRegionWidth()-30, 0, battle_skill.getRegionWidth(),battle_skill.getRegionHeight());
-		
+
 		return skillWindow;
 	}
 	/**
-	 * 
+	 * affiche les infos du player
 	 * @return
 	 */
 	private Window createMyInfoWindows() {
@@ -194,13 +192,30 @@ public class BattleScreen extends AbstractScreen {
 		return infoWindow;
 	}
 	/**
-	 * 
+	 * affiche les infos du mob selectionné
+	 * @return
+	 */
+	private Window createSelectedWindows() {
+		selectWindow = new Window("",skin);
+		if(selected==null)
+			return selectWindow;
+		selectWindow.add(new Label("name:"+selected.getName(),skin));
+		selectWindow.row();
+		selectWindow.add(new Label("hp:"+selected.getHp(),skin));
+		selectWindow.row();
+		selectWindow.add(new Label("sp:"+selected.getMana(),skin));
+		selectWindow.pack();
+		selectWindow.setBounds(0, 0, battle_info.getRegionWidth(),battle_info.getRegionHeight());
+		return selectWindow;
+	}
+	/**
+	 * affiche tout les perso
 	 * @return
 	 */
 	private Table buildPersoLayer(){
 		float width = Gdx.graphics.getWidth();
 		float height = Gdx.graphics.getHeight();
-		
+
 		Table layer=new Table();
 		int i=0;
 		for(final Personnage it : super.game.playersConnected){
@@ -211,9 +226,11 @@ public class BattleScreen extends AbstractScreen {
 				public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 					System.out.println("["+it.getName()+"]"+"down");
 					selected = it;
+					stage.getActors().removeValue(selectWindow, true);
+					stage.addActor(selectWindow);
 					return true;
 				}
-				
+
 				public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
 					System.out.println("["+it.getName()+"]"+"up");
 				}
@@ -230,7 +247,7 @@ public class BattleScreen extends AbstractScreen {
 	private Table buildMonsterLayer(){
 		float width = Gdx.graphics.getWidth();
 		float height = Gdx.graphics.getHeight();
-		
+
 		Table layer = new Table();
 		int i=0;
 		for(final Personnage it: currentVague.getMonsters()){
@@ -242,7 +259,7 @@ public class BattleScreen extends AbstractScreen {
 					selected = it;
 					return true;
 				}
-				
+
 				public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
 					System.out.println("["+it.getName()+"]"+"up");
 				}
@@ -252,6 +269,7 @@ public class BattleScreen extends AbstractScreen {
 		}
 		return layer;
 	}
+
 	/**
 	 * 
 	 * @return

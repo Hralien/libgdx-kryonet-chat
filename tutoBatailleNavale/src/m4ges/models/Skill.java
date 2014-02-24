@@ -35,7 +35,7 @@ public class Skill extends Actor implements Cloneable{
 	private TextureRegion currentFrame; // #7
 
 	private float stateTime; // #8
-	
+
 
 	/**
 	 * 
@@ -56,7 +56,7 @@ public class Skill extends Actor implements Cloneable{
 		this.frame_rows = frame_rows;
 
 		AtlasRegion spritesheet = getInstance().findRegion(skillEffect);
-//		System.err.println("name:"+skillEffect+"width"+spritesheet.getRegionWidth()+"hieght"+spritesheet.getRegionHeight());
+		//		System.err.println("name:"+skillEffect+"width"+spritesheet.getRegionWidth()+"hieght"+spritesheet.getRegionHeight());
 		TextureRegion[] walkFrames = new TextureRegion[this.frame_cols*this.frame_rows];
 		int width = spritesheet.getRegionWidth()/this.frame_cols;
 		int height = spritesheet.getRegionHeight()/this.frame_rows;
@@ -64,15 +64,15 @@ public class Skill extends Actor implements Cloneable{
 		for(int i = 0; i<this.frame_cols;i++){
 			for(int j=0;j<this.frame_rows;j++){
 				walkFrames[index] = new TextureRegion(spritesheet,i*width,j*height,width,height); 
-//				System.err.println("index:"+index);
+				//				System.err.println("index:"+index);
 				index++;
 
 			}
 		}
 
-//		System.err.println(walkFrames.length);
+		//		System.err.println(walkFrames.length);
 		skillAnimation = new Animation(0.1f, walkFrames);
-//		System.err.println("skillanim"+skillName+"lenght"+skillAnimation.animationDuration);
+		//		System.err.println("skillanim"+skillName+"lenght"+skillAnimation.animationDuration);
 		skillAnimation.setPlayMode(Animation.NORMAL);
 		stateTime = 0f; // #13
 		currentFrame = skillAnimation.getKeyFrame(0);
@@ -114,13 +114,7 @@ public class Skill extends Actor implements Cloneable{
 		return list;
 	}
 
-	public static Skill selectSkillFromSkillNumber(SkillNumber skillnum) {
-		for (Skill it : listSkill) {
-			if (it.id == skillnum.skillId)
-				return it;
-		}
-		return null;
-	}
+
 
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
@@ -153,10 +147,54 @@ public class Skill extends Actor implements Cloneable{
 			synchronized(Skill.class) {
 				if (Skill.atlas == null) {
 					Skill.atlas = MyGame.manager.get("effects/skill.pack", TextureAtlas.class);
+					buildListSkill();
 				}
 			}
 		}
 		return Skill.atlas;
+	}
+	public static void buildListSkill(){
+		listSkill = new ArrayList<Skill>();
+		/** Shaman */
+		listSkill.add(new Skill(1, 1, "soin", "Soin", 5, 4));
+		listSkill.add(new Skill(2, 1, "motivation","Motivation", 5, 7));
+		listSkill.add(new Skill(3, 1, "ressistance", "Resistance", 5,4));
+		listSkill.add(new Skill(4, 1, "resurrection", "Resurrection",5, 7));
+		/** Necromencien */
+		listSkill.add(new Skill(5, 1, "abimes", "Abimes", 5, 6));
+		listSkill.add(new Skill(6, 1, "malédiction", "Malediction", 5, 6));
+		listSkill.add(new Skill(7, 1, "empoisonement", "Empoisonnement", 5,5));
+		listSkill.add(new Skill(8, 1, "perturbation", "Perturbation", 5, 5));
+
+		/** Mage chaud */
+		listSkill.add(new Skill(9, 1, "deflagration", "Deflagration",5, 4));
+		listSkill.add(new Skill(10, 1, "foudre","Foudre", 5, 10));
+		listSkill.add(new Skill(11, 1, "choc sismique", "Choc_sismique", 5,4));
+		listSkill.add(new Skill(12, 1, "combustion","Combustion", 5, 8));
+
+		/** Mage froid */
+		listSkill.add(new Skill(13, 1, "geyser","Geyser", 5, 6));
+		listSkill.add(new Skill(14, 1, "gel","Gel", 5, 6));
+		listSkill.add(new Skill(15, 1, "tornade", "Tornade", 5, 6));
+		listSkill.add(new Skill(16, 1, "rafale", "Rafale", 5, 5));
+
+	}
+	public static Skill selectSkillFromSkillNumber(int skillnum) {
+		for (Skill it : listSkill) {
+			if (it.id == skillnum)
+				return it;
+		}
+		return null;
+	}	
+	/*
+	 * old
+	 */
+	public static Skill selectSkillFromSkillNumber( SkillNumber skillnum) {
+		for (Skill it : listSkill) {
+			if (it.id == skillnum.skillId)
+				return it;
+		}
+		return null;
 	}
 	/**
 	 * Reset animation.
@@ -210,10 +248,10 @@ public class Skill extends Actor implements Cloneable{
 		byte[] data = new byte[5];
 		data[0] = Constants.LANCERSKILL;
 		data[1] = (byte) id;
-//		data[2] = lanceur.;
+		//		data[2] = lanceur.;
 		return data;
 	}
-	
+
 	public static Skill getSkill(int id){
 		return null;
 	}
