@@ -171,12 +171,14 @@ public class MulticastClient {
 	 */
 	private void sendData(int action) throws IOException {
 		byte[] data;
+		byte[] datatmp;
 		// On switch sur l'action
 		switch (action) {
 		// Pour la connexion
 		case Constants.CONNEXION:
+		case Constants.NOUVEAU:
 			System.out.println("Envoie de la connection");
-			byte[] datatmp = this.game.player.getBytes();
+			datatmp = this.game.player.getBytes();
 			// Il faut joindre l'ip
 
 			// La taille total de data
@@ -190,21 +192,14 @@ public class MulticastClient {
 			for (int i = datatmp.length; i < j; i++) {
 				data[i] = (byte) monIp.charAt(i - datatmp.length);
 			}
+			if(action == Constants.NOUVEAU)
+				data[0] = Constants.NOUVEAU;
 			// System.err.println(new String(data));
 			dp = new DatagramPacket(data, data.length, msIp);
 			ms.send(dp);
 			break;
 		// Si quelqu'un vient de se co (Donc on a recu une requete d'action 1 on
-		// envoie ca :
-		case Constants.NOUVEAU:
-			System.out.println("Connexion recu, reponse");
-			// On recupere l'ip
-			data = this.game.player.getBytes();
-			data[0] = 2;
-			dp = new DatagramPacket(data, data.length, msIp);
-			dp.setAddress(InetAddress.getByName(ip));
-			ms.send(dp);
-			break;
+		// envoie ca 
 
 		default:
 			break;
