@@ -13,6 +13,7 @@ import java.util.Set;
 import m4ges.controllers.MyGame;
 import m4ges.models.MapPerso;
 import m4ges.models.Personnage;
+import m4ges.models.Skill;
 import m4ges.models.classes.Aquamancien;
 import m4ges.models.classes.Necromancien;
 import m4ges.models.classes.Pyromancien;
@@ -88,7 +89,7 @@ public class MulticastClient {
 			@Override
 			public void run() {
 				while (true) {
-					// tableau de 1024octet
+					// tableau de 1024octet au pif !
 					byte[] data = new byte[1024];
 					dp = new DatagramPacket(data, data.length);
 					try {
@@ -150,6 +151,9 @@ public class MulticastClient {
 				sendData(Constants.NOUVEAU);
 			
 			break;
+		case Constants.LANCERSKILL:
+			Skill s = Skill.getSkill(data[1]);
+			
 		default:
 			System.err.println("Action non reconnue");
 			break;
@@ -204,5 +208,31 @@ public class MulticastClient {
 		default:
 			break;
 		}
+	}
+	
+	
+	//Joueur vers npg
+	/*
+	 *  1er octet : action
+	 *  2eme : skill's id
+	 *  de 3 à 3 + la taille de mon ip : mon ip
+	 *  le dernier l'id de la liste du monstre !!!???
+	 */
+	public void lancerSort(Personnage mechant, Skill s) throws IOException{
+		byte[] data = new byte[s.getBytes().length + monIp.length() + 1];
+		//action + skill's id
+		data[0] = s.getBytes()[0]; data[1] = s.getBytes()[1];
+		//mon ip
+		for(int i = 2; i < monIp.length() + 2 ; i++)
+			data[i] = (byte) monIp.charAt(i-2);
+		//l'index du bat's
+		data[data.length-1] = (byte) monstres.indexOf(mechant);
+		dp = new DatagramPacket(data, data.length, msIp);
+		ms.send(dp);
+	}
+	
+	//npg vers joueurs
+	public void npgAttaque(){
+		
 	}
 }

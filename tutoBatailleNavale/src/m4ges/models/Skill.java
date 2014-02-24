@@ -213,4 +213,8 @@ public class Skill extends Actor implements Cloneable{
 //		data[2] = lanceur.;
 		return data;
 	}
+	
+	public static Skill getSkill(int id){
+		return null;
+	}
 }
