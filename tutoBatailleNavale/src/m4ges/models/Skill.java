@@ -1,32 +1,19 @@
 package m4ges.models;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import reseau.Network.SkillNumber;
 
 import m4ges.controllers.MyGame;
 import m4ges.util.Constants;
-
+import reseau.Network.SkillNumber;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.utils.Array;
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.KryoSerializable;
-import com.esotericsoftware.kryo.io.Input;
-import com.esotericsoftware.kryo.io.Output;
 
 public class Skill extends Actor implements Cloneable{
 
@@ -219,7 +206,7 @@ public class Skill extends Actor implements Cloneable{
 		return currentFrame;
 	}
 
-	public byte[] getBytes(Personnage lanceur, Personnage dest){
+	public byte[] getBytes(){
 		byte[] data = new byte[5];
 		data[0] = Constants.LANCERSKILL;
 		data[1] = (byte) id;

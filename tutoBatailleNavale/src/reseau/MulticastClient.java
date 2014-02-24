@@ -2,7 +2,6 @@ package reseau;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -20,24 +19,19 @@ import m4ges.models.classes.Pyromancien;
 import m4ges.models.classes.Shaman;
 import m4ges.util.Constants;
 
-//TODO
-//affectation id etc. 
+//TODO token, sort 
 public class MulticastClient {
 
 	// Socket mutlicast
 	MulticastSocket ms;
-	// Socket pour les donnees pour une cible
-	DatagramSocket ds;
 	// addresse
 	InetSocketAddress msIp;
 	// port attribue par defaut pour le multicast
 	public final static int PORTMS = 12345;
-	// port attribue par defaut pour unicast
-	public final static int PORTUS = 12346;
 	// liste des joueurs
 	MapPerso<String, Personnage> joueurs;
 	// Permet de connaitre l'ordre du jeu
-	boolean tocken;
+	boolean token;
 	// liste de monstre
 	ArrayList<Personnage> monstres;
 	// Le jeu
@@ -57,7 +51,6 @@ public class MulticastClient {
 		try {
 			monIp = Inet4Address.getLocalHost().getHostAddress();
 			joueurs.put(monIp, game.player);
-			ds = new DatagramSocket(PORTUS);
 			ms = new MulticastSocket(PORTMS);
 			msIp = new InetSocketAddress("228.5.6.7", PORTMS);
 			join();
@@ -100,8 +93,7 @@ public class MulticastClient {
 					dp = new DatagramPacket(data, data.length);
 					try {
 						// recepetion
-						ms.receive(dp);
-						System.out.println("recu qqch");
+						ms.receive(dp);						
 						data = dp.getData();
 						traiterData(data);
 					} catch (IOException e) {
@@ -111,26 +103,6 @@ public class MulticastClient {
 			}
 		};
 
-		Thread tUS = new Thread() {
-			@Override
-			public void run() {
-				while (true) {
-					// tableau de 1024octet
-					byte[] data = new byte[1024];
-					dp = new DatagramPacket(data, data.length);
-					try {
-						ds.receive(dp);
-						data = dp.getData();
-						traiterData(data);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-
-				}
-			}
-
-		};
-		tUS.start();
 		tMS.start();
 	}
 
@@ -143,6 +115,7 @@ public class MulticastClient {
 	 */
 	private void traiterData(byte[] data) throws IOException {
 		int action = (int) data[0];
+		System.out.println("Donnees recu  : " + action);
 		switch (action) {
 		case Constants.CONNEXION:
 		case Constants.NOUVEAU:
@@ -173,9 +146,9 @@ public class MulticastClient {
 			if (ip.length() > 0 && !joueurs.containsKey(ip))
 				joueurs.put(ip, p);
 			// si c'est une connexion, il faut donc renvoye une action 2 !
-			if (action == Constants.CONNEXION && ip != monIp) {
+			if (action == Constants.CONNEXION)
 				sendData(Constants.NOUVEAU);
-			}
+			
 			break;
 		default:
 			System.err.println("Action non reconnue");
@@ -202,6 +175,7 @@ public class MulticastClient {
 		switch (action) {
 		// Pour la connexion
 		case Constants.CONNEXION:
+			System.out.println("Envoie de la connection");
 			byte[] datatmp = this.game.player.getBytes();
 			// Il faut joindre l'ip
 
@@ -223,14 +197,13 @@ public class MulticastClient {
 		// Si quelqu'un vient de se co (Donc on a recu une requete d'action 1 on
 		// envoie ca :
 		case Constants.NOUVEAU:
+			System.out.println("Connexion recu, reponse");
 			// On recupere l'ip
 			data = this.game.player.getBytes();
 			data[0] = 2;
-			dp = new DatagramPacket(data, data.length);
+			dp = new DatagramPacket(data, data.length, msIp);
 			dp.setAddress(InetAddress.getByName(ip));
-			// destine a une personne : DatagramSocket !
-			dp.setPort(PORTUS);
-			ds.send(dp);
+			ms.send(dp);
 			break;
 
 		default:
