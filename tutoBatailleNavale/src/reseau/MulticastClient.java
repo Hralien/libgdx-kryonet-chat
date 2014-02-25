@@ -24,31 +24,32 @@ import m4ges.util.Constants;
 public class MulticastClient {
 
 	// Socket mutlicast
-	MulticastSocket ms;
+	private MulticastSocket ms;
 	// addresse
-	InetSocketAddress msIp;
+	private InetSocketAddress msIp;
 	// port attribue par defaut pour le multicast
 	public final static int PORTMS = 12345;
 	// liste des joueurs
-	MapPerso<String, Personnage> joueurs;
+	private MapPerso<String, Personnage> joueurs;
 	// Permet de connaitre l'ordre du jeu
-	boolean token;
+	private boolean token;
 	// liste de monstre
-	ArrayList<Personnage> monstres;
+	private ArrayList<Personnage> monstres;
 	// Le jeu
 	MyGame game;
 	// Datagram
-	DatagramPacket dp;
+	private DatagramPacket dp;
 	// ip d'un joueur (celui a qui on va renvoye son perso quand il se co
-	String ip;
+	private String ip;
 	// mon ip
-	String monIp;
+	public String monIp;
 
 	public MulticastClient(MyGame g) {
 		// initialisation
 		this.game = g;
 		joueurs = new MapPerso<String, Personnage>();
 		monstres = new ArrayList<Personnage>();
+		token = false;
 		try {
 			monIp = Inet4Address.getLocalHost().getHostAddress();
 			joueurs.put(monIp, game.player);
@@ -56,7 +57,7 @@ public class MulticastClient {
 			msIp = new InetSocketAddress("228.5.6.7", PORTMS);
 			join();
 			// connexion + reception(thread) + envoie qu'on est la
-			//DEBUG
+			// DEBUG
 			System.out.println("ok co + receive");
 			sendData(Constants.CONNEXION);
 			System.out.println("ok send");
@@ -94,7 +95,7 @@ public class MulticastClient {
 					dp = new DatagramPacket(data, data.length);
 					try {
 						// recepetion
-						ms.receive(dp);						
+						ms.receive(dp);
 						data = dp.getData();
 						traiterData(data);
 					} catch (IOException e) {
@@ -141,36 +142,42 @@ public class MulticastClient {
 				p.setName(pseudo);
 				break;
 			}
-			//On récup l'ip (trim sert à enlever les char null
-			ip = new String(data, data[2] + 3, data.length - data[2] - 3).trim();
-			//Si l'ip est valide et qu'il n'est pas dans la map
+			// On récup l'ip (trim sert à enlever les char null
+			ip = new String(data, data[2] + 3, data.length - data[2] - 3)
+					.trim();
+			// Si l'ip est valide et qu'il n'est pas dans la map
 			if (ip.length() > 0 && !joueurs.containsKey(ip))
 				joueurs.put(ip, p);
 			// si c'est une connexion, il faut donc renvoye une action 2 !
 			if (action == Constants.CONNEXION)
 				sendData(Constants.NOUVEAU);
-			
+			// DEBUG
+			System.out.println("-- Affichage de(s) " + joueurs.size()
+					+ " joueurs --");
+			Set<String> key = joueurs.keySet();
+			for (String it : key) {
+				System.out.println("ip : " + it + " Pseudo : " + joueurs.get(it));
+			}
 			break;
 		case Constants.LANCERSKILL:
-			Skill s = Skill.getSkill(data[1]);
-			//l'ip commence a 2 et la taille est de : Taille data - l'id du monstre - action - id skill
-			ip = new String(data, 2, data.length-1-2);
-			//DEBUG 
-			System.out.println("Lancer skill : " + s.getName() + " ip : " + ip);
-			//On recupere la cible et l'attaquant
-			Personnage cible = monstres.get(data[data.length-1]);
-			Personnage attaquant = joueurs.get(ip);
-			attaquant.attaque(cible, s);
-			
+			Skill s = Skill.selectSkillFromSkillNumber(data[1]);
+			// l'ip commence a 2 et la taille est de : Taille data - l'id du
+			// monstre - action - id skill
+			ip = new String(data, 3, data.length - 3);
+			// DEBUG
+			System.out.println("Lancer skill : " + s.getSkillName() + " ip : " + ip);
+			// On recupere la cible et l'attaquant
+			// Personnage cible = monstres.get(data[data.length-1]);
+			// Personnage attaquant = joueurs.get(ip);
+			joueurs.get(ip).attaque(monstres.get(data[2]), s);
+			//DEBUG
+			System.out.println(joueurs.get(ip).getName() + " Attaque : "
+					+ monstres.get(data[2]) + " avec : "
+					+ s.getSkillName());
+
 		default:
 			System.err.println("Action non reconnue");
 			break;
-		}
-		// DEBUG
-		System.out.println("-- Affichage de(s) " + joueurs.size() + " joueurs --");
-		Set<String> key = joueurs.keySet();
-		for (String it : key) {
-			System.out.println("ip : " + it + " Pseudo : " + joueurs.get(it));
 		}
 	}
 
@@ -204,43 +211,96 @@ public class MulticastClient {
 			for (int i = datatmp.length; i < j; i++) {
 				data[i] = (byte) monIp.charAt(i - datatmp.length);
 			}
-			if(action == Constants.NOUVEAU)
+			if (action == Constants.NOUVEAU)
 				data[0] = Constants.NOUVEAU;
 			// System.err.println(new String(data));
 			dp = new DatagramPacket(data, data.length, msIp);
 			ms.send(dp);
 			break;
 		// Si quelqu'un vient de se co (Donc on a recu une requete d'action 1 on
-		// envoie ca 
+		// envoie ca
 
 		default:
 			break;
 		}
 	}
-	
-	
-	//Joueur vers npg
+
+	// Joueur vers npg
 	/*
-	 *  1er octet : action
-	 *  2eme : skill's id
-	 *  de 3 à 3 + la taille de mon ip : mon ip
-	 *  le dernier l'id de la liste du monstre !!!???
+	 * 1er octet : action 2eme : skill's id de 3 à 3 + la taille de mon ip : mon
+	 * ip le dernier l'id de la liste du monstre !!!???
 	 */
-	public void lancerSort(Personnage mechant, Skill s) throws IOException{
-		byte[] data = new byte[s.getBytes().length + monIp.length() + 1];
-		//action + skill's id
-		data[0] = s.getBytes()[0]; data[1] = s.getBytes()[1];
-		//mon ip
-		for(int i = 2; i < monIp.length() + 2 ; i++)
-			data[i] = (byte) monIp.charAt(i-2);
-		//l'index du bat's
-		data[data.length-1] = (byte) monstres.indexOf(mechant);
+	public void lancerSort(Personnage mechant, Skill s) throws IOException {
+		byte[] data = new byte[3 + monIp.length()];
+		// action + skill's id + monstre
+		data[0] = s.getBytes()[0];
+		data[1] = s.getBytes()[1];
+		data[2] = (byte) monstres.indexOf(mechant);
+		// mon ip
+		System.out.println(data.length);
+		for(int i = 3; i < data.length ; i++)
+			data[i] = (byte) monIp.charAt(i-3);
+
 		dp = new DatagramPacket(data, data.length, msIp);
 		ms.send(dp);
 	}
-	
-	//npg vers joueurs
-	public void npgAttaque(){
-		
+
+	// npg vers joueurs
+	public void npgAttaque(Personnage mechant, Personnage cible, Skill s) throws IOException {
+		ip = joueurs.getKey(cible);
+		//DEBUG
+		if(ip == null)
+			System.err.println("Erreur NPG attaque");
+		int idMonstre = monstres.indexOf(mechant);
+		int idSkill = s.getId();
+		//Action, cible, sort, ip
+		byte[] data = new byte[1+1+1+ip.length()];
+		data[0] = Constants.ATTAQUEMONSTRE;
+		data[1] = (byte) idMonstre;
+		data[2] = (byte) idSkill;
+		for(int i = 3; i < data.length ; i++)
+			data[i] = (byte) ip.charAt(i-3);
+		dp = new DatagramPacket(data, data.length, msIp);
+		ms.send(dp);
+	}
+
+	public InetSocketAddress getMsIp() {
+		return msIp;
+	}
+
+	public void setMsIp(InetSocketAddress msIp) {
+		this.msIp = msIp;
+	}
+
+	public MapPerso<String, Personnage> getJoueurs() {
+		return joueurs;
+	}
+
+	public void setJoueurs(MapPerso<String, Personnage> joueurs) {
+		this.joueurs = joueurs;
+	}
+
+	public boolean isToken() {
+		return token;
+	}
+
+	public void setToken(boolean token) {
+		this.token = token;
+	}
+
+	public ArrayList<Personnage> getMonstres() {
+		return monstres;
+	}
+
+	public void setMonstres(ArrayList<Personnage> monstres) {
+		this.monstres = monstres;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 }

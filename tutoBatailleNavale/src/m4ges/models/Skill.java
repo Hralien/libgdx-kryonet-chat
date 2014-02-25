@@ -181,8 +181,9 @@ public class Skill extends Actor implements Cloneable{
 	}
 	public static Skill selectSkillFromSkillNumber(int skillnum) {
 		for (Skill it : listSkill) {
-			if (it.id == skillnum)
+			if (it.id == skillnum){
 				return it;
+			}
 		}
 		return null;
 	}	
@@ -250,9 +251,5 @@ public class Skill extends Actor implements Cloneable{
 		data[1] = (byte) id;
 		//		data[2] = lanceur.;
 		return data;
-	}
-
-	public static Skill getSkill(int id){
-		return null;
 	}
 }

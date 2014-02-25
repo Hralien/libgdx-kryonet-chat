@@ -21,4 +21,13 @@ public class MapPerso<String,Personnage> extends HashMap<String, Personnage>{
 		}
 		return false;
 	}
+	
+	public String getKey(Personnage p){
+		Set<String> key = this.keySet();
+		for (String it : key) {
+			if(p == this.get(it))
+				return it;
+		}
+		return null;
+	}
 }

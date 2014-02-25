@@ -8,21 +8,22 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.touchable;
 
 import java.io.IOException;
-
-import reseau.GameServer;
-import reseau.MulticastClient;
+import java.util.ArrayList;
 
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
+import m4ges.models.Personnage;
+import m4ges.models.Skill;
 import m4ges.models.Vague;
 import m4ges.models.classes.Necromancien;
 import m4ges.util.AudioManager;
 import m4ges.util.GamePreferences;
+import reseau.GameServer;
+import reseau.MulticastClient;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -31,16 +32,14 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -50,7 +49,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 
 
 
@@ -263,8 +261,17 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				game.player = new Necromancien();
 				game.player.setName("salut");
 				MulticastClient mc = new MulticastClient(game);
-
-
+				ArrayList<Personnage> monstres = Vague.loadVague(1).getMonsters();
+				mc.setMonstres(monstres);
+				for(int i = 0; i < monstres.size(); i ++ ){
+					System.out.println(monstres.get(i).getName());
+				}
+				Skill s = Skill.selectSkillFromSkillNumber(1);
+				try {
+					mc.lancerSort(monstres.get(0), s);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		testVague.addListener(new ChangeListener() {
