@@ -116,6 +116,7 @@ public class MulticastClient {
 	 * @throws IOException
 	 */
 	private void traiterData(byte[] data) throws IOException {
+		// On recupere l'action de la data
 		int action = (int) data[0];
 		System.out.println("Donnees recu  : " + action);
 		switch (action) {
@@ -156,7 +157,8 @@ public class MulticastClient {
 					+ " joueurs --");
 			Set<String> key = joueurs.keySet();
 			for (String it : key) {
-				System.out.println("ip : " + it + " Pseudo : " + joueurs.get(it));
+				System.out.println("ip : " + it + " Pseudo : "
+						+ joueurs.get(it));
 			}
 			break;
 		case Constants.LANCERSKILL:
@@ -166,15 +168,37 @@ public class MulticastClient {
 			// monstre - action - id skill
 			ip = new String(data, 3, data.length - 3).trim();
 			// DEBUG
-			System.out.println("Lancer skill : " + s.getSkillName() + " ip : " + ip);
-			// On recupere la cible et l'attaquant
-			// Personnage cible = monstres.get(data[data.length-1]);
-			// Personnage attaquant = joueurs.get(ip);
+			System.out.println("Lancer skill : " + s.getSkillName() + " ip : "
+					+ ip);
+			/*
+			 * On recupere la cible et l'attaquant Personnage cible =
+			 * monstres.get(data[data.length-1]); Personnage attaquant =
+			 * joueurs.get(ip);
+			 */
 			joueurs.get(ip).attaque(monstres.get(data[2]), s);
-			//DEBUG
+			// DEBUG
 			System.out.println(joueurs.get(ip).getName() + " Attaque : "
-					+ monstres.get(data[2]) + " avec : "
+					+ monstres.get(data[2]).getName() + " avec : "
 					+ s.getSkillName());
+			break;
+		case Constants.ATTAQUEMONSTRE:
+			// l'id du monstre
+			int idMonstre = data[1];
+			// DEBUG
+			System.out.println("monstre qui attaque : "
+					+ monstres.get(idMonstre).getName());
+			// l'ip de la cible
+			ip = new String(data, 2, data.length - 2).trim();
+			/*
+			 * On a l'id du monstre a attaque et l'ip de la cible, on lance
+			 * l'attaque
+			 */
+			monstres.get(idMonstre).attaque(joueurs.get(ip));
+			// DEBUG
+			System.out.println(monstres.get(idMonstre).getName() + " attaque "
+					+ joueurs.get(ip).getName());
+
+			break;
 
 		default:
 			System.err.println("Action non reconnue");
@@ -239,28 +263,27 @@ public class MulticastClient {
 		data[2] = (byte) monstres.indexOf(mechant);
 		// mon ip
 		System.out.println(data.length);
-		for(int i = 3; i < data.length ; i++)
-			data[i] = (byte) monIp.charAt(i-3);
+		for (int i = 3; i < data.length; i++)
+			data[i] = (byte) monIp.charAt(i - 3);
 
 		dp = new DatagramPacket(data, data.length, msIp);
 		ms.send(dp);
 	}
 
 	// npg vers joueurs
-	public void npgAttaque(Personnage mechant, Personnage cible, Skill s) throws IOException {
+	public void npcAttaque(Personnage mechant, Personnage cible)
+			throws IOException {
 		ip = joueurs.getKey(cible);
-		//DEBUG
-		if(ip == null)
-			System.err.println("Erreur NPG attaque");
+		// DEBUG
+		if (ip == null)
+			System.err.println("Erreur joueur inexistant");
 		int idMonstre = monstres.indexOf(mechant);
-		int idSkill = s.getId();
-		//Action, cible, sort, ip
-		byte[] data = new byte[1+1+1+ip.length()];
+		// Action, cible, sort, ip
+		byte[] data = new byte[1 + 1 + ip.length()];
 		data[0] = Constants.ATTAQUEMONSTRE;
 		data[1] = (byte) idMonstre;
-		data[2] = (byte) idSkill;
-		for(int i = 3; i < data.length ; i++)
-			data[i] = (byte) ip.charAt(i-3);
+		for (int i = 2; i < data.length; i++)
+			data[i] = (byte) ip.charAt(i - 2);
 		dp = new DatagramPacket(data, data.length, msIp);
 		ms.send(dp);
 	}

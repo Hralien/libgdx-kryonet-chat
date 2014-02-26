@@ -130,8 +130,15 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 	}
 	
 	//TODO a faire (hey oui)
+	//UNIQUEMENT POUR LES ATTAQUES D'UN JOUEUR VERS UN NPC
 	public void attaque(Personnage p, Skill s){
-		System.out.println("Methode attaque appele !");
+		System.out.println("Methode attaque joueurs > NPC appelee !");
+	}
+	
+	//TODO IDEM
+	//UNIQUEMENT POUR LES ATTAQUES D'UN NPC VERS UN JOUEURS
+	public void attaque(Personnage p){
+		System.out.println("Methode d'attaque NPC > joueurs appelee");
 	}
 	
 }
