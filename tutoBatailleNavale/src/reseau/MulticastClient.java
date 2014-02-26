@@ -161,9 +161,10 @@ public class MulticastClient {
 			break;
 		case Constants.LANCERSKILL:
 			Skill s = Skill.selectSkillFromSkillNumber(data[1]);
+			System.out.println(s.getSkillName());
 			// l'ip commence a 2 et la taille est de : Taille data - l'id du
 			// monstre - action - id skill
-			ip = new String(data, 3, data.length - 3);
+			ip = new String(data, 3, data.length - 3).trim();
 			// DEBUG
 			System.out.println("Lancer skill : " + s.getSkillName() + " ip : " + ip);
 			// On recupere la cible et l'attaquant
