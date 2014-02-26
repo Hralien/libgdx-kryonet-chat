@@ -233,8 +233,8 @@ public class MulticastClient {
 	public void lancerSort(Personnage mechant, Skill s) throws IOException {
 		byte[] data = new byte[3 + monIp.length()];
 		// action + skill's id + monstre
-		data[0] = s.getBytes()[0];
-		data[1] = s.getBytes()[1];
+		data[0] = Constants.LANCERSKILL;
+		data[1] = (byte) s.getId();
 		data[2] = (byte) monstres.indexOf(mechant);
 		// mon ip
 		System.out.println(data.length);

@@ -266,7 +266,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				for(int i = 0; i < monstres.size(); i ++ ){
 					System.out.println(monstres.get(i).getName());
 				}
-				Skill s = Skill.selectSkillFromSkillNumber(1);
+				Skill s = Skill.selectSkillFromSkillNumber(0);
 				try {
 					mc.lancerSort(monstres.get(0), s);
 				} catch (IOException e) {
