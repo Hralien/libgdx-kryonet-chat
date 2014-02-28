@@ -22,7 +22,8 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 	
 	//etat
 	public static final int COMPLETE=0;	
-	public static final int MORT=1;	
+	public static final int MORT=1;
+	public static final int WAIT=2;
 
 	//stats
 	protected int hp;
@@ -32,7 +33,7 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 	protected int intel;
 	protected String name;
 	protected ArrayList<Skill> listSkills;
-
+	
 	//animation
 	protected int state;
 	protected TextureRegion currentFrame;
@@ -63,12 +64,15 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 			currentFrame = animate().getKeyFrame(9, true);
 			batch.draw(currentFrame,getOriginX(),getOriginY());
 			break;
-
+		case WAIT:
+			currentFrame = animate().getKeyFrame(0, true);
+			batch.draw(currentFrame,getX(),getY());
+			break;
 		default:
 			break;
 		}
 		this.setSize(currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
-		this.setBounds(getOriginX(), getOriginY(), currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
+		this.setBounds(getX(), getY(), currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
 	}
 
 //	@Override
@@ -108,6 +112,14 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 
 	public void setMana(int mana) {
 		this.mana = mana;
+	}
+
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
 	}
 
 	@Override

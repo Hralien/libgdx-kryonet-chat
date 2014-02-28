@@ -7,12 +7,15 @@ import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
 import m4ges.models.Encyclopedie;
 import m4ges.models.Personnage;
+import m4ges.util.Constants;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -43,13 +46,13 @@ public class EncyclopedieScreen extends AbstractScreen {
 	
 	public EncyclopedieScreen(MyGame myGame) {
 		super(myGame);
-		this.stage = new Stage(Gdx.graphics.getWidth(),	Gdx.graphics.getHeight(), false);
-
+		this.stage = new Stage(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT, true);
+		this.stage.setCamera(cameraGUI);
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		stage.setViewport(width, height, false);
+		stage.setViewport(width,height, true);
 	}
 
 	@Override
@@ -63,8 +66,6 @@ public class EncyclopedieScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		batch.setProjectionMatrix(stage.getCamera().combined);
-
 		stage.act(delta);
 		stage.draw();
 		//		Table.drawDebug(stage);
@@ -86,14 +87,15 @@ public class EncyclopedieScreen extends AbstractScreen {
 
 	}
 	private Window buildCreateCharacterWindow(){
-
-		winListMonster = new Window("Selection Perso", skin);
-		winListMonster.setPosition(650, 200);
-		winListMonster.defaults().pad(20, 20, 20, 20);
-		winListMonster.row().fill().expandX();
-		winListMonster.add(buildMonsterLayer());
+		Label lblMonsterDesc = new Label("Desc:"+selected.getDesc(), skin);
+		Label lblMonsterHp = new Label("Hp:"+selected.getHp(), skin);
+		winListMonster = new Window("Information"+selected.getName(), skin);
+		winListMonster.pad(20,20,20,20);
+		winListMonster.add(lblMonsterDesc);
 		winListMonster.row();
+		winListMonster.add(lblMonsterHp);
 		winListMonster.pack();
+		winListMonster.setPosition(Constants.VIEWPORT_GUI_WIDTH/2 - winListMonster.getWidth(), 50);
 		showNewCharacterWindow(true, true);
 		return winListMonster;
 	}
@@ -102,18 +104,19 @@ public class EncyclopedieScreen extends AbstractScreen {
 	 * @return
 	 */
 	private Table buildMonsterLayer(){
-		float width = Gdx.graphics.getWidth();
-		float height = Gdx.graphics.getHeight();
-
 		Table layer = new Table();
 		int i=0;
 		for(final Personnage it: dico.getMonsters()){
+			it.setState(Personnage.WAIT);
 			it.setVisible(true);
-			it.setOrigin(width/6+i, 50+height/6+i);
+			it.setPosition(100*i, it.getHeight()/2);
+			it.setBounds(100*i,it.getHeight()/2, it.getWidth(), it.getHeight());
 			it.addListener(new InputListener() {
 				public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 					System.out.println("["+it.getName()+"]"+"down");
 					selected = it;
+					stage.getActors().removeValue(winListMonster, true);
+					stage.addActor(buildCreateCharacterWindow());
 					return true;
 				}
 
@@ -121,7 +124,7 @@ public class EncyclopedieScreen extends AbstractScreen {
 					System.out.println("["+it.getName()+"]"+"up");
 				}
 			});
-			i+=50;
+			i+=1;
 			layer.addActor(it);
 		}
 		return layer;

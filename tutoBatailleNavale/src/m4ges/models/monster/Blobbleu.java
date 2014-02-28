@@ -13,7 +13,7 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 
 public class Blobbleu extends Personnage{
-	private final static String DESCRIPTION = "Le Abyss est ou n'est pas ...";
+	private final static String DESCRIPTION = "Le Blob est ou n'est pas ...";
 	protected static volatile Animation animation;
 
 	public Blobbleu() {
