@@ -11,7 +11,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.esotericsoftware.kryo.KryoSerializable;
-
+/**
+ * Classe representant un personnae
+ * @author Florian
+ *
+ */
 public abstract class Personnage extends Actor implements KryoSerializable {
 
 	//classe
@@ -22,7 +26,7 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 	
 	//etat
 	public static final int COMPLETE=0;	
-	public static final int MORT=1;	
+	public static final int MORT=1;
 	public static final int WAIT=2;
 
 	//stats
@@ -33,14 +37,11 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 	protected int intel;
 	protected String name;
 	protected ArrayList<Skill> listSkills;
-
+	
 	//animation
 	protected int state;
 	protected TextureRegion currentFrame;
 	float stateTime;
-	
-	// Permet de connaitre l'ordre du jeu
-	private boolean token;
 
 
 
@@ -75,16 +76,17 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 			break;
 		}
 		this.setSize(currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
-		this.setBounds(getOriginX(), getOriginY(), currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
+		this.setBounds(getX(), getY(), currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
 	}
 
-//	@Override
+	@Override
 	public Actor hit (float x, float y, boolean touchable) {
 		if (touchable && getTouchable() != Touchable.enabled) return null;
 		return x >= 0 && x < this.getWidth() && y >= 0 && y < this.getHeight() ? this : null;
 	}
 	public abstract String getDesc();
 	public abstract Animation animate();
+	
 	public String getName() {
 		return name;
 	}
@@ -117,6 +119,14 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 		this.mana = mana;
 	}
 
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
+	}
+
 	@Override
 	public String toString() {
 		return "Personnage [hp=" + hp + ", mana=" + mana + ", strength="
@@ -146,14 +156,6 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 	//UNIQUEMENT POUR LES ATTAQUES D'UN NPC VERS UN JOUEURS
 	public void attaque(Personnage p){
 		System.out.println("Methode d'attaque NPC > joueurs appelee");
-	}
-
-	public boolean isToken() {
-		return token;
-	}
-
-	public void setToken(boolean token) {
-		this.token = token;
 	}
 	
 }

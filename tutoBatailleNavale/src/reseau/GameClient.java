@@ -93,7 +93,7 @@ public class GameClient {
 					case Constants.STARTGAME:
 						Gdx.app.postRunnable(new Runnable() {
 							public void run() {
-								game.changeScreen(MyGame.BEGINSCREEN);
+								game.changeScreen(MyGame.BATTLESCREEN);
 							}
 						});
 						break;

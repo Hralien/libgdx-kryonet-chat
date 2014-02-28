@@ -4,11 +4,11 @@ import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
 import m4ges.models.Citation;
 import m4ges.models.LoadingBar;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -128,9 +128,9 @@ public class LoadingScreen extends AbstractScreen {
     	super.render(delta);
 
         if (MyGame.manager.update()) { // Load some, will return true if done loading
-            if (Gdx.input.isTouched()) { // If the screen is touched after the game is done loading, go to the main menu screen
+//            if (Gdx.input.isTouched()) { // If the screen is touched after the game is done loading, go to the main menu screen
                 super.game.changeScreen(MyGame.MENUSCREEN);
-            }
+//            }
         }
 
         // Interpolate the percentage to make it more smooth

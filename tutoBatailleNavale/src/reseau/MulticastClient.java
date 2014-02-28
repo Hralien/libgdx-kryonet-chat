@@ -31,6 +31,8 @@ public class MulticastClient {
 	public final static int PORTMS = 12345;
 	// liste des joueurs
 	private MapPerso<String, Personnage> joueurs;
+	// Permet de connaitre l'ordre du jeu
+	private boolean token;
 	// liste de monstre
 	private ArrayList<Personnage> monstres;
 	// Le jeu
@@ -47,6 +49,7 @@ public class MulticastClient {
 		this.game = g;
 		joueurs = new MapPerso<String, Personnage>();
 		monstres = new ArrayList<Personnage>();
+		token = false;
 		try {
 			monIp = Inet4Address.getLocalHost().getHostAddress();
 			joueurs.put(monIp, game.player);
@@ -119,23 +122,12 @@ public class MulticastClient {
 		case Constants.CONNEXION:
 		case Constants.NOUVEAU:
 			actionTraiterNouveau(action,data);
-
 			break;
 		case Constants.LANCERSKILL:
 			actionTraiterLancerSkill(data);
 			break;
 		case Constants.ATTAQUEMONSTRE:
 			actionTraiterAttaqueMonstre(data);
-
-			break;
-		//on met le tocken a une nouvelle personne	
-		case Constants.TOCKEN:
-			//avant tout, on enleve le tocken du joueur precedent
-			for(Personnage it:joueurs.values())
-				it.setToken(false);
-			
-			ip = new String(data, 1, data.length-1).trim();
-			joueurs.get(ip).setToken(true);
 			break;
 		default:
 			System.err.println("[MulticastClient-DEFAULT]:Action non reconnue");
@@ -269,8 +261,8 @@ public class MulticastClient {
 			dp = new DatagramPacket(data, data.length, msIp);
 			ms.send(dp);
 			break;
-		// Si quelqu'un vient de se co (Donc on a recu une requete d'action 1 on
-		// envoie ca
+			// Si quelqu'un vient de se co (Donc on a recu une requete d'action 1 on
+			// envoie ca
 
 		default:
 			break;
@@ -314,21 +306,7 @@ public class MulticastClient {
 		dp = new DatagramPacket(data, data.length, msIp);
 		ms.send(dp);
 	}
-	
-	public void passerTocken(Personnage p) throws IOException{
-		//ip du joueur a qui on va passer le tocken
-		ip = joueurs.getKey(p);
-		//le tableau de bytes
-		byte[] data = new byte[1+ip.length()];
-		data[0] = Constants.TOCKEN;
-		//on stocke l'ip
-		for(int i = 1; i < data.length ; i++)
-			data[i] = (byte) ip.charAt(i-1);
-		dp = new DatagramPacket(data, data.length, msIp);
-		ms.send(dp);
-		
-	}
-	
+
 	public InetSocketAddress getMsIp() {
 		return msIp;
 	}
@@ -343,6 +321,14 @@ public class MulticastClient {
 
 	public void setJoueurs(MapPerso<String, Personnage> joueurs) {
 		this.joueurs = joueurs;
+	}
+
+	public boolean isToken() {
+		return token;
+	}
+
+	public void setToken(boolean token) {
+		this.token = token;
 	}
 
 	public ArrayList<Personnage> getMonstres() {

@@ -6,27 +6,26 @@ import m4ges.models.Skill;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
-public class Skeleton extends Monstre {
-	
-	private final static String DESCRIPTION = "Le Skeleton est ou n'est pas ...";
+public class Abyss extends Monstre{
+	private final static String DESCRIPTION = "Le Abyss est ou n'est pas ...";
 	protected static volatile Animation animation;
 
-	
-	public Skeleton() {
+	public Abyss() {
 		super();
-		super.name="Skeleton";
+		super.name="Abyss";
 		super.hp=50;
 		super.intel=3;
 		super.mana=5*super.intel;
 		super.strength=3;
 		super.speed=2;
+
+		
 		super.listSkills=Skill.getSkillForClass(Personnage.NECROMANCIEN);
 
 	}
-
 	
 	@Override
 	public String getDesc() {
@@ -40,30 +39,29 @@ public class Skeleton extends Monstre {
 		//Le "Double-Checked Singleton"/"Singleton doublement vérifié" permet 
 		//d'éviter un appel coûteux à synchronized, 
 		//une fois que l'instanciation est faite.
-		if (Skeleton.animation == null) {
+		if (Abyss.animation == null) {
 			// Le mot-clé synchronized sur ce bloc empêche toute instanciation
 			// multiple même par différents "threads".
 			// Il est TRES important.
-			synchronized(Skeleton.class) {
-				if (Skeleton.animation == null) {
+			synchronized(Abyss.class) {
+				if (Abyss.animation == null) {
 					TextureAtlas atlas = MyGame.manager.get("character/personnage.pack", TextureAtlas.class);
-					AtlasRegion sprite = atlas.findRegion("skeleton");
+					AtlasRegion sprite = atlas.findRegion("abyss");
 					TextureRegion[] regions = new TextureRegion[8]; 
-					regions[0] = new TextureRegion(sprite, 0, 0, 128, 100);
-					regions[1] = new TextureRegion(sprite, 128, 0, 128, 100);
-					regions[2] = new TextureRegion(sprite, 256, 0, 128, 100);
-					regions[3] = new TextureRegion(sprite, 384, 0, 128, 100);
-					regions[4] = new TextureRegion(sprite, 0, 100, 128, 100);
-					regions[5] = new TextureRegion(sprite, 128, 100, 128, 100);
-					regions[6] = new TextureRegion(sprite, 256, 100, 128, 100);
-					regions[7] = new TextureRegion(sprite, 384, 100, 128, 100);
-
+					regions[0] = new TextureRegion(sprite, 0, 0, 256, 256);
+					regions[1] = new TextureRegion(sprite, 256, 0, 259, 256);
+					regions[2] = new TextureRegion(sprite, 505, 0, 270, 256);
+					regions[3] = new TextureRegion(sprite, 775, 0, 247, 256);
+					regions[4] = new TextureRegion(sprite, 0, 256, 256, 256);
+					regions[5] = new TextureRegion(sprite, 256, 256, 250, 256);
+					regions[6] = new TextureRegion(sprite, 506, 256, 270, 256);
+					regions[7] = new TextureRegion(sprite, 776, 256, 247, 256);
 					animation = new Animation(0.1f, regions);              // #11
 
 				}
 			}
 		}
-		return Skeleton.animation;
+		return Abyss.animation;
 	}
 	@Override
 	public String getName(){
