@@ -11,7 +11,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.esotericsoftware.kryo.KryoSerializable;
-
+/**
+ * Classe representant un personnae
+ * @author Florian
+ *
+ */
 public abstract class Personnage extends Actor implements KryoSerializable {
 
 	//classe
@@ -75,13 +79,14 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 		this.setBounds(getX(), getY(), currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
 	}
 
-//	@Override
+	@Override
 	public Actor hit (float x, float y, boolean touchable) {
 		if (touchable && getTouchable() != Touchable.enabled) return null;
 		return x >= 0 && x < this.getWidth() && y >= 0 && y < this.getHeight() ? this : null;
 	}
 	public abstract String getDesc();
 	public abstract Animation animate();
+	
 	public String getName() {
 		return name;
 	}

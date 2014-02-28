@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
 import m4ges.models.Personnage;
-import m4ges.models.Skill;
 import m4ges.models.Vague;
 import m4ges.models.classes.Necromancien;
 import m4ges.util.AudioManager;
@@ -22,7 +21,6 @@ import reseau.GameServer;
 import reseau.MulticastClient;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;

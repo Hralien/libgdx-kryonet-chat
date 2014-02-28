@@ -4,17 +4,12 @@ import m4ges.controllers.MyGame;
 import m4ges.models.Personnage;
 import m4ges.models.Skill;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.io.Input;
-import com.esotericsoftware.kryo.io.Output;
 
-public class Skeleton extends Personnage {
+public class Skeleton extends Monstre {
 	
 	private final static String DESCRIPTION = "Le Skeleton est ou n'est pas ...";
 	protected static volatile Animation animation;
@@ -28,30 +23,10 @@ public class Skeleton extends Personnage {
 		super.mana=5*super.intel;
 		super.strength=3;
 		super.speed=2;
-		//super.listSkills=Skill.getSkillForClass(Personnage.NECROMANCIEN);
+		super.listSkills=Skill.getSkillForClass(Personnage.NECROMANCIEN);
 
 	}
-	@Override
-	public void write(Kryo kryo, Output output) {
-		output.writeShort(getHp());
-		output.writeShort(getMana());
-		output.writeShort(strength);
-		output.writeShort(speed);
-		output.writeShort(intel);
 
-		kryo.writeClassAndObject(output, name);
-	}
-
-	@Override
-	public void read(Kryo kryo, Input input) {
-		hp = input.readShort();
-		mana = input.readShort();
-		strength = input.readShort();
-		speed = input.readShort();
-		intel = input.readShort();
-		name = (String) kryo.readClassAndObject(input);
-		listSkills=Skill.getSkillForClass(Personnage.NECROMANCIEN);
-	}
 	
 	@Override
 	public String getDesc() {

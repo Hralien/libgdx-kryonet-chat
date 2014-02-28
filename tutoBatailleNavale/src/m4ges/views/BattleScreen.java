@@ -4,18 +4,11 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.touchable;
 
-import java.util.ArrayList;
-
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
 import m4ges.models.Personnage;
 import m4ges.models.Skill;
 import m4ges.models.Vague;
-import m4ges.models.monster.Flower;
-import m4ges.models.monster.Lutin;
-import m4ges.models.monster.Phantom;
-import m4ges.models.monster.Skeleton;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
