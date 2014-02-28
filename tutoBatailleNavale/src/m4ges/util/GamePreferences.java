@@ -34,6 +34,9 @@ public class GamePreferences {
 	public int charSkin;
 	public boolean showFpsCounter;
 	public boolean useMonochromeShader;
+	
+	//succes
+	public boolean suc_creerUnePartie;
 
 	private Preferences prefs;
 
@@ -50,6 +53,8 @@ public class GamePreferences {
 		charSkin = MathUtils.clamp(prefs.getInteger("charSkin", 0), 0, 2);
 		showFpsCounter = prefs.getBoolean("showFpsCounter", false);
 		useMonochromeShader = prefs.getBoolean("useMonochromeShader", false);
+		//succes
+		suc_creerUnePartie = prefs.getBoolean("creerUnePartie",true);
 	}
 
 	public void save () {
@@ -60,6 +65,9 @@ public class GamePreferences {
 		prefs.putInteger("charSkin", charSkin);
 		prefs.putBoolean("showFpsCounter", showFpsCounter);
 		prefs.putBoolean("useMonochromeShader", useMonochromeShader);
+		//succes
+		prefs.putBoolean("creerUnePartie", suc_creerUnePartie);
+		//on enregistre
 		prefs.flush();
 	}
 

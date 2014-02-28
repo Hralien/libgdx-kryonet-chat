@@ -198,9 +198,6 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		stage.act(delta);
 		stage.draw();
 		Table.drawDebug(stage);
-		if(Gdx.input.isKeyPressed(Keys.V)){
-			Vague.loadVague(1);
-		}
 
 	}
 
@@ -275,6 +272,14 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				//test success
+				GamePreferences prefs = GamePreferences.instance;
+				if(!prefs.suc_creerUnePartie){
+					System.out.println("[succes]: vous avez débloqué le succes creer une partie");
+					prefs.suc_creerUnePartie = true;
+					prefs.save();
+				}
+				
 			}
 		});
 		testVague.addListener(new ChangeListener() {
