@@ -23,6 +23,7 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 	//etat
 	public static final int COMPLETE=0;	
 	public static final int MORT=1;	
+	public static final int WAIT=2;
 
 	//stats
 	protected int hp;
@@ -37,6 +38,9 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 	protected int state;
 	protected TextureRegion currentFrame;
 	float stateTime;
+	
+	// Permet de connaitre l'ordre du jeu
+	private boolean token;
 
 
 
@@ -63,7 +67,10 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 			currentFrame = animate().getKeyFrame(9, true);
 			batch.draw(currentFrame,getOriginX(),getOriginY());
 			break;
-
+		case WAIT:
+			currentFrame = animate().getKeyFrame(0, true);
+			batch.draw(currentFrame,getX(),getY());
+			break;
 		default:
 			break;
 		}
@@ -139,6 +146,14 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 	//UNIQUEMENT POUR LES ATTAQUES D'UN NPC VERS UN JOUEURS
 	public void attaque(Personnage p){
 		System.out.println("Methode d'attaque NPC > joueurs appelee");
+	}
+
+	public boolean isToken() {
+		return token;
+	}
+
+	public void setToken(boolean token) {
+		this.token = token;
 	}
 	
 }

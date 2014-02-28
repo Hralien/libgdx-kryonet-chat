@@ -105,7 +105,10 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 * bouton pour afficher les tests
 	 */
 	private Button btnMenuTest;
-
+	/**
+	 * bouton pour afficher le dico
+	 */
+	private Button btnMenuDico;
 	// options
 	/**
 	 * fenetre des options
@@ -170,7 +173,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 
 	@Override
 	public void resize(int width, int height) {
-		stage.setViewport(width, height, false);
+		stage.setViewport(width, height, true);
 	}
 
 	@Override
@@ -195,9 +198,6 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		stage.act(delta);
 		stage.draw();
 		Table.drawDebug(stage);
-		if(Gdx.input.isKeyPressed(Keys.V)){
-			Vague.loadVague(1);
-		}
 
 	}
 
@@ -272,6 +272,14 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				//test success
+				GamePreferences prefs = GamePreferences.instance;
+				if(!prefs.suc_creerUnePartie){
+					System.out.println("[succes]: vous avez débloqué le succes creer une partie");
+					prefs.suc_creerUnePartie = true;
+					prefs.save();
+				}
+				
 			}
 		});
 		testVague.addListener(new ChangeListener() {
@@ -360,12 +368,15 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		//buttons with style
 		btnMenuHost =  buildBtnMenuHost(style);
 		btnMenuPlay =  buildBtnMenuPlay(style);
+		btnMenuDico =  buildBtnMenuDico(style);
 		btnMenuOptions = buildBtnMenuOption(style);
 		btnMenuTest = buildBtnMenuTest(style);
 
 		layer.add(btnMenuHost);
 		layer.row();
 		layer.add(btnMenuPlay);
+		layer.row();
+		layer.add(btnMenuDico);
 		layer.row();
 		layer.add(btnMenuOptions);
 		layer.row();
@@ -377,21 +388,38 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		return layer;
 	}
 	/**
-	 * 
+	 * construit le bouton pour jour
 	 * @param style
 	 * @return
 	 */
 	private TextButton buildBtnMenuPlay(TextButtonStyle style) {
-		TextButton tbJoin = new TextButton("Créer un perso", style);
-		tbJoin.addListener(new ChangeListener() {
+		TextButton tbPlay = new TextButton("Créer un perso", style);
+		tbPlay.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				goToNewCharacter();
 			}
 		});
-		tbJoin.setPosition((float) (Gdx.graphics.getWidth() / 2.5),	Gdx.graphics.getHeight() / 6);
+		tbPlay.setPosition((float) (Gdx.graphics.getWidth() / 2.5),	Gdx.graphics.getHeight() / 6);
 
-		return tbJoin;
+		return tbPlay;
+	}
+	/**
+	 * construit le bouton pour affiché l'encyclopedie
+	 * @param style
+	 * @return
+	 */
+	private TextButton buildBtnMenuDico(TextButtonStyle style) {
+		TextButton tbDico = new TextButton("Voir l'encyclopedie", style);
+		tbDico.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				goToDico();
+			}
+		});
+		tbDico.setPosition((float) (Gdx.graphics.getWidth() / 2.5),	Gdx.graphics.getHeight() / 6);
+
+		return tbDico;
 	}
 	/**
 	 * 
@@ -638,8 +666,9 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		final Touchable touchEnabled = visible ? Touchable.enabled : Touchable.disabled;
 		btnMenuHost.addAction(moveBy(moveX, moveY, moveDuration, moveEasing));
 		btnMenuPlay.addAction(sequence(delay(delayOptionsButton), moveBy(moveX, moveY, moveDuration, moveEasing)));
-		btnMenuOptions.addAction(sequence(delay(delayOptionsButton*2), moveBy(moveX, moveY, moveDuration, moveEasing)));
-		btnMenuTest.addAction(sequence(delay(delayOptionsButton*2), moveBy(moveX, moveY, moveDuration, moveEasing)));
+		btnMenuDico.addAction(sequence(delay(delayOptionsButton*2), moveBy(moveX, moveY, moveDuration, moveEasing)));
+		btnMenuOptions.addAction(sequence(delay(delayOptionsButton*3), moveBy(moveX, moveY, moveDuration, moveEasing)));
+		btnMenuTest.addAction(sequence(delay(delayOptionsButton*4), moveBy(moveX, moveY, moveDuration, moveEasing)));
 
 		SequenceAction seq = sequence();
 		if (visible) seq.addAction(delay(delayOptionsButton + moveDuration));
@@ -647,6 +676,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 			public void run () {
 				btnMenuHost.setTouchable(touchEnabled);
 				btnMenuPlay.setTouchable(touchEnabled);
+				btnMenuDico.setTouchable(touchEnabled);
 				btnMenuOptions.setTouchable(touchEnabled);
 				btnMenuTest.setTouchable(touchEnabled);
 			}
@@ -692,6 +722,13 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	private void goToNewCharacter(){
 		AudioManager.instance.stopMusic();
 		super.game.changeScreen(MyGame.NEWCHARACTERSCREEN);
+	}
+	/**
+	 * 
+	 */
+	private void goToDico(){
+		AudioManager.instance.stopMusic();
+		super.game.changeScreen(MyGame.DICOSCREEN);
 	}
 	@Override
 	public void hide() {
