@@ -128,9 +128,9 @@ public class LoadingScreen extends AbstractScreen {
     	super.render(delta);
 
         if (MyGame.manager.update()) { // Load some, will return true if done loading
-            if (Gdx.input.isTouched()) { // If the screen is touched after the game is done loading, go to the main menu screen
+//            if (Gdx.input.isTouched()) { // If the screen is touched after the game is done loading, go to the main menu screen
                 super.game.changeScreen(MyGame.MENUSCREEN);
-            }
+//            }
         }
 
         // Interpolate the percentage to make it more smooth

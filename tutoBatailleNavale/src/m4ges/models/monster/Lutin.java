@@ -22,6 +22,7 @@ public class Lutin extends Personnage{
 	
 	public Lutin() {
 		super();
+		super.name="Lutin";
 		super.hp=50;
 		super.intel=3;
 		super.mana=5*super.intel;

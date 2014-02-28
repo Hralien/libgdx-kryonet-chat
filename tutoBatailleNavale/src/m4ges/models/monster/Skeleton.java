@@ -22,6 +22,7 @@ public class Skeleton extends Personnage {
 	
 	public Skeleton() {
 		super();
+		super.name="Skeleton";
 		super.hp=50;
 		super.intel=3;
 		super.mana=5*super.intel;
@@ -77,10 +78,10 @@ public class Skeleton extends Personnage {
 					regions[1] = new TextureRegion(sprite, 128, 0, 128, 100);
 					regions[2] = new TextureRegion(sprite, 256, 0, 128, 100);
 					regions[3] = new TextureRegion(sprite, 384, 0, 128, 100);
-					regions[4] = new TextureRegion(sprite, 0, 100, 128, 200);
-					regions[5] = new TextureRegion(sprite, 128, 100, 128, 200);
-					regions[6] = new TextureRegion(sprite, 256, 100, 128, 200);
-					regions[7] = new TextureRegion(sprite, 384, 100, 128, 200);
+					regions[4] = new TextureRegion(sprite, 0, 100, 128, 100);
+					regions[5] = new TextureRegion(sprite, 128, 100, 128, 100);
+					regions[6] = new TextureRegion(sprite, 256, 100, 128, 100);
+					regions[7] = new TextureRegion(sprite, 384, 100, 128, 100);
 
 					animation = new Animation(0.1f, regions);              // #11
 

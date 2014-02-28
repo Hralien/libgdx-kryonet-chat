@@ -196,7 +196,8 @@ public class BattleScreen extends AbstractScreen {
 	 * @return
 	 */
 	private Window createSelectedWindows() {
-		selectWindow = new Window("",skin);
+		WindowStyle ws = new WindowStyle(new BitmapFont(), Color.BLACK, new TextureRegionDrawable(battle_skill));
+		selectWindow = new Window("",ws);
 		if(selected==null)
 			return selectWindow;
 		selectWindow.add(new Label("name:"+selected.getName(),skin));
@@ -205,7 +206,7 @@ public class BattleScreen extends AbstractScreen {
 		selectWindow.row();
 		selectWindow.add(new Label("sp:"+selected.getMana(),skin));
 		selectWindow.pack();
-		selectWindow.setBounds(0, 0, battle_info.getRegionWidth(),battle_info.getRegionHeight());
+		selectWindow.setBounds(battle_skill.getRegionWidth()-30, 0, battle_skill.getRegionWidth(),battle_skill.getRegionHeight());
 		return selectWindow;
 	}
 	/**
