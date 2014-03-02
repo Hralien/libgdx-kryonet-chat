@@ -10,6 +10,7 @@ import m4ges.models.classes.Aquamancien;
 import m4ges.models.classes.Necromancien;
 import m4ges.models.classes.Pyromancien;
 import m4ges.models.classes.Shaman;
+import m4ges.util.GamePreferences;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -130,26 +131,32 @@ public class CreateCharacterScreen extends AbstractScreen {
 		tbNewPlayer.addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
 				stage.getRoot().removeActor(game.player);
+				GamePreferences.instance.load();
 				switch (listClasses.getSelectedIndex()) {
 				case 0:
 					// initialisation du player
 					game.player = new Shaman();
+					GamePreferences.instance.nbChamanPlayed++;
 					break;
 				case 1:
 					// initialisation du player
 					game.player = new Necromancien();
+					GamePreferences.instance.nbNecroPlayed++;
 					break;
 				case 2:
 					// initialisation du player
 					game.player = new Pyromancien();
+					GamePreferences.instance.nbPyroPlayed++;
 					break;
 				case 3:
 					// initialisation du player
 					game.player = new Aquamancien();
+					GamePreferences.instance.nbAquaPlayed++;
 					break;
 				default:
 					System.err.println("switch personnage error");
 				}
+				GamePreferences.instance.save();
 				game.player.setName(tfPlayerName.getText());
 				stage.addActor(game.player);
 				showClassDescWindow(true, true);

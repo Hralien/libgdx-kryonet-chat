@@ -6,6 +6,7 @@ import java.util.Hashtable;
 import reseau.GameClient;
 import reseau.GameServer;
 import m4ges.models.Personnage;
+import m4ges.util.GamePreferences;
 import m4ges.views.BattleScreen;
 import m4ges.views.ChatScreen;
 import m4ges.views.CreateCharacterScreen;
@@ -16,6 +17,7 @@ import m4ges.views.MenuPrincipalScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.utils.TimeUtils;
 
 /**
  * Ici on initialise tout les screen
@@ -67,8 +69,6 @@ public class MyGame extends Game{
 		screenHashtable.put(CHATSCREEN,new ChatScreen(this));
 		screenHashtable.put(BATTLESCREEN,new BattleScreen(this));
 		screenHashtable.put(DICOSCREEN,new EncyclopedieScreen(this));
-
-
 		changeScreen(0);
 	}
 
@@ -77,5 +77,12 @@ public class MyGame extends Game{
 			setScreen(screenHashtable.get(nextScreen));
 	}
 
-
+	@Override
+	public void dispose(){
+		GamePreferences.instance.load();
+		GamePreferences prefs = GamePreferences.instance;
+		prefs.timePlayed += TimeUtils.millis() - AbstractScreen.getTimePlayed();
+		prefs.save();
+		System.err.println("fini:"+prefs.timePlayed/1000+"sec");
+	}
 }

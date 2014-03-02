@@ -34,7 +34,12 @@ public class GamePreferences {
 	public int charSkin;
 	public boolean showFpsCounter;
 	public boolean useMonochromeShader;
-	
+	//stats
+	public long timePlayed;
+	public int nbChamanPlayed;
+	public int nbNecroPlayed;
+	public int nbAquaPlayed;
+	public int nbPyroPlayed;
 	//succes
 	public boolean suc_creerUnePartie;
 
@@ -53,6 +58,12 @@ public class GamePreferences {
 		charSkin = MathUtils.clamp(prefs.getInteger("charSkin", 0), 0, 2);
 		showFpsCounter = prefs.getBoolean("showFpsCounter", false);
 		useMonochromeShader = prefs.getBoolean("useMonochromeShader", false);
+		//stats
+		timePlayed = prefs.getLong("timePlayed",0);
+		nbChamanPlayed = prefs.getInteger("nbChamanPlayed", 0);
+		nbNecroPlayed = prefs.getInteger("nbNecroPlayed", 0);
+		nbAquaPlayed = prefs.getInteger("nbAquaPlayed", 0);
+		nbPyroPlayed = prefs.getInteger("nbPyroPlayed", 0);
 		//succes
 		suc_creerUnePartie = prefs.getBoolean("creerUnePartie",true);
 	}
@@ -65,6 +76,12 @@ public class GamePreferences {
 		prefs.putInteger("charSkin", charSkin);
 		prefs.putBoolean("showFpsCounter", showFpsCounter);
 		prefs.putBoolean("useMonochromeShader", useMonochromeShader);
+		//stats
+		prefs.putLong("timePlayed", timePlayed);
+		prefs.getInteger("nbChamanPlayed", nbChamanPlayed);
+		prefs.getInteger("nbNecroPlayed", nbNecroPlayed);
+		prefs.getInteger("nbAquaPlayed",nbAquaPlayed);
+		prefs.getInteger("nbPyroPlayed", nbPyroPlayed);
 		//succes
 		prefs.putBoolean("creerUnePartie", suc_creerUnePartie);
 		//on enregistre

@@ -31,6 +31,13 @@ battle_ui
   orig: 260, 96
   offset: 0, 0
   index: -1
+battle_ui2
+  rotate: false
+  xy: 643, 193
+  size: 260, 96
+  orig: 260, 96
+  offset: 0, 0
+  index: -1
 fleche
   rotate: false
   xy: 1, 1

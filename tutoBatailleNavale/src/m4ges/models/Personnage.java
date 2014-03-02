@@ -36,6 +36,7 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 	protected int speed;
 	protected int intel;
 	protected String name;
+	protected int element;
 	protected ArrayList<Skill> listSkills;
 	
 	//animation
@@ -43,9 +44,7 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 	protected TextureRegion currentFrame;
 	float stateTime;
 
-
-
-
+	
 	public Personnage() {
 		this.listSkills = new ArrayList<Skill>();
 		this.state=COMPLETE;
