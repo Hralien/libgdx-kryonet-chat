@@ -31,6 +31,7 @@ public class MapPerso<String,Personnage> extends HashMap<String, Personnage>{
 		}
 		return null;
 	}
+	
 //	
 //	public Personnage getValue(String ip){
 //		Set<String> key = this.keySet();

@@ -38,6 +38,8 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 	protected String name;
 	protected int element;
 	protected ArrayList<Skill> listSkills;
+	//permet de connaitre le tour de jeu
+	protected boolean token;
 	
 	//animation
 	protected int state;
@@ -51,6 +53,7 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 		this.stateTime=0;
 		this.currentFrame = null;
 		setTouchable(Touchable.enabled);
+		this.token = false;
 		this.setOrigin(50, 50);
 	}
 
@@ -124,6 +127,14 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 
 	public void setState(int state) {
 		this.state = state;
+	}
+	
+	public boolean isToken(){
+		return token;
+	}
+	
+	public void setToken(boolean t){
+		this.token = t;
 	}
 
 	@Override

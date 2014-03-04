@@ -62,8 +62,9 @@ public class MulticastClient {
 			sendData(Constants.CONNEXION);
 			System.out.println("ok send");
 		} catch (IOException e) {
-			System.err.println("[MulticastClient]:Probleme lors de la jointure au ms/ds ou de la "
-					+ "transmission du perso. Port possible occupee");
+			System.err
+					.println("[MulticastClient]:Probleme lors de la jointure au ms/ds ou de la "
+							+ "transmission du perso. Port possible occupee");
 			e.printStackTrace();
 		}
 	}
@@ -117,11 +118,12 @@ public class MulticastClient {
 	private void traiterData(byte[] data) throws IOException {
 		// On recupere l'action de la data
 		int action = (int) data[0];
-		System.out.println("[MulticastClient-TraiterData]:Donnees recu  : " + action);
+		System.out.println("[MulticastClient-TraiterData]:Donnees recu  : "
+				+ action);
 		switch (action) {
 		case Constants.CONNEXION:
 		case Constants.NOUVEAU:
-			actionTraiterNouveau(action,data);
+			actionTraiterNouveau(action, data);
 			break;
 		case Constants.LANCERSKILL:
 			actionTraiterLancerSkill(data);
@@ -129,18 +131,24 @@ public class MulticastClient {
 		case Constants.ATTAQUEMONSTRE:
 			actionTraiterAttaqueMonstre(data);
 			break;
+		case Constants.TOKEN:
+			actionToken(data);
+			break;
 		default:
 			System.err.println("[MulticastClient-DEFAULT]:Action non reconnue");
 			break;
 		}
 	}
+
 	/**
 	 * methode appele en cas de creation de nouveau
+	 * 
 	 * @param action
 	 * @param data
 	 * @throws IOException
 	 */
-	public void actionTraiterNouveau(int action,byte[] data) throws IOException{
+	public void actionTraiterNouveau(int action, byte[] data)
+			throws IOException {
 		String pseudo;
 		pseudo = new String(data, 3, data[2]);
 		Personnage p = null;
@@ -163,8 +171,7 @@ public class MulticastClient {
 			break;
 		}
 		// On récup l'ip (trim sert à enlever les char null
-		ip = new String(data, data[2] + 3, data.length - data[2] - 3)
-		.trim();
+		ip = new String(data, data[2] + 3, data.length - data[2] - 3).trim();
 		// Si l'ip est valide et qu'il n'est pas dans la map
 		if (ip.length() > 0 && !joueurs.containsKey(ip))
 			joueurs.put(ip, p);
@@ -172,22 +179,22 @@ public class MulticastClient {
 		if (action == Constants.CONNEXION)
 			sendData(Constants.NOUVEAU);
 		// DEBUG
-		System.out.println("-- Affichage de(s) " + joueurs.size()
-				+ " joueurs --");
+		System.out.println("[Multicast]\n-- Affichage de(s) " + joueurs.size()
+				+ " joueur(s) --");
 		Set<String> key = joueurs.keySet();
 		for (String it : key) {
-			System.out.println("ip : " + it + " Pseudo : "
-					+ joueurs.get(it));
+			System.out.println("ip : " + it + " Pseudo : " + joueurs.get(it));
 		}
 	}
+
 	/**
 	 * methode appele en cas de lancement de sorts
+	 * 
 	 * @param data
 	 */
 	public void actionTraiterLancerSkill(byte[] data){
 		Skill s = Skill.selectSkillFromSkillNumber(data[1]);
-		System.out.println(s.getSkillName());
-		// l'ip commence a 2 et la taille est de : Taille data - l'id du
+		// l'ip commence a 3 et la taille est de : Taille data - l'id du
 		// monstre - action - id skill
 		ip = new String(data, 3, data.length - 3).trim();
 		// DEBUG
@@ -200,20 +207,23 @@ public class MulticastClient {
 		 */
 		joueurs.get(ip).attaque(monstres.get(data[2]), s);
 		// DEBUG
-		System.out.println(joueurs.get(ip).getName() + " Attaque : "
+		System.out.println("[Multicast - LANCERSKILL]\n" + joueurs.get(ip).getName() + " Attaque : "
 				+ monstres.get(data[2]).getName() + " avec : "
 				+ s.getSkillName());
 	}
+
 	/**
 	 * action appele en cas d'attaque de monstre
+	 * 
 	 * @param data
 	 */
-	public void actionTraiterAttaqueMonstre(byte[] data){
+	public void actionTraiterAttaqueMonstre(byte[] data) {
 		// l'id du monstre
 		int idMonstre = data[1];
 		// DEBUG
-		System.out.println("[Multicast - ATTAQUEMONSTRE]:monstre qui attaque : "
-				+ monstres.get(idMonstre).getName());
+		System.out
+				.println("[Multicast - ATTAQUEMONSTRE]:monstre qui attaque : "
+						+ monstres.get(idMonstre).getName());
 		// l'ip de la cible
 		ip = new String(data, 2, data.length - 2).trim();
 		/*
@@ -225,6 +235,20 @@ public class MulticastClient {
 		System.out.println(monstres.get(idMonstre).getName() + " attaque "
 				+ joueurs.get(ip).getName());
 	}
+	
+	//sert a donner le token
+	public void actionToken(byte[] data){
+		//avant tout il faut l'enlever à celui qui l'a
+		Set<String> key = joueurs.keySet();
+		for (String it : key) {
+			joueurs.get(it).setToken(false);
+		}
+		//on recupere l'ip de celui qui doit l'avoir
+		ip  = new String(data, 1, data.length - 1).trim();
+		//et on lui met
+		joueurs.get(ip).setToken(true);
+	}
+
 	/**
 	 * Permet d'envoyer les donnees
 	 * 
@@ -240,7 +264,6 @@ public class MulticastClient {
 		// Pour la connexion
 		case Constants.CONNEXION:
 		case Constants.NOUVEAU:
-			System.out.println("Envoie de la connection");
 			datatmp = this.game.player.getBytes();
 			// Il faut joindre l'ip
 
@@ -261,8 +284,8 @@ public class MulticastClient {
 			dp = new DatagramPacket(data, data.length, msIp);
 			ms.send(dp);
 			break;
-			// Si quelqu'un vient de se co (Donc on a recu une requete d'action 1 on
-			// envoie ca
+		// Si quelqu'un vient de se co (Donc on a recu une requete d'action 1 on
+		// envoie ca
 
 		default:
 			break;
@@ -306,6 +329,21 @@ public class MulticastClient {
 		dp = new DatagramPacket(data, data.length, msIp);
 		ms.send(dp);
 	}
+	
+	//Sert a passer le token
+	public void passerToken(Personnage p) throws IOException{
+		//on recupere l'ip du joueur
+		ip = joueurs.getKey(p);
+		byte[] data = new byte[ip.length()+1];
+		data[0] = Constants.TOKEN;
+		for(int i = 1; i < data.length; i++){
+			data[i] = (byte) ip.charAt(i-1);
+		}
+		//et on envoie ca
+		dp = new DatagramPacket(data, data.length, msIp);
+		ms.send(dp);
+	}
+
 
 	public InetSocketAddress getMsIp() {
 		return msIp;
