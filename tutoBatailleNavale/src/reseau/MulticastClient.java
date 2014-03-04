@@ -19,8 +19,10 @@ import m4ges.models.classes.Necromancien;
 import m4ges.models.classes.Pyromancien;
 import m4ges.models.classes.Shaman;
 import m4ges.util.Constants;
-
-//TODO token, sort 
+/**
+ * Classe permettant l'envoye de donnees
+ * et de se connecter aux autres joueurs
+ */
 public class MulticastClient {
 
 	// Socket mutlicast
@@ -31,8 +33,6 @@ public class MulticastClient {
 	public final static int PORTMS = 12345;
 	// liste des joueurs
 	private MapPerso<String, Personnage> joueurs;
-	// Permet de connaitre l'ordre du jeu
-	private boolean token;
 	// liste de monstre
 	private ArrayList<Personnage> monstres;
 	// Le jeu
@@ -49,7 +49,6 @@ public class MulticastClient {
 		this.game = g;
 		joueurs = new MapPerso<String, Personnage>();
 		monstres = new ArrayList<Personnage>();
-		token = false;
 		try {
 			monIp = Inet4Address.getLocalHost().getHostAddress();
 			joueurs.put(monIp, game.player);
@@ -192,14 +191,14 @@ public class MulticastClient {
 	 * 
 	 * @param data
 	 */
-	public void actionTraiterLancerSkill(byte[] data){
+	public void actionTraiterLancerSkill(byte[] data) {
 		Skill s = Skill.selectSkillFromSkillNumber(data[1]);
 		// l'ip commence a 3 et la taille est de : Taille data - l'id du
 		// monstre - action - id skill
 		ip = new String(data, 3, data.length - 3).trim();
 		// DEBUG
-		System.out.println("[Multicast - LANCERSKILL]:Lancer skill : " + s.getSkillName() + " ip : "
-				+ ip);
+		System.out.println("[Multicast - LANCERSKILL]:Lancer skill : "
+				+ s.getSkillName() + " ip : " + ip);
 		/*
 		 * On recupere la cible et l'attaquant Personnage cible =
 		 * monstres.get(data[data.length-1]); Personnage attaquant =
@@ -207,7 +206,8 @@ public class MulticastClient {
 		 */
 		joueurs.get(ip).attaque(monstres.get(data[2]), s);
 		// DEBUG
-		System.out.println("[Multicast - LANCERSKILL]\n" + joueurs.get(ip).getName() + " Attaque : "
+		System.out.println("[Multicast - LANCERSKILL]\n"
+				+ joueurs.get(ip).getName() + " Attaque : "
 				+ monstres.get(data[2]).getName() + " avec : "
 				+ s.getSkillName());
 	}
@@ -235,17 +235,21 @@ public class MulticastClient {
 		System.out.println(monstres.get(idMonstre).getName() + " attaque "
 				+ joueurs.get(ip).getName());
 	}
-	
-	//sert a donner le token
-	public void actionToken(byte[] data){
-		//avant tout il faut l'enlever à celui qui l'a
+
+	/**
+	 * action appele en cas de passage du token
+	 * 
+	 * @param data
+	 */
+	public void actionToken(byte[] data) {
+		// avant tout il faut l'enlever à celui qui l'a
 		Set<String> key = joueurs.keySet();
 		for (String it : key) {
 			joueurs.get(it).setToken(false);
 		}
-		//on recupere l'ip de celui qui doit l'avoir
-		ip  = new String(data, 1, data.length - 1).trim();
-		//et on lui met
+		// on recupere l'ip de celui qui doit l'avoir
+		ip = new String(data, 1, data.length - 1).trim();
+		// et on lui met
 		joueurs.get(ip).setToken(true);
 	}
 
@@ -292,10 +296,15 @@ public class MulticastClient {
 		}
 	}
 
-	// Joueur vers npg
-	/*
-	 * 1er octet : action 2eme : skill's id de 3 à 3 + la taille de mon ip : mon
-	 * ip le dernier l'id de la liste du monstre !!!???
+
+	/**
+	 * Permet d'envoyer un sort
+	 * 
+	 * @param mechant
+	 *            : Le monstre a attaquer
+	 * @param s
+	 *            : Le skill qu'on lui lance
+	 * @throws IOException
 	 */
 	public void lancerSort(Personnage mechant, Skill s) throws IOException {
 		byte[] data = new byte[3 + monIp.length()];
@@ -312,7 +321,16 @@ public class MulticastClient {
 		ms.send(dp);
 	}
 
-	// npg vers joueurs
+	/**
+	 * Permet d'avertir les autres joueurs qu'un monstre a lance un sort a un
+	 * joueur
+	 * 
+	 * @param mechant
+	 *            : Le monstre qui attaque
+	 * @param cible
+	 *            : Le joueur attaque(ey)
+	 * @throws IOException
+	 */
 	public void npcAttaque(Personnage mechant, Personnage cible)
 			throws IOException {
 		ip = joueurs.getKey(cible);
@@ -329,21 +347,26 @@ public class MulticastClient {
 		dp = new DatagramPacket(data, data.length, msIp);
 		ms.send(dp);
 	}
-	
-	//Sert a passer le token
-	public void passerToken(Personnage p) throws IOException{
-		//on recupere l'ip du joueur
+
+	/**
+	 * Permet de passer le token a un joueur
+	 * 
+	 * @param p
+	 *            : le personnage qui aura le token
+	 * @throws IOException
+	 */
+	public void passerToken(Personnage p) throws IOException {
+		// on recupere l'ip du joueur
 		ip = joueurs.getKey(p);
-		byte[] data = new byte[ip.length()+1];
+		byte[] data = new byte[ip.length() + 1];
 		data[0] = Constants.TOKEN;
-		for(int i = 1; i < data.length; i++){
-			data[i] = (byte) ip.charAt(i-1);
+		for (int i = 1; i < data.length; i++) {
+			data[i] = (byte) ip.charAt(i - 1);
 		}
-		//et on envoie ca
+		// et on envoie ca
 		dp = new DatagramPacket(data, data.length, msIp);
 		ms.send(dp);
 	}
-
 
 	public InetSocketAddress getMsIp() {
 		return msIp;
@@ -359,14 +382,6 @@ public class MulticastClient {
 
 	public void setJoueurs(MapPerso<String, Personnage> joueurs) {
 		this.joueurs = joueurs;
-	}
-
-	public boolean isToken() {
-		return token;
-	}
-
-	public void setToken(boolean token) {
-		this.token = token;
 	}
 
 	public ArrayList<Personnage> getMonstres() {
