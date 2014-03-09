@@ -206,6 +206,8 @@ public class MulticastClient {
 		for (String it : key) {
 			System.out.println("ip : " + it + " Pseudo : " + joueurs.get(it));
 		}
+		if(joueurs.size() > 1)
+			game.changeScreen(MyGame.BATTLESCREEN);
 	}
 
 	/**
