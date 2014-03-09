@@ -136,10 +136,21 @@ public class MulticastClient {
 		case Constants.TOKEN:
 			actionToken(data);
 			break;
+		case Constants.MESSAGE:
+			actionRecoit(data);
 		default:
 			System.err.println("[MulticastClient-DEFAULT]:Action non reconnue");
 			break;
 		}
+	}
+	
+	/**
+	 * Methode pour les messages
+	 */
+	public void actionRecoit(byte[] data){
+		String pseudoMsg = new String(data, 2, data[1]);
+		String msg = new String(data, 2 + data[1], data.length - data[1] - 2);
+		game.chatClient.chatWindow.addMessage(pseudoMsg + " : " + msg);
 	}
 
 	/**
@@ -322,6 +333,10 @@ public class MulticastClient {
 
 		dp = new DatagramPacket(data, data.length, msIp);
 		ms.send(dp);
+	}
+	
+	public void envoieMessage(String m){
+		
 	}
 
 	/**
