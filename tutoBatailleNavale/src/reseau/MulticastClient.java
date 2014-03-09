@@ -98,6 +98,7 @@ public class MulticastClient {
 	 */
 	private void receive() {
 		// Permet de recevoir les donnes
+		game.androidUI.showAlertBox("title", "receiveOk", "ok", null);
 		Thread tMS = new Thread() {
 			@Override
 			public void run() {
@@ -106,6 +107,7 @@ public class MulticastClient {
 					// tableau de 1024octet au pif !
 					byte[] data = new byte[1024];
 					dp = new DatagramPacket(data, data.length);
+					game.androidUI.showAlertBox("title", "data:"+data.length, "ok", null);
 					try {
 						// recepetion
 						ms.receive(dp);
