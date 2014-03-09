@@ -10,6 +10,8 @@ import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Set;
 
+import com.badlogic.gdx.Gdx;
+
 import m4ges.controllers.MyGame;
 import m4ges.models.MapPerso;
 import m4ges.models.Personnage;
@@ -208,8 +210,13 @@ public class MulticastClient {
 		for (String it : key) {
 			System.out.println("ip : " + it + " Pseudo : " + joueurs.get(it));
 		}
-		if(joueurs.size() > 1)
-			game.changeScreen(MyGame.BATTLESCREEN);
+		if(joueurs.size() > 1){
+			Gdx.app.postRunnable(new Runnable() {
+				public void run() {
+					game.changeScreen(MyGame.BATTLESCREEN);
+				}
+			});
+		}
 	}
 
 	/**
