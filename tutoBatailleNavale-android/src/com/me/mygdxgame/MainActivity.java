@@ -1,9 +1,9 @@
 package com.me.mygdxgame;
 
-import java.io.IOException;
-
 import m4ges.controllers.MyGame;
-
+import android.content.Context;
+import android.net.wifi.WifiManager;
+import android.net.wifi.WifiManager.MulticastLock;
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -30,6 +30,11 @@ public class MainActivity extends AndroidApplication {
 		AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
 		cfg.useGL20 = false;
 
+		WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+		MulticastLock multicastLock = wifi.createMulticastLock("multicastLock");
+		multicastLock.setReferenceCounted(true);
+		multicastLock.acquire();
+		
 		initialize(new MyGame(new AndroidHelp(this)), cfg);
 	}
 }
