@@ -57,6 +57,7 @@ public class MulticastClient {
 		try {
 			monIp = Inet4Address.getLocalHost().getHostAddress();
 			joueurs.put(monIp, game.player);
+			game.playersConnected.add(game.player);
 			ms = new MulticastSocket(PORTMS);
 			ms.setTimeToLive(1);
 			msIp = new InetSocketAddress("228.5.6.7", PORTMS);
