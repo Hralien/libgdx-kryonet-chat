@@ -1,32 +1,20 @@
 package m4ges.views;
 
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-
-import reseau.GameClient;
-import reseau.MulticastClient;
-import reseau.Network;
-import reseau.Network.SkillNumber;
-
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
 import m4ges.models.Skill;
+import reseau.MulticastClient;
+import reseau.Network.SkillNumber;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.esotericsoftware.kryonet.Client;
 
 /**
  * lancement du chat apres saisie du pseudo et de l'adresse

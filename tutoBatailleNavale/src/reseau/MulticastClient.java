@@ -20,9 +20,9 @@ import m4ges.models.classes.Pyromancien;
 import m4ges.models.classes.Shaman;
 import m4ges.util.Constants;
 import m4ges.views.ChatWindow;
+
 /**
- * Classe permettant l'envoye de donnees
- * et de se connecter aux autres joueurs
+ * Classe permettant l'envoye de donnees et de se connecter aux autres joueurs
  */
 public class MulticastClient {
 
@@ -44,7 +44,7 @@ public class MulticastClient {
 	private String ip;
 	// mon ip
 	public String monIp;
-	//le chat window
+	// le chat window
 	public ChatWindow chatWindow;
 
 	public MulticastClient(MyGame g) {
@@ -56,6 +56,7 @@ public class MulticastClient {
 			monIp = Inet4Address.getLocalHost().getHostAddress();
 			joueurs.put(monIp, game.player);
 			ms = new MulticastSocket(PORTMS);
+			ms.setTimeToLive(1);
 			msIp = new InetSocketAddress("228.5.6.7", PORTMS);
 			join();
 			// connexion + reception(thread) + envoie qu'on est la
@@ -94,6 +95,7 @@ public class MulticastClient {
 		Thread tMS = new Thread() {
 			@Override
 			public void run() {
+			
 				while (true) {
 					// tableau de 1024octet au pif !
 					byte[] data = new byte[1024];
@@ -103,6 +105,7 @@ public class MulticastClient {
 						ms.receive(dp);
 						data = dp.getData();
 						traiterData(data);
+						
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -147,11 +150,11 @@ public class MulticastClient {
 			break;
 		}
 	}
-	
+
 	/**
 	 * Methode pour les messages
 	 */
-	public void actionRecoit(byte[] data){
+	public void actionRecoit(byte[] data) {
 		System.out.println(data.length);
 		String pseudoMsg = new String(data, 2, data[1]);
 		String msg = new String(data, 2 + data[1], data.length - data[1] - 2);
@@ -315,7 +318,6 @@ public class MulticastClient {
 		}
 	}
 
-
 	/**
 	 * Permet d'envoyer un sort
 	 * 
@@ -339,28 +341,30 @@ public class MulticastClient {
 		dp = new DatagramPacket(data, data.length, msIp);
 		ms.send(dp);
 	}
-	
+
 	/**
 	 * Permet d'envoyer un message
-	 * @param m : le message
+	 * 
+	 * @param m
+	 *            : le message
 	 * @throws IOException
 	 */
-	public void envoieMessage(String m) throws IOException{
-		//on prend le pseudo du type
+	public void envoieMessage(String m) throws IOException {
+		// on prend le pseudo du type
 		String pseudo = game.player.getName();
 		byte[] data = new byte[2 + pseudo.length() + m.length()];
 		data[0] = Constants.MESSAGE;
-		//On joind la taille du pseudo pour le traitement
+		// On joind la taille du pseudo pour le traitement
 		data[1] = (byte) pseudo.length();
-		for(int i = 2; i < pseudo.length()+2; i++)
-			data[i] = (byte) pseudo.charAt(i-2);
-		
-		for(int i = 2 + pseudo.length(); i < data.length ; i++)
-			data[i] = (byte) m.charAt(i-2-pseudo.length());
-		//et on envoie
+		for (int i = 2; i < pseudo.length() + 2; i++)
+			data[i] = (byte) pseudo.charAt(i - 2);
+
+		for (int i = 2 + pseudo.length(); i < data.length; i++)
+			data[i] = (byte) m.charAt(i - 2 - pseudo.length());
+		// et on envoie
 		dp = new DatagramPacket(data, data.length, msIp);
 		ms.send(dp);
-		
+
 	}
 
 	/**
