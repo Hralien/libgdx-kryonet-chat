@@ -3,6 +3,8 @@ package m4ges.views;
 
 import java.util.ArrayList;
 
+import m4ges.controllers.MyGame;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
@@ -22,7 +24,7 @@ public  class ChatWindow{
 	private TextButton envoyer;
 	private TextField tfMessage;
 
-	public ChatWindow(String host){
+	public ChatWindow(final MyGame mygame){
 		String[] tabUsers = {};
 		String[] tabMessage = {};
 
@@ -32,7 +34,15 @@ public  class ChatWindow{
 		tfMessage.setMessageText("Saisir votre message");
 
 		envoyer = new TextButton("Envoyer",skin);
-
+		//ajout d'un listener lors du clic
+		envoyer.addListener(new ChangeListener() {
+			public void changed (ChangeEvent event, Actor actor) {
+				if (getSendText().length() == 0) return;
+				mygame.mc.envoieMessage(getSendText());
+				tfMessage.setText("");
+			}
+		});
+		
 		messageList = new List(tabUsers, skin);
 		nameList = new List(tabMessage, skin);
 

@@ -149,7 +149,8 @@ public class ChatScreen extends AbstractScreen {
 		validation.addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
 //				game.chatClient = new GameClient(tfHost.getText(), vue, game);
-//				stage.addActor(game.chatClient.chatWindow.getWindow());
+				ChatWindow cw = new ChatWindow(game);
+				stage.addActor(cw.getWindow());
 //				
 			}
 		});

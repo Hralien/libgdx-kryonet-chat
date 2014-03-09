@@ -116,14 +116,14 @@ public class GameClient {
 			});
 
 
-		chatWindow = new ChatWindow(adresse);
-		chatWindow.setSendListener(new Runnable() {
-			public void run () {
-				ChatMessage chatMessage = new ChatMessage();
-				chatMessage.text = chatWindow.getSendText();
-				client.sendTCP(chatMessage);
-			}
-		});
+//		chatWindow = new ChatWindow(adresse);
+//		chatWindow.setSendListener(new Runnable() {
+//			public void run () {
+//				ChatMessage chatMessage = new ChatMessage();
+//				chatMessage.text = chatWindow.getSendText();
+//				client.sendTCP(chatMessage);
+//			}
+//		});
 
 		// We'll do the connect on a new thread so the ChatFrame can show a progress bar.
 		// Connecting to localhost is usually so fast you won't see the progress bar.
