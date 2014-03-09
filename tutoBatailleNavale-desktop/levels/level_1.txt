@@ -1,7 +1,7 @@
 {
 class: m4ges.models.Vague,
 idVague: 1,
-nameVague: "foret",
+nameVague: "Forest",
 monsters: [
     {
         class: m4ges.models.monster.Flower,

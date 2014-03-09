@@ -122,17 +122,19 @@ public class BattleScreen extends AbstractScreen {
 	public void show() {
 		// on dit a l'appli d'ecouter ce stage quand la methode show est appelee
 		Gdx.input.setInputProcessor(stage);
+		currentVague = Vague.loadVague(numeroVague);
+		TextureAtlas atlasMap = MyGame.manager.get("ui/maps.pack",
+				TextureAtlas.class);
+		battle_bg = new TextureRegion(atlasMap.findRegion(currentVague.getNameVague()));
 
 		TextureAtlas atlas = MyGame.manager.get("ui/battleui.pack",
 				TextureAtlas.class);
 
-		battle_bg = new TextureRegion(atlas.findRegion("battle_background"));
 		battle_info = new TextureRegion(atlas.findRegion("battle_ui"));
 		battle_info2 = new TextureRegion(atlas.findRegion("battle_ui2"));
 		battle_skill = new TextureRegion(atlas.findRegion("battle_ui_spell"));
 		battle_arrow = new TextureRegion(atlas.findRegion("fleche"));
 
-		currentVague = Vague.loadVague(numeroVague);
 		lb_info = showMessage("Selectionner un monstre et lancer un sort");
 
 		Stack stack = new Stack();
