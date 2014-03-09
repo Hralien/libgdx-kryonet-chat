@@ -150,6 +150,7 @@ public class ChatScreen extends AbstractScreen {
 			public void changed(ChangeEvent event, Actor actor) {
 //				game.chatClient = new GameClient(tfHost.getText(), vue, game);
 				ChatWindow cw = new ChatWindow(game);
+				game.mc.chatWindow = cw;
 				stage.addActor(cw.getWindow());
 //				
 			}

@@ -19,6 +19,7 @@ import m4ges.models.classes.Necromancien;
 import m4ges.models.classes.Pyromancien;
 import m4ges.models.classes.Shaman;
 import m4ges.util.Constants;
+import m4ges.views.ChatWindow;
 /**
  * Classe permettant l'envoye de donnees
  * et de se connecter aux autres joueurs
@@ -43,6 +44,8 @@ public class MulticastClient {
 	private String ip;
 	// mon ip
 	public String monIp;
+	//le chat window
+	public ChatWindow chatWindow;
 
 	public MulticastClient(MyGame g) {
 		// initialisation
@@ -138,6 +141,7 @@ public class MulticastClient {
 			break;
 		case Constants.MESSAGE:
 			actionRecoit(data);
+			break;
 		default:
 			System.err.println("[MulticastClient-DEFAULT]:Action non reconnue");
 			break;
@@ -148,9 +152,10 @@ public class MulticastClient {
 	 * Methode pour les messages
 	 */
 	public void actionRecoit(byte[] data){
+		System.out.println(data.length);
 		String pseudoMsg = new String(data, 2, data[1]);
 		String msg = new String(data, 2 + data[1], data.length - data[1] - 2);
-		game.chatClient.chatWindow.addMessage(pseudoMsg + " : " + msg);
+		this.chatWindow.addMessage(pseudoMsg + " : " + msg);
 	}
 
 	/**
@@ -335,7 +340,26 @@ public class MulticastClient {
 		ms.send(dp);
 	}
 	
-	public void envoieMessage(String m){
+	/**
+	 * Permet d'envoyer un message
+	 * @param m : le message
+	 * @throws IOException
+	 */
+	public void envoieMessage(String m) throws IOException{
+		//on prend le pseudo du type
+		String pseudo = game.player.getName();
+		byte[] data = new byte[2 + pseudo.length() + m.length()];
+		data[0] = Constants.MESSAGE;
+		//On joind la taille du pseudo pour le traitement
+		data[1] = (byte) pseudo.length();
+		for(int i = 2; i < pseudo.length()+2; i++)
+			data[i] = (byte) pseudo.charAt(i-2);
+		
+		for(int i = 2 + pseudo.length(); i < data.length ; i++)
+			data[i] = (byte) m.charAt(i-2-pseudo.length());
+		//et on envoie
+		dp = new DatagramPacket(data, data.length, msIp);
+		ms.send(dp);
 		
 	}
 

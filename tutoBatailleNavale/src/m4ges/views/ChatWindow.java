@@ -1,6 +1,7 @@
 package m4ges.views;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import m4ges.controllers.MyGame;
@@ -38,7 +39,11 @@ public  class ChatWindow{
 		envoyer.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
 				if (getSendText().length() == 0) return;
-				mygame.mc.envoieMessage(getSendText());
+				try {
+					mygame.mc.envoieMessage(getSendText());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				tfMessage.setText("");
 			}
 		});
