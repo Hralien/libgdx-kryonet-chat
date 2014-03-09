@@ -10,6 +10,8 @@ import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Set;
 
+import com.badlogic.gdx.Gdx;
+
 import m4ges.controllers.MyGame;
 import m4ges.models.MapPerso;
 import m4ges.models.Personnage;
@@ -194,8 +196,10 @@ public class MulticastClient {
 		// On récup l'ip (trim sert à enlever les char null
 		ip = new String(data, data[2] + 3, data.length - data[2] - 3).trim();
 		// Si l'ip est valide et qu'il n'est pas dans la map
-		if (ip.length() > 0 && !joueurs.containsKey(ip))
+		if (ip.length() > 0 && !joueurs.containsKey(ip)){
+			game.playersConnected.add(p);
 			joueurs.put(ip, p);
+		}
 		// si c'est une connexion, il faut donc renvoye une action 2 !
 		if (action == Constants.CONNEXION)
 			sendData(Constants.NOUVEAU);
@@ -204,7 +208,14 @@ public class MulticastClient {
 				+ " joueur(s) --");
 		Set<String> key = joueurs.keySet();
 		for (String it : key) {
-			System.out.println("ip : " + it + " Pseudo : " + joueurs.get(it));
+			System.out.println("ip : " + it + " Pseudo : " + joueurs.get(it).getName());
+		}
+		if(joueurs.size() > 2){
+			Gdx.app.postRunnable(new Runnable() {
+				public void run() {
+					game.changeScreen(MyGame.BATTLESCREEN);
+				}
+			});
 		}
 	}
 
