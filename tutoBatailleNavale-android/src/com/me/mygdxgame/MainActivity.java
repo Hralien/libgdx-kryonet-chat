@@ -31,13 +31,12 @@ public class MainActivity extends AndroidApplication {
 //		thread.start();
 		AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
 		cfg.useGL20 = false;
-
+		
+		initialize(new MyGame(new AndroidHelp(this)), cfg);
 		wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		multicastLock = wifi.createMulticastLock("multicastLock");
 		multicastLock.setReferenceCounted(true);
 		multicastLock.acquire();
-		
-		initialize(new MyGame(new AndroidHelp(this)), cfg);
 	}
 	@Override
     public void onDestroy()
