@@ -48,12 +48,15 @@ public class MulticastClient {
 	public String monIp;
 	// le chat window
 	public ChatWindow chatWindow;
+	//boolean pour savoir si battleScreen
+	public boolean estBattleScreen;
 
 	public MulticastClient(MyGame g) {
 		// initialisation
 		this.game = g;
 		joueurs = new MapPerso<String, Personnage>();
 		monstres = new ArrayList<Personnage>();
+		estBattleScreen = false;
 		try {
 			monIp = Inet4Address.getLocalHost().getHostAddress();
 			joueurs.put(monIp, game.player);
@@ -211,7 +214,8 @@ public class MulticastClient {
 		for (String it : key) {
 			System.out.println("ip : " + it + " Pseudo : " + joueurs.get(it).getName());
 		}
-		if(joueurs.size() > 2){
+		if(joueurs.size() > 2 && !estBattleScreen){
+			estBattleScreen = true;
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {
 					game.changeScreen(MyGame.BATTLESCREEN);
@@ -376,7 +380,6 @@ public class MulticastClient {
 		// et on envoie
 		dp = new DatagramPacket(data, data.length, msIp);
 		ms.send(dp);
-
 	}
 
 	/**
