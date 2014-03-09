@@ -3,6 +3,7 @@ package m4ges.views;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.touchable;
+import reseau.MulticastClient;
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
 import m4ges.models.Skill;
@@ -170,7 +171,7 @@ public class CreateCharacterScreen extends AbstractScreen {
 	 * @return
 	 */
 	private TextButton buildTbConnecter(){
-		TextButton tbConnecter = new TextButton("se connecter", skin);
+		TextButton tbConnecter = new TextButton("Valider", skin);
 
 		tbConnecter.addListener(new ChangeListener() {
 
@@ -178,6 +179,7 @@ public class CreateCharacterScreen extends AbstractScreen {
 			public void changed(ChangeEvent event, Actor actor) {
 				// TODO Auto-generated method stub
 				if (game.player != null) {
+					game.setMC(new MulticastClient(game));
 					game.changeScreen(MyGame.CHATSCREEN);	
 				} 
 				else{

@@ -83,6 +83,9 @@ public class MulticastClient {
 		receive();
 	}
 
+	/**
+	 * Permet de recevoir les donnees
+	 */
 	private void receive() {
 		// Permet de recevoir les donnes
 		Thread tMS = new Thread() {

@@ -3,8 +3,6 @@ package m4ges.controllers;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
-import reseau.GameClient;
-import reseau.GameServer;
 import m4ges.models.Personnage;
 import m4ges.util.GamePreferences;
 import m4ges.views.BattleScreen;
@@ -13,6 +11,9 @@ import m4ges.views.CreateCharacterScreen;
 import m4ges.views.EncyclopedieScreen;
 import m4ges.views.LoadingScreen;
 import m4ges.views.MenuPrincipalScreen;
+import reseau.GameClient;
+import reseau.GameServer;
+import reseau.MulticastClient;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
@@ -47,6 +48,7 @@ public class MyGame extends Game{
 	public GameServer chatServer;
 	public ArrayList<String> listHost ;
 	public ArrayList<Personnage> playersConnected;
+	public MulticastClient mc;
 
 	public static AssetManager manager;
 
@@ -84,5 +86,13 @@ public class MyGame extends Game{
 		prefs.timePlayed += TimeUtils.millis() - AbstractScreen.getTimePlayed();
 		prefs.save();
 		System.err.println("fini:"+prefs.timePlayed/1000+"sec");
+	}
+	
+	public void setMC(MulticastClient m){
+		this.mc = m;
+	}
+	
+	public MulticastClient getMC(){
+		return this.mc;
 	}
 }
