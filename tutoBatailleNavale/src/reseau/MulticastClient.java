@@ -208,9 +208,9 @@ public class MulticastClient {
 				+ " joueur(s) --");
 		Set<String> key = joueurs.keySet();
 		for (String it : key) {
-			System.out.println("ip : " + it + " Pseudo : " + joueurs.get(it));
+			System.out.println("ip : " + it + " Pseudo : " + joueurs.get(it).getName());
 		}
-		if(joueurs.size() > 1){
+		if(joueurs.size() > 2){
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {
 					game.changeScreen(MyGame.BATTLESCREEN);
