@@ -179,7 +179,7 @@ public class CreateCharacterScreen extends AbstractScreen {
 			public void changed(ChangeEvent event, Actor actor) {
 				// TODO Auto-generated method stub
 				if (game.player != null) {
-					game.setMC(new MulticastClient(game));
+					
 					game.changeScreen(MyGame.CHATSCREEN);	
 				} 
 				else{

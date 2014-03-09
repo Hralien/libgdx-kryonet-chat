@@ -9,6 +9,7 @@ import java.util.Enumeration;
 import java.util.List;
 
 import reseau.GameClient;
+import reseau.MulticastClient;
 import reseau.Network;
 import reseau.Network.SkillNumber;
 
@@ -149,6 +150,7 @@ public class ChatScreen extends AbstractScreen {
 		validation.addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
 //				game.chatClient = new GameClient(tfHost.getText(), vue, game);
+				game.setMC(new MulticastClient(game));
 				ChatWindow cw = new ChatWindow(game);
 				game.mc.chatWindow = cw;
 				stage.addActor(cw.getWindow());
