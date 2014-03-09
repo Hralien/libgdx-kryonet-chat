@@ -194,8 +194,10 @@ public class MulticastClient {
 		// On récup l'ip (trim sert à enlever les char null
 		ip = new String(data, data[2] + 3, data.length - data[2] - 3).trim();
 		// Si l'ip est valide et qu'il n'est pas dans la map
-		if (ip.length() > 0 && !joueurs.containsKey(ip))
+		if (ip.length() > 0 && !joueurs.containsKey(ip)){
+			game.playersConnected.add(p);
 			joueurs.put(ip, p);
+		}
 		// si c'est une connexion, il faut donc renvoye une action 2 !
 		if (action == Constants.CONNEXION)
 			sendData(Constants.NOUVEAU);
