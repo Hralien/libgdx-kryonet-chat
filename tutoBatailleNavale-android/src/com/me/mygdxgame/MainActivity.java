@@ -10,6 +10,8 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 
 public class MainActivity extends AndroidApplication {
+    MulticastLock multicastLock = null;
+    WifiManager wifi = null;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,11 +32,17 @@ public class MainActivity extends AndroidApplication {
 		AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
 		cfg.useGL20 = false;
 
-		WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-		MulticastLock multicastLock = wifi.createMulticastLock("multicastLock");
+		wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+		multicastLock = wifi.createMulticastLock("multicastLock");
 		multicastLock.setReferenceCounted(true);
 		multicastLock.acquire();
 		
 		initialize(new MyGame(new AndroidHelp(this)), cfg);
 	}
+	@Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        multicastLock.release();
+    }
 }
