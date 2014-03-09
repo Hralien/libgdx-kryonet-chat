@@ -1,0 +1,95 @@
+
+maps.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Cave
+  rotate: false
+  xy: 1, 366
+  size: 640, 363
+  orig: 640, 363
+  offset: 0, 0
+  index: -1
+EnterForest
+  rotate: false
+  xy: 1, 1
+  size: 640, 363
+  orig: 640, 363
+  offset: 0, 0
+  index: -1
+
+maps2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+FinalAbyss
+  rotate: false
+  xy: 1, 366
+  size: 640, 363
+  orig: 640, 363
+  offset: 0, 0
+  index: -1
+Forest
+  rotate: false
+  xy: 1, 1
+  size: 640, 363
+  orig: 640, 363
+  offset: 0, 0
+  index: -1
+
+maps3.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Mine
+  rotate: false
+  xy: 1, 366
+  size: 640, 363
+  orig: 640, 363
+  offset: 0, 0
+  index: -1
+MountainRoad
+  rotate: false
+  xy: 1, 1
+  size: 640, 363
+  orig: 640, 363
+  offset: 0, 0
+  index: -1
+
+maps4.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+ShroomCave
+  rotate: false
+  xy: 1, 366
+  size: 640, 363
+  orig: 640, 363
+  offset: 0, 0
+  index: -1
+Swamp
+  rotate: false
+  xy: 1, 1
+  size: 640, 363
+  orig: 640, 363
+  offset: 0, 0
+  index: -1
+
+maps5.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+TempleAbyss
+  rotate: false
+  xy: 1, 366
+  size: 640, 363
+  orig: 640, 363
+  offset: 0, 0
+  index: -1
+Volcano
+  rotate: false
+  xy: 1, 1
+  size: 640, 363
+  orig: 640, 363
+  offset: 0, 0
+  index: -1
