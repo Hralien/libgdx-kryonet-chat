@@ -18,6 +18,7 @@ import reseau.MulticastClient;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.TimeUtils;
 
 /**
@@ -51,6 +52,8 @@ public class MyGame extends Game{
 	public MulticastClient mc;
 
 	public static AssetManager manager;
+	
+	private Stage currentStage;
 
 	public MyGame(UITrick actionResolver) {
 		super();
@@ -75,8 +78,9 @@ public class MyGame extends Game{
 	}
 
 	public void changeScreen(int nextScreen){
-		if(screenHashtable.containsKey(nextScreen))
+		if(screenHashtable.containsKey(nextScreen)){
 			setScreen(screenHashtable.get(nextScreen));
+		}
 	}
 
 	@Override

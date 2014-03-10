@@ -15,7 +15,11 @@ public class MainActivity extends AndroidApplication {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+		multicastLock = wifi.createMulticastLock("multicastLock");
+		multicastLock.setReferenceCounted(true);
+		multicastLock.acquire();
+		
 //		Thread thread = new Thread(new Runnable(){
 //			@Override
 //			public void run() {
@@ -31,12 +35,8 @@ public class MainActivity extends AndroidApplication {
 //		thread.start();
 		AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
 		cfg.useGL20 = false;
-		
 		initialize(new MyGame(new AndroidHelp(this)), cfg);
-		wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-		multicastLock = wifi.createMulticastLock("multicastLock");
-		multicastLock.setReferenceCounted(true);
-		multicastLock.acquire();
+
 	}
 	@Override
     public void onDestroy()

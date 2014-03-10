@@ -1,12 +1,12 @@
 package m4ges.controllers;
 
 import m4ges.util.Constants;
-import m4ges.util.GamePreferences;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -18,7 +18,7 @@ public abstract class AbstractScreen implements com.badlogic.gdx.Screen {
 	protected Skin skin;
 	protected SpriteBatch batch;
 	protected OrthographicCamera cameraGUI;
-
+//	protected Stage stage;
 	private static volatile long timePlayed;
 	
 	public AbstractScreen(MyGame game) {

@@ -464,11 +464,13 @@ public class MenuPrincipalScreen extends AbstractScreen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				// TODO:demander nb joueur
-				nbjoueur = 2;
-				if (nbjoueur != 0){
-					showMenuButtons(false);
-					showServerWindow(true, true);
-				}
+//				nbjoueur = 2;
+//				if (nbjoueur != 0){
+//					showMenuButtons(false);
+//					showServerWindow(true, true);
+//				}
+				game.androidUI.testWifi();
+				
 			}
 		});
 		tbHost.setPosition((float) (Gdx.graphics.getWidth() / 2.5),	Gdx.graphics.getHeight() / 4);

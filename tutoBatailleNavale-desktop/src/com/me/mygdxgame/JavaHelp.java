@@ -18,7 +18,7 @@ import com.badlogic.gdx.Input.Keys;
 
 
 public class JavaHelp implements UITrick{
-	
+
 
 	@Override
 	public void showToast(CharSequence toastMessage, int toastDuration,Stage stage) {
@@ -29,11 +29,15 @@ public class JavaHelp implements UITrick{
 		}.text(toastMessage.toString()).button("Continuer", true).key(Keys.ENTER, true).key(Keys.ESCAPE, true).show(stage);
 	}
 
-	
+
 	@Override
 	public void showAlertBox(String alertBoxTitle, String alertBoxMessage,
 			String alertBoxButtonText, Stage stage) {
-		new Dialog(alertBoxTitle, new Skin(Gdx.files.internal("data/uiskin.json")), "dialog") {
+		if(stage==null){
+			System.err.println(alertBoxMessage);
+		}
+		else
+			new Dialog(alertBoxTitle, new Skin(Gdx.files.internal("data/uiskin.json")), "dialog") {
 			protected void result (Object object) {
 			}
 		}.text(alertBoxMessage).button(alertBoxButtonText, true).key(Keys.ENTER, true).key(Keys.ESCAPE, true).show(stage);
@@ -59,6 +63,13 @@ public class JavaHelp implements UITrick{
 			e1.printStackTrace();
 		}
 		return 0;
+	}
+
+
+	@Override
+	public void testWifi() {
+		// TODO Auto-generated method stub
+
 	}
 
 

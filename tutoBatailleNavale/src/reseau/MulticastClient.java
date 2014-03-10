@@ -62,7 +62,7 @@ public class MulticastClient {
 			joueurs.put(monIp, game.player);
 			game.playersConnected.add(game.player);
 			ms = new MulticastSocket(PORTMS);
-			ms.setTimeToLive(1);
+			ms.setTimeToLive(4);
 			msIp = new InetSocketAddress("228.5.6.7", PORTMS);
 			join();
 			// connexion + reception(thread) + envoie qu'on est la
@@ -111,6 +111,7 @@ public class MulticastClient {
 					try {
 						// recepetion
 						ms.receive(dp);
+						game.androidUI.showAlertBox("title", "data receive", "ok", null);
 						data = dp.getData();
 						traiterData(data);
 						
