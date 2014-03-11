@@ -11,6 +11,7 @@ import m4ges.views.CreateCharacterScreen;
 import m4ges.views.EncyclopedieScreen;
 import m4ges.views.LoadingScreen;
 import m4ges.views.MenuPrincipalScreen;
+import m4ges.views.ResultScreen;
 import reseau.GameClient;
 import reseau.GameServer;
 import reseau.MulticastClient;
@@ -37,7 +38,9 @@ public class MyGame extends Game{
 	public final static int NEWCHARACTERSCREEN = 2;
 	public final static int CHATSCREEN = 3;
 	public final static int BATTLESCREEN = 4;
-	public final static int DICOSCREEN = 5;
+	public final static int RESULTSCREEN = 5;
+	public final static int DICOSCREEN = 6;
+
 
 	/**
 	 * le personnage du joueur initialise lors de la creation
@@ -73,6 +76,7 @@ public class MyGame extends Game{
 		screenHashtable.put(NEWCHARACTERSCREEN,new CreateCharacterScreen(this));
 		screenHashtable.put(CHATSCREEN,new ChatScreen(this));
 		screenHashtable.put(BATTLESCREEN,new BattleScreen(this));
+		screenHashtable.put(BATTLESCREEN,new ResultScreen(this));
 		screenHashtable.put(DICOSCREEN,new EncyclopedieScreen(this));
 		changeScreen(0);
 	}

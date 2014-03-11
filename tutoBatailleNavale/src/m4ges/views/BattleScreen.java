@@ -4,6 +4,8 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.touchable;
 
+import java.io.IOException;
+
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
 import m4ges.models.Personnage;
@@ -174,7 +176,19 @@ public class BattleScreen extends AbstractScreen {
 					it.resetAnimation();
 					it.setSize(it.getCurrentFrame().getRegionWidth(), it
 							.getCurrentFrame().getRegionHeight());
-					fg.addActor(it);
+					if(selected!=null){
+						it.setPosition(selected.getOriginX(), selected.getOriginY());
+						fg.addActor(it);
+						try {
+							game.mc.lancerSort(selected, it);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					else{
+						showMessage("Selectionner un monstre et lancer un sort");
+					}
 				}
 			});
 			skillWindow.add(skillButton);

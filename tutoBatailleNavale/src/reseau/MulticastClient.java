@@ -50,6 +50,8 @@ public class MulticastClient {
 	public ChatWindow chatWindow;
 	//boolean pour savoir si battleScreen
 	public boolean estBattleScreen;
+	
+	public static final int NB_JOUEUR_MINIMUM = 1;
 
 	public MulticastClient(MyGame g) {
 		// initialisation
@@ -163,7 +165,7 @@ public class MulticastClient {
 	/**
 	 * Methode pour les messages
 	 */
-	public void actionRecoit(byte[] data) {
+	private void actionRecoit(byte[] data) {
 		System.out.println(data.length);
 		String pseudoMsg = new String(data, 2, data[1]);
 		String msg = new String(data, 2 + data[1], data.length - data[1] - 2);
@@ -177,7 +179,7 @@ public class MulticastClient {
 	 * @param data
 	 * @throws IOException
 	 */
-	public void actionTraiterNouveau(int action, byte[] data)
+	private void actionTraiterNouveau(int action, byte[] data)
 			throws IOException {
 		String pseudo;
 		pseudo = new String(data, 3, data[2]);
@@ -217,7 +219,7 @@ public class MulticastClient {
 		for (String it : key) {
 			System.out.println("ip : " + it + " Pseudo : " + joueurs.get(it).getName());
 		}
-		if(joueurs.size() > 2 && !estBattleScreen){
+		if(joueurs.size() > NB_JOUEUR_MINIMUM && !estBattleScreen){
 			estBattleScreen = true;
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {
@@ -232,7 +234,7 @@ public class MulticastClient {
 	 * 
 	 * @param data
 	 */
-	public void actionTraiterLancerSkill(byte[] data) {
+	private void actionTraiterLancerSkill(byte[] data) {
 		Skill s = Skill.selectSkillFromSkillNumber(data[1]);
 		// l'ip commence a 3 et la taille est de : Taille data - l'id du
 		// monstre - action - id skill
@@ -258,7 +260,7 @@ public class MulticastClient {
 	 * 
 	 * @param data
 	 */
-	public void actionTraiterAttaqueMonstre(byte[] data) {
+	private void actionTraiterAttaqueMonstre(byte[] data) {
 		// l'id du monstre
 		int idMonstre = data[1];
 		// DEBUG
@@ -282,7 +284,7 @@ public class MulticastClient {
 	 * 
 	 * @param data
 	 */
-	public void actionToken(byte[] data) {
+	private void actionToken(byte[] data) {
 		// avant tout il faut l'enlever à celui qui l'a
 		Set<String> key = joueurs.keySet();
 		for (String it : key) {
@@ -384,7 +386,12 @@ public class MulticastClient {
 		dp = new DatagramPacket(data, data.length, msIp);
 		ms.send(dp);
 	}
-
+	/**
+	 * quand tout les joueurs sont pret on peut continuer vers la vague suivante
+	 */
+	public void pretPourVagueSuivante(){
+		
+	}
 	/**
 	 * Permet d'avertir les autres joueurs qu'un monstre a lance un sort a un
 	 * joueur
