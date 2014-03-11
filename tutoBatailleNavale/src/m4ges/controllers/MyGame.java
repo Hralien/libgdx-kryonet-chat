@@ -76,7 +76,7 @@ public class MyGame extends Game{
 		screenHashtable.put(NEWCHARACTERSCREEN,new CreateCharacterScreen(this));
 		screenHashtable.put(CHATSCREEN,new ChatScreen(this));
 		screenHashtable.put(BATTLESCREEN,new BattleScreen(this));
-		screenHashtable.put(BATTLESCREEN,new ResultScreen(this));
+		screenHashtable.put(RESULTSCREEN,new ResultScreen(this));
 		screenHashtable.put(DICOSCREEN,new EncyclopedieScreen(this));
 		changeScreen(0);
 	}

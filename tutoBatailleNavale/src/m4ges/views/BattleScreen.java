@@ -125,6 +125,7 @@ public class BattleScreen extends AbstractScreen {
 		// on dit a l'appli d'ecouter ce stage quand la methode show est appelee
 		Gdx.input.setInputProcessor(stage);
 		currentVague = Vague.loadVague(numeroVague);
+		game.getMC().setMonstres(currentVague.getMonsters());
 		TextureAtlas atlasMap = MyGame.manager.get("ui/maps.pack",
 				TextureAtlas.class);
 		battle_bg = new TextureRegion(atlasMap.findRegion(currentVague.getNameVague()));

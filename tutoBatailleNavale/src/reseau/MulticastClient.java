@@ -221,11 +221,12 @@ public class MulticastClient {
 		for (String it : key) {
 			System.out.println("ip : " + it + " Pseudo : " + joueurs.get(it).getName());
 		}
-		if(joueurs.size() > NB_JOUEUR_MINIMUM && !estBattleScreen){
+		if(joueurs.size() >= NB_JOUEUR_MINIMUM && !estBattleScreen){
 			estBattleScreen = true;
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {
 					game.changeScreen(MyGame.BATTLESCREEN);
+					
 				}
 			});
 		}
@@ -356,8 +357,8 @@ public class MulticastClient {
 		data[0] = Constants.LANCERSKILL;
 		data[1] = (byte) s.getId();
 		data[2] = (byte) monstres.indexOf(mechant);
-		// mon ip
-		System.out.println(data.length);
+
+
 		for (int i = 3; i < data.length; i++)
 			data[i] = (byte) monIp.charAt(i - 3);
 
