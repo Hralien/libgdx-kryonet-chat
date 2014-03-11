@@ -101,6 +101,22 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 		return listSkills;
 	}
 
+	private void subit(int damage){
+		if(this.hp-damage <= 0){
+			this.state = MORT;
+			this.hp = 0;
+		}
+		else
+			this.hp -= damage;
+		
+	}
+	
+	private void lance(int mana){
+		if(this.mana - mana <= 0)
+			this.mana = 0;
+		else
+			this.mana -= mana;
+	}
 
 	public int getHp() {
 		return hp;
@@ -160,6 +176,9 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 	//UNIQUEMENT POUR LES ATTAQUES D'UN JOUEUR VERS UN NPC
 	public void attaque(Personnage p, Skill s){
 		System.out.println("Methode attaque joueurs > NPC appelee !");
+		
+		this.lance(s.getSpCost());
+		p.subit(s.getDamage());
 	}
 	
 	//TODO IDEM
