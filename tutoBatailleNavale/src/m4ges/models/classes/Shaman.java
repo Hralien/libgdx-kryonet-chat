@@ -8,13 +8,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.io.Input;
-import com.esotericsoftware.kryo.io.Output;
 
-public class Shaman extends Personnage {
+public class Shaman extends Joueur {
 
 	private final static String DESCRIPTION = "Le chamane est l'élément vital du groupe, son but étant de garder ses alliés en vie par tous les moyens.";
+	
 	protected static volatile Animation animation;
 
 	
@@ -27,28 +25,6 @@ public class Shaman extends Personnage {
 		super.intel=10;
 		
 		super.listSkills=Skill.getSkillForClass(Personnage.SHAMAN);
-
-	}
-	@Override
-	public void write(Kryo kryo, Output output) {
-		output.writeShort(getHp());
-		output.writeShort(getMana());
-		output.writeShort(strength);
-		output.writeShort(speed);
-		output.writeShort(intel);
-		kryo.writeClassAndObject(output, name);
-
-	}
-
-	@Override
-	public void read(Kryo kryo, Input input) {
-		setHp(input.readShort());
-		setMana(input.readShort());
-		strength = input.readShort();
-		speed = input.readShort();
-		intel = input.readShort();
-
-		name = (String) kryo.readClassAndObject(input);
 
 	}
 

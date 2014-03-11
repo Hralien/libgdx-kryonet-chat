@@ -1,7 +1,5 @@
 package m4ges.models;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
@@ -25,24 +23,59 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 	public static final int AQUAMANCIEN=3;
 	
 	//etat
+	/**
+	 * animation complete
+	 */
 	public static final int COMPLETE=0;	
+	/**
+	 * animation quand le joueur est mort
+	 */
 	public static final int MORT=1;
+	/**
+	 * animation du joueur en etat d'attente
+	 */
 	public static final int WAIT=2;
 
 	//stats
+	/**
+	 * hp du personnage
+	 */
 	protected int hp;
+	/**
+	 * mana du personnage
+	 */
 	protected int mana;
+	/**
+	 * force du personnage
+	 */
 	protected int strength;
+	/**
+	 * vitesse du personnage
+	 */
 	protected int speed;
+	/**
+	 * intelligence du personnage
+	 */
 	protected int intel;
+	/**
+	 * nom du personnage
+	 */
 	protected String name;
 	protected int element;
 	protected ArrayList<Skill> listSkills;
-	//permet de connaitre le tour de jeu
+	/**
+	 * permet de connaitre le tour de jeu
+	 */
 	protected boolean token;
 	
 	//animation
+	/**
+	 * etat du joueur
+	 */
 	protected int state;
+	/**
+	 * image a l'instant t
+	 */
 	protected TextureRegion currentFrame;
 	float stateTime;
 
@@ -144,28 +177,6 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 				+ ", name=" + name + ", listSkills=" + listSkills + ", state="
 				+ state + ", currentFrame=" + currentFrame + ", stateTime="
 				+ stateTime + "]";
-	}
-	
-	private void writeObject(ObjectOutputStream io) throws IOException{
-		io.writeBytes(name);
-		io.writeInt(hp);
-	}
-	
-	public byte[] getBytes(){
-		//Cette méthode ne devrait pas etre appeler
-		return null;
-	}
-	
-	//TODO a faire (hey oui)
-	//UNIQUEMENT POUR LES ATTAQUES D'UN JOUEUR VERS UN NPC
-	public void attaque(Personnage p, Skill s){
-		System.out.println("Methode attaque joueurs > NPC appelee !");
-	}
-	
-	//TODO IDEM
-	//UNIQUEMENT POUR LES ATTAQUES D'UN NPC VERS UN JOUEURS
-	public void attaque(Personnage p){
-		System.out.println("Methode d'attaque NPC > joueurs appelee");
 	}
 	
 }

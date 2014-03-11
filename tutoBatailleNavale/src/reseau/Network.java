@@ -12,11 +12,7 @@ import m4ges.models.classes.Shaman;
 import m4ges.util.Constants;
 
 import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.KryoSerializable;
-import com.esotericsoftware.kryo.io.Input;
-import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryonet.EndPoint;
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 // This class is a convenient place to keep things common to both the client and server.
 public class Network {

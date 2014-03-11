@@ -17,9 +17,11 @@ import m4ges.models.MapPerso;
 import m4ges.models.Personnage;
 import m4ges.models.Skill;
 import m4ges.models.classes.Aquamancien;
+import m4ges.models.classes.Joueur;
 import m4ges.models.classes.Necromancien;
 import m4ges.models.classes.Pyromancien;
 import m4ges.models.classes.Shaman;
+import m4ges.models.monster.Monstre;
 import m4ges.util.Constants;
 import m4ges.views.ChatWindow;
 
@@ -247,7 +249,7 @@ public class MulticastClient {
 		 * monstres.get(data[data.length-1]); Personnage attaquant =
 		 * joueurs.get(ip);
 		 */
-		joueurs.get(ip).attaque(monstres.get(data[2]), s);
+		((Joueur) joueurs.get(ip)).attaque(monstres.get(data[2]), s);
 		// DEBUG
 		System.out.println("[Multicast - LANCERSKILL]\n"
 				+ joueurs.get(ip).getName() + " Attaque : "
@@ -273,7 +275,7 @@ public class MulticastClient {
 		 * On a l'id du monstre a attaque et l'ip de la cible, on lance
 		 * l'attaque
 		 */
-		monstres.get(idMonstre).attaque(joueurs.get(ip));
+		((Monstre) monstres.get(idMonstre)).attaque(joueurs.get(ip));
 		// DEBUG
 		System.out.println(monstres.get(idMonstre).getName() + " attaque "
 				+ joueurs.get(ip).getName());
@@ -311,7 +313,7 @@ public class MulticastClient {
 		// Pour la connexion
 		case Constants.CONNEXION:
 		case Constants.NOUVEAU:
-			datatmp = this.game.player.getBytes();
+			datatmp = ((Joueur) this.game.player).getBytes();
 			// Il faut joindre l'ip
 
 			// La taille total de data

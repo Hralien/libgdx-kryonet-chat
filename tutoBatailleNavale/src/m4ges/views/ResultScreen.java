@@ -63,7 +63,7 @@ public class ResultScreen extends AbstractScreen {
 
 		// recuperation des dimensions de l'ecran
 		float width = Gdx.graphics.getWidth();
-		float height = Gdx.graphics.getHeight();
+		//float height = Gdx.graphics.getHeight();
 
 		// window.debug();
 		Window window = new Window("Résultat", skin);
