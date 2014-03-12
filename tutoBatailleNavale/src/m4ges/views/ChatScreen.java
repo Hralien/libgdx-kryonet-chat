@@ -5,7 +5,6 @@ import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
 import m4ges.models.Skill;
 import reseau.UnicastClient;
-import reseau.Network.SkillNumber;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -29,7 +28,6 @@ public class ChatScreen extends AbstractScreen {
 	String ipClient;
 	Stage stage;
 
-	public SkillNumber showSkillNumber;
 
 	public ChatScreen(MyGame myGame) {
 		super(myGame);
@@ -54,15 +52,7 @@ public class ChatScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
         super.render( delta );
-		batch.begin();
-		if (showSkillNumber != null) {
-			stage.addActor(Skill.selectSkillFromSkillNumber(showSkillNumber));
-			// si l'animation est finie on remets à null
-			if (Skill.selectSkillFromSkillNumber(showSkillNumber).isAnimationFinished()) {
-				showSkillNumber = null;
-			}
-		}
-		batch.end();
+
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 		stage.draw();
 		Table.drawDebug(stage);

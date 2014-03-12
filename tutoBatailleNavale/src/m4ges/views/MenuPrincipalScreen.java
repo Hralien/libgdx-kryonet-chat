@@ -17,7 +17,6 @@ import m4ges.models.Vague;
 import m4ges.models.classes.Necromancien;
 import m4ges.util.AudioManager;
 import m4ges.util.GamePreferences;
-import reseau.GameServer;
 import reseau.UnicastClient;
 
 import com.badlogic.gdx.Gdx;
@@ -308,27 +307,17 @@ public class MenuPrincipalScreen extends AbstractScreen {
 
 		valider.addListener(new ChangeListener() {
 			public void changed(ChangeEvent arg0, Actor arg1) {
-				try {
-					if (tfServerName.getText().length()>0) {
-						game.chatServer = new GameServer(nbjoueur,
-								tfServerName.getMessageText());
-						game.androidUI.showAlertBox("Server",
-								"Serveur created", "Ok",
-								stage);
-						winServer.remove();
-						showMenuButtons(true);
-					}else{ 
-						game.androidUI.showAlertBox("Server",
-								"Error : server's name invalid", "Ok",
-								stage);
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
+				if (tfServerName.getText().length()>0) {
+					
 					game.androidUI.showAlertBox("Server",
-							"Serveur already created",
-							"Button text", stage);
+							"Serveur created", "Ok",
+							stage);
 					winServer.remove();
 					showMenuButtons(true);
+				}else{ 
+					game.androidUI.showAlertBox("Server",
+							"Error : server's name invalid", "Ok",
+							stage);
 				}
 			}
 		});

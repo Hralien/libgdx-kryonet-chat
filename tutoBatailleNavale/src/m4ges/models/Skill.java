@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import m4ges.controllers.MyGame;
 import m4ges.util.Constants;
-import reseau.Network.SkillNumber;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -199,17 +198,6 @@ public class Skill extends Actor implements Cloneable {
 			if (it.id == skillnum) {
 				return it;
 			}
-		}
-		return null;
-	}
-
-	/*
-	 * old
-	 */
-	public static Skill selectSkillFromSkillNumber(SkillNumber skillnum) {
-		for (Skill it : listSkill) {
-			if (it.id == skillnum.skillId)
-				return it;
 		}
 		return null;
 	}

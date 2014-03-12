@@ -13,8 +13,6 @@ import m4ges.views.EncyclopedieScreen;
 import m4ges.views.LoadingScreen;
 import m4ges.views.MenuPrincipalScreen;
 import m4ges.views.ResultScreen;
-import reseau.GameClient;
-import reseau.GameServer;
 import reseau.UnicastClient;
 
 import com.badlogic.gdx.Game;
@@ -47,10 +45,8 @@ public class MyGame extends Game{
 	 * le personnage du joueur initialise lors de la creation
 	 */
 	public Joueur player;
-	public GameClient chatClient;
 
 	public UITrick androidUI;
-	public GameServer chatServer;
 	public ArrayList<String> listHost ;
 	public ArrayList<Personnage> playersConnected;
 	public UnicastClient mc;

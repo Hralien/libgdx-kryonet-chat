@@ -8,13 +8,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.esotericsoftware.kryo.KryoSerializable;
 /**
  * Classe representant un personnae
  * @author Florian
  *
  */
-public abstract class Personnage extends Actor implements KryoSerializable {
+public abstract class Personnage extends Actor {
 
 	//classe
 	public static final int SHAMAN=0;
