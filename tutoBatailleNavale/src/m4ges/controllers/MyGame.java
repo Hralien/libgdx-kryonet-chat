@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import m4ges.models.Personnage;
+import m4ges.models.classes.Joueur;
 import m4ges.util.GamePreferences;
 import m4ges.views.BattleScreen;
 import m4ges.views.ChatScreen;
@@ -45,7 +46,7 @@ public class MyGame extends Game{
 	/**
 	 * le personnage du joueur initialise lors de la creation
 	 */
-	public Personnage player;
+	public Joueur player;
 	public GameClient chatClient;
 
 	public UITrick androidUI;
