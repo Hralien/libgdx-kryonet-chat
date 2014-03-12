@@ -85,6 +85,9 @@ public class LoadingScreen extends AbstractScreen {
         MyGame.manager.load("ui/battleui.pack", TextureAtlas.class);
         MyGame.manager.load("ui/maps.pack", TextureAtlas.class);
         MyGame.manager.load("character/personnage.pack", TextureAtlas.class);
+        MyGame.manager.load("ui/scroll.pack", TextureAtlas.class);
+
+        
 
     }
 

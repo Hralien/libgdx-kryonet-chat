@@ -4,10 +4,10 @@ package m4ges.util;
 public class Constants {
 
 	// GUI Width
-	public static final float VIEWPORT_GUI_WIDTH = 1024.0f;
+	public static final float VIEWPORT_GUI_WIDTH = 800.0f;
 
 	// GUI Height
-	public static final float VIEWPORT_GUI_HEIGHT = 780.0f;
+	public static final float VIEWPORT_GUI_HEIGHT = 600.0f;
 	
 	// Location of description file for texture atlas
 	public static final String TEXTURE_ATLAS_OBJECTS = "images/canyonbunny.pack";

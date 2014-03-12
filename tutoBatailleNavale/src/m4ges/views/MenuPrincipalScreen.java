@@ -12,10 +12,13 @@ import java.util.ArrayList;
 
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
+import m4ges.models.LoadingBar;
 import m4ges.models.Personnage;
+import m4ges.models.ScrollingImage;
 import m4ges.models.Vague;
 import m4ges.models.classes.Necromancien;
 import m4ges.util.AudioManager;
+import m4ges.util.Constants;
 import m4ges.util.GamePreferences;
 import reseau.UnicastClient;
 
@@ -61,9 +64,9 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 */
 	private Stage stage;
 	/** 
-	 * nb of players for serveur
+	 * Actor pour l'animation du fond
 	 */
-	private int nbjoueur;
+	private TextureRegion scrollingImage;
 	/**
 	 *  {@link AtlasRegion} to get the logo
 	 */
@@ -163,7 +166,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	public MenuPrincipalScreen(MyGame myGame) {
 		super(myGame);
 
-		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),false);
+		this.stage = new Stage(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT, true);
 		// Load preferences for audio settings and start playing music
 		GamePreferences.instance.load();
 	}
@@ -184,13 +187,13 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		stateTime += Gdx.graphics.getDeltaTime(); // #15
-		currentFrame = bgAnimation.getKeyFrame(stateTime, true); // #16
+				stateTime += Gdx.graphics.getDeltaTime(); // #15
+		//		currentFrame = bgAnimation.getKeyFrame(stateTime, true); // #16
 
-		batch.begin();
-		batch.draw(currentFrame, 0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-		//		imgTitle.draw(batch, delta);
-		batch.end();
+				batch.begin();
+				batch.draw(scrollingImage, (float) (0-(2*stateTime*10)),0);
+				//		imgTitle.draw(batch, delta);
+				batch.end();
 
 		stage.act(delta);
 		stage.draw();
@@ -246,7 +249,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		winTest.setPosition((float) (Gdx.graphics.getWidth()/2 - winServer.getWidth()), Gdx.graphics.getHeight()/2);
 
 		close.addListener(new ChangeListener() {
-			
+
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				winTest.remove();
@@ -263,7 +266,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				for(int i = 0; i < monstres.size(); i ++ ){
 					System.out.println(monstres.get(i).getName());
 				}
-//				Skill s = Skill.selectSkillFromSkillNumber(1);
+				//				Skill s = Skill.selectSkillFromSkillNumber(1);
 				try {
 					mc.npcAttaque(monstres.get(0), game.player);
 				} catch (IOException e) {
@@ -276,7 +279,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 					prefs.suc_creerUnePartie = true;
 					prefs.save();
 				}
-				
+
 			}
 		});
 		testVague.addListener(new ChangeListener() {
@@ -308,7 +311,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		valider.addListener(new ChangeListener() {
 			public void changed(ChangeEvent arg0, Actor arg1) {
 				if (tfServerName.getText().length()>0) {
-					
+
 					game.androidUI.showAlertBox("Server",
 							"Serveur created", "Ok",
 							stage);
@@ -453,13 +456,13 @@ public class MenuPrincipalScreen extends AbstractScreen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				// TODO:demander nb joueur
-//				nbjoueur = 2;
-//				if (nbjoueur != 0){
-//					showMenuButtons(false);
-//					showServerWindow(true, true);
-//				}
+				//				nbjoueur = 2;
+				//				if (nbjoueur != 0){
+				//					showMenuButtons(false);
+				//					showServerWindow(true, true);
+				//				}
 				game.androidUI.testWifi();
-				
+
 			}
 		});
 		tbHost.setPosition((float) (Gdx.graphics.getWidth() / 2.5),	Gdx.graphics.getHeight() / 4);
@@ -469,20 +472,33 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 * 
 	 */
 	private void buildBackgroundLayer() {
-		Texture bg = new Texture(Gdx.files.internal("ui/bg.png"));
-		int FRAME_COLS = 1; // #1
-		int FRAME_ROWS = 90; // #2 
-		TextureRegion[][] tmp = TextureRegion.split(bg, bg.getWidth() /	FRAME_COLS, bg.getHeight() / FRAME_ROWS); // #10
-		bgFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
-		int index = 0; 
-		for (int i = 0; i < FRAME_ROWS; i++) {
-			for (int j = 0; j < FRAME_COLS; j++) {
-				bgFrames[index++] = tmp[i][j];
-			}
-		}
-		bgAnimation = new Animation(0.1f, bgFrames); // #11
-		bgAnimation.setPlayMode(Animation.LOOP_PINGPONG);
-		stateTime = 0f;
+		TextureAtlas atlas = MyGame.manager.get("ui/scroll.pack",
+				TextureAtlas.class);
+		System.err.println("scrolling:"+atlas.findRegion("Scroll"));
+		scrollingImage = new TextureRegion(atlas.findRegion("Scroll"));
+		stateTime =0;
+//		scrollingImage = new ScrollingImage(new TextureRegion(atlas.findRegion("Cave")));
+//		scrollingImage.setX(2);
+//		scrollingImage.setPosition(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
+//		if(scrollingImage!=null)
+//			System.err.println("scrolling"+atlas.findRegion("Cave"));
+
+//		return scrollingImage;
+		//      
+		//		Texture bg = new Texture(Gdx.files.internal("ui/bg.png"));
+		//		int FRAME_COLS = 1; // #1
+		//		int FRAME_ROWS = 90; // #2 
+		//		TextureRegion[][] tmp = TextureRegion.split(bg, bg.getWidth() /	FRAME_COLS, bg.getHeight() / FRAME_ROWS); // #10
+		//		bgFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+		//		int index = 0; 
+		//		for (int i = 0; i < FRAME_ROWS; i++) {
+		//			for (int j = 0; j < FRAME_COLS; j++) {
+		//				bgFrames[index++] = tmp[i][j];
+		//			}
+		//		}
+		//		bgAnimation = new Animation(0.1f, bgFrames); // #11
+		//		bgAnimation.setPlayMode(Animation.LOOP_PINGPONG);
+		//		stateTime = 0f;
 	}
 	/**
 	 * 
