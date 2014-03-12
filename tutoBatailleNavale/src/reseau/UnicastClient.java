@@ -76,8 +76,12 @@ public class UnicastClient {
 	 * Permet de passer sur le screen de battle
 	 */
 	public boolean estBattleScreen;
-
-	public static final int NB_JOUEUR_MINIMUM = 3;
+	
+	/**
+	 * Pseudo des joueurs
+	 */
+	ArrayList<String> pseudoJoueur;
+	public static final int NB_JOUEUR_MINIMUM = 10;
 
 	/**
 	 * Constructeur
@@ -90,6 +94,7 @@ public class UnicastClient {
 		this.game = g;
 		joueurs = new MapPerso<String, Joueur>();
 		monstres = new ArrayList<Personnage>();
+		pseudoJoueur = new ArrayList<String>();
 		estBattleScreen = false;
 
 		try {
@@ -97,17 +102,13 @@ public class UnicastClient {
 			monIp = Inet4Address.getLocalHost().getHostAddress();
 			joueurs.put(monIp, game.player);
 			game.playersConnected.add(game.player);
+			pseudoJoueur.add(game.player.getName());
 			dsR = new DatagramSocket(PORT);
 			ds = new DatagramSocket();
-
+			ds.setBroadcast(true);
 			receive();
 			sendConnection(null, false);
 
-			// connexion + reception(thread) + envoie qu'on est la
-			// DEBUG
-			System.out.println("[MulticastClient]:ok co + receive");
-
-			System.out.println("ok send");
 		} catch (IOException e) {
 			System.err
 					.println("[MulticastClient]:Probleme lors de la jointure au ms/ds ou de la "
@@ -129,15 +130,15 @@ public class UnicastClient {
 					// tableau de 1024octet au pif !
 					byte[] data = new byte[1024];
 					dpr = new DatagramPacket(data, data.length);
-					game.androidUI.showAlertBox("title", "data:" + data.length,
-							"ok", null);
+					// game.androidUI.showAlertBox("title", "data:" +
+					// data.length,
+					// "ok", null);
 					try {
-						System.out.println("thread");
 						// recepetion
 						dsR.receive(dpr);
-						System.out.println(new String(dpr.getData()));
-						game.androidUI.showAlertBox("title", "data receive",
-								"ok", null);
+						System.out.println("RECU");
+						// game.androidUI.showAlertBox("title", "data receive",
+						// "ok", null);
 						data = dpr.getData();
 						traiterData(data);
 
@@ -191,10 +192,11 @@ public class UnicastClient {
 	 * Methode pour les messages
 	 */
 	private void actionRecoit(byte[] data) {
-		System.out.println(data.length);
+		// System.out.println(data.length);
 		String pseudoMsg = new String(data, 2, data[1]);
 		String msg = new String(data, 2 + data[1], data.length - data[1] - 2);
 		this.chatWindow.addMessage(pseudoMsg + " : " + msg);
+
 	}
 
 	/**
@@ -206,6 +208,7 @@ public class UnicastClient {
 	 */
 	private void actionTraiterNouveau(int action, byte[] data)
 			throws IOException {
+		System.out.println("NOUVEAU JOUEUR");
 		String pseudo;
 		pseudo = new String(data, 3, data[2]);
 		Joueur p = null;
@@ -230,9 +233,11 @@ public class UnicastClient {
 		// On récup l'ip (trim sert à enlever les char null
 		ip = dpr.getAddress().toString().replace('/', '\0').trim();
 		// Si l'ip est valide et qu'il n'est pas dans la map
-		if (ip.length() > 0 && !joueurs.containsKey(ip)) {
+		if (ip.length() > 0 && !joueurs.containsKey(ip) && !ip.equals("127.0.0.1")) {
 			game.playersConnected.add(p);
 			joueurs.put(ip, p);
+			pseudoJoueur.add(p.getName());
+			this.chatWindow.addName(p.getName());
 		}
 		// si c'est une connexion, il faut donc renvoye une action 2 !
 		if (action == Constants.CONNEXION)
@@ -270,16 +275,19 @@ public class UnicastClient {
 	public void sendConnection(String ipNouveau, boolean nouveau)
 			throws IOException {
 		byte[] data;
-		System.out.println("SEND");
+
 		data = ((Joueur) this.game.player).getBytes();
 		// Si c'est un nouveau on ne repond qu'a lui
-		if (nouveau == true) {
+
+		if (nouveau) {
+			System.err.println(ipNouveau.replace('/', '\0').trim());
 			data[0] = Constants.NOUVEAU;
-			if (ipNouveau.replace('/', '\0').trim().equals(monIp)) {
+			if (ipNouveau.replace('/', '\0').trim().equals(monIp)
+					|| ipNouveau.replace('/', '\0').trim().equals("127.0.0.1")) {
 
 				return;
 			}
-			System.out.println(ipNouveau.replace('/', '\0'));
+
 			dp = new DatagramPacket(data, data.length);
 			dp.setAddress(InetAddress.getByName(ipNouveau));
 			dp.setPort(PORT);
@@ -287,14 +295,16 @@ public class UnicastClient {
 
 			// Sinon on repond a tout le monde
 		} else {
-			System.out.println("olool");
-			data[0] = Constants.CONNEXION;
-			dp = new DatagramPacket(data, data.length);
-			dp.setAddress(InetAddress.getByName("255.255.255.255"));
-			dp.setPort(PORT);
 
+			data[0] = Constants.CONNEXION;
+			String[] broadcastTab = this.monIp.split("\\.");
+			String broadcast = broadcastTab[0]+"."+broadcastTab[1]+"."+broadcastTab[2]+".255";
+			dp = new DatagramPacket(data, data.length,
+					InetAddress.getByName(broadcast), PORT);
 			ds.send(dp);
-			System.out.println("envoie ok");
+
+			dp = new DatagramPacket(data, data.length, InetAddress.getByName("255.255.255.255"), PORT);
+			ds.send(dp);
 
 		}
 	}
@@ -464,10 +474,10 @@ public class UnicastClient {
 	private void sendToAll(byte[] data) throws IOException {
 		dp = new DatagramPacket(data, data.length);
 		for (String ips : joueurs.keySet()) {
-			if (ips.equals(monIp))
-				dp.setAddress(InetAddress.getByName("127.0.0.1"));
-			else
-				dp.setAddress(InetAddress.getByName(ips));
+			// if (ips.equals(monIp))
+			// dp.setAddress(InetAddress.getByName("127.0.0.1"));
+			// else
+			dp.setAddress(InetAddress.getByName(ips));
 			dp.setPort(PORT);
 			ds.send(dp);
 		}

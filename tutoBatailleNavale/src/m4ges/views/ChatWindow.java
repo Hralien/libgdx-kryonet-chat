@@ -118,5 +118,14 @@ public  class ChatWindow{
 		messageList.setItems(listMessage.toArray());
 	}
 
+	public void addName(String name) {
+		String[] tmp = this.nameList.getItems();
+		String[] names = new String[tmp.length+1];
+		for(int i = 0; i < tmp.length; i ++)
+			names[i] = tmp[i];
+		names[tmp.length]=name;
+		this.setNames(names);
+	}
+
 
 }
