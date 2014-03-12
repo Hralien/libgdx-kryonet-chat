@@ -121,26 +121,26 @@ public class UnicastClient {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+				while (true) {
+					// tableau de 1024octet au pif !
+					byte[] data = new byte[1024];
+					dp = new DatagramPacket(data, data.length);
+					game.androidUI.showAlertBox("title", "data:" + data.length,
+							"ok", null);
+					try {
+						System.out.println("thread");
+						// recepetion
+						ds.receive(dp);
+						System.out.println(new String(dp.getData()));
+						game.androidUI.showAlertBox("title", "data receive",
+								"ok", null);
+						data = dp.getData();
+						traiterData(data);
 
-				// tableau de 1024octet au pif !
-				byte[] data = new byte[1024];
-				dp = new DatagramPacket(data, data.length);
-				game.androidUI.showAlertBox("title", "data:" + data.length,
-						"ok", null);
-				try {
-					System.out.println("thread");
-					// recepetion
-					ds.receive(dp);
-					System.out.println(new String(dp.getData()));
-					game.androidUI.showAlertBox("title", "data receive", "ok",
-							null);
-					data = dp.getData();
-					traiterData(data);
-
-				} catch (IOException e) {
-					e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
-
 			}
 
 		}).start();
