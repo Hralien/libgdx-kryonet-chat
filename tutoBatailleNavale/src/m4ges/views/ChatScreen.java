@@ -4,7 +4,7 @@ package m4ges.views;
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
 import m4ges.models.Skill;
-import reseau.MulticastClient;
+import reseau.UnicastClient;
 import reseau.Network.SkillNumber;
 
 import com.badlogic.gdx.Gdx;
@@ -138,7 +138,7 @@ public class ChatScreen extends AbstractScreen {
 		validation.addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
 //				game.chatClient = new GameClient(tfHost.getText(), vue, game);
-				game.setMC(new MulticastClient(game));
+				game.setMC(new UnicastClient(game));
 				ChatWindow cw = new ChatWindow(game);
 				game.mc.chatWindow = cw;
 				stage.addActor(cw.getWindow());

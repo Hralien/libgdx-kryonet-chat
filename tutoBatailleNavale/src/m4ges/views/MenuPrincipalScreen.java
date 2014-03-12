@@ -18,7 +18,7 @@ import m4ges.models.classes.Necromancien;
 import m4ges.util.AudioManager;
 import m4ges.util.GamePreferences;
 import reseau.GameServer;
-import reseau.MulticastClient;
+import reseau.UnicastClient;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -258,7 +258,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 			public void changed(ChangeEvent arg0, Actor arg1) {
 				game.player = new Necromancien();
 				game.player.setName("salut");
-				MulticastClient mc = new MulticastClient(game);
+				UnicastClient mc = new UnicastClient(game);
 				ArrayList<Personnage> monstres = Vague.loadVague(1).getMonsters();
 				mc.setMonstres(monstres);
 				for(int i = 0; i < monstres.size(); i ++ ){

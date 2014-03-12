@@ -14,7 +14,7 @@ import m4ges.views.MenuPrincipalScreen;
 import m4ges.views.ResultScreen;
 import reseau.GameClient;
 import reseau.GameServer;
-import reseau.MulticastClient;
+import reseau.UnicastClient;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
@@ -52,7 +52,7 @@ public class MyGame extends Game{
 	public GameServer chatServer;
 	public ArrayList<String> listHost ;
 	public ArrayList<Personnage> playersConnected;
-	public MulticastClient mc;
+	public UnicastClient mc;
 
 	public static AssetManager manager;
 	
@@ -96,11 +96,11 @@ public class MyGame extends Game{
 		System.err.println("fini:"+prefs.timePlayed/1000+"sec");
 	}
 	
-	public void setMC(MulticastClient m){
+	public void setMC(UnicastClient m){
 		this.mc = m;
 	}
 	
-	public MulticastClient getMC(){
+	public UnicastClient getMC(){
 		return this.mc;
 	}
 }
