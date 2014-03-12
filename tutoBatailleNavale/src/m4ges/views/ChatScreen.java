@@ -115,7 +115,7 @@ public class ChatScreen extends AbstractScreen {
 
 		// recuperation des dimensions de l'ecran
 		float width = Gdx.graphics.getWidth();
-		float height = Gdx.graphics.getHeight();
+		//float height = Gdx.graphics.getHeight();
 
 		// window.debug();
 		Window window = new Window("Connexion", skin);
@@ -134,7 +134,6 @@ public class ChatScreen extends AbstractScreen {
 		// stage.addActor(new Button("Behind Window", skin));
 		stage.addActor(window);
 
-		final ChatScreen vue = this;
 		validation.addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
 //				game.chatClient = new GameClient(tfHost.getText(), vue, game);

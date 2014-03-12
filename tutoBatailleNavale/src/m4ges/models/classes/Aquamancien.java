@@ -8,11 +8,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.io.Input;
-import com.esotericsoftware.kryo.io.Output;
 
-public class Aquamancien extends Personnage {
+public class Aquamancien extends Joueur {
 	
 	private final static String DESCRIPTION = "L'aqueromancien ne paye peut être pas de mine, mais son pouvoir de destruction, combiné à celui d'un pyromancien, en font un adversaire redoutable.";
 	protected static volatile Animation animation;
@@ -28,27 +25,7 @@ public class Aquamancien extends Personnage {
 		super.listSkills=Skill.getSkillForClass(Personnage.AQUAMANCIEN);
 
 	}
-	@Override
-	public void write(Kryo kryo, Output output) {
-		output.writeShort(getHp());
-		output.writeShort(getMana());
-		output.writeShort(strength);
-		output.writeShort(speed);
-		output.writeShort(intel);
-		kryo.writeClassAndObject(output, name);
-
-	}
-
-	@Override
-	public void read(Kryo kryo, Input input) {
-		setHp(input.readShort());
-		setMana(input.readShort());
-		strength = input.readShort();
-		speed = input.readShort();
-		intel = input.readShort();
-
-		name = (String) kryo.readClassAndObject(input);
-	}
+	
 	@Override
 	public String getDesc() {
 		// TODO Auto-generated method stub
