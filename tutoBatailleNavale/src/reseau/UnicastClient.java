@@ -5,16 +5,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Inet4Address;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.InterfaceAddress;
-import java.net.MulticastSocket;
-import java.net.NetworkInterface;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Set;
-
-import sun.net.util.IPAddressUtil;
-import sun.security.x509.IPAddressName;
 
 import m4ges.controllers.MyGame;
 import m4ges.models.MapPerso;
@@ -29,7 +21,6 @@ import m4ges.models.monster.Monstre;
 import m4ges.util.Constants;
 import m4ges.views.ChatWindow;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 
 /**
@@ -37,61 +28,81 @@ import com.badlogic.gdx.Gdx;
  */
 public class UnicastClient {
 
-	// Socket mutlicast TEMPORAIRE
-	// private MulticastSocket ms;
-	// DatagramSocket
+	/**
+	 * Datagram socket permettant l'envoie
+	 */
 	private DatagramSocket ds;
-	//DatagramSocket pour la recepetion
+	/**
+	 * Datagram socket permettant la recepetion
+	 */
 	private DatagramSocket dsR;
-	// addresse TEMPORAIRE
-	// private InetSocketAddress msIp;
-	// port attribue par defaut pour le multicast
+	/**
+	 * Port sur lequel les joueurs les vont communiquer
+	 */
 	public final static int PORT = 12345;
-	// liste des joueurs
-	private MapPerso<String, Personnage> joueurs;
-	// liste de monstre
+	/**
+	 * Hashmap des joueurs de la forme <IP, JOUEURS>
+	 */
+	private MapPerso<String, Joueur> joueurs;
+	/**
+	 * Liste des monstres
+	 */
 	private ArrayList<Personnage> monstres;
-	// Le jeu
-	MyGame game;
-	// Datagram pour envoie
+	/**
+	 * Le jeu
+	 */
+	public MyGame game;
+	/**
+	 * datagram packet permettant l'envoie
+	 */
 	private DatagramPacket dp;
-	//Datagram reception
+	/**
+	 * datagram packet permettant la recepetion
+	 */
 	private DatagramPacket dpr;
-	// ip d'un joueur (celui a qui on va renvoye son perso quand il se co
+	/**
+	 * ip d'un joueur
+	 */
 	private String ip;
-	// mon ip
+	/**
+	 * ip de l'user
+	 */
 	public String monIp;
-	// le chat window
+	/**
+	 * Chat window, utile pour le chat
+	 */
 	public ChatWindow chatWindow;
-	// boolean pour savoir si battleScreen
+	/**
+	 * Permet de passer sur le screen de battle
+	 */
 	public boolean estBattleScreen;
 
 	public static final int NB_JOUEUR_MINIMUM = 3;
 
+	/**
+	 * Constructeur
+	 * 
+	 * @param g
+	 *            : Le jeu
+	 */
 	public UnicastClient(MyGame g) {
 		// initialisation
 		this.game = g;
-		joueurs = new MapPerso<String, Personnage>();
+		joueurs = new MapPerso<String, Joueur>();
 		monstres = new ArrayList<Personnage>();
 		estBattleScreen = false;
 
 		try {
-			InetAddress localHost = Inet4Address.getLocalHost();
-			NetworkInterface networkInterface = NetworkInterface
-					.getByInetAddress(localHost);
 
 			monIp = Inet4Address.getLocalHost().getHostAddress();
 			joueurs.put(monIp, game.player);
 			game.playersConnected.add(game.player);
 			dsR = new DatagramSocket(PORT);
 			ds = new DatagramSocket();
-			/* OBSOLETE BIENTOT */
-			// ms = new MulticastSocket(PORT);
-			// ms.setTimeToLive(4);
-			// msIp = new InetSocketAddress("228.5.6.7", PORT);
+
 			receive();
 			sendConnection(null, false);
-			/* /OBSOLETE BIENTOT */
+
 			// connexion + reception(thread) + envoie qu'on est la
 			// DEBUG
 			System.out.println("[MulticastClient]:ok co + receive");
@@ -104,21 +115,6 @@ public class UnicastClient {
 			e.printStackTrace();
 		}
 	}
-
-	/**
-	 * Permet de rejoindre un groupe OBSOLETE
-	 * 
-	 * @throws IOException
-	 */
-	// private void join() throws IOException {
-	//
-	// // On recupere notre addresse
-	// NetworkInterface netif = NetworkInterface.getByInetAddress(InetAddress
-	// .getLocalHost());
-	// // Et on rejoind le groupe
-	// ms.joinGroup(msIp, netif);
-	// receive();
-	// }
 
 	/**
 	 * Permet de recevoir les donnees
@@ -212,7 +208,7 @@ public class UnicastClient {
 			throws IOException {
 		String pseudo;
 		pseudo = new String(data, 3, data[2]);
-		Personnage p = null;
+		Joueur p = null;
 		switch (data[1]) {
 		case Personnage.AQUAMANCIEN:
 			p = new Aquamancien();
@@ -296,10 +292,10 @@ public class UnicastClient {
 			dp = new DatagramPacket(data, data.length);
 			dp.setAddress(InetAddress.getByName("255.255.255.255"));
 			dp.setPort(PORT);
-			
+
 			ds.send(dp);
 			System.out.println("envoie ok");
-			// ds.setBroadcast(false);
+
 		}
 	}
 
@@ -370,50 +366,6 @@ public class UnicastClient {
 		joueurs.get(ip).setToken(true);
 	}
 
-	// //////////OBSOLETE
-	// /**
-	// * Permet d'envoyer les donnees
-	// *
-	// * @param action
-	// * l'action a effectuer
-	// * @throws IOException
-	// */
-	// private void sendData(int action) throws IOException {
-	// byte[] data;
-	// byte[] datatmp;
-	// // On switch sur l'action
-	// switch (action) {
-	// // Pour la connexion
-	// case Constants.CONNEXION:
-	// case Constants.NOUVEAU:
-	// datatmp = this.game.player.getBytes();
-	// // Il faut joindre l'ip
-	//
-	// // La taille total de data
-	// int j = datatmp.length + monIp.length();
-	// data = new byte[j];
-	// // Il faut initialiser data avec les infos qu on a deja
-	// for (int i = 0; i < datatmp.length; i++) {
-	// data[i] = datatmp[i];
-	// }
-	// // Maintenant on met l'ip
-	// for (int i = datatmp.length; i < j; i++) {
-	// data[i] = (byte) monIp.charAt(i - datatmp.length);
-	// }
-	// if (action == Constants.NOUVEAU)
-	// data[0] = Constants.NOUVEAU;
-	// // System.err.println(new String(data));
-	// dp = new DatagramPacket(data, data.length, msIp);
-	// ms.send(dp);
-	// break;
-	// // Si quelqu'un vient de se co (Donc on a recu une requete d'action 1 on
-	// // envoie ca
-	//
-	// default:
-	// break;
-	// }
-	// }
-	// ////////////
 	/**
 	 * Permet d'envoyer un sort
 	 * 
@@ -433,8 +385,6 @@ public class UnicastClient {
 		for (int i = 3; i < data.length; i++)
 			data[i] = (byte) monIp.charAt(i - 3);
 
-		// dp = new DatagramPacket(data, data.length, msIp);
-		// ms.send(dp);
 	}
 
 	/**
@@ -478,8 +428,7 @@ public class UnicastClient {
 	 *            : Le joueur attaque(ey)
 	 * @throws IOException
 	 */
-	public void npcAttaque(Personnage mechant, Personnage cible)
-			throws IOException {
+	public void npcAttaque(Personnage mechant, Joueur cible) throws IOException {
 		ip = joueurs.getKey(cible);
 		// DEBUG
 		if (ip == null)
@@ -491,8 +440,7 @@ public class UnicastClient {
 		data[1] = (byte) idMonstre;
 		for (int i = 2; i < data.length; i++)
 			data[i] = (byte) ip.charAt(i - 2);
-		// dp = new DatagramPacket(data, data.length, msIp);
-		// ms.send(dp);
+
 	}
 
 	/**
@@ -502,7 +450,7 @@ public class UnicastClient {
 	 *            : le personnage qui aura le token
 	 * @throws IOException
 	 */
-	public void passerToken(Personnage p) throws IOException {
+	public void passerToken(Joueur p) throws IOException {
 		// on recupere l'ip du joueur
 		ip = joueurs.getKey(p);
 		byte[] data = new byte[ip.length() + 1];
@@ -510,9 +458,7 @@ public class UnicastClient {
 		for (int i = 1; i < data.length; i++) {
 			data[i] = (byte) ip.charAt(i - 1);
 		}
-		// et on envoie ca
-		// dp = new DatagramPacket(data, data.length, msIp);
-		// ms.send(dp);
+
 	}
 
 	private void sendToAll(byte[] data) throws IOException {
@@ -527,19 +473,11 @@ public class UnicastClient {
 		}
 	}
 
-	// public InetSocketAddress getMsIp() {
-	// return msIp;
-	// }
-	//
-	// public void setMsIp(InetSocketAddress msIp) {
-	// this.msIp = msIp;
-	// }
-
-	public MapPerso<String, Personnage> getJoueurs() {
+	public MapPerso<String, Joueur> getJoueurs() {
 		return joueurs;
 	}
 
-	public void setJoueurs(MapPerso<String, Personnage> joueurs) {
+	public void setJoueurs(MapPerso<String, Joueur> joueurs) {
 		this.joueurs = joueurs;
 	}
 
