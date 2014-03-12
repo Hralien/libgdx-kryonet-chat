@@ -1,7 +1,5 @@
 package m4ges.models;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
@@ -160,31 +158,6 @@ public abstract class Personnage extends Actor implements KryoSerializable {
 				+ ", name=" + name + ", listSkills=" + listSkills + ", state="
 				+ state + ", currentFrame=" + currentFrame + ", stateTime="
 				+ stateTime + "]";
-	}
-	
-	private void writeObject(ObjectOutputStream io) throws IOException{
-		io.writeBytes(name);
-		io.writeInt(hp);
-	}
-	
-	public byte[] getBytes(){
-		//Cette méthode ne devrait pas etre appeler
-		return null;
-	}
-	
-	//TODO a faire (hey oui)
-	//UNIQUEMENT POUR LES ATTAQUES D'UN JOUEUR VERS UN NPC
-	public void attaque(Personnage p, Skill s){
-		System.out.println("Methode attaque joueurs > NPC appelee !");
-		
-		this.lance(s.getSpCost());
-		p.subit(s.getDamage());
-	}
-	
-	//TODO IDEM
-	//UNIQUEMENT POUR LES ATTAQUES D'UN NPC VERS UN JOUEURS
-	public void attaque(Personnage p){
-		System.out.println("Methode d'attaque NPC > joueurs appelee");
 	}
 	
 }

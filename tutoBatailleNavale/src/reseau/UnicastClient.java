@@ -21,9 +21,11 @@ import m4ges.models.MapPerso;
 import m4ges.models.Personnage;
 import m4ges.models.Skill;
 import m4ges.models.classes.Aquamancien;
+import m4ges.models.classes.Joueur;
 import m4ges.models.classes.Necromancien;
 import m4ges.models.classes.Pyromancien;
 import m4ges.models.classes.Shaman;
+import m4ges.models.monster.Monstre;
 import m4ges.util.Constants;
 import m4ges.views.ChatWindow;
 
@@ -39,6 +41,8 @@ public class UnicastClient {
 	// private MulticastSocket ms;
 	// DatagramSocket
 	private DatagramSocket ds;
+	//DatagramSocket pour la recepetion
+	private DatagramSocket dsR;
 	// addresse TEMPORAIRE
 	// private InetSocketAddress msIp;
 	// port attribue par defaut pour le multicast
@@ -49,8 +53,10 @@ public class UnicastClient {
 	private ArrayList<Personnage> monstres;
 	// Le jeu
 	MyGame game;
-	// Datagram
+	// Datagram pour envoie
 	private DatagramPacket dp;
+	//Datagram reception
+	private DatagramPacket dpr;
 	// ip d'un joueur (celui a qui on va renvoye son perso quand il se co
 	private String ip;
 	// mon ip
@@ -77,12 +83,14 @@ public class UnicastClient {
 			monIp = Inet4Address.getLocalHost().getHostAddress();
 			joueurs.put(monIp, game.player);
 			game.playersConnected.add(game.player);
-			ds = new DatagramSocket(PORT);
+			dsR = new DatagramSocket(PORT);
+			ds = new DatagramSocket();
 			/* OBSOLETE BIENTOT */
 			// ms = new MulticastSocket(PORT);
 			// ms.setTimeToLive(4);
 			// msIp = new InetSocketAddress("228.5.6.7", PORT);
 			receive();
+			sendConnection(null, false);
 			/* /OBSOLETE BIENTOT */
 			// connexion + reception(thread) + envoie qu'on est la
 			// DEBUG
@@ -121,26 +129,26 @@ public class UnicastClient {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+				while (true) {
+					// tableau de 1024octet au pif !
+					byte[] data = new byte[1024];
+					dpr = new DatagramPacket(data, data.length);
+					game.androidUI.showAlertBox("title", "data:" + data.length,
+							"ok", null);
+					try {
+						System.out.println("thread");
+						// recepetion
+						dsR.receive(dpr);
+						System.out.println(new String(dpr.getData()));
+						game.androidUI.showAlertBox("title", "data receive",
+								"ok", null);
+						data = dpr.getData();
+						traiterData(data);
 
-				// tableau de 1024octet au pif !
-				byte[] data = new byte[1024];
-				dp = new DatagramPacket(data, data.length);
-				game.androidUI.showAlertBox("title", "data:" + data.length,
-						"ok", null);
-				try {
-					System.out.println("thread");
-					// recepetion
-					ds.receive(dp);
-					System.out.println(new String(dp.getData()));
-					game.androidUI.showAlertBox("title", "data receive", "ok",
-							null);
-					data = dp.getData();
-					traiterData(data);
-
-				} catch (IOException e) {
-					e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
-
 			}
 
 		}).start();
@@ -224,7 +232,7 @@ public class UnicastClient {
 			break;
 		}
 		// On récup l'ip (trim sert à enlever les char null
-		ip = dp.getAddress().toString().replace('/', '\0').trim();
+		ip = dpr.getAddress().toString().replace('/', '\0').trim();
 		// Si l'ip est valide et qu'il n'est pas dans la map
 		if (ip.length() > 0 && !joueurs.containsKey(ip)) {
 			game.playersConnected.add(p);
@@ -267,7 +275,7 @@ public class UnicastClient {
 			throws IOException {
 		byte[] data;
 		System.out.println("SEND");
-		data = this.game.player.getBytes();
+		data = ((Joueur) this.game.player).getBytes();
 		// Si c'est un nouveau on ne repond qu'a lui
 		if (nouveau == true) {
 			data[0] = Constants.NOUVEAU;
@@ -283,13 +291,14 @@ public class UnicastClient {
 
 			// Sinon on repond a tout le monde
 		} else {
+			System.out.println("olool");
 			data[0] = Constants.CONNEXION;
 			dp = new DatagramPacket(data, data.length);
 			dp.setAddress(InetAddress.getByName("255.255.255.255"));
-
 			dp.setPort(PORT);
-			ds.setBroadcast(true);
+			
 			ds.send(dp);
+			System.out.println("envoie ok");
 			// ds.setBroadcast(false);
 		}
 	}
@@ -303,7 +312,7 @@ public class UnicastClient {
 		Skill s = Skill.selectSkillFromSkillNumber(data[1]);
 		// l'ip commence a 3 et la taille est de : Taille data - l'id du
 		// monstre - action - id skill
-		ip = dp.getAddress().toString();
+		ip = dpr.getAddress().toString();
 		// DEBUG
 		System.out.println("[Multicast - LANCERSKILL]:Lancer skill : "
 				+ s.getSkillName() + " ip : " + ip);
@@ -312,7 +321,7 @@ public class UnicastClient {
 		 * monstres.get(data[data.length-1]); Personnage attaquant =
 		 * joueurs.get(ip);
 		 */
-		joueurs.get(ip).attaque(monstres.get(data[2]), s);
+		((Joueur) joueurs.get(ip)).attaque(monstres.get(data[2]), s);
 		// DEBUG
 		System.out.println("[Multicast - LANCERSKILL]\n"
 				+ joueurs.get(ip).getName() + " Attaque : "
@@ -333,12 +342,12 @@ public class UnicastClient {
 				.println("[Multicast - ATTAQUEMONSTRE]:monstre qui attaque : "
 						+ monstres.get(idMonstre).getName());
 		// l'ip de la cible
-		ip = dp.getAddress().toString();
+		ip = dpr.getAddress().toString();
 		/*
 		 * On a l'id du monstre a attaque et l'ip de la cible, on lance
 		 * l'attaque
 		 */
-		monstres.get(idMonstre).attaque(joueurs.get(ip));
+		((Monstre) monstres.get(idMonstre)).attaque(joueurs.get(ip));
 		// DEBUG
 		System.out.println(monstres.get(idMonstre).getName() + " attaque "
 				+ joueurs.get(ip).getName());
@@ -356,7 +365,7 @@ public class UnicastClient {
 			joueurs.get(it).setToken(false);
 		}
 		// on recupere l'ip de celui qui doit l'avoir
-		ip = dp.getAddress().toString();
+		ip = dpr.getAddress().toString();
 		// et on lui met
 		joueurs.get(ip).setToken(true);
 	}
