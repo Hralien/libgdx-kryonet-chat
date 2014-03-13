@@ -5,6 +5,13 @@ import m4ges.models.Personnage;
 import m4ges.models.Skill;
 
 public abstract class Joueur extends Personnage{
+	
+	boolean pret;
+	
+	public Joueur(){
+		super();
+		pret = false;
+	}
 
 	@Override
 	public abstract String getDesc();
@@ -21,4 +28,14 @@ public abstract class Joueur extends Personnage{
 	}
 	
 	public abstract String getNameClass();
+	
+	public boolean estPret(){
+		return this.pret;
+	}
+	
+	public void setPret(boolean p){
+		this.pret = p;
+	}
+	
+	
 }
