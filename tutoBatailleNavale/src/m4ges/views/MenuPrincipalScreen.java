@@ -3,18 +3,20 @@ package m4ges.views;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.touchable;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.sound.midi.Sequence;
+
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
-import m4ges.models.LoadingBar;
 import m4ges.models.Personnage;
-import m4ges.models.ScrollingImage;
 import m4ges.models.Vague;
 import m4ges.models.classes.Necromancien;
 import m4ges.util.AudioManager;
@@ -24,7 +26,6 @@ import reseau.UnicastClient;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -34,6 +35,7 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
@@ -49,7 +51,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-
 
 
 /**
@@ -187,13 +188,13 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-				stateTime += Gdx.graphics.getDeltaTime(); // #15
+		stateTime += Gdx.graphics.getDeltaTime(); // #15
 		//		currentFrame = bgAnimation.getKeyFrame(stateTime, true); // #16
 
-				batch.begin();
-				batch.draw(scrollingImage, (float) (0-(2*stateTime*10)),0);
-				//		imgTitle.draw(batch, delta);
-				batch.end();
+		batch.begin();
+		batch.draw(scrollingImage, (float) (0-(2*stateTime*10)),0);
+		//		imgTitle.draw(batch, delta);
+		batch.end();
 
 		stage.act(delta);
 		stage.draw();
@@ -335,11 +336,21 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	private Table buildTitleLayer(TextureAtlas atlas){
 		Table layer = new Table();
 		imgTitle = new Image(atlas.findRegion("TitleM4ges"));
-		imgTitle.setSize((float)(Gdx.graphics.getWidth()*.5),(float)(Gdx.graphics.getWidth()*.25));
-		layer.add(imgTitle).width((float)(Gdx.graphics.getWidth()*.5)).height((float)(Gdx.graphics.getWidth()*.25));
-		layer.left();
-		layer.top();
-		layer.padLeft((float)(Gdx.graphics.getWidth())/2-imgTitle.getWidth()/2);
+		imgTitle.setPosition(1,(float) (Constants.VIEWPORT_GUI_WIDTH * .5));
+		imgTitle.setOrigin(1,(float) (Constants.VIEWPORT_GUI_WIDTH * .5));
+		imgTitle.addAction(sequence(Actions.fadeOut( 0.0001f ), Actions.fadeIn( 3f )));
+//		imgTitle.addAction(Actions.fadeIn(2f));
+//		imgTitle.addAction(sequence(
+//				scaleTo(0, 0),
+//				Actions.fadeIn(0),
+//				delay(0.5f),
+//				parallel( scaleTo(1.0f, 1.0f, 0.8f, Interpolation.linear),
+//					alpha(1.0f, 1f))));
+//		imgTitle.addAction(parallel(moveTo(250, 250, 2, bounceOut), color(Color.RED, 6), delay(0.5f), rotateTo(180, 5, swing)));
+//		imgTitle.addAction(forever(sequence(scaleTo(2, 2, 0.5f), scaleTo(1, 1, 0.5f), delay(0.5f))));
+		
+		layer.add(imgTitle).width(400).height(200);
+		layer.left().top().padLeft(200).padTop(50);
 		return layer;
 	}
 	/**
@@ -477,13 +488,13 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		System.err.println("scrolling:"+atlas.findRegion("Scroll"));
 		scrollingImage = new TextureRegion(atlas.findRegion("Scroll"));
 		stateTime =0;
-//		scrollingImage = new ScrollingImage(new TextureRegion(atlas.findRegion("Cave")));
-//		scrollingImage.setX(2);
-//		scrollingImage.setPosition(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
-//		if(scrollingImage!=null)
-//			System.err.println("scrolling"+atlas.findRegion("Cave"));
+		//		scrollingImage = new ScrollingImage(new TextureRegion(atlas.findRegion("Cave")));
+		//		scrollingImage.setX(2);
+		//		scrollingImage.setPosition(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
+		//		if(scrollingImage!=null)
+		//			System.err.println("scrolling"+atlas.findRegion("Cave"));
 
-//		return scrollingImage;
+		//		return scrollingImage;
 		//      
 		//		Texture bg = new Texture(Gdx.files.internal("ui/bg.png"));
 		//		int FRAME_COLS = 1; // #1
