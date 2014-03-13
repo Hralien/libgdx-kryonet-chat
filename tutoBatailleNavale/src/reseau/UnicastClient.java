@@ -3,9 +3,11 @@ package reseau;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.Inet4Address;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Set;
 
 import m4ges.controllers.MyGame;
@@ -76,13 +78,8 @@ public class UnicastClient {
 	 * Permet de passer sur le screen de battle
 	 */
 	public boolean estBattleScreen;
-
-	/**
-	 * Pseudo des joueurs
-	 */
-	ArrayList<String> pseudoJoueur;
 	
-	public static final int NB_JOUEUR_MINIMUM = 10;
+	public static final int NB_JOUEUR_MINIMUM = 2;
 
 	/**
 	 * Constructeur
@@ -99,17 +96,19 @@ public class UnicastClient {
 
 		try {
 
-			monIp = Inet4Address.getLocalHost().getHostAddress();
+			monIp = this.getLocalIpAddress();
 			joueurs.put(monIp, game.player);
 			game.playersConnected.add(game.player);
 			dsR = new DatagramSocket(PORT);
+			
+			
 			ds = new DatagramSocket();
 			ds.setBroadcast(true);
 			receive();
 
 		} catch (IOException e) {
 			System.err
-					.println("[MulticastClient]:Probleme lors de la jointure au ms/ds ou de la "
+					.println("[UNCIASTClient]:Probleme lors de la jointure au ms/ds ou de la "
 							+ "transmission du perso. Port possible occupee");
 			e.printStackTrace();
 		}
@@ -134,15 +133,12 @@ public class UnicastClient {
 					// tableau de 1024octet au pif !
 					byte[] data = new byte[1024];
 					dpr = new DatagramPacket(data, data.length);
-					// game.androidUI.showAlertBox("title", "data:" +
-					// data.length,
-					// "ok", null);
+
 					try {
 						// recepetion
 						dsR.receive(dpr);
 						System.out.println("RECU");
-						// game.androidUI.showAlertBox("title", "data receive",
-						// "ok", null);
+
 						data = dpr.getData();
 						traiterData(data);
 
@@ -165,7 +161,7 @@ public class UnicastClient {
 	private void traiterData(byte[] data) throws IOException {
 		// On recupere l'action de la data
 		int action = (int) data[0];
-		System.out.println("[MulticastClient-TraiterData]:Donnees recu  : "
+		System.out.println("[UNCIASTClient-TraiterData]:Donnees recu  : "
 				+ action);
 		switch (action) {
 		case Constants.CONNEXION:
@@ -189,7 +185,7 @@ public class UnicastClient {
 			break;
 		default:
 			System.err
-					.println("[MulticastClient-DEFAULT]:Action non reconnue : "
+					.println("[UNCIASTClient-DEFAULT]:Action non reconnue : "
 							+ action);
 			break;
 		}
@@ -199,7 +195,7 @@ public class UnicastClient {
 	 * Methode pour les messages
 	 */
 	private void actionRecoit(byte[] data) {
-		// System.out.println(data.length);
+
 		String pseudoMsg = new String(data, 2, data[1]);
 		String msg = new String(data, 2 + data[1], data.length - data[1] - 2);
 		this.chatWindow.addMessage(pseudoMsg + " : " + msg);
@@ -242,16 +238,16 @@ public class UnicastClient {
 		// Si l'ip est valide et qu'il n'est pas dans la map
 		if (ip.length() > 0 && !joueurs.containsKey(ip)
 				&& !ip.equals("127.0.0.1")) {
+
 			game.playersConnected.add(p);
 			joueurs.put(ip, p);
-			pseudoJoueur.add(p.getName());
 			this.chatWindow.addName(p.getName() + " : " + p.getNameClass());
 		}
 		// si c'est une connexion, il faut donc renvoye une action 2 !
 		if (action == Constants.CONNEXION)
 			sendConnection(ip, true);
 		// DEBUG
-		System.out.println("[Multicast]\n-- Affichage de(s) " + joueurs.size()
+		System.out.println("[UNCIAST]\n-- Affichage de(s) " + joueurs.size()
 				+ " joueur(s) --");
 		Set<String> key = joueurs.keySet();
 		for (String it : key) {
@@ -330,7 +326,7 @@ public class UnicastClient {
 		// monstre - action - id skill
 		ip = dpr.getAddress().toString();
 		// DEBUG
-		System.out.println("[Multicast - LANCERSKILL]:Lancer skill : "
+		System.out.println("[UNCIAST - LANCERSKILL]:Lancer skill : "
 				+ s.getSkillName() + " ip : " + ip);
 		/*
 		 * On recupere la cible et l'attaquant Personnage cible =
@@ -339,7 +335,7 @@ public class UnicastClient {
 		 */
 		joueurs.get(ip).attaque(monstres.get(data[2]), s);
 		// DEBUG
-		System.out.println("[Multicast - LANCERSKILL]\n"
+		System.out.println("[UNCIAST - LANCERSKILL]\n"
 				+ joueurs.get(ip).getName() + " Attaque : "
 				+ monstres.get(data[2]).getName() + " avec : "
 				+ s.getSkillName());
@@ -355,7 +351,7 @@ public class UnicastClient {
 		int idMonstre = data[1];
 		// DEBUG
 		System.out
-				.println("[Multicast - ATTAQUEMONSTRE]:monstre qui attaque : "
+				.println("[UNCIAST - ATTAQUEMONSTRE]:monstre qui attaque : "
 						+ monstres.get(idMonstre).getName());
 		// l'ip de la cible
 		/*
@@ -368,7 +364,7 @@ public class UnicastClient {
 		 */
 		((Monstre) monstres.get(idMonstre)).attaque(joueurs.get(ip));
 		// DEBUG
-		System.out.println(monstres.get(idMonstre).getName() + " attaque "
+		System.out.println("[UNCIAST] " + monstres.get(idMonstre).getName() + " attaque "
 				+ joueurs.get(ip).getName());
 	}
 
@@ -549,4 +545,28 @@ public class UnicastClient {
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
+	
+	public String getLocalIpAddress()
+	{
+	    try 
+	    {
+	        for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();)
+	        {
+	            NetworkInterface intf = en.nextElement();
+	            for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();)
+	            {
+	                InetAddress inetAddress = enumIpAddr.nextElement();
+	                if (!inetAddress.isLoopbackAddress() && inetAddress.getHostAddress().length() <= 15 ) 
+	                {
+	                    return inetAddress.getHostAddress().toString();
+	                }
+	            }
+	        }
+	    } 
+	    catch (SocketException ex)
+	    {
+	        ex.printStackTrace();
+	    }
+	    return "";
+	}   
 }
