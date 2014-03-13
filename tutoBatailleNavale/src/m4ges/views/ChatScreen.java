@@ -1,6 +1,8 @@
 package m4ges.views;
 
 
+import java.io.IOException;
+
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
 import m4ges.models.Skill;
@@ -127,9 +129,16 @@ public class ChatScreen extends AbstractScreen {
 		validation.addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
 //				game.chatClient = new GameClient(tfHost.getText(), vue, game);
-				game.setMC(new UnicastClient(game));
 				ChatWindow cw = new ChatWindow(game);
-				game.mc.chatWindow = cw;
+				UnicastClient uc = new UnicastClient(game);
+				uc.chatWindow = cw;
+		
+				game.setMC(uc);
+				try {
+					uc.lancerClient();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				stage.addActor(cw.getWindow());
 //				
 			}

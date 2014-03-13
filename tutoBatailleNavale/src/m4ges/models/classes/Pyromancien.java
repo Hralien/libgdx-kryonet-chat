@@ -83,4 +83,10 @@ public class Pyromancien extends Joueur {
 		}
 		return data;
 	}
+
+
+	@Override
+	public String getNameClass() {
+		return "Pyromancien";
+	}
 }

@@ -81,4 +81,9 @@ public class Aquamancien extends Joueur {
 		}
 		return data;
 	}
+
+	@Override
+	public String getNameClass() {
+		return "Aquamancien";
+	}
 }

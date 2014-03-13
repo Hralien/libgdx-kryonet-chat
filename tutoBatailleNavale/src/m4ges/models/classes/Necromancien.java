@@ -78,4 +78,9 @@ public class Necromancien extends Joueur {
 		}
 		return data;
 	}
+
+	@Override
+	public String getNameClass() {
+		return "Necromancien";
+	}
 }
