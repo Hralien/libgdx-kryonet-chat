@@ -22,7 +22,7 @@ public class Encyclopedie {
 		//creation d'un objet json
 		Json json = new Json();
 		//recuperation du fichier correspondant
-		FileHandle file = Gdx.files.local("levels/encyclopedie.txt" );
+		FileHandle file = Gdx.files.internal("files/encyclopedie.txt" );
 		//lecture du fichier
 		String text = file.readString();
 		//creation de la vague
