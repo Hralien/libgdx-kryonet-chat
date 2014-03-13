@@ -26,7 +26,7 @@ public class Vague {
 		//creation d'un objet json
 		Json json = new Json();
 		//recuperation du fichier correspondant
-		FileHandle file = Gdx.files.local("levels/level_"+number+".txt" );
+		FileHandle file = Gdx.files.internal("files/level_"+number+".txt" );
 		//lecture du fichier
 		String text = file.readString();
 		//creation de la vague
