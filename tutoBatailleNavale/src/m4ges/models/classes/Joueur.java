@@ -19,4 +19,6 @@ public abstract class Joueur extends Personnage{
 	public void attaque(Personnage p, Skill s){
 		System.out.println("Methode attaque joueurs > NPC appelee !");
 	}
+	
+	public abstract String getNameClass();
 }

@@ -76,7 +76,7 @@ public class UnicastClient {
 	 * Permet de passer sur le screen de battle
 	 */
 	public boolean estBattleScreen;
-	
+
 	/**
 	 * Pseudo des joueurs
 	 */
@@ -94,7 +94,6 @@ public class UnicastClient {
 		this.game = g;
 		joueurs = new MapPerso<String, Joueur>();
 		monstres = new ArrayList<Personnage>();
-		pseudoJoueur = new ArrayList<String>();
 		estBattleScreen = false;
 
 		try {
@@ -102,12 +101,10 @@ public class UnicastClient {
 			monIp = Inet4Address.getLocalHost().getHostAddress();
 			joueurs.put(monIp, game.player);
 			game.playersConnected.add(game.player);
-			pseudoJoueur.add(game.player.getName());
 			dsR = new DatagramSocket(PORT);
 			ds = new DatagramSocket();
 			ds.setBroadcast(true);
 			receive();
-			sendConnection(null, false);
 
 		} catch (IOException e) {
 			System.err
@@ -115,6 +112,12 @@ public class UnicastClient {
 							+ "transmission du perso. Port possible occupee");
 			e.printStackTrace();
 		}
+	}
+
+	public void lancerClient() throws IOException {
+		sendConnection(null, false);
+		chatWindow.addName(game.player.getName() + " : "
+				+ game.player.getNameClass());
 	}
 
 	/**
@@ -233,11 +236,12 @@ public class UnicastClient {
 		// On récup l'ip (trim sert à enlever les char null
 		ip = dpr.getAddress().toString().replace('/', '\0').trim();
 		// Si l'ip est valide et qu'il n'est pas dans la map
-		if (ip.length() > 0 && !joueurs.containsKey(ip) && !ip.equals("127.0.0.1")) {
+		if (ip.length() > 0 && !joueurs.containsKey(ip)
+				&& !ip.equals("127.0.0.1")) {
 			game.playersConnected.add(p);
 			joueurs.put(ip, p);
 			pseudoJoueur.add(p.getName());
-			this.chatWindow.addName(p.getName());
+			this.chatWindow.addName(p.getName() + " : " + p.getNameClass());
 		}
 		// si c'est une connexion, il faut donc renvoye une action 2 !
 		if (action == Constants.CONNEXION)
@@ -298,12 +302,14 @@ public class UnicastClient {
 
 			data[0] = Constants.CONNEXION;
 			String[] broadcastTab = this.monIp.split("\\.");
-			String broadcast = broadcastTab[0]+"."+broadcastTab[1]+"."+broadcastTab[2]+".255";
+			String broadcast = broadcastTab[0] + "." + broadcastTab[1] + "."
+					+ broadcastTab[2] + ".255";
 			dp = new DatagramPacket(data, data.length,
 					InetAddress.getByName(broadcast), PORT);
 			ds.send(dp);
 
-			dp = new DatagramPacket(data, data.length, InetAddress.getByName("255.255.255.255"), PORT);
+			dp = new DatagramPacket(data, data.length,
+					InetAddress.getByName("255.255.255.255"), PORT);
 			ds.send(dp);
 
 		}
@@ -327,7 +333,7 @@ public class UnicastClient {
 		 * monstres.get(data[data.length-1]); Personnage attaquant =
 		 * joueurs.get(ip);
 		 */
-		((Joueur) joueurs.get(ip)).attaque(monstres.get(data[2]), s);
+		joueurs.get(ip).attaque(monstres.get(data[2]), s);
 		// DEBUG
 		System.out.println("[Multicast - LANCERSKILL]\n"
 				+ joueurs.get(ip).getName() + " Attaque : "
@@ -348,7 +354,7 @@ public class UnicastClient {
 				.println("[Multicast - ATTAQUEMONSTRE]:monstre qui attaque : "
 						+ monstres.get(idMonstre).getName());
 		// l'ip de la cible
-		ip = dpr.getAddress().toString();
+		ip = new String(data, 3, data.length - 2);
 		/*
 		 * On a l'id du monstre a attaque et l'ip de la cible, on lance
 		 * l'attaque
@@ -386,15 +392,13 @@ public class UnicastClient {
 	 * @throws IOException
 	 */
 	public void lancerSort(Personnage mechant, Skill s) throws IOException {
-		byte[] data = new byte[3 + monIp.length()];
+		byte[] data = new byte[3];
 		// action + skill's id + monstre
 		data[0] = Constants.LANCERSKILL;
 		data[1] = (byte) s.getId();
 		data[2] = (byte) monstres.indexOf(mechant);
 
-		for (int i = 3; i < data.length; i++)
-			data[i] = (byte) monIp.charAt(i - 3);
-
+		sendToAll(data);
 	}
 
 	/**

@@ -91,4 +91,10 @@ public class Shaman extends Joueur {
 		return data;
 	}
 
+
+	@Override
+	public String getNameClass() {
+		return "Chamane";
+	}
+
 }
