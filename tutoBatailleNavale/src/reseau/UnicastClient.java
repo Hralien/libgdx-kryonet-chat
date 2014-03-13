@@ -79,7 +79,7 @@ public class UnicastClient {
 	 */
 	public boolean estBattleScreen;
 	
-	public static final int NB_JOUEUR_MINIMUM = 2;
+	public static final int NB_JOUEUR_MINIMUM = 1;
 
 	/**
 	 * Constructeur

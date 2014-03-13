@@ -346,11 +346,8 @@ public class BattleScreen extends AbstractScreen {
 	 */
 	private Actor buildVagueInfo() {
 		Label lblVague = new Label("Vague " + numeroVague, skin);
-		lblVague.setOrigin(Constants.VIEWPORT_GUI_WIDTH / 2,
-				(float) (Constants.VIEWPORT_GUI_HEIGHT * .35));
-		lblVague.setPosition(Constants.VIEWPORT_GUI_WIDTH / 2
-				- winVagueInfo.getWidth(),
-				(float) (Constants.VIEWPORT_GUI_HEIGHT * .35));
+		lblVague.setPosition(Constants.VIEWPORT_GUI_WIDTH / 2- lblVague.getWidth(),	(float) (Constants.VIEWPORT_GUI_HEIGHT * .35));
+		lblVague.pack();
 		lblVague.addAction(sequence(Actions.fadeIn( 0.0001f ), Actions.fadeOut( 3f )));
 		return lblVague;
 	}
@@ -362,9 +359,9 @@ public class BattleScreen extends AbstractScreen {
 	 */
 	private Label showMessage(String s) {
 		lb_info = new Label(s, skin);
-		lb_info.setBounds(
-				Constants.VIEWPORT_GUI_WIDTH / 2 - lb_info.getWidth(),
-				(float) (Constants.VIEWPORT_GUI_HEIGHT * .7), 60, 20);
+		lb_info.setPosition(Constants.VIEWPORT_GUI_WIDTH / 2 - lb_info.getWidth(),
+				(float) (Constants.VIEWPORT_GUI_HEIGHT * .7));
+		lb_info.pack();
 		return lb_info;
 
 	}
