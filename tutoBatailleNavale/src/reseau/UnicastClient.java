@@ -81,6 +81,7 @@ public class UnicastClient {
 	 * Pseudo des joueurs
 	 */
 	ArrayList<String> pseudoJoueur;
+	
 	public static final int NB_JOUEUR_MINIMUM = 10;
 
 	/**
@@ -182,6 +183,9 @@ public class UnicastClient {
 			break;
 		case Constants.MESSAGE:
 			actionRecoit(data);
+			break;
+		case Constants.PRET:
+			actionPret();
 			break;
 		default:
 			System.err
@@ -354,6 +358,9 @@ public class UnicastClient {
 				.println("[Multicast - ATTAQUEMONSTRE]:monstre qui attaque : "
 						+ monstres.get(idMonstre).getName());
 		// l'ip de la cible
+		/*
+		 /!\ATTENTION pas sur
+		 */
 		ip = new String(data, 3, data.length - 2);
 		/*
 		 * On a l'id du monstre a attaque et l'ip de la cible, on lance
@@ -429,9 +436,41 @@ public class UnicastClient {
 	 * quand tout les joueurs sont pret on peut continuer vers la vague suivante
 	 */
 	public void pretPourVagueSuivante() {
-
+		boolean pret = true;
+		for(Joueur j:joueurs.values()){
+			if(!j.estPret()){
+				pret = false;
+				break;
+			}
+		}
+		if(pret){
+			return;
+		}
+			//balenc
+		
 	}
-
+	
+	/**
+	 * Permet à dire aux autres joueurs
+	 * qu'on est pret
+	 * @throws IOException 
+	 */
+	public void estPret() throws IOException{
+		byte data[] = new byte[1];
+		data[0] = (byte)Constants.PRET;
+		sendToAll(data);
+	}
+	
+	/**
+	 * traite l'action "pret" d'un autre joueur
+	 * @param data
+	 */
+	public void actionPret(){
+		String ip = dp.getAddress().toString().replace('/', '\0').trim();
+		joueurs.get(ip).setPret(true);
+	}
+	
+	
 	/**
 	 * Permet d'avertir les autres joueurs qu'un monstre a lance un sort a un
 	 * joueur
