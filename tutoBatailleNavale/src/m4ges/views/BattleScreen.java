@@ -55,10 +55,7 @@ public class BattleScreen extends AbstractScreen {
 	 * liste des mobs
 	 */
 	private Vague currentVague;
-	/**
-	 * arriere plan
-	 */
-	private Stack stack;
+
 	/**
 	 * premier plan
 	 */
@@ -126,7 +123,9 @@ public class BattleScreen extends AbstractScreen {
 		// on dit a l'appli d'ecouter ce stage quand la methode show est appelee
 		Gdx.input.setInputProcessor(this.stage);
 		currentVague = Vague.loadVague(numeroVague);
+		
 		game.getMC().setMonstres(currentVague.getMonsters());
+		
 		TextureAtlas atlasMap = MyGame.manager.get("ui/maps.pack",
 				TextureAtlas.class);
 		battle_bg = new TextureRegion(atlasMap.findRegion(currentVague.getNameVague()));
@@ -141,17 +140,8 @@ public class BattleScreen extends AbstractScreen {
 
 		lb_info = showMessage("Selectionner un monstre et lancer un sort");
 
-		Stack stack = new Stack();
-		stack.add(buildPersoLayer());
-		stack.add(buildMonsterLayer());
-		stack.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-
-		this.stage.addActor(stack);
-		this.stage.addActor(createMySkillWindows());
-		this.stage.addActor(createMyInfoWindows());
-		this.stage.addActor(createSelectedWindows());
-		this.stage.addActor(fg);
-		this.fg.addActor(buildVagueInfo());
+		
+		update();
 
 		this.fg.addActor(lb_info);
 		this.fg.addActor(buildVagueInfo());
@@ -159,9 +149,9 @@ public class BattleScreen extends AbstractScreen {
 
 	public void update(){
 
-		stage = new Stage(Constants.VIEWPORT_GUI_WIDTH,
-				Constants.VIEWPORT_GUI_HEIGHT, true);
-		stack = new Stack();
+		stage.clear();
+		
+		Stack stack = new Stack();
 		stack.setSize(Constants.VIEWPORT_GUI_WIDTH,
 				Constants.VIEWPORT_GUI_HEIGHT);
 		stack.add(buildPersoLayer());
@@ -254,6 +244,7 @@ public class BattleScreen extends AbstractScreen {
 		WindowStyle ws = new WindowStyle(new BitmapFont(), Color.BLACK,
 				new TextureRegionDrawable(battle_info2));
 		selectWindow = new Window("", ws);
+		selectWindow.setBounds(Constants.VIEWPORT_GUI_WIDTH, 0,battle_skill.getRegionWidth(), battle_skill.getRegionHeight());
 		if (selected == null)
 			return selectWindow;
 		selectWindow.add(new Label("name:" + selected.getName(), skin));
@@ -262,8 +253,6 @@ public class BattleScreen extends AbstractScreen {
 		selectWindow.row();
 		selectWindow.add(new Label("sp:" + selected.getMana(), skin));
 		selectWindow.pack();
-		selectWindow.setBounds(Constants.VIEWPORT_GUI_WIDTH, 0,
-				battle_skill.getRegionWidth(), battle_skill.getRegionHeight());
 		return selectWindow;
 	}
 
@@ -346,7 +335,8 @@ public class BattleScreen extends AbstractScreen {
 	 */
 	private Actor buildVagueInfo() {
 		Label lblVague = new Label("Vague " + numeroVague, skin);
-		lblVague.setPosition(Constants.VIEWPORT_GUI_WIDTH / 2- lblVague.getWidth(),	(float) (Constants.VIEWPORT_GUI_HEIGHT * .35));
+		lblVague.setPosition(Constants.VIEWPORT_GUI_WIDTH / 2 - lblVague.getWidth()/2,	(float) (Constants.VIEWPORT_GUI_HEIGHT /2  ));
+		lblVague.setOrigin(Constants.VIEWPORT_GUI_WIDTH / 2 - lblVague.getWidth()/2,	(float) (Constants.VIEWPORT_GUI_HEIGHT /2  ));
 		lblVague.pack();
 		lblVague.addAction(sequence(Actions.fadeIn( 0.0001f ), Actions.fadeOut( 3f )));
 		return lblVague;
@@ -359,8 +349,9 @@ public class BattleScreen extends AbstractScreen {
 	 */
 	private Label showMessage(String s) {
 		lb_info = new Label(s, skin);
-		lb_info.setPosition(Constants.VIEWPORT_GUI_WIDTH / 2 - lb_info.getWidth(),
-				(float) (Constants.VIEWPORT_GUI_HEIGHT * .7));
+		lb_info.setColor(Color.RED);
+		lb_info.setPosition(Constants.VIEWPORT_GUI_WIDTH /2 - lb_info.getWidth()/2,	(float) (Constants.VIEWPORT_GUI_HEIGHT*0.95 ));
+		lb_info.setOrigin(Constants.VIEWPORT_GUI_WIDTH / 2 - lb_info.getWidth()/2,	(float) (Constants.VIEWPORT_GUI_HEIGHT*0.95 ));
 		lb_info.pack();
 		return lb_info;
 
