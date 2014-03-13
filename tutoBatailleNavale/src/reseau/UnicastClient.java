@@ -324,14 +324,12 @@ public class UnicastClient {
 		Skill s = Skill.selectSkillFromSkillNumber(data[1]);
 		// l'ip commence a 3 et la taille est de : Taille data - l'id du
 		// monstre - action - id skill
-		ip = dpr.getAddress().toString();
+		ip = dpr.getAddress().toString().replace('/', '\0').trim();
 		// DEBUG
 		System.out.println("[UNCIAST - LANCERSKILL]:Lancer skill : "
 				+ s.getSkillName() + " ip : " + ip);
 		/*
-		 * On recupere la cible et l'attaquant Personnage cible =
-		 * monstres.get(data[data.length-1]); Personnage attaquant =
-		 * joueurs.get(ip);
+		 * On recupere la cible et l'attaquant
 		 */
 		joueurs.get(ip).attaque(monstres.get(data[2]), s);
 		// DEBUG
@@ -380,7 +378,7 @@ public class UnicastClient {
 			joueurs.get(it).setToken(false);
 		}
 		// on recupere l'ip de celui qui doit l'avoir
-		ip = dpr.getAddress().toString();
+		ip = dpr.getAddress().toString().replace('/', '\0').trim();
 		// et on lui met
 		joueurs.get(ip).setToken(true);
 	}
