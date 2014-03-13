@@ -1,9 +1,6 @@
 package m4ges.views;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.touchable;
-
 import java.io.IOException;
 
 import m4ges.controllers.AbstractScreen;
@@ -23,7 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -59,6 +56,10 @@ public class BattleScreen extends AbstractScreen {
 	 */
 	private Vague currentVague;
 	/**
+	 * arriere plan
+	 */
+	private Stack stack;
+	/**
 	 * premier plan
 	 */
 	private Group fg;
@@ -85,7 +86,7 @@ public class BattleScreen extends AbstractScreen {
 		this.stage = new Stage(Constants.VIEWPORT_GUI_WIDTH,
 				Constants.VIEWPORT_GUI_HEIGHT, true);
 		this.stage.setCamera(cameraGUI);
-		fg = new Group();
+		this.fg = new Group();
 
 	}
 
@@ -140,7 +141,16 @@ public class BattleScreen extends AbstractScreen {
 
 		lb_info = showMessage("Selectionner un monstre et lancer un sort");
 
-		Stack stack = new Stack();
+		update();
+		
+		this.fg.addActor(lb_info);
+		this.fg.addActor(buildVagueInfo());
+	}
+
+	public void update(){
+
+		stage = new Stage();
+		stack = new Stack();
 		stack.add(buildPersoLayer());
 		stack.add(buildMonsterLayer());
 		stack.setSize(Constants.VIEWPORT_GUI_WIDTH,
@@ -149,13 +159,11 @@ public class BattleScreen extends AbstractScreen {
 		this.stage.addActor(stack);
 		this.stage.addActor(createMySkillWindows());
 		this.stage.addActor(createMyInfoWindows());
+		this.stage.addActor(createSelectedWindows());
+		
 		this.stage.addActor(fg);
-		this.fg.addActor(lb_info);
-		this.fg.addActor(buildVagueInfo());
-		showVagueWindow();
 
 	}
-
 	/**
 	 * affiche la liste des skill du player
 	 * 
@@ -182,6 +190,8 @@ public class BattleScreen extends AbstractScreen {
 						fg.addActor(it);
 						try {
 							game.mc.lancerSort(selected, it);
+							stage.getActors().removeValue(selectWindow, true);
+							stage.addActor(createSelectedWindows());
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -329,20 +339,8 @@ public class BattleScreen extends AbstractScreen {
 		winVagueInfo.setPosition(Constants.VIEWPORT_GUI_WIDTH / 2
 				- winVagueInfo.getWidth(),
 				(float) (Constants.VIEWPORT_GUI_HEIGHT * .35));
+		winVagueInfo.addAction(sequence(Actions.fadeOut( 0.0001f ), Actions.fadeIn( 3f )));
 		return winVagueInfo;
-	}
-
-	/**
-	 * affiche la fenetre d'info de la vague
-	 * 
-	 * @param visible
-	 * @param animated
-	 */
-	private void showVagueWindow() {
-		winVagueInfo.addAction(sequence(touchable(Touchable.disabled),
-				alpha(0.8f, 2.5f)));
-		winVagueInfo.addAction(sequence(touchable(Touchable.disabled),
-				alpha(0.0f, 2.5f)));
 	}
 
 	/**

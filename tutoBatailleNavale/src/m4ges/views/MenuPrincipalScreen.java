@@ -73,22 +73,9 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 */
 	private Image imgTitle;
 	/**
-	 * animation du background
-	 */
-	private Animation bgAnimation; // #3
-	/**
-	 * texture animation background
-	 */
-	private TextureRegion[] bgFrames; // #5 
-	/**
 	 * temps pour l'animation background
 	 */
 	private float stateTime; // #8 
-	/**
-	 * texture actuel du background
-	 */
-	private TextureRegion currentFrame; // #7
-
 	//menu
 	/**
 	 * bouton pour heberger une partie
@@ -189,11 +176,9 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	public void render(float delta) {
 		super.render(delta);
 		stateTime += Gdx.graphics.getDeltaTime(); // #15
-		//		currentFrame = bgAnimation.getKeyFrame(stateTime, true); // #16
 
 		batch.begin();
 		batch.draw(scrollingImage, (float) (0-(2*stateTime*10)),0);
-		//		imgTitle.draw(batch, delta);
 		batch.end();
 
 		stage.act(delta);
@@ -267,7 +252,6 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				for(int i = 0; i < monstres.size(); i ++ ){
 					System.out.println(monstres.get(i).getName());
 				}
-				//				Skill s = Skill.selectSkillFromSkillNumber(1);
 				try {
 					mc.npcAttaque(monstres.get(0), game.player);
 				} catch (IOException e) {
@@ -276,7 +260,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				//test success
 				GamePreferences prefs = GamePreferences.instance;
 				if(!prefs.suc_creerUnePartie){
-					System.out.println("[succes]: vous avez débloqué le succes creer une partie");
+					game.androidUI.showToast("[succes]: vous avez débloqué le succes creer une partie", 5, stage);
 					prefs.suc_creerUnePartie = true;
 					prefs.save();
 				}
@@ -339,16 +323,6 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		imgTitle.setPosition(1,(float) (Constants.VIEWPORT_GUI_WIDTH * .5));
 		imgTitle.setOrigin(1,(float) (Constants.VIEWPORT_GUI_WIDTH * .5));
 		imgTitle.addAction(sequence(Actions.fadeOut( 0.0001f ), Actions.fadeIn( 3f )));
-//		imgTitle.addAction(Actions.fadeIn(2f));
-//		imgTitle.addAction(sequence(
-//				scaleTo(0, 0),
-//				Actions.fadeIn(0),
-//				delay(0.5f),
-//				parallel( scaleTo(1.0f, 1.0f, 0.8f, Interpolation.linear),
-//					alpha(1.0f, 1f))));
-//		imgTitle.addAction(parallel(moveTo(250, 250, 2, bounceOut), color(Color.RED, 6), delay(0.5f), rotateTo(180, 5, swing)));
-//		imgTitle.addAction(forever(sequence(scaleTo(2, 2, 0.5f), scaleTo(1, 1, 0.5f), delay(0.5f))));
-		
 		layer.add(imgTitle).width(400).height(200);
 		layer.left().top().padLeft(200).padTop(50);
 		return layer;
@@ -373,15 +347,13 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		btnMenuOptions = buildBtnMenuOption(style);
 		btnMenuTest = buildBtnMenuTest(style);
 
-		layer.add(btnMenuHost);
+		layer.add(btnMenuHost).left();
+		layer.add(btnMenuPlay).right();
 		layer.row();
-		layer.add(btnMenuPlay);
+		layer.add(btnMenuDico).left();
+		layer.add(btnMenuOptions).right();
 		layer.row();
-		layer.add(btnMenuDico);
-		layer.row();
-		layer.add(btnMenuOptions);
-		layer.row();
-		layer.add(btnMenuTest);
+		layer.add(btnMenuTest).left();
 		layer.left();
 		layer.padLeft((float)(Gdx.graphics.getWidth())/2-image.getRegionWidth()/2);
 		layer.padTop((float)(Gdx.graphics.getHeight())/2-layer.getHeight());
@@ -488,28 +460,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		System.err.println("scrolling:"+atlas.findRegion("Scroll"));
 		scrollingImage = new TextureRegion(atlas.findRegion("Scroll"));
 		stateTime =0;
-		//		scrollingImage = new ScrollingImage(new TextureRegion(atlas.findRegion("Cave")));
-		//		scrollingImage.setX(2);
-		//		scrollingImage.setPosition(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
-		//		if(scrollingImage!=null)
-		//			System.err.println("scrolling"+atlas.findRegion("Cave"));
 
-		//		return scrollingImage;
-		//      
-		//		Texture bg = new Texture(Gdx.files.internal("ui/bg.png"));
-		//		int FRAME_COLS = 1; // #1
-		//		int FRAME_ROWS = 90; // #2 
-		//		TextureRegion[][] tmp = TextureRegion.split(bg, bg.getWidth() /	FRAME_COLS, bg.getHeight() / FRAME_ROWS); // #10
-		//		bgFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
-		//		int index = 0; 
-		//		for (int i = 0; i < FRAME_ROWS; i++) {
-		//			for (int j = 0; j < FRAME_COLS; j++) {
-		//				bgFrames[index++] = tmp[i][j];
-		//			}
-		//		}
-		//		bgAnimation = new Animation(0.1f, bgFrames); // #11
-		//		bgAnimation.setPlayMode(Animation.LOOP_PINGPONG);
-		//		stateTime = 0f;
 	}
 	/**
 	 * 

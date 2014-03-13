@@ -53,7 +53,7 @@ public class MyGame extends Game{
 
 	public static AssetManager manager;
 	
-	private Stage currentStage;
+	private Screen currentScreen;
 
 	public MyGame(UITrick actionResolver) {
 		super();
@@ -81,6 +81,7 @@ public class MyGame extends Game{
 	public void changeScreen(int nextScreen){
 		if(screenHashtable.containsKey(nextScreen)){
 			setScreen(screenHashtable.get(nextScreen));
+			setCurrentScreen(screenHashtable.get(nextScreen));
 		}
 	}
 
@@ -99,5 +100,15 @@ public class MyGame extends Game{
 	
 	public UnicastClient getMC(){
 		return this.mc;
+	}
+
+
+	public Screen getCurrentScreen() {
+		return currentScreen;
+	}
+
+
+	public void setCurrentScreen(Screen currentScreen) {
+		this.currentScreen = currentScreen;
 	}
 }
