@@ -124,7 +124,7 @@ public class BattleScreen extends AbstractScreen {
 	@Override
 	public void show() {
 		// on dit a l'appli d'ecouter ce stage quand la methode show est appelee
-		Gdx.input.setInputProcessor(stage);
+		Gdx.input.setInputProcessor(this.stage);
 		currentVague = Vague.loadVague(numeroVague);
 		game.getMC().setMonstres(currentVague.getMonsters());
 		TextureAtlas atlasMap = MyGame.manager.get("ui/maps.pack",
@@ -141,16 +141,29 @@ public class BattleScreen extends AbstractScreen {
 
 		lb_info = showMessage("Selectionner un monstre et lancer un sort");
 
-		update();
-		
+		Stack stack = new Stack();
+		stack.add(buildPersoLayer());
+		stack.add(buildMonsterLayer());
+		stack.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+
+		this.stage.addActor(stack);
+		this.stage.addActor(createMySkillWindows());
+		this.stage.addActor(createMyInfoWindows());
+		this.stage.addActor(createSelectedWindows());
+		this.stage.addActor(fg);
+		this.fg.addActor(buildVagueInfo());
+
 		this.fg.addActor(lb_info);
 		this.fg.addActor(buildVagueInfo());
 	}
 
 	public void update(){
 
-		stage = new Stage();
+		stage = new Stage(Constants.VIEWPORT_GUI_WIDTH,
+				Constants.VIEWPORT_GUI_HEIGHT, true);
 		stack = new Stack();
+		stack.setSize(Constants.VIEWPORT_GUI_WIDTH,
+				Constants.VIEWPORT_GUI_HEIGHT);
 		stack.add(buildPersoLayer());
 		stack.add(buildMonsterLayer());
 		stack.setSize(Constants.VIEWPORT_GUI_WIDTH,
@@ -160,7 +173,7 @@ public class BattleScreen extends AbstractScreen {
 		this.stage.addActor(createMySkillWindows());
 		this.stage.addActor(createMyInfoWindows());
 		this.stage.addActor(createSelectedWindows());
-		
+
 		this.stage.addActor(fg);
 
 	}
@@ -331,16 +344,15 @@ public class BattleScreen extends AbstractScreen {
 	 * 
 	 * @return
 	 */
-	private Window buildVagueInfo() {
-		winVagueInfo = new Window("Info", skin);
+	private Actor buildVagueInfo() {
 		Label lblVague = new Label("Vague " + numeroVague, skin);
-		winVagueInfo.add(lblVague);
-		winVagueInfo.setSize(300, 200);
-		winVagueInfo.setPosition(Constants.VIEWPORT_GUI_WIDTH / 2
+		lblVague.setOrigin(Constants.VIEWPORT_GUI_WIDTH / 2,
+				(float) (Constants.VIEWPORT_GUI_HEIGHT * .35));
+		lblVague.setPosition(Constants.VIEWPORT_GUI_WIDTH / 2
 				- winVagueInfo.getWidth(),
 				(float) (Constants.VIEWPORT_GUI_HEIGHT * .35));
-		winVagueInfo.addAction(sequence(Actions.fadeOut( 0.0001f ), Actions.fadeIn( 3f )));
-		return winVagueInfo;
+		lblVague.addAction(sequence(Actions.fadeIn( 0.0001f ), Actions.fadeOut( 3f )));
+		return lblVague;
 	}
 
 	/**

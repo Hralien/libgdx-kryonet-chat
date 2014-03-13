@@ -52,7 +52,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-
 /**
  * Menu principal selection de ce qu'on veut faire
  * 
@@ -64,19 +63,19 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 * {@link Stage}
 	 */
 	private Stage stage;
-	/** 
+	/**
 	 * Actor pour l'animation du fond
 	 */
 	private TextureRegion scrollingImage;
 	/**
-	 *  {@link AtlasRegion} to get the logo
+	 * {@link AtlasRegion} to get the logo
 	 */
 	private Image imgTitle;
 	/**
 	 * temps pour l'animation background
 	 */
-	private float stateTime; // #8 
-	//menu
+	private float stateTime; // #8
+	// menu
 	/**
 	 * bouton pour heberger une partie
 	 */
@@ -132,7 +131,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	private CheckBox chkShowFpsCounter;
 	private CheckBox chkUseMonochromeShader;
 
-	//server setup
+	// server setup
 	/**
 	 * fenetre pour creation serveur
 	 */
@@ -142,10 +141,8 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 */
 	private TextField tfServerName;
 
-	//test fenetre
+	// test fenetre
 	private Window winTest;
-
-
 
 	/**
 	 * 
@@ -154,7 +151,8 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	public MenuPrincipalScreen(MyGame myGame) {
 		super(myGame);
 
-		this.stage = new Stage(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT, true);
+		this.stage = new Stage(Constants.VIEWPORT_GUI_WIDTH,
+				Constants.VIEWPORT_GUI_HEIGHT, true);
 		// Load preferences for audio settings and start playing music
 		GamePreferences.instance.load();
 	}
@@ -178,7 +176,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		stateTime += Gdx.graphics.getDeltaTime(); // #15
 
 		batch.begin();
-		batch.draw(scrollingImage, (float) (0-(2*stateTime*10)),0);
+		batch.draw(scrollingImage, (float) (0 - (2 * stateTime * 10)), 0);
 		batch.end();
 
 		stage.act(delta);
@@ -194,16 +192,17 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 
-		TextureAtlas atlas = MyGame.manager.get("ui/loading.pack", TextureAtlas.class);
+		TextureAtlas atlas = MyGame.manager.get("ui/loading.pack",
+				TextureAtlas.class);
 
-		//Background initialisation
+		// Background initialisation
 		buildBackgroundLayer();
 
 		stage.clear();
 		Stack stack = new Stack();
 		stage.addActor(stack);
 
-		stack.setSize(w,h);
+		stack.setSize(w, h);
 		stack.add(buildTitleLayer(atlas));
 		stack.add(buildControlLayer(atlas));
 		stage.addActor(buildServerSetup(atlas));
@@ -211,12 +210,14 @@ public class MenuPrincipalScreen extends AbstractScreen {
 
 		stage.addActor(buildOptionsWindowLayer());
 
-		AudioManager.instance.play(Gdx.audio.newMusic(Gdx.files.internal("sound/CloudTopLoops.mp3")));
-
+		AudioManager.instance.play(Gdx.audio.newMusic(Gdx.files
+				.internal("sound/CloudTopLoops.mp3")));
 
 	}
+
 	/**
 	 * Construction de la fenetre de creation du server
+	 * 
 	 * @param atlas
 	 * @return
 	 */
@@ -232,7 +233,9 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		winTest.add(testVague);
 		winTest.row();
 		winTest.pack();
-		winTest.setPosition((float) (Gdx.graphics.getWidth()/2 - winServer.getWidth()), Gdx.graphics.getHeight()/2);
+		winTest.setPosition(
+				(float) (Gdx.graphics.getWidth() / 2 - winServer.getWidth()),
+				Gdx.graphics.getHeight() / 2);
 
 		close.addListener(new ChangeListener() {
 
@@ -247,9 +250,10 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				game.player = new Necromancien();
 				game.player.setName("salut");
 				UnicastClient mc = new UnicastClient(game);
-				ArrayList<Personnage> monstres = Vague.loadVague(1).getMonsters();
+				ArrayList<Personnage> monstres = Vague.loadVague(1)
+						.getMonsters();
 				mc.setMonstres(monstres);
-				for(int i = 0; i < monstres.size(); i ++ ){
+				for (int i = 0; i < monstres.size(); i++) {
 					System.out.println(monstres.get(i).getName());
 				}
 				try {
@@ -257,10 +261,13 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				//test success
+				// test success
 				GamePreferences prefs = GamePreferences.instance;
-				if(!prefs.suc_creerUnePartie){
-					game.androidUI.showToast("[succes]: vous avez débloqué le succes creer une partie", 5, stage);
+				if (!prefs.suc_creerUnePartie) {
+					game.androidUI
+							.showToast(
+									"[succes]: vous avez débloqué le succes creer une partie",
+									5, stage);
 					prefs.suc_creerUnePartie = true;
 					prefs.save();
 				}
@@ -275,15 +282,17 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		showTestWindow(false, false);
 		return winTest;
 	}
+
 	/**
 	 * Construction de la fenetre de creation du server
+	 * 
 	 * @param atlas
 	 * @return
 	 */
 	private Table buildServerSetup(TextureAtlas atlas) {
 		winServer = new Window("Host a game", skin);
-		Label lblServerName= new Label("Serveur name", skin); 
-		tfServerName = new TextField("",skin);
+		Label lblServerName = new Label("Serveur name", skin);
+		tfServerName = new TextField("", skin);
 		final TextButton valider = new TextButton("Valider", skin);
 		winServer.add(lblServerName);
 		winServer.add(tfServerName);
@@ -291,59 +300,67 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		winServer.add(valider);
 		winServer.row();
 		winServer.pack();
-		winServer.setPosition((float) (Gdx.graphics.getWidth()/2 - winServer.getWidth()), Gdx.graphics.getHeight()/2);
+		winServer.setPosition(
+				(float) (Gdx.graphics.getWidth() / 2 - winServer.getWidth()),
+				Gdx.graphics.getHeight() / 2);
 
 		valider.addListener(new ChangeListener() {
 			public void changed(ChangeEvent arg0, Actor arg1) {
-				if (tfServerName.getText().length()>0) {
+				if (tfServerName.getText().length() > 0) {
 
-					game.androidUI.showAlertBox("Server",
-							"Serveur created", "Ok",
-							stage);
+					game.androidUI.showAlertBox("Server", "Serveur created",
+							"Ok", stage);
 					winServer.remove();
 					showMenuButtons(true);
-				}else{ 
+				} else {
 					game.androidUI.showAlertBox("Server",
-							"Error : server's name invalid", "Ok",
-							stage);
+							"Error : server's name invalid", "Ok", stage);
 				}
 			}
 		});
 		showServerWindow(false, false);
 		return winServer;
 	}
+
 	/**
 	 * creation de l'image du titre
+	 * 
 	 * @param atlas
 	 * @return
 	 */
-	private Table buildTitleLayer(TextureAtlas atlas){
-		Table layer = new Table();
+	private Table buildTitleLayer(TextureAtlas atlas) {
+		Table layout = new Table();
 		imgTitle = new Image(atlas.findRegion("TitleM4ges"));
-		imgTitle.setPosition(1,(float) (Constants.VIEWPORT_GUI_WIDTH * .5));
-		imgTitle.setOrigin(1,(float) (Constants.VIEWPORT_GUI_WIDTH * .5));
-		imgTitle.addAction(sequence(Actions.fadeOut( 0.0001f ), Actions.fadeIn( 3f )));
-		layer.add(imgTitle).width(400).height(200);
-		layer.left().top().padLeft(200).padTop(50);
-		return layer;
+		imgTitle.setPosition(Constants.VIEWPORT_GUI_WIDTH / 3 - imgTitle.getWidth(), (float) (Constants.VIEWPORT_GUI_HEIGHT /3 - imgTitle.getHeight()));
+		imgTitle.setSize((float)(400),(float)(200));
+		imgTitle.pack();
+		imgTitle.addAction(sequence(Actions.fadeOut(0.0001f),
+				Actions.fadeIn(3f)));
+		layout.add(imgTitle);
+		layout.setSize((float)(imgTitle.getWidth()*0.2),(float)(imgTitle.getHeight()*.2));
+		layout.pack();
+		return layout;
 	}
+
 	/**
 	 * creation des differents bouton
+	 * 
 	 * @param atlas
 	 * @return
 	 */
-	private Table buildControlLayer(TextureAtlas atlas){
+	private Table buildControlLayer(TextureAtlas atlas) {
 		Table layer = new Table();
 
-		TextureRegion image = new TextureRegion(atlas.findRegion("magic_button2"));
+		TextureRegion image = new TextureRegion(
+				atlas.findRegion("magic_button2"));
 		TextButtonStyle style = new TextButtonStyle();
 		style.up = new TextureRegionDrawable(image);
 		style.font = new BitmapFont();
 
-		//buttons with style
-		btnMenuHost =  buildBtnMenuHost(style);
-		btnMenuPlay =  buildBtnMenuPlay(style);
-		btnMenuDico =  buildBtnMenuDico(style);
+		// buttons with style
+		btnMenuHost = buildBtnMenuHost(style);
+		btnMenuPlay = buildBtnMenuPlay(style);
+		btnMenuDico = buildBtnMenuDico(style);
 		btnMenuOptions = buildBtnMenuOption(style);
 		btnMenuTest = buildBtnMenuTest(style);
 
@@ -355,13 +372,16 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		layer.row();
 		layer.add(btnMenuTest).left();
 		layer.left();
-		layer.padLeft((float)(Gdx.graphics.getWidth())/2-image.getRegionWidth()/2);
-		layer.padTop((float)(Gdx.graphics.getHeight())/2-layer.getHeight());
+		layer.padLeft((float) (Gdx.graphics.getWidth()) / 2
+				- image.getRegionWidth() / 2);
+		layer.padTop((float) (Gdx.graphics.getHeight()) / 2 - layer.getHeight());
 
 		return layer;
 	}
+
 	/**
 	 * construit le bouton pour jour
+	 * 
 	 * @param style
 	 * @return
 	 */
@@ -373,12 +393,15 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				goToNewCharacter();
 			}
 		});
-		tbPlay.setPosition((float) (Gdx.graphics.getWidth() / 2.5),	Gdx.graphics.getHeight() / 6);
+		tbPlay.setPosition((float) (Gdx.graphics.getWidth() / 2.5),
+				Gdx.graphics.getHeight() / 6);
 
 		return tbPlay;
 	}
+
 	/**
 	 * construit le bouton pour affiché l'encyclopedie
+	 * 
 	 * @param style
 	 * @return
 	 */
@@ -390,10 +413,12 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				goToDico();
 			}
 		});
-		tbDico.setPosition((float) (Gdx.graphics.getWidth() / 2.5),	Gdx.graphics.getHeight() / 6);
+		tbDico.setPosition((float) (Gdx.graphics.getWidth() / 2.5),
+				Gdx.graphics.getHeight() / 6);
 
 		return tbDico;
 	}
+
 	/**
 	 * 
 	 * @param style
@@ -411,6 +436,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		});
 		return tbOption;
 	}
+
 	/**
 	 * 
 	 * @param style
@@ -427,6 +453,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		});
 		return tbOption;
 	}
+
 	/**
 	 * 
 	 * @param style
@@ -439,38 +466,41 @@ public class MenuPrincipalScreen extends AbstractScreen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				// TODO:demander nb joueur
-				//				nbjoueur = 2;
-				//				if (nbjoueur != 0){
-				//					showMenuButtons(false);
-				//					showServerWindow(true, true);
-				//				}
+				// nbjoueur = 2;
+				// if (nbjoueur != 0){
+				// showMenuButtons(false);
+				// showServerWindow(true, true);
+				// }
 				game.androidUI.testWifi();
 
 			}
 		});
-		tbHost.setPosition((float) (Gdx.graphics.getWidth() / 2.5),	Gdx.graphics.getHeight() / 4);
+		tbHost.setPosition((float) (Gdx.graphics.getWidth() / 2.5),
+				Gdx.graphics.getHeight() / 4);
 		return tbHost;
 	}
+
 	/**
 	 * 
 	 */
 	private void buildBackgroundLayer() {
 		TextureAtlas atlas = MyGame.manager.get("ui/scroll.pack",
 				TextureAtlas.class);
-		System.err.println("scrolling:"+atlas.findRegion("Scroll"));
 		scrollingImage = new TextureRegion(atlas.findRegion("Scroll"));
-		stateTime =0;
+		stateTime = 0;
 
 	}
+
 	/**
 	 * 
 	 * @return
 	 */
-	private Table buildOptWinAudioSettings () {
+	private Table buildOptWinAudioSettings() {
 		Table tbl = new Table();
 		// + Title: "Audio"
 		tbl.pad(10, 10, 0, 10);
-		tbl.add(new Label("Audio", skin, "default-font", Color.ORANGE)).colspan(3);
+		tbl.add(new Label("Audio", skin, "default-font", Color.ORANGE))
+				.colspan(3);
 		tbl.row();
 		tbl.columnDefaults(0).padRight(10);
 		tbl.columnDefaults(1).padRight(10);
@@ -490,11 +520,12 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		tbl.row();
 		return tbl;
 	}
+
 	/**
 	 * 
 	 * @return
 	 */
-	private Table buildOptWinDebug () {
+	private Table buildOptWinDebug() {
 		Table tbl = new Table();
 		// + Title: "Debug"
 		tbl.pad(10, 10, 0, 10);
@@ -514,11 +545,12 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		tbl.row();
 		return tbl;
 	}
+
 	/**
 	 * 
 	 * @return
 	 */
-	private Table buildOptWinButtons () {
+	private Table buildOptWinButtons() {
 		Table tbl = new Table();
 		// + Separator
 		Label lbl = null;
@@ -539,7 +571,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		tbl.add(btnWinOptSave).padRight(30);
 		btnWinOptSave.addListener(new ChangeListener() {
 			@Override
-			public void changed (ChangeEvent event, Actor actor) {
+			public void changed(ChangeEvent event, Actor actor) {
 				onSaveClicked();
 			}
 		});
@@ -548,12 +580,13 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		tbl.add(btnWinOptCancel);
 		btnWinOptCancel.addListener(new ChangeListener() {
 			@Override
-			public void changed (ChangeEvent event, Actor actor) {
+			public void changed(ChangeEvent event, Actor actor) {
 				onCancelClicked();
 			}
 		});
 		return tbl;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -574,9 +607,11 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		// Let TableLayout recalculate widget sizes and positions
 		winOptions.pack();
 		// Move options window to bottom right corner
-		winOptions.setPosition(Gdx.graphics.getWidth()/2 - winOptions.getWidth() - 50, 50);
+		winOptions.setPosition(
+				Gdx.graphics.getWidth() / 2 - winOptions.getWidth() - 50, 50);
 		return winOptions;
 	}
+
 	/**
 	 * 
 	 */
@@ -585,6 +620,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		onCancelClicked();
 		AudioManager.instance.onSettingsUpdated();
 	}
+
 	/**
 	 * 
 	 */
@@ -593,6 +629,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		showOptionsWindow(false, true);
 		AudioManager.instance.onSettingsUpdated();
 	}
+
 	/**
 	 * 
 	 */
@@ -606,6 +643,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		chkShowFpsCounter.setChecked(prefs.showFpsCounter);
 		chkUseMonochromeShader.setChecked(prefs.useMonochromeShader);
 	}
+
 	/**
 	 * 
 	 */
@@ -619,28 +657,36 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		prefs.useMonochromeShader = chkUseMonochromeShader.isChecked();
 		prefs.save();
 	}
+
 	/**
 	 * gere l'affichage des boutons du menu principal
+	 * 
 	 * @param visible
 	 */
-	private void showMenuButtons (boolean visible) {
+	private void showMenuButtons(boolean visible) {
 		float moveDuration = 1.0f;
 		Interpolation moveEasing = Interpolation.swing;
 		float delayOptionsButton = 0.25f;
 
 		float moveX = 500 * (visible ? -1 : 1);
 		float moveY = 0 * (visible ? -1 : 1);
-		final Touchable touchEnabled = visible ? Touchable.enabled : Touchable.disabled;
+		final Touchable touchEnabled = visible ? Touchable.enabled
+				: Touchable.disabled;
 		btnMenuHost.addAction(moveBy(moveX, moveY, moveDuration, moveEasing));
-		btnMenuPlay.addAction(sequence(delay(delayOptionsButton), moveBy(moveX, moveY, moveDuration, moveEasing)));
-		btnMenuDico.addAction(sequence(delay(delayOptionsButton*2), moveBy(moveX, moveY, moveDuration, moveEasing)));
-		btnMenuOptions.addAction(sequence(delay(delayOptionsButton*3), moveBy(moveX, moveY, moveDuration, moveEasing)));
-		btnMenuTest.addAction(sequence(delay(delayOptionsButton*4), moveBy(moveX, moveY, moveDuration, moveEasing)));
+		btnMenuPlay.addAction(sequence(delay(delayOptionsButton),
+				moveBy(moveX, moveY, moveDuration, moveEasing)));
+		btnMenuDico.addAction(sequence(delay(delayOptionsButton * 2),
+				moveBy(moveX, moveY, moveDuration, moveEasing)));
+		btnMenuOptions.addAction(sequence(delay(delayOptionsButton * 3),
+				moveBy(moveX, moveY, moveDuration, moveEasing)));
+		btnMenuTest.addAction(sequence(delay(delayOptionsButton * 4),
+				moveBy(moveX, moveY, moveDuration, moveEasing)));
 
 		SequenceAction seq = sequence();
-		if (visible) seq.addAction(delay(delayOptionsButton + moveDuration));
+		if (visible)
+			seq.addAction(delay(delayOptionsButton + moveDuration));
 		seq.addAction(run(new Runnable() {
-			public void run () {
+			public void run() {
 				btnMenuHost.setTouchable(touchEnabled);
 				btnMenuPlay.setTouchable(touchEnabled);
 				btnMenuDico.setTouchable(touchEnabled);
@@ -650,28 +696,37 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		}));
 		stage.addAction(seq);
 	}
+
 	/**
 	 * affiche la fenetre d'option
+	 * 
 	 * @param visible
 	 * @param animated
 	 */
-	private void showOptionsWindow (boolean visible, boolean animated) {
+	private void showOptionsWindow(boolean visible, boolean animated) {
 		float alphaTo = visible ? 0.8f : 0.0f;
 		float duration = animated ? 1.0f : 0.0f;
-		Touchable touchEnabled = visible ? Touchable.enabled : Touchable.disabled;
-		winOptions.addAction(sequence(touchable(touchEnabled), alpha(alphaTo, duration)));
+		Touchable touchEnabled = visible ? Touchable.enabled
+				: Touchable.disabled;
+		winOptions.addAction(sequence(touchable(touchEnabled),
+				alpha(alphaTo, duration)));
 	}
+
 	/**
 	 * affiche la fenetre de config du serv
+	 * 
 	 * @param visible
 	 * @param animated
 	 */
-	private void showServerWindow (boolean visible, boolean animated) {
+	private void showServerWindow(boolean visible, boolean animated) {
 		float alphaTo = visible ? 0.8f : 0.0f;
 		float duration = animated ? 1.0f : 0.0f;
-		Touchable touchEnabled = visible ? Touchable.enabled : Touchable.disabled;
-		winServer.addAction(sequence(touchable(touchEnabled), alpha(alphaTo, duration)));
-	}	
+		Touchable touchEnabled = visible ? Touchable.enabled
+				: Touchable.disabled;
+		winServer.addAction(sequence(touchable(touchEnabled),
+				alpha(alphaTo, duration)));
+	}
+
 	/**
 	 * 
 	 * @param visible
@@ -680,23 +735,28 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	private void showTestWindow(boolean visible, boolean animated) {
 		float alphaTo = visible ? 0.8f : 0.0f;
 		float duration = animated ? 1.0f : 0.0f;
-		Touchable touchEnabled = visible ? Touchable.enabled : Touchable.disabled;
-		winTest.addAction(sequence(touchable(touchEnabled), alpha(alphaTo, duration)));
-	}	
+		Touchable touchEnabled = visible ? Touchable.enabled
+				: Touchable.disabled;
+		winTest.addAction(sequence(touchable(touchEnabled),
+				alpha(alphaTo, duration)));
+	}
+
 	/**
 	 * 
 	 */
-	private void goToNewCharacter(){
+	private void goToNewCharacter() {
 		AudioManager.instance.stopMusic();
 		super.game.changeScreen(MyGame.NEWCHARACTERSCREEN);
 	}
+
 	/**
 	 * 
 	 */
-	private void goToDico(){
+	private void goToDico() {
 		AudioManager.instance.stopMusic();
 		super.game.changeScreen(MyGame.DICOSCREEN);
 	}
+
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
