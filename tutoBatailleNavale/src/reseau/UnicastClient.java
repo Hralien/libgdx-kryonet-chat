@@ -78,7 +78,7 @@ public class UnicastClient {
 	 * Permet de passer sur le screen de battle
 	 */
 	public boolean estBattleScreen;
-	
+
 	public static final int NB_JOUEUR_MINIMUM = 1;
 
 	/**
@@ -100,8 +100,7 @@ public class UnicastClient {
 			joueurs.put(monIp, game.player);
 			game.playersConnected.add(game.player);
 			dsR = new DatagramSocket(PORT);
-			
-			
+
 			ds = new DatagramSocket();
 			ds.setBroadcast(true);
 			receive();
@@ -175,7 +174,7 @@ public class UnicastClient {
 			actionTraiterAttaqueMonstre(data);
 			break;
 		case Constants.TOKEN:
-			actionToken(data);
+			actionToken(data, action);
 			break;
 		case Constants.MESSAGE:
 			actionRecoit(data);
@@ -184,9 +183,8 @@ public class UnicastClient {
 			actionPret();
 			break;
 		default:
-			System.err
-					.println("[UNCIASTClient-DEFAULT]:Action non reconnue : "
-							+ action);
+			System.err.println("[UNCIASTClient-DEFAULT]:Action non reconnue : "
+					+ action);
 			break;
 		}
 	}
@@ -348,12 +346,11 @@ public class UnicastClient {
 		// l'id du monstre
 		int idMonstre = data[1];
 		// DEBUG
-		System.out
-				.println("[UNCIAST - ATTAQUEMONSTRE]:monstre qui attaque : "
-						+ monstres.get(idMonstre).getName());
+		System.out.println("[UNCIAST - ATTAQUEMONSTRE]:monstre qui attaque : "
+				+ monstres.get(idMonstre).getName());
 		// l'ip de la cible
 		/*
-		 /!\ATTENTION pas sur
+		 * /!\ATTENTION pas sur
 		 */
 		ip = new String(data, 3, data.length - 2);
 		/*
@@ -362,8 +359,8 @@ public class UnicastClient {
 		 */
 		((Monstre) monstres.get(idMonstre)).attaque(joueurs.get(ip));
 		// DEBUG
-		System.out.println("[UNCIAST] " + monstres.get(idMonstre).getName() + " attaque "
-				+ joueurs.get(ip).getName());
+		System.out.println("[UNCIAST] " + monstres.get(idMonstre).getName()
+				+ " attaque " + joueurs.get(ip).getName());
 	}
 
 	/**
@@ -371,7 +368,9 @@ public class UnicastClient {
 	 * 
 	 * @param data
 	 */
-	private void actionToken(byte[] data) {
+	private void actionToken(byte[] data, int action) {
+		for(Joueur it:joueurs.values())
+			it.setPret(false);
 		// avant tout il faut l'enlever à celui qui l'a
 		Set<String> key = joueurs.keySet();
 		for (String it : key) {
@@ -431,40 +430,40 @@ public class UnicastClient {
 	 */
 	public void pretPourVagueSuivante() {
 		boolean pret = true;
-		for(Joueur j:joueurs.values()){
-			if(!j.estPret()){
+		for (Joueur j : joueurs.values()) {
+			if (!j.estPret()) {
 				pret = false;
 				break;
 			}
 		}
-		if(pret){
+		if (pret) {
 			return;
 		}
-			//balenc
-		
+		// balenc
+
 	}
-	
+
 	/**
-	 * Permet à dire aux autres joueurs
-	 * qu'on est pret
-	 * @throws IOException 
+	 * Permet à dire aux autres joueurs qu'on est pret
+	 * 
+	 * @throws IOException
 	 */
-	public void estPret() throws IOException{
+	public void estPret() throws IOException {
 		byte data[] = new byte[1];
-		data[0] = (byte)Constants.PRET;
+		data[0] = (byte) Constants.PRET;
 		sendToAll(data);
 	}
-	
+
 	/**
 	 * traite l'action "pret" d'un autre joueur
+	 * 
 	 * @param data
 	 */
-	public void actionPret(){
+	public void actionPret() {
 		String ip = dp.getAddress().toString().replace('/', '\0').trim();
 		joueurs.get(ip).setPret(true);
 	}
-	
-	
+
 	/**
 	 * Permet d'avertir les autres joueurs qu'un monstre a lance un sort a un
 	 * joueur
@@ -493,19 +492,45 @@ public class UnicastClient {
 	/**
 	 * Permet de passer le token a un joueur
 	 * 
-	 * @param p
-	 *            : le personnage qui aura le token
 	 * @throws IOException
 	 */
-	public void passerToken(Joueur p) throws IOException {
-		// on recupere l'ip du joueur
-		ip = joueurs.getKey(p);
-		byte[] data = new byte[ip.length() + 1];
-		data[0] = Constants.TOKEN;
+	public void passerToken() throws IOException {
+		//indique qu'il a joue a ce tour
+		game.player.setPret(true);
+		String ipChoisi = "";
+		
+		/*
+		 * On passe le token au premiere
+		 * joueur qui n'est pas pret
+		 */
+		for (Joueur j : joueurs.values()) {
+			if (!j.estPret()) {
+				ipChoisi = joueurs.getKey(j);
+				break;
+			}
+		}
+		
+		byte data[];
+		
+		/*
+		 * Si tout les joueurs ont joué ce tour
+		 * au passe le token au dernier joueur de la liste (random quoi...)
+		 */
+		if (ipChoisi.length() < 1) {
+			ipChoisi = joueurs.getKey((Joueur) game.playersConnected
+					.get(game.playersConnected.size() - 1));
+			data = new byte[ip.length() + 1 ];
+			data[0] = Constants.TOKENTOUR;
+		}
+		else{
+			data = new byte[ip.length() + 1];
+			data[0] = Constants.TOKEN;
+		}
 		for (int i = 1; i < data.length; i++) {
 			data[i] = (byte) ip.charAt(i - 1);
 		}
-
+		
+		sendToAll(data);
 	}
 
 	private void sendToAll(byte[] data) throws IOException {
@@ -543,28 +568,24 @@ public class UnicastClient {
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
-	
-	public String getLocalIpAddress()
-	{
-	    try 
-	    {
-	        for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();)
-	        {
-	            NetworkInterface intf = en.nextElement();
-	            for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();)
-	            {
-	                InetAddress inetAddress = enumIpAddr.nextElement();
-	                if (!inetAddress.isLoopbackAddress() && inetAddress.getHostAddress().length() <= 15 ) 
-	                {
-	                    return inetAddress.getHostAddress().toString();
-	                }
-	            }
-	        }
-	    } 
-	    catch (SocketException ex)
-	    {
-	        ex.printStackTrace();
-	    }
-	    return "";
-	}   
+
+	public String getLocalIpAddress() {
+		try {
+			for (Enumeration<NetworkInterface> en = NetworkInterface
+					.getNetworkInterfaces(); en.hasMoreElements();) {
+				NetworkInterface intf = en.nextElement();
+				for (Enumeration<InetAddress> enumIpAddr = intf
+						.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+					InetAddress inetAddress = enumIpAddr.nextElement();
+					if (!inetAddress.isLoopbackAddress()
+							&& inetAddress.getHostAddress().length() <= 15) {
+						return inetAddress.getHostAddress().toString();
+					}
+				}
+			}
+		} catch (SocketException ex) {
+			ex.printStackTrace();
+		}
+		return "";
+	}
 }

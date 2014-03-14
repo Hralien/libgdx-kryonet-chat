@@ -30,7 +30,7 @@ public abstract class Joueur extends Personnage{
 	public void attaque(Personnage p, Skill s){
 		System.out.println("Methode attaque joueurs > NPC appelee !");
 		//resurection
-		if(s.getId()==4 && p.getHp() > 0){
+		if(s.getId()==4 && p.getHp() <= 0 ){
 			p.setState(Personnage.WAIT);
 			p.setHp(p.getHp_max());
 		}

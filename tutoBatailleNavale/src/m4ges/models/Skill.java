@@ -133,13 +133,15 @@ public class Skill extends Actor implements Cloneable {
 		if ((stateTime <= skillAnimation.animationDuration / 5)) {
 			currentFrame = skillAnimation.getKeyFrame(stateTime, false); // #16
 			// System.out.println("animation :"+skillAnimation.isAnimationFinished(stateTime));
-			batch.draw(currentFrame, 300, 150); // #17
+			batch.draw(currentFrame, this.getX(), this.getY()); // #17
 		} else {
-			// System.out.println("animation :"+skillAnimation.isAnimationFinished(stateTime));
+			//animation finie, on la vire du parent
+//			System.out.println("animation :"+skillAnimation.isAnimationFinished(stateTime));
+			this.remove();
+			
 		}
 		// if(stateTime>=(frame_cols*frame_rows+1)*skillAnimation.frameDuration)
 		// skillEffectEnded=true;
-
 	}
 
 	/**
@@ -175,7 +177,7 @@ public class Skill extends Actor implements Cloneable {
 		listSkill.add(new Skill(1, 1, "soin", "Soin", -10, 5, 4));
 		listSkill.add(new Skill(2, 1, "motivation", "Motivation", 0, 5, 7));
 		listSkill.add(new Skill(3, 1, "ressistance", "Resistance", 0, 5, 4));
-		listSkill.add(new Skill(4, 10, "resurrection", "Resurrection", 50, 5, 7));
+		listSkill.add(new Skill(4, 10, "resurrection", "Resurrection", 0, 5, 7));
 		/** Necromencien */
 		listSkill.add(new Skill(5, 1, "abimes", "Abimes", 10, 5, 6));
 		listSkill.add(new Skill(6, 1, "malédiction", "Malediction", 10, 5, 6));

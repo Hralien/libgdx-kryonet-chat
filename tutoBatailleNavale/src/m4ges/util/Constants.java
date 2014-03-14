@@ -26,7 +26,8 @@ public class Constants {
 	public static final int NOUVEAU=2;
 	public static final int LANCERSKILL = 3;
 	public static final int ATTAQUEMONSTRE = 4;
-	public static final int TOKEN = 5;
-	public static final int MESSAGE = 6;
-	public static final int PRET = 7;
+	public static final int MESSAGE = 5;
+	public static final int PRET = 6;
+	public static final int TOKEN = 7;
+	public static final int TOKENTOUR = 8;
 }
