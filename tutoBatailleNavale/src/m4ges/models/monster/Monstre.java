@@ -22,10 +22,11 @@ public abstract class Monstre extends Personnage{
 		return super.strength*3;
 	}
 
-	//TODO IDEM
 	//UNIQUEMENT POUR LES ATTAQUES D'UN NPC VERS UN JOUEURS
 	public void attaque(Personnage p){
 		System.out.println("Methode d'attaque NPC > joueurs appelee");
+		
+		p.setHp(p.getHp() - this.attaque());
 	}
 	public ArrayList<Item> getDropPossible() {
 		return dropPossible;

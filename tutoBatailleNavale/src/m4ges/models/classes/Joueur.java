@@ -26,18 +26,24 @@ public abstract class Joueur extends Personnage{
 
 	public abstract byte[] getBytes();
 	
-	//TODO a faire (hey oui)
 	//UNIQUEMENT POUR LES ATTAQUES D'UN JOUEUR VERS UN NPC
 	public void attaque(Personnage p, Skill s){
 		System.out.println("Methode attaque joueurs > NPC appelee !");
-		if(s.getId()==4){//resurection
+		//resurection
+		if(s.getId()==4 && p.getHp() > 0){
 			p.setState(Personnage.WAIT);
 			p.setHp(p.getHp_max());
 		}
-		p.setHp(p.getHp()-s.getDamage());
-		if(p.getHp()<=0){
-			p.setState(Personnage.MORT);
+		else{
+			if(p.getHp() > 0){
+				p.setHp(p.getHp() - s.getDamage());
+				if(p.getHp() <=0){
+					p.setHp(0);
+					p.setState(Personnage.MORT);
+				}
+			}
 		}
+		this.setMana(this.getMana() - s.getSpCost());
 	}
 	
 	public abstract String getNameClass();
