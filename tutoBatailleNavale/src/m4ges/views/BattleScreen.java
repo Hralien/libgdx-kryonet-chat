@@ -9,9 +9,12 @@ import m4ges.controllers.MyGame;
 import m4ges.models.Personnage;
 import m4ges.models.Skill;
 import m4ges.models.Vague;
+import m4ges.models.classes.Joueur;
+import m4ges.models.monster.Monstre;
 import m4ges.util.Constants;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -104,17 +107,35 @@ public class BattleScreen extends AbstractScreen {
 		batch.setProjectionMatrix(stage.getCamera().combined);
 
 		batch.begin();
-		batch.draw(battle_bg, 0, 0, Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight());
+		batch.draw(battle_bg, 0, 0, Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT);
 		if (selected != null) {
 			batch.draw(battle_arrow, selected.getOriginX(),
 					selected.getOriginY() + selected.getHeight());
 		}
 		batch.end();
+		if(Gdx.input.isKeyPressed(Input.Keys.A)){
+			int total=0;
+			for (final Personnage it : currentVague.getMonsters()) {
 
+				System.out.println("name"+(Personnage)it+"o X"+it.getX()+"o Y"+it.getOriginY()+"\np X"+it.getX()+"p Y"+it.getY());
+				System.err.println("nb listener"+it.getListeners().size);
+			}
+			for (final Personnage it : super.game.playersConnected) {
+				System.out.println("name"+(Personnage)it+"o X"+it.getX()+"o Y"+it.getOriginY()+"\np X"+it.getX()+"p Y"+it.getY());
+				System.err.println("nb listener"+it.getListeners().size);
+
+			}
+			//			for(Actor it: stage.getActors()){
+			//				if(it instanceof Personnage){
+			//					System.out.println("name"+(Personnage)it+"o X"+it.getX()+"o Y"+it.getOriginY()+"\np X"+it.getX()+"p Y"+it.getY());
+			//					total+=1;
+			//				}
+			//			}
+			System.err.println("total-listener");
+		}
 		stage.act(delta);
 		stage.draw();
-		// Table.drawDebug(stage);
+		Table.drawDebug(stage);
 	}
 
 	@Override
@@ -122,9 +143,9 @@ public class BattleScreen extends AbstractScreen {
 		// on dit a l'appli d'ecouter ce stage quand la methode show est appelee
 		Gdx.input.setInputProcessor(this.stage);
 		currentVague = Vague.loadVague(numeroVague);
-		
+
 		game.getMC().setMonstres(currentVague.getMonsters());
-		
+
 		TextureAtlas atlasMap = MyGame.manager.get("ui/maps.pack",
 				TextureAtlas.class);
 		battle_bg = new TextureRegion(atlasMap.findRegion(currentVague.getNameVague()));
@@ -139,29 +160,23 @@ public class BattleScreen extends AbstractScreen {
 
 		lb_info = buildLabelMessage("Selectionner un monstre et lancer un sort");
 
-		
-		update();
 
-		this.fg.addActor(lb_info);
-		this.fg.addActor(buildVagueInfo());
+		update();
+		this.stage.addActor(buildVagueInfo());
+
+
 	}
 
 	public void update(){
 
 		stage.clear();
-		
-		Stack stack = new Stack();
-		stack.setSize(Constants.VIEWPORT_GUI_WIDTH,
-				Constants.VIEWPORT_GUI_HEIGHT);
-		stack.add(buildPersoLayer());
-		stack.add(buildMonsterLayer());
-
-		this.stage.addActor(stack);
+		this.stage.addActor(buildPersoLayer());
+		this.stage.addActor(buildMonsterLayer());
 		this.stage.addActor(createMySkillWindows());
 		this.stage.addActor(createMyInfoWindows());
 		this.stage.addActor(createSelectedWindows());
-
-		this.stage.addActor(fg);
+		this.stage.addActor(lb_info);
+		//this.stage.addActor(fg);
 
 	}
 	/**
@@ -181,19 +196,24 @@ public class BattleScreen extends AbstractScreen {
 
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
-					fg.clear();
 					it.resetAnimation();
-					it.setSize(it.getCurrentFrame().getRegionWidth(), it
-							.getCurrentFrame().getRegionHeight());
+
+					for (Actor it : stage.getActors()) {
+						if(it instanceof Skill)
+							stage.getActors().removeValue(it, true);
+					}
 					if(selected!=null){
-						it.setPosition(selected.getOriginX(), selected.getOriginY());
-						fg.addActor(it);
+						it.setPosition(selected.getX(), selected.getY());
+						System.err.println(selected);
+
+						update();
+						stage.addActor(it);
+
 						try {
 							game.mc.lancerSort(selected, it);
 							stage.getActors().removeValue(selectWindow, true);
 							stage.addActor(createSelectedWindows());
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
@@ -265,15 +285,16 @@ public class BattleScreen extends AbstractScreen {
 		Table layer = new Table();
 		int i = 0;
 		for (final Personnage it : super.game.playersConnected) {
+			it.clear();
 			it.setVisible(true);
 			it.setOrigin(100 + width / 3 + i, 50 + height / 4 + i);
 			it.setBounds(it.getOriginX(), it.getOriginY(), it.getWidth(),
 					it.getHeight());
 			it.addListener(new InputListener() {
-				public boolean touchDown(InputEvent event, float x, float y,
-						int pointer, int button) {
+				public boolean touchDown(InputEvent event, float x, float y,int pointer, int button) {
 					System.out.println("[" + it.getName() + "]" + "down");
 					selected = it;
+					System.err.println("selected:"+selected);
 					stage.getActors().removeValue(selectWindow, true);
 					stage.addActor(createSelectedWindows());
 					return true;
@@ -284,6 +305,7 @@ public class BattleScreen extends AbstractScreen {
 					System.out.println("[" + it.getName() + "]" + "up");
 				}
 			});
+
 			i += 50;
 			layer.addActor(it);
 		}
@@ -301,6 +323,7 @@ public class BattleScreen extends AbstractScreen {
 		Table layer = new Table();
 		int i = 0;
 		for (final Personnage it : currentVague.getMonsters()) {
+			it.clear();
 			it.setVisible(true);
 			it.setOrigin(width / 3 + i, height / 4 + i);
 			it.setBounds(it.getOriginX(), it.getOriginY(), it.getWidth(),
@@ -310,6 +333,7 @@ public class BattleScreen extends AbstractScreen {
 						int pointer, int button) {
 					System.out.println("[" + it.getName() + "]" + "down");
 					selected = it;
+					System.err.println("selected:"+selected);
 					stage.getActors().removeValue(selectWindow, true);
 					stage.addActor(createSelectedWindows());
 					return true;
