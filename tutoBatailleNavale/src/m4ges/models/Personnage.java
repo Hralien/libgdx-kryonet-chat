@@ -66,7 +66,7 @@ public abstract class Personnage extends Actor {
 			batch.draw(currentFrame,getOriginX(),getOriginY());
 			break;
 		case MORT:
-			currentFrame = animate().getKeyFrame(9, true);
+			currentFrame = animate().getKeyFrame(animate().getKeyFrameIndex(8));
 			batch.draw(currentFrame,getOriginX(),getOriginY());
 			break;
 		case WAIT:

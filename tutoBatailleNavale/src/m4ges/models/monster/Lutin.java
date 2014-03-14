@@ -59,7 +59,6 @@ public class Lutin extends Monstre{
 					
 					animation = new Animation(0.1f, regions);              // #11
 
-
 				}
 			}
 		}

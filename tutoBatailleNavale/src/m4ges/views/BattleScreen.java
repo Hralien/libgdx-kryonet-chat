@@ -197,18 +197,14 @@ public class BattleScreen extends AbstractScreen {
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
 					it.resetAnimation();
-
 					for (Actor it : stage.getActors()) {
 						if(it instanceof Skill)
 							stage.getActors().removeValue(it, true);
 					}
 					if(selected!=null){
 						it.setPosition(selected.getX(), selected.getY());
-						System.err.println(selected);
-
 						update();
 						stage.addActor(it);
-
 						try {
 							game.mc.lancerSort(selected, it);
 							stage.getActors().removeValue(selectWindow, true);
@@ -383,7 +379,22 @@ public class BattleScreen extends AbstractScreen {
 		return lb_info;
 
 	}
-
+	/**
+	 * affiche sur l'ecran 
+	 * @param s le skill en question
+	 * @param lanceur le personnage lanceur du skill
+	 * @param cible le personnage qui recoit le skill
+	 */
+	private void afficheSkill(Skill s, Personnage lanceur, Personnage cible){
+		s.resetAnimation();
+		for (Actor it : stage.getActors()) {
+			if(it instanceof Skill)
+				stage.getActors().removeValue(it, true);
+		}
+		s.setPosition(selected.getX(), selected.getY());
+		lb_info.setText(lanceur.getName()+" utilise "+s.getName()+" sur "+cible.getName());
+		stage.addActor(s);
+	}
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
