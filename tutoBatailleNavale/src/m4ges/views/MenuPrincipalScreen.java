@@ -189,8 +189,8 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	public void show() {
 		// on dit a l'appli d'ecouter ce stage quand la methode show est appelee
 		Gdx.input.setInputProcessor(stage);
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
+		float w = Constants.VIEWPORT_GUI_WIDTH;
+		float h =Constants.VIEWPORT_GUI_HEIGHT;
 
 		TextureAtlas atlas = MyGame.manager.get("ui/loading.pack",
 				TextureAtlas.class);
@@ -207,7 +207,6 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		stack.add(buildControlLayer(atlas));
 		stage.addActor(buildServerSetup(atlas));
 		stage.addActor(buildTestsSetup(atlas));
-
 		stage.addActor(buildOptionsWindowLayer());
 
 		AudioManager.instance.play(Gdx.audio.newMusic(Gdx.files
@@ -265,9 +264,9 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				GamePreferences prefs = GamePreferences.instance;
 				if (!prefs.suc_creerUnePartie) {
 					game.androidUI
-							.showToast(
-									"[succes]: vous avez débloqué le succes creer une partie",
-									5, stage);
+					.showToast(
+							"[succes]: vous avez débloqué le succes creer une partie",
+							5, stage);
 					prefs.suc_creerUnePartie = true;
 					prefs.save();
 				}
@@ -329,17 +328,16 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 * @return
 	 */
 	private Table buildTitleLayer(TextureAtlas atlas) {
-		Table layout = new Table();
+		Table t = new Table();
 		imgTitle = new Image(atlas.findRegion("TitleM4ges"));
-		imgTitle.setPosition(Constants.VIEWPORT_GUI_WIDTH / 3 - imgTitle.getWidth(), (float) (Constants.VIEWPORT_GUI_HEIGHT /3 - imgTitle.getHeight()));
-		imgTitle.setSize((float)(400),(float)(200));
+		imgTitle.setSize((float) (Constants.VIEWPORT_GUI_WIDTH*0.5), (float) (Constants.VIEWPORT_GUI_HEIGHT*0.35));
+		imgTitle.setPosition(Constants.VIEWPORT_GUI_WIDTH / 3 - imgTitle.getWidth(), (float) (Constants.VIEWPORT_GUI_HEIGHT /2 - imgTitle.getHeight()));
+		imgTitle.addAction(sequence(Actions.fadeOut(0.0001f),Actions.fadeIn(3f)));
 		imgTitle.pack();
-		imgTitle.addAction(sequence(Actions.fadeOut(0.0001f),
-				Actions.fadeIn(3f)));
-		layout.add(imgTitle);
-		layout.setSize((float)(imgTitle.getWidth()*0.2),(float)(imgTitle.getHeight()*.2));
-		layout.pack();
-		return layout;
+		t.add(imgTitle).width((float) (Constants.VIEWPORT_GUI_WIDTH*0.5)).height((float) (Constants.VIEWPORT_GUI_HEIGHT*0.35));
+		t.top();
+		t.pack();
+		return t;
 	}
 
 	/**
@@ -500,7 +498,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		// + Title: "Audio"
 		tbl.pad(10, 10, 0, 10);
 		tbl.add(new Label("Audio", skin, "default-font", Color.ORANGE))
-				.colspan(3);
+		.colspan(3);
 		tbl.row();
 		tbl.columnDefaults(0).padRight(10);
 		tbl.columnDefaults(1).padRight(10);

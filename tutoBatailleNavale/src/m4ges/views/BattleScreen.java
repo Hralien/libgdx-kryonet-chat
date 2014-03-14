@@ -60,10 +60,7 @@ public class BattleScreen extends AbstractScreen {
 	 * premier plan
 	 */
 	private Group fg;
-	/**
-	 * fenetre d'affichage du numero de la vague
-	 */
-	private Window winVagueInfo;
+
 	/**
 	 * label pour afficher un message
 	 */
@@ -156,8 +153,6 @@ public class BattleScreen extends AbstractScreen {
 				Constants.VIEWPORT_GUI_HEIGHT);
 		stack.add(buildPersoLayer());
 		stack.add(buildMonsterLayer());
-		stack.setSize(Constants.VIEWPORT_GUI_WIDTH,
-				Constants.VIEWPORT_GUI_HEIGHT);
 
 		this.stage.addActor(stack);
 		this.stage.addActor(createMySkillWindows());
