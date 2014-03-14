@@ -2,6 +2,8 @@ package m4ges.models;
 
 import java.util.ArrayList;
 
+import m4ges.models.monster.Monstre;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
@@ -16,7 +18,7 @@ import com.badlogic.gdx.utils.Json;
 public class Vague {
 	private int idVague;
 	private String nameVague;
-	private ArrayList<Personnage> monsters;
+	private ArrayList<Monstre> monsters;
 
 	private Vague(){
 		
@@ -52,11 +54,11 @@ public class Vague {
 	public void setIdVague(int idVague) {
 		this.idVague = idVague;
 	}
-	public ArrayList<Personnage> getMonsters() {
+	public ArrayList<Monstre> getMonsters() {
 		return monsters;
 	}
 
-	public void setMonsters(ArrayList<Personnage> monsters) {
+	public void setMonsters(ArrayList<Monstre> monsters) {
 		this.monsters = monsters;
 	}
 	@Override

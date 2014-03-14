@@ -28,8 +28,6 @@ public class Skill extends Actor implements Cloneable {
 	/** Skill sprite management */
 	private static volatile TextureAtlas atlas;
 
-	private int frame_cols; // #1
-	private int frame_rows; // #2
 
 	private Animation skillAnimation; // #3
 	private TextureRegion currentFrame; // #7
@@ -49,26 +47,24 @@ public class Skill extends Actor implements Cloneable {
 	 *            number of rows
 	 */
 	public Skill(int id, int spCost, String skillName, String skillEffect,
-			int d, int frame_cols, int frame_rows) {
+			int damage, int frame_cols, int frame_rows) {
 		super();
 		this.id = id;
 		this.spCost = spCost;
-		this.damage = d;
+		this.damage = damage;
 		this.skillName = skillName;
-		this.sound = Gdx.audio.newSound(Gdx.files
-				.internal("sound/_heal_effect.wav"));
-		this.frame_cols = frame_cols;
-		this.frame_rows = frame_rows;
+		this.sound = Gdx.audio.newSound(Gdx.files.internal("sound/_heal_effect.wav"));
+
 
 		AtlasRegion spritesheet = getInstance().findRegion(skillEffect);
 		// System.err.println("name:"+skillEffect+"width"+spritesheet.getRegionWidth()+"hieght"+spritesheet.getRegionHeight());
-		TextureRegion[] walkFrames = new TextureRegion[this.frame_cols
-				* this.frame_rows];
-		int width = spritesheet.getRegionWidth() / this.frame_cols;
-		int height = spritesheet.getRegionHeight() / this.frame_rows;
+		TextureRegion[] walkFrames = new TextureRegion[frame_cols
+				* frame_rows];
+		int width = spritesheet.getRegionWidth() / frame_cols;
+		int height = spritesheet.getRegionHeight() / frame_rows;
 		int index = 0;
-		for (int i = 0; i < this.frame_cols; i++) {
-			for (int j = 0; j < this.frame_rows; j++) {
+		for (int i = 0; i < frame_cols; i++) {
+			for (int j = 0; j < frame_rows; j++) {
 				walkFrames[index] = new TextureRegion(spritesheet, i * width, j
 						* height, width, height);
 				// System.err.println("index:"+index);
@@ -87,7 +83,13 @@ public class Skill extends Actor implements Cloneable {
 				currentFrame.getRegionHeight());
 	}
 
+	/**
+	 * return la liste des skills d'une classe de personnage
+	 * @param classID
+	 * @return
+	 */
 	public static ArrayList<Skill> getSkillForClass(int classID) {
+		//TODO:recuperer les skills de listskill et non en créer de nouveau
 		ArrayList<Skill> list = new ArrayList<Skill>();
 		switch (classID) {
 		case 0:
@@ -163,7 +165,10 @@ public class Skill extends Actor implements Cloneable {
 		}
 		return Skill.atlas;
 	}
-
+	/**
+	 * 
+	 * construit la list des skills possibles
+	 */
 	public static void buildListSkill() {
 		listSkill = new ArrayList<Skill>();
 		/** Shaman */
@@ -193,7 +198,7 @@ public class Skill extends Actor implements Cloneable {
 		listSkill.add(new Skill(16, 1, "rafale", "Rafale", 10, 5, 5));
 	}
 
-	public static Skill selectSkillFromSkillNumber(int skillnum) {
+	public static Skill selectSkillFromSkillID(int skillnum) {
 		for (Skill it : listSkill) {
 			if (it.id == skillnum) {
 				return it;

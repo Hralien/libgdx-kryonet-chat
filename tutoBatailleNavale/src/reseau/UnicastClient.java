@@ -49,7 +49,7 @@ public class UnicastClient {
 	/**
 	 * Liste des monstres
 	 */
-	private ArrayList<Personnage> monstres;
+	private ArrayList<Monstre> monstres;
 	/**
 	 * Le jeu
 	 */
@@ -91,7 +91,7 @@ public class UnicastClient {
 		// initialisation
 		this.game = g;
 		joueurs = new MapPerso<String, Joueur>();
-		monstres = new ArrayList<Personnage>();
+		monstres = new ArrayList<Monstre>();
 		estBattleScreen = false;
 
 		try {
@@ -321,7 +321,7 @@ public class UnicastClient {
 	 * @param data
 	 */
 	private void actionTraiterLancerSkill(byte[] data) {
-		Skill s = Skill.selectSkillFromSkillNumber(data[1]);
+		Skill s = Skill.selectSkillFromSkillID(data[1]);
 		// l'ip commence a 3 et la taille est de : Taille data - l'id du
 		// monstre - action - id skill
 		ip = dpr.getAddress().toString().replace('/', '\0').trim();
@@ -528,11 +528,11 @@ public class UnicastClient {
 		this.joueurs = joueurs;
 	}
 
-	public ArrayList<Personnage> getMonstres() {
+	public ArrayList<Monstre> getMonstres() {
 		return monstres;
 	}
 
-	public void setMonstres(ArrayList<Personnage> monstres) {
+	public void setMonstres(ArrayList<Monstre> monstres) {
 		this.monstres = monstres;
 	}
 

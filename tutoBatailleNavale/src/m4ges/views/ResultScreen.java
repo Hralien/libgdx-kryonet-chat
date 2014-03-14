@@ -1,13 +1,19 @@
 package m4ges.views;
 
 
+import java.util.ArrayList;
+
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
+import m4ges.models.Item;
 import m4ges.models.Vague;
+import m4ges.models.monster.Monstre;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -25,10 +31,12 @@ public class ResultScreen extends AbstractScreen {
 	Stage stage;
 
 	private Vague lastVague;
+	private ArrayList<Item> itemsObtenu;
 
 	public ResultScreen(MyGame myGame) {
 		super(myGame);		
 		this.stage = new Stage(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), false);
+		this.itemsObtenu = new ArrayList<Item>();
 	}
 
 	@Override
@@ -41,14 +49,14 @@ public class ResultScreen extends AbstractScreen {
 		stage.dispose();
 		skin.dispose();
 		batch.dispose();
-		
+
 	}
 
 	@Override
 	public void render(float delta) {
-        super.render( delta );
+		super.render( delta );
 		batch.begin();
-		
+
 		batch.end();
 		stage.draw();
 		Table.drawDebug(stage);
@@ -58,6 +66,8 @@ public class ResultScreen extends AbstractScreen {
 	public void show() {
 		// TODO Auto-generated method stub
 		Gdx.input.setInputProcessor(stage);
+		calculRecompenses();
+
 		// on recup l'adresse a laquelle on est conecter
 		TextButton validation = new TextButton("Continuer", skin);
 
@@ -79,22 +89,40 @@ public class ResultScreen extends AbstractScreen {
 
 		stage.addActor(window);
 		stage.addActor(game.mc.chatWindow.getWindow());
-		
+
 		validation.addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
 				game.getMC().pretPourVagueSuivante();
 			}
 		});
 
-
 	}
-	
+
+	private Table buildRecompensesLayer(){
+		Table recompenses = new Table();
+		for (Item it : itemsObtenu) {
+			recompenses.add(new ImageButton(it.getImage().getDrawable()));
+			recompenses.add(new Label(it.getName(),skin));
+		}
+		return recompenses;
+	}
 	private Table buildResultatLayer(){
 		Table resultat = new Table(skin);
 		resultat.add(new Label("NomVague:"+lastVague.getNameVague(),skin));
 		resultat.add(new Label("Vos points:512",skin));
 		return resultat;
-		
+
+	}
+
+	private void calculRecompenses() {
+		itemsObtenu.clear();
+		float val = MathUtils.random(1);
+		for (Monstre monster : lastVague.getMonsters()) {
+			for (Item item : monster.getDropPossible()) {
+				if(val>=item.getRate())
+					itemsObtenu.add(item);
+			}
+		}
 	}
 
 	@Override

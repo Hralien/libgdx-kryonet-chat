@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Flower extends Monstre {
 	
-	private final static String DESCRIPTION = "Le Flower est ou n'est pas ...";
 	protected static volatile Animation animation;
 
 	public Flower() {
@@ -28,7 +27,7 @@ public class Flower extends Monstre {
 
 	@Override
 	public String getDesc() {
-		return DESCRIPTION;
+		return "Le Flower est ou n'est pas ...";
 	}
 	/**
 	 * Méthode permettant de renvoyer une instance de la classe Singleton

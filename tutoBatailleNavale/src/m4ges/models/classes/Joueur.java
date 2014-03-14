@@ -1,16 +1,21 @@
 package m4ges.models.classes;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.g2d.Animation;
+
+import m4ges.models.Item;
 import m4ges.models.Personnage;
 import m4ges.models.Skill;
 
 public abstract class Joueur extends Personnage{
 	
-	boolean pret;
-	
+	private boolean pret;
+	private ArrayList<Item> inventaire;
 	public Joueur(){
 		super();
 		pret = false;
+		setInventaire(new ArrayList<Item>());
 	}
 
 	@Override
@@ -25,6 +30,14 @@ public abstract class Joueur extends Personnage{
 	//UNIQUEMENT POUR LES ATTAQUES D'UN JOUEUR VERS UN NPC
 	public void attaque(Personnage p, Skill s){
 		System.out.println("Methode attaque joueurs > NPC appelee !");
+		if(s.getId()==4){//resurection
+			p.setState(Personnage.WAIT);
+			p.setHp(p.getHp_max());
+		}
+		p.setHp(p.getHp()-s.getDamage());
+		if(p.getHp()<=0){
+			p.setState(Personnage.MORT);
+		}
 	}
 	
 	public abstract String getNameClass();
@@ -35,6 +48,14 @@ public abstract class Joueur extends Personnage{
 	
 	public void setPret(boolean p){
 		this.pret = p;
+	}
+
+	public ArrayList<Item> getInventaire() {
+		return inventaire;
+	}
+
+	public void setInventaire(ArrayList<Item> inventaire) {
+		this.inventaire = inventaire;
 	}
 	
 	

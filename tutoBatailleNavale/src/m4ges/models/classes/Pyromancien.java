@@ -17,7 +17,9 @@ public class Pyromancien extends Joueur {
 	public Pyromancien() {
 		super();
 		super.hp=90;
+		super.hp_max = 90;
 		super.mana=110;
+		super.mana_max =110;
 		super.strength=8;
 		super.speed=11;
 		super.intel=12;

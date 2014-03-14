@@ -10,22 +10,24 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Aquamancien extends Joueur {
-	
+
 	private final static String DESCRIPTION = "L'aqueromancien ne paye peut être pas de mine, mais son pouvoir de destruction, combiné à celui d'un pyromancien, en font un adversaire redoutable.";
 	protected static volatile Animation animation;
 
 	public Aquamancien() {
 		super();
 		super.hp=90;
+		super.hp_max = 90;
 		super.mana=110;
+		super.mana_max = 110;
 		super.strength=8;
 		super.speed=11;
 		super.intel=12;
-		
+
 		super.listSkills=Skill.getSkillForClass(Personnage.AQUAMANCIEN);
 
 	}
-	
+
 	@Override
 	public String getDesc() {
 		// TODO Auto-generated method stub
@@ -63,7 +65,7 @@ public class Aquamancien extends Joueur {
 		}
 		return Aquamancien.animation;
 	}
-	
+
 	/**
 	 *  Sur les deux premiers octets : les infos
 	 *  sur le reste le pseudo du joueur

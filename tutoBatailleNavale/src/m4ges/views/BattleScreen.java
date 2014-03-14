@@ -1,6 +1,7 @@
 package m4ges.views;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+
 import java.io.IOException;
 
 import m4ges.controllers.AbstractScreen;
@@ -22,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -135,7 +137,7 @@ public class BattleScreen extends AbstractScreen {
 		battle_skill = new TextureRegion(atlas.findRegion("battle_ui_spell"));
 		battle_arrow = new TextureRegion(atlas.findRegion("fleche"));
 
-		lb_info = showMessage("Selectionner un monstre et lancer un sort");
+		lb_info = buildLabelMessage("Selectionner un monstre et lancer un sort");
 
 		
 		update();
@@ -196,7 +198,7 @@ public class BattleScreen extends AbstractScreen {
 						}
 					}
 					else{
-						showMessage("Selectionner un monstre et lancer un sort");
+						lb_info.setText("Selectionner un monstre et lancer un sort");
 					}
 				}
 			});
@@ -342,9 +344,15 @@ public class BattleScreen extends AbstractScreen {
 	 * @param s
 	 * @return
 	 */
-	private Label showMessage(String s) {
-		lb_info = new Label(s, skin);
-		lb_info.setColor(Color.RED);
+	private Label buildLabelMessage(String s) {
+		TextureAtlas atlas = MyGame.manager.get("ui/loading.pack",
+				TextureAtlas.class);
+		TextureRegion image = new TextureRegion(
+				atlas.findRegion("magic_button2"));
+		LabelStyle style = new LabelStyle();
+		style.background = new TextureRegionDrawable(image);
+		style.font = new BitmapFont();
+		lb_info = new Label(s, style);
 		lb_info.setPosition(Constants.VIEWPORT_GUI_WIDTH /2 - lb_info.getWidth()/2,	(float) (Constants.VIEWPORT_GUI_HEIGHT*0.95 ));
 		lb_info.setOrigin(Constants.VIEWPORT_GUI_WIDTH / 2 - lb_info.getWidth()/2,	(float) (Constants.VIEWPORT_GUI_HEIGHT*0.95 ));
 		lb_info.pack();

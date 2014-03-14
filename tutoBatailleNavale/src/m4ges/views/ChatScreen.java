@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
-import m4ges.models.Skill;
 import reseau.UnicastClient;
 
 import com.badlogic.gdx.Gdx;

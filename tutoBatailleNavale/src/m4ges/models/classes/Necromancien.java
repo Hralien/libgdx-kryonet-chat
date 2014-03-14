@@ -10,15 +10,17 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Necromancien extends Joueur {
-	
+
 	private final static String DESCRIPTION = "Le nécromancien est un adepte de la magie noire et utilise la manipulation pour parvenir à détruire plus facilement son adversaire.";
 	protected static volatile Animation animation;
 
-	
+
 	public Necromancien() {
 		super();
 		super.hp=70;
+		super.hp_max = 70;
 		super.mana=110;
+		super.mana_max =110;
 		super.strength=8;
 		super.speed=10;
 		super.intel=13;
@@ -54,14 +56,14 @@ public class Necromancien extends Joueur {
 					regions[6] = new TextureRegion(sprite, 192, 0, 30, 46);
 					regions[7] = new TextureRegion(sprite, 0, 46, 48, 26);
 					regions[8] = new TextureRegion(sprite, 69, 46, 48, 26);
-					
+
 					animation = new Animation(0.1f, regions);              // #11
 				}
 			}
 		}
 		return Necromancien.animation;
 	}
-	
+
 	/**
 	 *  Sur les deux premiers octets : les infos
 	 *  sur le reste le pseudo du joueur

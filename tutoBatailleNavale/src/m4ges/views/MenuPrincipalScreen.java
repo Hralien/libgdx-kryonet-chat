@@ -3,22 +3,19 @@ package m4ges.views;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.touchable;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.sound.midi.Sequence;
-
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
 import m4ges.models.Personnage;
 import m4ges.models.Vague;
 import m4ges.models.classes.Necromancien;
+import m4ges.models.monster.Monstre;
 import m4ges.util.AudioManager;
 import m4ges.util.Constants;
 import m4ges.util.GamePreferences;
@@ -26,7 +23,6 @@ import reseau.UnicastClient;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -249,7 +245,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				game.player = new Necromancien();
 				game.player.setName("salut");
 				UnicastClient mc = new UnicastClient(game);
-				ArrayList<Personnage> monstres = Vague.loadVague(1)
+				ArrayList<Monstre> monstres = Vague.loadVague(1)
 						.getMonsters();
 				mc.setMonstres(monstres);
 				for (int i = 0; i < monstres.size(); i++) {
