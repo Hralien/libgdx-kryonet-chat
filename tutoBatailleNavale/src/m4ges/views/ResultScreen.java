@@ -76,18 +76,27 @@ public class ResultScreen extends AbstractScreen {
 		//float height = Gdx.graphics.getHeight();
 
 		// window.debug();
-		Window window = new Window("Résultat", skin);
-		window.getButtonTable().add(new TextButton("X", skin)).height(window.getPadTop());
-		window.setPosition(width * 0, 200);
-		window.defaults().pad(20, 20, 20, 20);
+		Window stats = new Window("Résultat", skin);
+		stats.getButtonTable().add(new TextButton("X", skin)).height(stats.getPadTop());
+		stats.setPosition(width * 0, 200);
+		stats.defaults().pad(20, 20, 20, 20);
 
-		window.row();
-		window.add(validation);
-		window.row();
-		window.add(buildResultatLayer());
-		window.pack();
+		stats.row();
+		stats.add(validation);
+		stats.row();
+		stats.add(buildResultatLayer());
+		stats.pack();
+		
+		Window recompenses = new Window("Résultat", skin);
+		recompenses.getButtonTable().add(new TextButton("X", skin)).height(stats.getPadTop());
+		recompenses.setPosition(300, 200);
+		recompenses.defaults().pad(20, 20, 20, 20);
+		recompenses.row();
+		recompenses.add(buildRecompensesLayer());
+		recompenses.pack();
 
-		stage.addActor(window);
+		stage.addActor(stats);
+		stage.addActor(recompenses);
 		stage.addActor(game.mc.chatWindow.getWindow());
 
 		validation.addListener(new ChangeListener() {
@@ -95,7 +104,6 @@ public class ResultScreen extends AbstractScreen {
 				game.getMC().pretPourVagueSuivante();
 			}
 		});
-
 	}
 
 	private Table buildRecompensesLayer(){

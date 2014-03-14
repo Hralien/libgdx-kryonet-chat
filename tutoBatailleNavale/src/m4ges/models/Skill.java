@@ -133,13 +133,15 @@ public class Skill extends Actor implements Cloneable {
 		if ((stateTime <= skillAnimation.animationDuration / 5)) {
 			currentFrame = skillAnimation.getKeyFrame(stateTime, false); // #16
 			// System.out.println("animation :"+skillAnimation.isAnimationFinished(stateTime));
-			batch.draw(currentFrame, 300, 150); // #17
+			batch.draw(currentFrame, this.getX(), this.getY()); // #17
 		} else {
-			// System.out.println("animation :"+skillAnimation.isAnimationFinished(stateTime));
+			//animation finie, on la vire du parent
+//			System.out.println("animation :"+skillAnimation.isAnimationFinished(stateTime));
+			this.remove();
+			
 		}
 		// if(stateTime>=(frame_cols*frame_rows+1)*skillAnimation.frameDuration)
 		// skillEffectEnded=true;
-
 	}
 
 	/**
