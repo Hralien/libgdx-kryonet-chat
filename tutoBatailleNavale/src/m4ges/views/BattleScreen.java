@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
+import m4ges.models.Bar;
 import m4ges.models.Personnage;
 import m4ges.models.Skill;
 import m4ges.models.Vague;
@@ -27,6 +28,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -237,10 +239,13 @@ public class BattleScreen extends AbstractScreen {
 	private Window createMyInfoWindows() {
 		WindowStyle ws = new WindowStyle(new BitmapFont(), Color.BLACK,
 				new TextureRegionDrawable(battle_info));
+		Bar bar = new Bar(game.player);
 		Window infoWindow = new Window("", ws);
 		infoWindow.row();
+		infoWindow.add(new Image(bar.getHpBar()));
 		infoWindow.add(new Label("hp:" + game.player.getHp(), skin));
 		infoWindow.row();
+		infoWindow.add(new Image(bar.getSpBar()));
 		infoWindow.add(new Label("sp:" + game.player.getMana(), skin));
 		infoWindow.pack();
 		infoWindow.setBounds(0, 0, battle_info.getRegionWidth(),

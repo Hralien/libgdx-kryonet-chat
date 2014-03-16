@@ -107,6 +107,7 @@ public abstract class Personnage extends Actor {
 		}
 		else
 			this.hp -= damage;
+		notify();
 		
 	}
 	
