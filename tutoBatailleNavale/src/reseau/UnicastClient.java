@@ -75,8 +75,7 @@ public class UnicastClient {
 	 */
 	public ChatWindow chatWindow;
 
-
-	public static final int NB_JOUEUR_MINIMUM = 1;
+	public static final int NB_JOUEUR_MINIMUM = 2;
 
 	/**
 	 * Constructeur
@@ -90,23 +89,11 @@ public class UnicastClient {
 		joueurs = new MapPerso<String, Joueur>();
 		monstres = new ArrayList<Monstre>();
 
-		try {
+		monIp = this.getLocalIpAddress();
+		joueurs.put(monIp, game.player);
+		game.playersConnected.add(game.player);
+		receive();
 
-			monIp = this.getLocalIpAddress();
-			joueurs.put(monIp, game.player);
-			game.playersConnected.add(game.player);
-			dsR = new DatagramSocket(PORT);
-
-			ds = new DatagramSocket();
-			ds.setBroadcast(true);
-			receive();
-
-		} catch (IOException e) {
-			System.err
-					.println("[UNICASTClient]:Probleme lors de la jointure au ms/ds ou de la "
-							+ "transmission du perso. Port possible occupee");
-			e.printStackTrace();
-		}
 	}
 
 	public void lancerClient() throws IOException {
@@ -121,6 +108,16 @@ public class UnicastClient {
 	private void receive() {
 		// Permet de recevoir les donnes
 		game.androidUI.showAlertBox("title", "receiveOk", "ok", null);
+		try {
+			dsR = new DatagramSocket(PORT);
+			ds = new DatagramSocket();
+			ds.setBroadcast(true);
+		} catch (SocketException e1) {
+			game.androidUI.showAlertBox("Déjà connecté",
+					"Vous êtes déjà connecté", "ok", null);
+			return;
+		}
+
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -190,8 +187,9 @@ public class UnicastClient {
 
 	private void actionLancerSoin(byte[] data) {
 		ip = dpr.getAddress().toString().replace('/', '\0').trim();
-		String ipCible = new String(data, 2, data.length-2).trim();
-		joueurs.get(ip).attaque(joueurs.get(ipCible), Skill.selectSkillFromSkillID(data[1]));
+		String ipCible = new String(data, 2, data.length - 2).trim();
+		joueurs.get(ip).attaque(joueurs.get(ipCible),
+				Skill.selectSkillFromSkillID(data[1]));
 	}
 
 	/**
@@ -257,7 +255,8 @@ public class UnicastClient {
 			System.out.println("ip : " + it + " Pseudo : "
 					+ joueurs.get(it).getName());
 		}
-		if (joueurs.size() >= NB_JOUEUR_MINIMUM && game.currentScreen!=MyGame.BATTLESCREEN) {
+		if (joueurs.size() >= NB_JOUEUR_MINIMUM
+				&& game.currentScreen != MyGame.BATTLESCREEN) {
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {
 					game.changeScreen(MyGame.BATTLESCREEN);
@@ -339,22 +338,22 @@ public class UnicastClient {
 				+ joueurs.get(ip).getName() + " Attaque : "
 				+ monstres.get(data[2]).getName() + " avec : "
 				+ s.getSkillName());
-		
+
 		boolean vagueFinie = true;
-		for(Personnage p:monstres){
-			if(p.getHp() > 0){
+		for (Personnage p : monstres) {
+			if (p.getHp() > 0) {
 				vagueFinie = false;
 				break;
 			}
 		}
-		if(vagueFinie){
+		if (vagueFinie) {
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {
 					game.changeScreen(MyGame.RESULTSCREEN);
 				}
 			});
 		}
-			
+
 	}
 
 	/**
@@ -381,6 +380,21 @@ public class UnicastClient {
 		// DEBUG
 		System.out.println("[UNICAST] " + monstres.get(idMonstre).getName()
 				+ " attaque " + joueurs.get(ip).getName());
+
+		boolean joueursMort = true;
+		for (Joueur j : joueurs.values()) {
+			if (j.getHp() > 0) {
+				joueursMort = false;
+				break;
+			}
+		}
+		if (joueursMort) {
+			Gdx.app.postRunnable(new Runnable() {
+				public void run() {
+					game.changeScreen(MyGame.RESULTSCREEN);
+				}
+			});
+		}
 	}
 
 	/**
@@ -389,7 +403,7 @@ public class UnicastClient {
 	 * @param data
 	 */
 	private void actionToken(byte[] data, int action) {
-		for(Joueur it:joueurs.values())
+		for (Joueur it : joueurs.values())
 			it.setPret(false);
 		// avant tout il faut l'enlever à celui qui l'a
 		Set<String> key = joueurs.keySet();
@@ -412,7 +426,7 @@ public class UnicastClient {
 	 * @throws IOException
 	 */
 	public void lancerSort(Personnage mechant, Skill s) throws IOException {
-		if(mechant instanceof Joueur){
+		if (mechant instanceof Joueur) {
 			lancerSoin((Joueur) mechant, s);
 			return;
 		}
@@ -424,13 +438,13 @@ public class UnicastClient {
 
 		sendToAll(data);
 	}
-	
+
 	public void lancerSoin(Joueur j, Skill s) throws IOException {
 		byte[] data = new byte[2 + joueurs.getKey(j).length()];
 		data[0] = Constants.LANCERSOIN;
 		data[1] = (byte) s.getId();
-		for(int i = 2; i < data.length; i++){
-			data[i] = (byte) joueurs.getKey(j).charAt(i-2);
+		for (int i = 2; i < data.length; i++) {
+			data[i] = (byte) joueurs.getKey(j).charAt(i - 2);
 		}
 		sendToAll(data);
 	}
@@ -529,13 +543,12 @@ public class UnicastClient {
 	 * @throws IOException
 	 */
 	public void passerToken() throws IOException {
-		//indique qu'il a joue a ce tour
+		// indique qu'il a joue a ce tour
 		game.player.setPret(true);
 		String ipChoisi = "";
-		
+
 		/*
-		 * On passe le token au premiere
-		 * joueur qui n'est pas pret
+		 * On passe le token au premiere joueur qui n'est pas pret
 		 */
 		for (Joueur j : joueurs.values()) {
 			if (!j.estPret()) {
@@ -543,27 +556,26 @@ public class UnicastClient {
 				break;
 			}
 		}
-		
+
 		byte data[];
-		
+
 		/*
-		 * Si tout les joueurs ont joué ce tour
-		 * au passe le token au dernier joueur de la liste (random quoi...)
+		 * Si tout les joueurs ont joué ce tour au passe le token au dernier
+		 * joueur de la liste (random quoi...)
 		 */
 		if (ipChoisi.length() < 1) {
 			ipChoisi = joueurs.getKey((Joueur) game.playersConnected
 					.get(game.playersConnected.size() - 1));
-			data = new byte[ip.length() + 1 ];
+			data = new byte[ip.length() + 1];
 			data[0] = Constants.TOKENTOUR;
-		}
-		else{
+		} else {
 			data = new byte[ip.length() + 1];
 			data[0] = Constants.TOKEN;
 		}
 		for (int i = 1; i < data.length; i++) {
 			data[i] = (byte) ip.charAt(i - 1);
 		}
-		
+
 		sendToAll(data);
 	}
 

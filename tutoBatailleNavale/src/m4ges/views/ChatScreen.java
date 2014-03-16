@@ -91,7 +91,7 @@ public class ChatScreen extends AbstractScreen {
 		// System.out.println(it);
 
 		// bouton de validation
-		TextButton validation = new TextButton("se connecter", skin);
+		final TextButton validation = new TextButton("se connecter", skin);
 //		TextButton search = new TextButton("Rechercher des serveurs", skin);
 
 //		Label lblHost = new Label("Host", skin);
@@ -109,7 +109,7 @@ public class ChatScreen extends AbstractScreen {
 		//float height = Gdx.graphics.getHeight();
 
 		// window.debug();
-		Window window = new Window("Connexion", skin);
+		final Window window = new Window("Connexion", skin);
 		window.getButtonTable().add(new TextButton("X", skin))
 		.height(window.getPadTop());
 		window.setPosition(width * 0, 200);
@@ -138,6 +138,7 @@ public class ChatScreen extends AbstractScreen {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				window.removeActor(validation);
 				stage.addActor(cw.getWindow());
 //				
 			}
