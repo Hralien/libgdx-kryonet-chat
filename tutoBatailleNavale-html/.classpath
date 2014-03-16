@@ -1,14 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/tutoBatailleNavale"/>
-	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/gdx-backend-gwt.jar" sourcepath="war/WEB-INF/lib/gdx-backend-gwt-sources.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/gdx-backend-gwt-sources.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/kryonet-2.18-all.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-servlet.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Florian/Documents/GitHub/libgdx-kryonet-chat/tutoBatailleNavale/libs/gdx-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Florian/Documents/GitHub/libgdx-kryonet-chat/tutoBatailleNavale/libs/gdx.jar" sourcepath="/tutoBatailleNavaleV1/libs/gdx-sources.jar"/>
-	<classpathentry kind="output" path="war/WEB-INF/classes"/>
+    <classpathentry kind="src" path="src"/>
+    <classpathentry combineaccessrules="false" kind="src" path="/tutoBatailleNavale"/>
+    <classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
+    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+    <classpathentry kind="output" path="war/WEB-INF/classes"/>
+    <classpathentry kind="lib" path="C:/Users/Florian/Documents/GitHub/libgdx-kryonet-chat/tutoBatailleNavale/libs/gdx-sources.jar"/>
+    <classpathentry kind="lib" path="C:/Users/Florian/Documents/GitHub/libgdx-kryonet-chat/tutoBatailleNavale/libs/gdx.jar" sourcepath="/tutoBatailleNavaleV1/libs/gdx-sources.jar"/>
+    <classpathentry kind="lib" path="war/WEB-INF/lib/gdx-backend-gwt-sources.jar"/>
+    <classpathentry kind="lib" path="war/WEB-INF/lib/gdx-backend-gwt.jar" sourcepath="war/WEB-INF/lib/gdx-backend-gwt-sources.jar"/>
+    <classpathentry kind="lib" path="war/WEB-INF/lib/gwt-servlet.jar"/>
+    <classpathentry kind="lib" path="war/WEB-INF/lib/kryonet-2.18-all.jar"/>
+    <classpathentry kind="lib" path="/tutoBatailleNavale/libs/gdx-sources.jar"/>
+    <classpathentry kind="lib" path="/tutoBatailleNavale/libs/gdx.jar" sourcepath="/tutoBatailleNavale/libs/gdx-sources.jar"/>
 </classpath>

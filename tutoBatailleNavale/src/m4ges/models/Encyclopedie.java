@@ -2,6 +2,8 @@ package m4ges.models;
 
 import java.util.ArrayList;
 
+import m4ges.models.monster.Monstre;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
@@ -13,7 +15,7 @@ import com.badlogic.gdx.utils.Json;
  */
 public class Encyclopedie {
 
-	private ArrayList<Personnage> monsters;
+	private ArrayList<Monstre> monsters;
 	private Encyclopedie(){
 
 	}
@@ -27,18 +29,14 @@ public class Encyclopedie {
 		String text = file.readString();
 		//creation de la vague
 		Encyclopedie dico = json.fromJson(Encyclopedie.class, text);
-		System.out.println(dico);
-		for(Personnage it: dico.monsters){
-			System.out.println(it);
-		}
 		return dico;
 	}
 
-	public ArrayList<Personnage> getMonsters() {
+	public ArrayList<Monstre> getMonsters() {
 		return monsters;
 	}
 
-	public void setMonsters(ArrayList<Personnage> monsters) {
+	public void setMonsters(ArrayList<Monstre> monsters) {
 		this.monsters = monsters;
 	}
 
