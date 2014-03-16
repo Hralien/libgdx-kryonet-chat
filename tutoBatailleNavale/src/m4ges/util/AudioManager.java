@@ -49,7 +49,7 @@ public class AudioManager {
 	public void play (Music music) {
 		playingMusic = music;
 		if (GamePreferences.instance.music) {
-			music.setLooping(true);
+//			music.setLooping(true);
 			music.setVolume(GamePreferences.instance.volMusic);
 			music.play();
 		}

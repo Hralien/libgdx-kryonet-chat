@@ -1,5 +1,6 @@
 package m4ges.models.classes;
 
+import m4ges.controllers.MyGame;
 import m4ges.models.Personnage;
 import m4ges.models.Skill;
 import m4ges.util.Constants;
@@ -7,7 +8,9 @@ import m4ges.util.Constants;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
 public class Shaman extends Joueur {
 
@@ -55,7 +58,9 @@ public class Shaman extends Joueur {
 			// Il est TRES important.
 			synchronized(Shaman.class) {
 				if (Shaman.animation == null) {
-					Texture sprite = new Texture(Gdx.files.internal("character/shaman.png"));
+					TextureAtlas atlas = MyGame.manager.get("character/personnage.pack", TextureAtlas.class);
+					AtlasRegion sprite = atlas.findRegion("shaman");
+//					Texture sprite = new Texture(Gdx.files.internal("character/shaman.png"));
 					TextureRegion[] regions = new TextureRegion[9]; 
 					regions[0] = new TextureRegion(sprite, 0, 0, 32, 44);
 					regions[1] = new TextureRegion(sprite, 32, 0, 32, 44);

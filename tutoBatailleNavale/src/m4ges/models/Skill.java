@@ -3,9 +3,11 @@ package m4ges.models;
 import java.util.ArrayList;
 
 import m4ges.controllers.MyGame;
+import m4ges.util.AudioManager;
 import m4ges.util.Constants;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,7 +23,7 @@ public class Skill extends Actor implements Cloneable {
 	private int damage;
 	private String skillName;
 	// private ParticleEffect effect;
-	private Sound sound;
+	private String soundPath;
 
 	public static ArrayList<Skill> listSkill = new ArrayList<Skill>();
 
@@ -53,13 +55,13 @@ public class Skill extends Actor implements Cloneable {
 		this.spCost = spCost;
 		this.damage = damage;
 		this.skillName = skillName;
-		this.sound = Gdx.audio.newSound(Gdx.files.internal("sound/_heal_effect.wav"));
+		this.soundPath = "sound/"+skillEffect+".wav";
 
 
 		AtlasRegion spritesheet = getInstance().findRegion(skillEffect);
 		// System.err.println("name:"+skillEffect+"width"+spritesheet.getRegionWidth()+"hieght"+spritesheet.getRegionHeight());
 		TextureRegion[] walkFrames = new TextureRegion[frame_cols
-				* frame_rows];
+		                                               * frame_rows];
 		int width = spritesheet.getRegionWidth() / frame_cols;
 		int height = spritesheet.getRegionHeight() / frame_rows;
 		int index = 0;
@@ -128,6 +130,8 @@ public class Skill extends Actor implements Cloneable {
 
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
+		Sound m = Gdx.audio.newSound(Gdx.files.internal(soundPath));
+		AudioManager.instance.play(m);
 		stateTime += Gdx.graphics.getDeltaTime(); // #15
 		// System.err.println(stateTime);
 		if ((stateTime <= skillAnimation.animationDuration / 5)) {
@@ -136,9 +140,9 @@ public class Skill extends Actor implements Cloneable {
 			batch.draw(currentFrame, this.getX(), this.getY()); // #17
 		} else {
 			//animation finie, on la vire du parent
-//			System.out.println("animation :"+skillAnimation.isAnimationFinished(stateTime));
+			//			System.out.println("animation :"+skillAnimation.isAnimationFinished(stateTime));
 			this.remove();
-			
+			AudioManager.instance.stopMusic();
 		}
 		// if(stateTime>=(frame_cols*frame_rows+1)*skillAnimation.frameDuration)
 		// skillEffectEnded=true;
@@ -240,7 +244,7 @@ public class Skill extends Actor implements Cloneable {
 	public int getId() {
 		return id;
 	}
-	
+
 	public int getDamage(){
 		return this.damage;
 	}
@@ -253,9 +257,6 @@ public class Skill extends Actor implements Cloneable {
 		return spCost;
 	}
 
-	public Sound getSound() {
-		return sound;
-	}
 
 	public TextureRegion getCurrentFrame() {
 		return currentFrame;
