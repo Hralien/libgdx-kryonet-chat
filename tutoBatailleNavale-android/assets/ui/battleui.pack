@@ -3,39 +3,39 @@ battleui.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-battle_background
-  rotate: false
-  xy: 1, 165
-  size: 640, 320
-  orig: 640, 320
-  offset: 0, 0
-  index: -1
-plaine
-  rotate: false
-  xy: 1, 35
-  size: 512, 128
-  orig: 512, 128
-  offset: 0, 0
-  index: -1
 battle_ui_spell
   rotate: false
-  xy: 643, 389
+  xy: 1, 133
   size: 288, 96
   orig: 288, 96
   offset: 0, 0
   index: -1
 battle_ui
   rotate: false
-  xy: 643, 291
+  xy: 1, 35
   size: 260, 96
   orig: 260, 96
   offset: 0, 0
   index: -1
 battle_ui2
   rotate: false
-  xy: 643, 193
+  xy: 291, 133
   size: 260, 96
   orig: 260, 96
+  offset: 0, 0
+  index: -1
+hp_bar
+  rotate: false
+  xy: 263, 1
+  size: 201, 130
+  orig: 201, 130
+  offset: 0, 0
+  index: -1
+sp_bar
+  rotate: false
+  xy: 553, 99
+  size: 201, 130
+  orig: 201, 130
   offset: 0, 0
   index: -1
 fleche

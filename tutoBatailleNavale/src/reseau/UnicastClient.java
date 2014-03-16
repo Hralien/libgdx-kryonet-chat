@@ -74,10 +74,7 @@ public class UnicastClient {
 	 * Chat window, utile pour le chat
 	 */
 	public ChatWindow chatWindow;
-	/**
-	 * Permet de passer sur le screen de battle
-	 */
-	public boolean estBattleScreen;
+
 
 	public static final int NB_JOUEUR_MINIMUM = 1;
 
@@ -92,7 +89,6 @@ public class UnicastClient {
 		this.game = g;
 		joueurs = new MapPerso<String, Joueur>();
 		monstres = new ArrayList<Monstre>();
-		estBattleScreen = false;
 
 		try {
 
@@ -252,8 +248,7 @@ public class UnicastClient {
 			System.out.println("ip : " + it + " Pseudo : "
 					+ joueurs.get(it).getName());
 		}
-		if (joueurs.size() >= NB_JOUEUR_MINIMUM && !estBattleScreen) {
-			estBattleScreen = true;
+		if (joueurs.size() >= NB_JOUEUR_MINIMUM && game.currentScreen!=MyGame.BATTLESCREEN) {
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {
 					game.changeScreen(MyGame.BATTLESCREEN);

@@ -44,7 +44,9 @@ public class MyGame extends Game{
 	 * le personnage du joueur initialise lors de la creation
 	 */
 	public Joueur player;
-
+	/**
+	 * interface qui permet l'appel a des methodes propres android
+	 */
 	public UITrick androidUI;
 	public ArrayList<String> listHost ;
 	public ArrayList<Personnage> playersConnected;
@@ -52,7 +54,7 @@ public class MyGame extends Game{
 
 	public static AssetManager manager;
 	
-	private Screen currentScreen;
+	public int currentScreen;
 
 	public MyGame(UITrick actionResolver) {
 		super();
@@ -80,9 +82,11 @@ public class MyGame extends Game{
 	public void changeScreen(int nextScreen){
 		if(screenHashtable.containsKey(nextScreen)){
 			setScreen(screenHashtable.get(nextScreen));
-			setCurrentScreen(screenHashtable.get(nextScreen));
+			currentScreen =(nextScreen);
 		}
 	}
+
+
 
 	@Override
 	public void dispose(){
@@ -102,12 +106,4 @@ public class MyGame extends Game{
 	}
 
 
-	public Screen getCurrentScreen() {
-		return currentScreen;
-	}
-
-
-	public void setCurrentScreen(Screen currentScreen) {
-		this.currentScreen = currentScreen;
-	}
 }
