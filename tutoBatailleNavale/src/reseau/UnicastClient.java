@@ -103,7 +103,7 @@ public class UnicastClient {
 
 		} catch (IOException e) {
 			System.err
-					.println("[UNCIASTClient]:Probleme lors de la jointure au ms/ds ou de la "
+					.println("[UNICASTClient]:Probleme lors de la jointure au ms/ds ou de la "
 							+ "transmission du perso. Port possible occupee");
 			e.printStackTrace();
 		}
@@ -156,7 +156,7 @@ public class UnicastClient {
 	private void traiterData(byte[] data) throws IOException {
 		// On recupere l'action de la data
 		int action = (int) data[0];
-		System.out.println("[UNCIASTClient-TraiterData]:Donnees recu  : "
+		System.out.println("[UNICASTClient-TraiterData]:Donnees recu  : "
 				+ action);
 		switch (action) {
 		case Constants.CONNEXION:
@@ -179,7 +179,7 @@ public class UnicastClient {
 			actionPret();
 			break;
 		default:
-			System.err.println("[UNCIASTClient-DEFAULT]:Action non reconnue : "
+			System.err.println("[UNICASTClient-DEFAULT]:Action non reconnue : "
 					+ action);
 			break;
 		}
@@ -241,7 +241,7 @@ public class UnicastClient {
 		if (action == Constants.CONNEXION)
 			sendConnection(ip, true);
 		// DEBUG
-		System.out.println("[UNCIAST]\n-- Affichage de(s) " + joueurs.size()
+		System.out.println("[UNICAST]\n-- Affichage de(s) " + joueurs.size()
 				+ " joueur(s) --");
 		Set<String> key = joueurs.keySet();
 		for (String it : key) {
@@ -319,14 +319,14 @@ public class UnicastClient {
 		// monstre - action - id skill
 		ip = dpr.getAddress().toString().replace('/', '\0').trim();
 		// DEBUG
-		System.out.println("[UNCIAST - LANCERSKILL]:Lancer skill : "
+		System.out.println("[UNICAST - LANCERSKILL]:Lancer skill : "
 				+ s.getSkillName() + " ip : " + ip);
 		/*
 		 * On recupere la cible et l'attaquant
 		 */
 		joueurs.get(ip).attaque(monstres.get(data[2]), s);
 		// DEBUG
-		System.out.println("[UNCIAST - LANCERSKILL]\n"
+		System.out.println("[UNICAST - LANCERSKILL]\n"
 				+ joueurs.get(ip).getName() + " Attaque : "
 				+ monstres.get(data[2]).getName() + " avec : "
 				+ s.getSkillName());
@@ -341,7 +341,7 @@ public class UnicastClient {
 		// l'id du monstre
 		int idMonstre = data[1];
 		// DEBUG
-		System.out.println("[UNCIAST - ATTAQUEMONSTRE]:monstre qui attaque : "
+		System.out.println("[UNICAST - ATTAQUEMONSTRE]:monstre qui attaque : "
 				+ monstres.get(idMonstre).getName());
 		// l'ip de la cible
 		/*
@@ -354,7 +354,7 @@ public class UnicastClient {
 		 */
 		((Monstre) monstres.get(idMonstre)).attaque(joueurs.get(ip));
 		// DEBUG
-		System.out.println("[UNCIAST] " + monstres.get(idMonstre).getName()
+		System.out.println("[UNICAST] " + monstres.get(idMonstre).getName()
 				+ " attaque " + joueurs.get(ip).getName());
 	}
 
