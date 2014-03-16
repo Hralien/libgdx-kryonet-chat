@@ -29,6 +29,7 @@ public abstract class Joueur extends Personnage{
 	//UNIQUEMENT POUR LES ATTAQUES D'UN JOUEUR VERS UN NPC
 	public void attaque(Personnage p, Skill s){
 		System.out.println("Methode attaque joueurs > NPC appelee !");
+		System.out.println(p);
 		//resurection
 		if(s.getId()==4 && p.getHp() <= 0 ){
 			p.setState(Personnage.WAIT);
@@ -44,6 +45,8 @@ public abstract class Joueur extends Personnage{
 			}
 		}
 		this.setMana(this.getMana() - s.getSpCost());
+		
+		
 	}
 	
 	public abstract String getNameClass();

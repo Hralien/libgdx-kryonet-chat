@@ -178,11 +178,20 @@ public class UnicastClient {
 		case Constants.PRET:
 			actionPret();
 			break;
+		case Constants.LANCERSOIN:
+			actionLancerSoin(data);
+			break;
 		default:
 			System.err.println("[UNICASTClient-DEFAULT]:Action non reconnue : "
 					+ action);
 			break;
 		}
+	}
+
+	private void actionLancerSoin(byte[] data) {
+		ip = dpr.getAddress().toString().replace('/', '\0').trim();
+		String ipCible = new String(data, 2, data.length-2).trim();
+		joueurs.get(ip).attaque(joueurs.get(ipCible), Skill.selectSkillFromSkillID(data[1]));
 	}
 
 	/**
@@ -330,6 +339,22 @@ public class UnicastClient {
 				+ joueurs.get(ip).getName() + " Attaque : "
 				+ monstres.get(data[2]).getName() + " avec : "
 				+ s.getSkillName());
+		
+		boolean vagueFinie = true;
+		for(Personnage p:monstres){
+			if(p.getHp() > 0){
+				vagueFinie = false;
+				break;
+			}
+		}
+		if(vagueFinie){
+			Gdx.app.postRunnable(new Runnable() {
+				public void run() {
+					game.changeScreen(MyGame.RESULTSCREEN);
+				}
+			});
+		}
+			
 	}
 
 	/**
@@ -387,12 +412,26 @@ public class UnicastClient {
 	 * @throws IOException
 	 */
 	public void lancerSort(Personnage mechant, Skill s) throws IOException {
+		if(mechant instanceof Joueur){
+			lancerSoin((Joueur) mechant, s);
+			return;
+		}
 		byte[] data = new byte[3];
 		// action + skill's id + monstre
 		data[0] = Constants.LANCERSKILL;
 		data[1] = (byte) s.getId();
 		data[2] = (byte) monstres.indexOf(mechant);
 
+		sendToAll(data);
+	}
+	
+	public void lancerSoin(Joueur j, Skill s) throws IOException {
+		byte[] data = new byte[2 + joueurs.getKey(j).length()];
+		data[0] = Constants.LANCERSOIN;
+		data[1] = (byte) s.getId();
+		for(int i = 2; i < data.length; i++){
+			data[i] = (byte) joueurs.getKey(j).charAt(i-2);
+		}
 		sendToAll(data);
 	}
 
@@ -455,7 +494,7 @@ public class UnicastClient {
 	 * @param data
 	 */
 	public void actionPret() {
-		String ip = dp.getAddress().toString().replace('/', '\0').trim();
+		String ip = dpr.getAddress().toString().replace('/', '\0').trim();
 		joueurs.get(ip).setPret(true);
 	}
 
