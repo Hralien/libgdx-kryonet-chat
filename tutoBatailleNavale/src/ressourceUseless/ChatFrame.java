@@ -24,7 +24,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import com.esotericsoftware.minlog.Log;
 
 public class ChatFrame extends JFrame {
 	CardLayout cardLayout;

@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="libs/objenesis-1.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/reflectasm-1.07.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/jsonbeans-0.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/asm-4.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/minlog-1.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/gdx.jar" sourcepath="libs/gdx-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="http://libgdx.badlogicgames.com/nightlies/docs/api/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="lib" path="libs/gdx.jar" sourcepath="libs/gdx-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
