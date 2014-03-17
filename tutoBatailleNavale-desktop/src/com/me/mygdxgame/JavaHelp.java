@@ -1,6 +1,8 @@
 package com.me.mygdxgame;
 
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import javax.swing.JFrame;
@@ -54,23 +56,42 @@ public class JavaHelp implements UITrick{
 
 	}
 
+
 	@Override
-	public int getConnectedWifi() {
+	public String getMacAddress() {
+		InetAddress ip;
+		String macAddress="";
 		try {
-			InetAddress.getLocalHost().getHostAddress();
-		} catch (UnknownHostException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+
+			ip = InetAddress.getLocalHost();
+			System.out.println("Current IP address : " + ip.getHostAddress());
+
+			NetworkInterface network = NetworkInterface.getByInetAddress(ip);
+
+			byte[] mac = network.getHardwareAddress();
+
+			System.out.print("Current MAC address : ");
+
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < mac.length; i++) {
+				sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
+			}
+			macAddress = sb.toString();
+			System.out.println(macAddress);
+
+		} catch (UnknownHostException e) {
+
+			e.printStackTrace();
+
+		} catch (SocketException e){
+
+			e.printStackTrace();
+
 		}
-		return 0;
+		return macAddress;
 	}
 
 
-	@Override
-	public void testWifi() {
-		// TODO Auto-generated method stub
-
-	}
 
 
 

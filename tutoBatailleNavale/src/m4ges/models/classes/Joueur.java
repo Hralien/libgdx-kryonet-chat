@@ -12,6 +12,8 @@ public abstract class Joueur extends Personnage{
 	
 	private boolean pret;
 	private ArrayList<Item> inventaire;
+	private String macAddress;
+	
 	public Joueur(){
 		super();
 		pret = false;
