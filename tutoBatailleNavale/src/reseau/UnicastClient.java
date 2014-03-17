@@ -403,15 +403,11 @@ public class UnicastClient {
 	 * @param data
 	 */
 	private void actionToken(byte[] data, int action) {
+		//on l'enleve a celui qui l'a
 		for (Joueur it : joueurs.values())
-			it.setPret(false);
-		// avant tout il faut l'enlever à celui qui l'a
-		Set<String> key = joueurs.keySet();
-		for (String it : key) {
-			joueurs.get(it).setToken(false);
-		}
+			it.setToken(false);
 		// on recupere l'ip de celui qui doit l'avoir
-		ip = dpr.getAddress().toString().replace('/', '\0').trim();
+		ip = new String(data, 1, data.length - 1);
 		// et on lui met
 		joueurs.get(ip).setToken(true);
 	}
@@ -485,9 +481,9 @@ public class UnicastClient {
 			}
 		}
 		if (pret) {
+			//Balancer la vague !
 			return;
 		}
-		// balenc
 
 	}
 
@@ -510,6 +506,7 @@ public class UnicastClient {
 	public void actionPret() {
 		String ip = dpr.getAddress().toString().replace('/', '\0').trim();
 		joueurs.get(ip).setPret(true);
+		pretPourVagueSuivante();
 	}
 
 	/**
@@ -568,6 +565,7 @@ public class UnicastClient {
 					.get(game.playersConnected.size() - 1));
 			data = new byte[ip.length() + 1];
 			data[0] = Constants.TOKENTOUR;
+			
 		} else {
 			data = new byte[ip.length() + 1];
 			data[0] = Constants.TOKEN;
@@ -575,16 +573,13 @@ public class UnicastClient {
 		for (int i = 1; i < data.length; i++) {
 			data[i] = (byte) ip.charAt(i - 1);
 		}
-
 		sendToAll(data);
 	}
 
 	private void sendToAll(byte[] data) throws IOException {
 		dp = new DatagramPacket(data, data.length);
 		for (String ips : joueurs.keySet()) {
-			// if (ips.equals(monIp))
-			// dp.setAddress(InetAddress.getByName("127.0.0.1"));
-			// else
+			
 			dp.setAddress(InetAddress.getByName(ips));
 			dp.setPort(PORT);
 			ds.send(dp);
