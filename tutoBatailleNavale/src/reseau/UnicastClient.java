@@ -259,6 +259,7 @@ public class UnicastClient {
 				&& game.currentScreen != MyGame.BATTLESCREEN) {
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {
+					game.currentVague = 1;
 					game.changeScreen(MyGame.BATTLESCREEN);
 
 				}

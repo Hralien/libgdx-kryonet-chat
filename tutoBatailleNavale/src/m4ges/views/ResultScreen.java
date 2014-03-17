@@ -67,7 +67,7 @@ public class ResultScreen extends AbstractScreen {
 		// TODO Auto-generated method stub
 		Gdx.input.setInputProcessor(stage);
 		calculRecompenses();
-
+		lastVague = Vague.loadVague(game.currentVague);
 		// on recup l'adresse a laquelle on est conecter
 		TextButton validation = new TextButton("Continuer", skin);
 

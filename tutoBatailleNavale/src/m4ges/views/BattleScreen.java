@@ -45,7 +45,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  */
 public class BattleScreen extends AbstractScreen {
 
-	private int numeroVague = 1;
 	/**
 	 * {@link Stage}
 	 */
@@ -144,7 +143,8 @@ public class BattleScreen extends AbstractScreen {
 	public void show() {
 		// on dit a l'appli d'ecouter ce stage quand la methode show est appelee
 		Gdx.input.setInputProcessor(this.stage);
-		currentVague = Vague.loadVague(numeroVague);
+		
+		currentVague = Vague.loadVague(game.currentVague);
 
 		game.getMC().setMonstres(currentVague.getMonsters());
 
@@ -356,7 +356,7 @@ public class BattleScreen extends AbstractScreen {
 	 * @return
 	 */
 	private Actor buildVagueInfo() {
-		Label lblVague = new Label("Vague " + numeroVague, skin);
+		Label lblVague = new Label("Vague " + game.currentVague, skin);
 		lblVague.setPosition(Constants.VIEWPORT_GUI_WIDTH / 2 - lblVague.getWidth()/2,	(float) (Constants.VIEWPORT_GUI_HEIGHT /2  ));
 		lblVague.setOrigin(Constants.VIEWPORT_GUI_WIDTH / 2 - lblVague.getWidth()/2,	(float) (Constants.VIEWPORT_GUI_HEIGHT /2  ));
 		lblVague.pack();
@@ -415,14 +415,6 @@ public class BattleScreen extends AbstractScreen {
 	public void resume() {
 		// TODO Auto-generated method stub
 
-	}
-
-	public int getNumeroVague() {
-		return numeroVague;
-	}
-
-	public void setNumeroVague(int numeroVague) {
-		this.numeroVague = numeroVague;
 	}
 
 }
