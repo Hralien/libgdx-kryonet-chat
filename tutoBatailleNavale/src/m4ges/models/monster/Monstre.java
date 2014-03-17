@@ -33,4 +33,5 @@ public abstract class Monstre extends Personnage{
 	public void setDropPossible(ArrayList<Item> dropPossible) {
 		this.dropPossible = dropPossible;
 	}
+
 }

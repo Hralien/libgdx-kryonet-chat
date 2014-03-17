@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 
 public class Aquamancien extends Joueur {
 
@@ -93,4 +95,8 @@ public class Aquamancien extends Joueur {
 	public String getNameClass() {
 		return "Aquamancien";
 	}
+
+	
+
+	
 }

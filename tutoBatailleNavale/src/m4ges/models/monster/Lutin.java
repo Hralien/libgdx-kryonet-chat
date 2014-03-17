@@ -67,7 +67,7 @@ public class Lutin extends Monstre{
 		return Lutin.animation;
 	}
 	@Override
-	public String getName(){
+	public String getNameClass(){
 		return getClass().getSimpleName();
 	}
 

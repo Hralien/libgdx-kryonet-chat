@@ -69,7 +69,7 @@ public class Phantom extends Monstre {
 		return Phantom.animation;
 	}
 	@Override
-	public String getName(){
+	public String getNameClass(){
 		return getClass().getSimpleName();
 	}
 

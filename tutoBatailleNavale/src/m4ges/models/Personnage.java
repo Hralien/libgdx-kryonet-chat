@@ -8,12 +8,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.Json.Serializable;
 /**
  * Classe representant un personnae
  * @author Florian
  *
  */
-public abstract class Personnage extends Actor {
+public abstract class Personnage extends Actor{
 
 	//classe
 	public static final int SHAMAN=0;
@@ -117,6 +120,32 @@ public abstract class Personnage extends Actor {
 		else
 			this.mana -= mana;
 	}
+	
+//	@Override
+//	public void write(Json json) {
+//		// TODO Auto-generated method stub
+//		json.writeField(name, "name");
+//		json.writeField(hp,"hp");
+//		json.writeField(hpMax,"hpMax");
+//		json.writeField(mana,"mana");
+//		json.writeField(manaMax,"manaMax");
+//		json.writeField(strength,"strength");
+//		json.writeField(speed,"speed");
+//		json.writeField(intel,"intel");
+//	}
+//
+//	@Override
+//	public void read(Json json, JsonValue jsonData) {
+//		json.readField(String.class,"name", jsonData);
+//		json.readField(Integer.class,"hp", jsonData);
+//		json.readField(Integer.class,"hpMax", jsonData);
+//		json.readField(Integer.class, "mana", jsonData);
+//		json.readField(Integer.class, "manaMax", jsonData);
+//		json.readField(Integer.class,"strength", jsonData);
+//		json.readField(Integer.class, "speed",jsonData);
+//		json.readField(Integer.class, "intel", jsonData);
+//
+//	}
 
 	public int getHp() {
 		return hp;
@@ -171,11 +200,13 @@ public abstract class Personnage extends Actor {
 
 	@Override
 	public String toString() {
-		return "Personnage [hp=" + hp + ", mana=" + mana + ", strength="
-				+ strength + ", speed=" + speed + ", intel=" + intel
-				+ ", name=" + name + ", listSkills=" + listSkills + ", state="
-				+ state + ", currentFrame=" + currentFrame + ", stateTime="
-				+ stateTime + "]";
+		return "Personnage [hp=" + hp + ", hpMax=" + hpMax + ", mana=" + mana
+				+ ", manaMax=" + manaMax + ", strength=" + strength
+				+ ", speed=" + speed + ", intel=" + intel + ", name=" + name
+				+ ", element=" + element + ", listSkills=" + listSkills
+				+ ", token=" + token + ", state=" + state + ", currentFrame="
+				+ currentFrame + ", stateTime=" + stateTime + "]";
 	}
-	
+
+	public abstract String getNameClass();
 }

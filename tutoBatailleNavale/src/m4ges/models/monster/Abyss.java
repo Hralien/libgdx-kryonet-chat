@@ -67,7 +67,7 @@ public class Abyss extends Monstre{
 		return Abyss.animation;
 	}
 	@Override
-	public String getName(){
+	public String getNameClass(){
 		return getClass().getSimpleName();
 	}
 

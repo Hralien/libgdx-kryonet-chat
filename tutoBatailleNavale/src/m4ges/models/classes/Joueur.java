@@ -2,13 +2,16 @@ package m4ges.models.classes;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
-
 import m4ges.models.Item;
 import m4ges.models.Personnage;
 import m4ges.models.Skill;
 
-public abstract class Joueur extends Personnage{
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.Json.Serializable;
+import com.badlogic.gdx.utils.JsonValue;
+
+public abstract class Joueur extends Personnage implements Serializable{
 	
 	private boolean pret;
 	private ArrayList<Item> inventaire;
@@ -28,7 +31,7 @@ public abstract class Joueur extends Personnage{
 
 	public abstract byte[] getBytes();
 	
-	//UNIQUEMENT POUR LES ATTAQUES D'UN JOUEUR VERS UN NPC
+	//UNIQUEMENT POUR LES ATTAQUES D'UN JOUEUR VERS UN NPC OU UN SOIN
 	public void attaque(Personnage p, Skill s){
 		System.out.println("Methode attaque joueurs > NPC appelee !");
 		System.out.println(p);
@@ -46,13 +49,52 @@ public abstract class Joueur extends Personnage{
 				}
 			}
 		}
+		System.out.println(" COUT  : " + s.getSpCost());
 		this.setMana(this.getMana() - s.getSpCost());
 		
 		
 	}
 	
+	
 	public abstract String getNameClass();
 	
+	@Override
+	public void write(Json json) {
+		// TODO Auto-generated method stub
+		json.writeObjectStart(getNameClass());
+//		json.writeValue("classe", getNameClass());
+//		json.writeField(name, "name");
+//		json.writeField(hp,"hp");
+//		json.writeField(hpMax,"hpMax");
+//		json.writeField(mana,"mana");
+//		json.writeField(manaMax,"manaMax");
+//		json.writeField(strength,"strength");
+//		json.writeField(speed,"speed");
+//		json.writeField(intel,"intel");
+		json.writeFields(this);
+		System.out.println(this.name);
+		json.writeField(this.name, "name");
+		json.writeObjectEnd();
+		String s="";
+		json.fromJson(Joueur.class, s);
+		System.out.println(s);
+	}
+
+	@Override
+	public void read(Json json, JsonValue jsonData) {
+		json.readFields(this, jsonData);
+//		jsonData.child().name();
+//		jsonData.child().asString();
+//		this.name=jsonData.child().asString();
+//		this.hp= jsonData.child().asInt();
+//		this.hpMax= jsonData.child().asInt();
+//		this.mana= jsonData.child().asInt();
+//		this.manaMax= jsonData.child().asInt();
+//		this.strength= jsonData.child().asInt();
+//		this.speed= jsonData.child().asInt();
+//		this.intel= jsonData.child().asInt();
+		
+	}
 	public boolean estPret(){
 		return this.pret;
 	}
@@ -67,6 +109,14 @@ public abstract class Joueur extends Personnage{
 
 	public void setInventaire(ArrayList<Item> inventaire) {
 		this.inventaire = inventaire;
+	}
+
+	public String getMacAddress() {
+		return macAddress;
+	}
+
+	public void setMacAddress(String macAddress) {
+		this.macAddress = macAddress;
 	}
 	
 	

@@ -69,7 +69,7 @@ public class Skeleton extends Monstre {
 		return Skeleton.animation;
 	}
 	@Override
-	public String getName(){
+	public String getNameClass(){
 		return getClass().getSimpleName();
 	}
 

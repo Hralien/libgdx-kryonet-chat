@@ -65,7 +65,7 @@ public class Flower extends Monstre {
 		return Flower.animation;
 	}
 	@Override
-	public String getName(){
+	public String getNameClass(){
 		return getClass().getSimpleName();
 	}
 

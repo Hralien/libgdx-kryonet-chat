@@ -67,7 +67,7 @@ public class Blobrouge extends Monstre{
 		return Blobrouge.animation;
 	}
 	@Override
-	public String getName(){
+	public String getNameClass(){
 		return getClass().getSimpleName();
 	}
 
