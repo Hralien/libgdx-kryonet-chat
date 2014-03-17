@@ -94,7 +94,7 @@ public class Item {
 			// Il est TRES important.
 			synchronized (Item.class) {
 				if (Item.atlas == null) {
-					Item.atlas = MyGame.manager.get("effects/Item.pack",
+					Item.atlas = MyGame.manager.get("effects/items.pack",
 							TextureAtlas.class);
 					buildListItem();
 				}

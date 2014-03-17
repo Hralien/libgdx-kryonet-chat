@@ -28,9 +28,9 @@ public abstract class Personnage extends Actor {
 
 	//stats
 	protected int hp;
-	protected int hp_max;
+	protected int hpMax;
 	protected int mana;
-	protected int mana_max;
+	protected int manaMax;
 	protected int strength;
 	protected int speed;
 	protected int intel;
@@ -137,20 +137,20 @@ public abstract class Personnage extends Actor {
 		this.mana = mana;
 	}
 
-	public int getHp_max() {
-		return hp_max;
+	public int getHpMax() {
+		return hpMax;
 	}
 
-	public void setHp_max(int hp_max) {
-		this.hp_max = hp_max;
+	public void setHpMax(int hp_max) {
+		this.hpMax = hp_max;
 	}
 
-	public int getMana_max() {
-		return mana_max;
+	public int getManaMax() {
+		return manaMax;
 	}
 
-	public void setMana_max(int mana_max) {
-		this.mana_max = mana_max;
+	public void setManaMax(int mana_max) {
+		this.manaMax = mana_max;
 	}
 
 	public int getState() {

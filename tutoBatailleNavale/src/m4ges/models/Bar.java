@@ -19,7 +19,7 @@ public class Bar extends Actor{
 	}
 	
 	public TextureRegion getHpBar(){
-		int val = player.getHp()/player.getHp_max()*100;
+		int val = (player.getHp()*100)/player.getHpMax();
 		if(val <10)
 			return regionsHp[9];
 		else if(val <20)
@@ -43,7 +43,7 @@ public class Bar extends Actor{
 		
 	}
 	public TextureRegion getSpBar(){
-		int val = player.getMana()/player.getMana_max()*100;
+		int val = (player.getMana()*100)/player.getManaMax();
 		if(val <10)
 			return regionsSp[9];
 		else if(val <20)

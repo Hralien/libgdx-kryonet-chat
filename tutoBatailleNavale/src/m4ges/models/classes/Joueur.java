@@ -33,7 +33,7 @@ public abstract class Joueur extends Personnage{
 		//resurection
 		if(s.getId()==4 && p.getHp() <= 0 ){
 			p.setState(Personnage.WAIT);
-			p.setHp(p.getHp_max());
+			p.setHp(p.getHpMax());
 		}
 		else{
 			if(p.getHp() > 0){

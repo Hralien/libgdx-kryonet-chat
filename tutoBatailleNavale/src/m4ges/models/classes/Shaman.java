@@ -22,9 +22,9 @@ public class Shaman extends Joueur {
 	public Shaman() {
 		super();
 		super.hp=100;
-		super.hp_max =100;
+		super.hpMax =100;
 		super.mana=100;
-		super.mana_max =100;
+		super.manaMax =100;
 		super.strength=10;
 		super.speed=10;
 		super.intel=10;

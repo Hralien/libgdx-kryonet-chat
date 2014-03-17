@@ -96,33 +96,33 @@ public class Skill extends Actor implements Cloneable {
 		switch (classID) {
 		case 0:
 			/** Shaman */
-			list.add(new Skill(1, 1, "soin", "Soin", -10, 5, 4));
-			list.add(new Skill(2, 1, "motivation", "Motivation", 0, 5, 7));
-			list.add(new Skill(3, 1, "ressistance", "Resistance", 0, 5, 4));
+			list.add(new Skill(1, 5, "soin", "Soin", -10, 5, 4));
+			list.add(new Skill(2, 7, "motivation", "Motivation", 0, 5, 7));
+			list.add(new Skill(3, 4, "ressistance", "Resistance", 0, 5, 4));
 			list.add(new Skill(4, 10, "resurrection", "Resurrection", 50, 5, 7));
 			break;
 		case 1:
 			/** Necromencien */
-			list.add(new Skill(5, 1, "abimes", "Abimes", 10, 5, 6));
-			list.add(new Skill(6, 1, "malédiction", "Malediction", 10, 5, 6));
-			list.add(new Skill(7, 1, "empoisonement", "Empoisonnement", 10, 5,
+			list.add(new Skill(5, 8, "abimes", "Abimes", 10, 5, 6));
+			list.add(new Skill(6, 7, "malédiction", "Malediction", 10, 5, 6));
+			list.add(new Skill(7, 6, "empoisonement", "Empoisonnement", 10, 5,
 					5));
-			list.add(new Skill(8, 1, "perturbation", "Perturbation", 10, 5, 5));
+			list.add(new Skill(8, 5, "perturbation", "Perturbation", 10, 5, 5));
 			break;
 		case 2:
 			/** Mage chaud */
-			list.add(new Skill(9, 1, "deflagration", "Deflagration", 10, 5, 4));
-			list.add(new Skill(10, 1, "foudre", "Foudre", 10, 5, 10));
-			list.add(new Skill(11, 1, "choc sismique", "Choc_sismique", 10, 5,
+			list.add(new Skill(9, 5, "deflagration", "Deflagration", 10, 5, 4));
+			list.add(new Skill(10, 10, "foudre", "Foudre", 10, 5, 10));
+			list.add(new Skill(11, 6, "choc sismique", "Choc_sismique", 10, 5,
 					4));
-			list.add(new Skill(12, 1, "combustion", "Combustion", 10, 5, 8));
+			list.add(new Skill(12, 8, "combustion", "Combustion", 10, 5, 8));
 			break;
 		case 3:
 			/** Mage froid */
-			list.add(new Skill(13, 1, "geyser", "Geyser", 10, 5, 6));
-			list.add(new Skill(14, 1, "gel", "Gel", 10, 5, 6));
-			list.add(new Skill(15, 1, "tornade", "Tornade", 10, 5, 6));
-			list.add(new Skill(16, 1, "rafale", "Rafale", 10, 5, 5));
+			list.add(new Skill(13, 6, "geyser", "Geyser", 10, 5, 6));
+			list.add(new Skill(14, 6, "gel", "Gel", 10, 5, 6));
+			list.add(new Skill(15, 6, "tornade", "Tornade", 10, 5, 6));
+			list.add(new Skill(16, 5, "rafale", "Rafale", 10, 5, 5));
 			break;
 		}
 		return list;
