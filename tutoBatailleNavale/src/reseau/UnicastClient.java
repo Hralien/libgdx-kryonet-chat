@@ -18,7 +18,7 @@ import m4ges.models.classes.Aquamancien;
 import m4ges.models.classes.Joueur;
 import m4ges.models.classes.Necromancien;
 import m4ges.models.classes.Pyromancien;
-import m4ges.models.classes.Shaman;
+import m4ges.models.classes.Chamane;
 import m4ges.models.monster.Monstre;
 import m4ges.util.Constants;
 import m4ges.views.ChatWindow;
@@ -226,7 +226,7 @@ public class UnicastClient {
 			p.setName(pseudo);
 			break;
 		case Personnage.SHAMAN:
-			p = new Shaman();
+			p = new Chamane();
 			p.setName(pseudo);
 			break;
 		case Personnage.PYROMANCIEN:

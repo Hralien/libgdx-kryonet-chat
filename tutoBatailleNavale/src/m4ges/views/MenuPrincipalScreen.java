@@ -12,8 +12,10 @@ import java.util.ArrayList;
 
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
-import m4ges.models.Personnage;
+import m4ges.models.Sauvegarde;
 import m4ges.models.Vague;
+import m4ges.models.classes.Aquamancien;
+import m4ges.models.classes.Joueur;
 import m4ges.models.classes.Necromancien;
 import m4ges.models.monster.Monstre;
 import m4ges.util.AudioManager;
@@ -271,8 +273,20 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		});
 		testMacAddress.addListener(new ChangeListener() {
 			public void changed(ChangeEvent arg0, Actor arg1) {
-				game.androidUI.getMacAddress();
-			}
+				Joueur a = new Aquamancien();
+				a.setName("tot");
+				Joueur b = new Necromancien();
+				b.setName("aze");
+				ArrayList<Joueur> l = new ArrayList<Joueur>();
+				l.add(b);
+				l.add(a);
+				Sauvegarde s = new Sauvegarde(l, 2);
+				s.sauvegarder();
+				ArrayList<String> saves = Sauvegarde.getAllSave();
+				for (String save : saves) {
+				System.err.println(save);
+				}
+				Sauvegarde u = Sauvegarde.charger(saves.get(0));			}
 		});
 		showTestWindow(false, false);
 		return winTest;
@@ -738,6 +752,15 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 * 
 	 */
 	private void goToNewCharacter() {
+		GamePreferences prefs = GamePreferences.instance;
+		if (!prefs.suc_creerUnePartie) {
+		game.androidUI
+		.showToast(
+		"[succes]: vous avez débloqué le succes creer une partie",
+		5, stage);
+		prefs.suc_creerUnePartie = true;
+		prefs.save();
+		}
 		AudioManager.instance.stopMusic();
 		super.game.changeScreen(MyGame.NEWCHARACTERSCREEN);
 	}

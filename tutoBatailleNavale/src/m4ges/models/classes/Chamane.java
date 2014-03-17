@@ -12,14 +12,14 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
-public class Shaman extends Joueur {
+public class Chamane extends Joueur {
 
 	private final static String DESCRIPTION = "Le chamane est l'élément vital du groupe, son but étant de garder ses alliés en vie par tous les moyens.";
 	
 	protected static volatile Animation animation;
 
 	
-	public Shaman() {
+	public Chamane() {
 		super();
 		super.hp=100;
 		super.hpMax =100;
@@ -52,12 +52,12 @@ public class Shaman extends Joueur {
 		//Le "Double-Checked Singleton"/"Singleton doublement vérifié" permet 
 		//d'éviter un appel coûteux à synchronized, 
 		//une fois que l'instanciation est faite.
-		if (Shaman.animation == null) {
+		if (Chamane.animation == null) {
 			// Le mot-clé synchronized sur ce bloc empêche toute instanciation
 			// multiple même par différents "threads".
 			// Il est TRES important.
-			synchronized(Shaman.class) {
-				if (Shaman.animation == null) {
+			synchronized(Chamane.class) {
+				if (Chamane.animation == null) {
 					TextureAtlas atlas = MyGame.manager.get("character/personnage.pack", TextureAtlas.class);
 					AtlasRegion sprite = atlas.findRegion("shaman");
 //					Texture sprite = new Texture(Gdx.files.internal("character/shaman.png"));
@@ -77,7 +77,7 @@ public class Shaman extends Joueur {
 				}
 			}
 		}
-		return Shaman.animation;
+		return Chamane.animation;
 	}
 	
 	/**

@@ -9,7 +9,7 @@ import m4ges.models.Skill;
 import m4ges.models.classes.Aquamancien;
 import m4ges.models.classes.Necromancien;
 import m4ges.models.classes.Pyromancien;
-import m4ges.models.classes.Shaman;
+import m4ges.models.classes.Chamane;
 import m4ges.util.GamePreferences;
 
 import com.badlogic.gdx.Gdx;
@@ -135,7 +135,7 @@ public class CreateCharacterScreen extends AbstractScreen {
 				switch (listClasses.getSelectedIndex()) {
 				case 0:
 					// initialisation du player
-					game.player = new Shaman();
+					game.player = new Chamane();
 					GamePreferences.instance.nbChamanPlayed++;
 					break;
 				case 1:
