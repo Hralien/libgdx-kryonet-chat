@@ -92,6 +92,8 @@ public class ChatScreen extends AbstractScreen {
 
 		// bouton de validation
 		final TextButton validation = new TextButton("se connecter", skin);
+		//bouton pour signaler qu'on est pret a debuter la partie
+		final TextButton pret = new TextButton("Prêt", skin);
 //		TextButton search = new TextButton("Rechercher des serveurs", skin);
 
 //		Label lblHost = new Label("Host", skin);
@@ -124,12 +126,11 @@ public class ChatScreen extends AbstractScreen {
 
 		// stage.addActor(new Button("Behind Window", skin));
 		stage.addActor(window);
-
 		validation.addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
 //				game.chatClient = new GameClient(tfHost.getText(), vue, game);
 				ChatWindow cw = new ChatWindow(game);
-				UnicastClient uc = new UnicastClient(game);
+				final UnicastClient uc = new UnicastClient(game);
 				uc.chatWindow = cw;
 		
 				game.setMC(uc);
@@ -139,6 +140,24 @@ public class ChatScreen extends AbstractScreen {
 					e.printStackTrace();
 				}
 				window.removeActor(validation);
+				window.add(pret);
+				window.row();
+				/*
+				 * J'ai mit un listener dans un autre
+				 * c'est degueu, si tu veux changer vas y
+				 * mais faut ajouter UnicastClient en param du coup
+				 */
+				pret.addListener(new ChangeListener() {
+					@Override
+					public void changed(ChangeEvent event, Actor actor) {
+						try {
+							uc.estPret();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+				
 				stage.addActor(cw.getWindow());
 //				
 			}

@@ -255,16 +255,7 @@ public class UnicastClient {
 			System.out.println("ip : " + it + " Pseudo : "
 					+ joueurs.get(it).getName());
 		}
-		if (joueurs.size() >= NB_JOUEUR_MINIMUM
-				&& game.currentScreen != MyGame.BATTLESCREEN) {
-			Gdx.app.postRunnable(new Runnable() {
-				public void run() {
-					game.currentVague = 1;
-					game.changeScreen(MyGame.BATTLESCREEN);
 
-				}
-			});
-		}
 	}
 
 	/**
@@ -404,7 +395,7 @@ public class UnicastClient {
 	 * @param data
 	 */
 	private void actionToken(byte[] data, int action) {
-		//on l'enleve a celui qui l'a
+		// on l'enleve a celui qui l'a
 		for (Joueur it : joueurs.values())
 			it.setToken(false);
 		// on recupere l'ip de celui qui doit l'avoir
@@ -482,7 +473,18 @@ public class UnicastClient {
 			}
 		}
 		if (pret) {
-			//Balancer la vague !
+//			System.err.println(game.currentVague);
+//			if (joueurs.size() >= NB_JOUEUR_MINIMUM
+//					&& game.currentScreen != MyGame.BATTLESCREEN) {
+				Gdx.app.postRunnable(new Runnable() {
+					public void run() {
+//						game.currentVague = 1;
+						game.currentVague++;
+						game.changeScreen(MyGame.BATTLESCREEN);
+
+				}
+				});
+//			}
 			return;
 		}
 
@@ -566,7 +568,7 @@ public class UnicastClient {
 					.get(game.playersConnected.size() - 1));
 			data = new byte[ip.length() + 1];
 			data[0] = Constants.TOKENTOUR;
-			
+
 		} else {
 			data = new byte[ip.length() + 1];
 			data[0] = Constants.TOKEN;
@@ -580,7 +582,7 @@ public class UnicastClient {
 	private void sendToAll(byte[] data) throws IOException {
 		dp = new DatagramPacket(data, data.length);
 		for (String ips : joueurs.keySet()) {
-			
+
 			dp.setAddress(InetAddress.getByName(ips));
 			dp.setPort(PORT);
 			ds.send(dp);
@@ -600,6 +602,7 @@ public class UnicastClient {
 	}
 
 	public void setMonstres(ArrayList<Monstre> monstres) {
+		System.out.println(monstres.size());
 		this.monstres = monstres;
 	}
 

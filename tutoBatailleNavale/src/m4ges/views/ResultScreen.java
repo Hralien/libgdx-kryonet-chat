@@ -1,6 +1,7 @@
 package m4ges.views;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import m4ges.controllers.AbstractScreen;
@@ -99,7 +100,11 @@ public class ResultScreen extends AbstractScreen {
 
 		validation.addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
-				game.getMC().pretPourVagueSuivante();
+				try {
+					game.getMC().estPret();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}
