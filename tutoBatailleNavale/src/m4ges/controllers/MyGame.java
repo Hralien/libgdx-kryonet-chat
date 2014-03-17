@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import m4ges.models.Personnage;
+import m4ges.models.Vague;
 import m4ges.models.classes.Joueur;
 import m4ges.util.GamePreferences;
 import m4ges.views.BattleScreen;
@@ -45,12 +46,15 @@ public class MyGame extends Game{
 	 */
 	public Joueur player;
 	/**
-	 * interface qui permet l'appel a des methodes propres android
+	 * interface qui permet l'appel a des methodes propres a android
 	 */
 	public UITrick androidUI;
+	
 	public ArrayList<String> listHost ;
 	public ArrayList<Personnage> playersConnected;
 	public UnicastClient mc;
+	
+	public Vague vague;
 
 	public static AssetManager manager;
 	

@@ -75,7 +75,7 @@ public class UnicastClient {
 	 */
 	public ChatWindow chatWindow;
 
-	public static final int NB_JOUEUR_MINIMUM = 2;
+	public static final int NB_JOUEUR_MINIMUM = 1;
 
 	/**
 	 * Constructeur
