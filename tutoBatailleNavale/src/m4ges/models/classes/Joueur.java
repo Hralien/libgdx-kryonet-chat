@@ -28,7 +28,7 @@ public abstract class Joueur extends Personnage{
 
 	public abstract byte[] getBytes();
 	
-	//UNIQUEMENT POUR LES ATTAQUES D'UN JOUEUR VERS UN NPC
+	//UNIQUEMENT POUR LES ATTAQUES D'UN JOUEUR VERS UN NPC OU UN SOIN
 	public void attaque(Personnage p, Skill s){
 		System.out.println("Methode attaque joueurs > NPC appelee !");
 		System.out.println(p);
@@ -46,6 +46,7 @@ public abstract class Joueur extends Personnage{
 				}
 			}
 		}
+		System.out.println(" COUT  : " + s.getSpCost());
 		this.setMana(this.getMana() - s.getSpCost());
 		
 		
