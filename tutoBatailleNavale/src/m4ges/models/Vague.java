@@ -33,10 +33,7 @@ public class Vague {
 		String text = file.readString();
 		//creation de la vague
 		Vague vague = json.fromJson(Vague.class, text);
-		System.out.println(vague);
-		for(Personnage it: vague.monsters){
-			System.out.println(it);
-		}
+
 		return vague;
 	}
 

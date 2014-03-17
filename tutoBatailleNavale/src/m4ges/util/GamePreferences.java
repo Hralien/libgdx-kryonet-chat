@@ -42,6 +42,8 @@ public class GamePreferences {
 	public int nbPyroPlayed;
 	//succes
 	public boolean suc_creerUnePartie;
+	//sauvegarde
+	public int saveNumber;
 
 	private Preferences prefs;
 
@@ -66,6 +68,8 @@ public class GamePreferences {
 		nbPyroPlayed = prefs.getInteger("nbPyroPlayed", 0);
 		//succes
 		suc_creerUnePartie = prefs.getBoolean("creerUnePartie",true);
+		//sauvegarde
+		saveNumber = prefs.getInteger("saveNumber",0);
 	}
 
 	public void save () {
@@ -84,6 +88,8 @@ public class GamePreferences {
 		prefs.getInteger("nbPyroPlayed", nbPyroPlayed);
 		//succes
 		prefs.putBoolean("creerUnePartie", suc_creerUnePartie);
+		//sauvegarde
+		prefs.putInteger("saveNumber", saveNumber);
 		//on enregistre
 		prefs.flush();
 	}

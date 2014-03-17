@@ -219,13 +219,13 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	private Table buildTestsSetup(TextureAtlas atlas) {
 		winTest = new Window("Test", skin);
 		final TextButton testMulti = new TextButton("testMulti", skin);
-		final TextButton testVague = new TextButton("testVague", skin);
+		final TextButton testMacAddress = new TextButton("testMac", skin);
 		final TextButton close = new TextButton("X", skin);
 		winTest.getButtonTable().add(close).height(winTest.getPadTop());
 
 		winTest.add(testMulti);
 		winTest.row();
-		winTest.add(testVague);
+		winTest.add(testMacAddress);
 		winTest.row();
 		winTest.pack();
 		winTest.setPosition(
@@ -269,9 +269,9 @@ public class MenuPrincipalScreen extends AbstractScreen {
 
 			}
 		});
-		testVague.addListener(new ChangeListener() {
+		testMacAddress.addListener(new ChangeListener() {
 			public void changed(ChangeEvent arg0, Actor arg1) {
-				Vague.loadVague(1);
+				game.androidUI.getMacAddress();
 			}
 		});
 		showTestWindow(false, false);
@@ -465,7 +465,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				// showMenuButtons(false);
 				// showServerWindow(true, true);
 				// }
-				game.androidUI.testWifi();
+				game.androidUI.getMacAddress();
 
 			}
 		});
