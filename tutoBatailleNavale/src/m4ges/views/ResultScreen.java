@@ -55,9 +55,7 @@ public class ResultScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
 		super.render( delta );
-		batch.begin();
 
-		batch.end();
 		stage.draw();
 		Table.drawDebug(stage);
 	}
@@ -66,8 +64,9 @@ public class ResultScreen extends AbstractScreen {
 	public void show() {
 		// TODO Auto-generated method stub
 		Gdx.input.setInputProcessor(stage);
-		calculRecompenses();
 		lastVague = Vague.loadVague(game.currentVague);
+
+		calculRecompenses();
 		// on recup l'adresse a laquelle on est conecter
 		TextButton validation = new TextButton("Continuer", skin);
 
@@ -80,14 +79,13 @@ public class ResultScreen extends AbstractScreen {
 		stats.getButtonTable().add(new TextButton("X", skin)).height(stats.getPadTop());
 		stats.setPosition(width * 0, 200);
 		stats.defaults().pad(20, 20, 20, 20);
-
 		stats.row();
 		stats.add(validation);
 		stats.row();
 		stats.add(buildResultatLayer());
 		stats.pack();
-		
-		Window recompenses = new Window("Résultat", skin);
+
+		Window recompenses = new Window("Récompenses", skin);
 		recompenses.getButtonTable().add(new TextButton("X", skin)).height(stats.getPadTop());
 		recompenses.setPosition(300, 200);
 		recompenses.defaults().pad(20, 20, 20, 20);
@@ -108,9 +106,14 @@ public class ResultScreen extends AbstractScreen {
 
 	private Table buildRecompensesLayer(){
 		Table recompenses = new Table();
-		for (Item it : itemsObtenu) {
-			recompenses.add(new ImageButton(it.getImage().getDrawable()));
-			recompenses.add(new Label(it.getName(),skin));
+		if(itemsObtenu.isEmpty()){
+			recompenses.add(new Label("Vous n'avez rien gagné", skin));
+		}
+		else{
+			for (Item it : itemsObtenu) {
+				recompenses.add(new ImageButton(it.getImage().getDrawable()));
+				recompenses.add(new Label(it.getName(),skin));
+			}
 		}
 		return recompenses;
 	}
@@ -124,10 +127,14 @@ public class ResultScreen extends AbstractScreen {
 
 	private void calculRecompenses() {
 		itemsObtenu.clear();
-		float val = MathUtils.random(1);
+		//on prend un nombre au hasard
+		float val = MathUtils.random(1)*100;
+		//on parcourt la liste de monstre de la vague precedante
 		for (Monstre monster : lastVague.getMonsters()) {
+			//on parcout les items qui peuvent etre drop
 			for (Item item : monster.getDropPossible()) {
-				if(val>=item.getRate())
+				//si notre valeur est <= alors on gagne l'item
+				if(val<=item.getRate())
 					itemsObtenu.add(item);
 			}
 		}

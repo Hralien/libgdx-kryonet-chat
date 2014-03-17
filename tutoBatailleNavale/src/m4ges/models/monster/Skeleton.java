@@ -1,6 +1,9 @@
 package m4ges.models.monster;
 
+import java.util.ArrayList;
+
 import m4ges.controllers.MyGame;
+import m4ges.models.Item;
 import m4ges.models.Personnage;
 import m4ges.models.Skill;
 
@@ -68,5 +71,12 @@ public class Skeleton extends Monstre {
 	@Override
 	public String getName(){
 		return getClass().getSimpleName();
+	}
+
+
+	@Override
+	public ArrayList<Item> getDropPossible() {
+		super.dropPossible.add(Item.selectItemFromItemID(1));
+		return super.dropPossible;
 	}
 }

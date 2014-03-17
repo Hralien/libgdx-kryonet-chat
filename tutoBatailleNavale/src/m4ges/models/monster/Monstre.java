@@ -28,9 +28,7 @@ public abstract class Monstre extends Personnage{
 		
 		p.setHp(p.getHp() - this.attaque());
 	}
-	public ArrayList<Item> getDropPossible() {
-		return dropPossible;
-	}
+	public abstract ArrayList<Item> getDropPossible();
 
 	public void setDropPossible(ArrayList<Item> dropPossible) {
 		this.dropPossible = dropPossible;

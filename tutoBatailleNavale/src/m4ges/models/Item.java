@@ -40,7 +40,7 @@ public class Item {
 	 * rate de l'item , à partir duquel on peut l'avoir
 	 */
 	private int rate;
-	
+
 	/**
 	 * constructeur 
 	 * @param id
@@ -48,26 +48,30 @@ public class Item {
 	 * @param usable
 	 * @param ItemId
 	 */
-	public Item(int id, String name, boolean usable, int SkillId) {
+	public Item(int id, String name, boolean usable, int SkillId, int rate) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.usable = usable;
 		this.SkillId = SkillId;
+		this.rate = rate;
 		this.image = new Image(getInstance().findRegion(name));
 
 	}
 	/**
 	 * initialise la liste d'item
 	 */
-	public static void buildListItem() {
-		listItem = new ArrayList<Item>();
-		listItem.add(new Item(1,"cle",false, -1));
-		listItem.add(new Item(1,"potion",true, 1));
+	public static ArrayList<Item> buildListItem() {
+		if(listItem == null){
+			listItem = new ArrayList<Item>();
+			listItem.add(new Item(1,"cle",false, -1,30));
+			listItem.add(new Item(2,"potion",true, 1,50));
+		}
+		return listItem;
 
 	} 
 	public static Item selectItemFromItemID(int itemId) {
-		for (Item it : listItem) {
+		for (Item it : buildListItem()) {
 			if (it.id == itemId) {
 				return it;
 			}
@@ -133,7 +137,4 @@ public class Item {
 	public void setRate(int rate) {
 		this.rate = rate;
 	}
-	
-	
-
 }

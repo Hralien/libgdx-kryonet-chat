@@ -75,7 +75,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	/**
 	 * bouton pour heberger une partie
 	 */
-	private Button btnMenuHost;
+//	private Button btnMenuHost;
 	/**
 	 * bouton pour join une partie
 	 */
@@ -352,13 +352,13 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		style.font = new BitmapFont();
 
 		// buttons with style
-		btnMenuHost = buildBtnMenuHost(style);
+//		btnMenuHost = buildBtnMenuHost(style);
 		btnMenuPlay = buildBtnMenuPlay(style);
 		btnMenuDico = buildBtnMenuDico(style);
 		btnMenuOptions = buildBtnMenuOption(style);
 		btnMenuTest = buildBtnMenuTest(style);
 
-		layer.add(btnMenuHost).left();
+//		layer.add(btnMenuHost).left();
 		layer.add(btnMenuPlay).right();
 		layer.row();
 		layer.add(btnMenuDico).left();
@@ -666,14 +666,13 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		float moveY = 0 * (visible ? -1 : 1);
 		final Touchable touchEnabled = visible ? Touchable.enabled
 				: Touchable.disabled;
-		btnMenuHost.addAction(moveBy(moveX, moveY, moveDuration, moveEasing));
-		btnMenuPlay.addAction(sequence(delay(delayOptionsButton),
+//		btnMenuHost.addAction(moveBy(moveX, moveY, moveDuration, moveEasing));
+		btnMenuPlay.addAction(moveBy(moveX, moveY, moveDuration, moveEasing));
+		btnMenuDico.addAction(sequence(delay(delayOptionsButton),
 				moveBy(moveX, moveY, moveDuration, moveEasing)));
-		btnMenuDico.addAction(sequence(delay(delayOptionsButton * 2),
+		btnMenuOptions.addAction(sequence(delay(delayOptionsButton * 2),
 				moveBy(moveX, moveY, moveDuration, moveEasing)));
-		btnMenuOptions.addAction(sequence(delay(delayOptionsButton * 3),
-				moveBy(moveX, moveY, moveDuration, moveEasing)));
-		btnMenuTest.addAction(sequence(delay(delayOptionsButton * 4),
+		btnMenuTest.addAction(sequence(delay(delayOptionsButton * 3),
 				moveBy(moveX, moveY, moveDuration, moveEasing)));
 
 		SequenceAction seq = sequence();
@@ -681,7 +680,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 			seq.addAction(delay(delayOptionsButton + moveDuration));
 		seq.addAction(run(new Runnable() {
 			public void run() {
-				btnMenuHost.setTouchable(touchEnabled);
+//				btnMenuHost.setTouchable(touchEnabled);
 				btnMenuPlay.setTouchable(touchEnabled);
 				btnMenuDico.setTouchable(touchEnabled);
 				btnMenuOptions.setTouchable(touchEnabled);
