@@ -36,6 +36,10 @@ public class Skill extends Actor implements Cloneable {
 
 	private float stateTime; // #8
 
+	public Skill() {
+		super();
+	}
+
 	/**
 	 * 
 	 * @param id

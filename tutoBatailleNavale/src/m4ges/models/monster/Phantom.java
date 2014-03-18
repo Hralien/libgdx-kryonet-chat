@@ -20,7 +20,7 @@ public class Phantom extends Monstre {
 
 	public Phantom() {
 		super();
-		super.name="Phantom";
+		super.nom="Phantom";
 		super.hp=50;
 		super.intel=3;
 		super.mana=5*super.intel;

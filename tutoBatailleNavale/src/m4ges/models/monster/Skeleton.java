@@ -20,7 +20,7 @@ public class Skeleton extends Monstre {
 	
 	public Skeleton() {
 		super();
-		super.name="Skeleton";
+		super.nom="Skeleton";
 		super.hp=50;
 		super.intel=3;
 		super.mana=5*super.intel;

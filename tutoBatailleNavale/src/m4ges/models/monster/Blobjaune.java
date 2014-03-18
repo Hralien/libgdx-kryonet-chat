@@ -18,7 +18,7 @@ public class Blobjaune extends Monstre{
 
 	public Blobjaune() {
 		super();
-		super.name="Blobjaune";
+		super.nom="Blobjaune";
 		super.hp=50;
 		super.intel=3;
 		super.mana=5*super.intel;

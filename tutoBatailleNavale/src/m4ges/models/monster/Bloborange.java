@@ -18,7 +18,7 @@ public class Bloborange extends Monstre{
 
 	public Bloborange() {
 		super();
-		super.name="Bloborange";
+		super.nom="Bloborange";
 		super.hp=50;
 		super.intel=3;
 		super.mana=5*super.intel;

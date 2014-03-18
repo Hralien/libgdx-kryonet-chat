@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 
 public class Chamane extends Joueur {
 
@@ -34,11 +36,7 @@ public class Chamane extends Joueur {
 	}
 
 	
-	@Override
-	public String toString() {
-		return "Shaman [hp=" + getHp() + ", mana=" + getMana() + ", strength=" + strength
-				+ ", speed=" + speed + ", name=" + name + "]";
-	}
+
 	@Override
 	public String getDesc() {
 		// TODO Auto-generated method stub
@@ -86,12 +84,12 @@ public class Chamane extends Joueur {
 	 * @return les donnees a envoyer
 	 */
 	public byte[] getBytes(){
-		byte data[] = new byte[3+this.name.length()];
+		byte data[] = new byte[3+this.nom.length()];
 		data[0] = Constants.CONNEXION;
 		data[1] = Personnage.SHAMAN;
 		//Et oui, on peut doit l'ip apres :(
-		data[2] = (byte) this.name.length();
-		byte[] pseudo = this.name.getBytes();
+		data[2] = (byte) this.nom.length();
+		byte[] pseudo = this.nom.getBytes();
 		for(int i = 3; i < pseudo.length+3;i++){
 			data[i] = pseudo[i-3];
 		}
@@ -102,6 +100,21 @@ public class Chamane extends Joueur {
 	@Override
 	public String getNameClass() {
 		return "Chamane";
+	}
+
+	
+	@Override
+	public String toString() {
+		return "Chamane [hp=" + hp + ", hpMax=" + hpMax + ", mana=" + mana
+				+ ", manaMax=" + manaMax + ", strength=" + strength
+				+ ", speed=" + speed + ", intel=" + intel + ", name=" + nom
+				+ ", element=" + element + ", listSkills=" + listSkills
+				+ ", token=" + token + ", state=" + state + ", currentFrame="
+				+ currentFrame + ", stateTime=" + stateTime + ", x=" + getX()
+				+ ", y=" + getY() + ", width=" + getWidth() + ", height=" + getHeight()
+				+ ", originX=" + getOriginX() + ", originY=" + getOriginY() + ", scaleX="
+				+ getScaleX() + ", scaleY=" + getScaleY() + ", rotation=" + getRotation()
+				+ ", color=" + getColor() + "]";
 	}
 
 }

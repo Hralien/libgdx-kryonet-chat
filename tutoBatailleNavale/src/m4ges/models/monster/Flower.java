@@ -18,7 +18,7 @@ public class Flower extends Monstre {
 
 	public Flower() {
 		super();
-		super.name="Flower";
+		super.nom="Flower";
 		super.hp=50;
 		super.intel=3;
 		super.mana=5*super.intel;

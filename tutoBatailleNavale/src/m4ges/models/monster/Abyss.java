@@ -18,7 +18,7 @@ public class Abyss extends Monstre{
 
 	public Abyss() {
 		super();
-		super.name="Abyss";
+		super.nom="Abyss";
 		super.hp=50;
 		super.intel=3;
 		super.mana=5*super.intel;

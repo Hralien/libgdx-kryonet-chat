@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 
 public class Necromancien extends Joueur {
 
@@ -75,13 +77,13 @@ public class Necromancien extends Joueur {
 	 * @return les donnees a envoyer
 	 */
 	public byte[] getBytes(){
-		byte data[] = new byte[3+this.name.length()];
+		byte data[] = new byte[3+this.nom.length()];
 		data[0] = Constants.CONNEXION;
 		data[1] = Personnage.NECROMANCIEN;
 		//Et oui, on doit mettre l'ip apres :(
-		data[2] = (byte) this.name.length();
-		for(int i = 3; i < name.length()+3;i++){
-			data[i] = (byte) name.charAt(i-3);
+		data[2] = (byte) this.nom.length();
+		for(int i = 3; i < nom.length()+3;i++){
+			data[i] = (byte) nom.charAt(i-3);
 		}
 		return data;
 	}
@@ -89,5 +91,19 @@ public class Necromancien extends Joueur {
 	@Override
 	public String getNameClass() {
 		return "Necromancien";
+	}
+
+	@Override
+	public String toString() {
+		return "Necromancien [hp=" + hp + ", hpMax=" + hpMax + ", mana=" + mana
+				+ ", manaMax=" + manaMax + ", strength=" + strength
+				+ ", speed=" + speed + ", intel=" + intel + ", name=" + nom
+				+ ", element=" + element + ", listSkills=" + listSkills
+				+ ", token=" + token + ", state=" + state + ", currentFrame="
+				+ currentFrame + ", stateTime=" + stateTime + ", x=" + getX()
+				+ ", y=" + getY() + ", width=" + getWidth() + ", height=" + getHeight()
+				+ ", originX=" + getOriginX() + ", originY=" + getOriginY() + ", scaleX="
+				+ getScaleX() + ", scaleY=" + getScaleY() + ", rotation=" + getRotation()
+				+ ", color=" + getColor() + "]";
 	}
 }

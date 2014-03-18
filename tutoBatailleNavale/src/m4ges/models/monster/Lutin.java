@@ -20,7 +20,7 @@ public class Lutin extends Monstre{
 	
 	public Lutin() {
 		super();
-		super.name="Lutin";
+		super.nom="Lutin";
 		super.hp=50;
 		super.intel=3;
 		super.mana=5*super.intel;

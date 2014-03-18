@@ -34,7 +34,7 @@ public abstract class Personnage extends Actor {
 	protected int strength;
 	protected int speed;
 	protected int intel;
-	protected String name;
+	protected String nom;
 	protected int element;
 	protected ArrayList<Skill> listSkills;
 	//permet de connaitre le tour de jeu
@@ -43,7 +43,7 @@ public abstract class Personnage extends Actor {
 	//animation
 	protected int state;
 	protected TextureRegion currentFrame;
-	float stateTime;
+	protected float stateTime;
 
 	
 	public Personnage() {
@@ -89,11 +89,11 @@ public abstract class Personnage extends Actor {
 	public abstract Animation animate();
 	
 	public String getName() {
-		return name;
+		return nom;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.nom = name;
 	}
 
 	public ArrayList<Skill> getListSkills() {
@@ -173,7 +173,7 @@ public abstract class Personnage extends Actor {
 	public String toString() {
 		return "Personnage [hp=" + hp + ", mana=" + mana + ", strength="
 				+ strength + ", speed=" + speed + ", intel=" + intel
-				+ ", name=" + name + ", listSkills=" + listSkills + ", state="
+				+ ", name=" + nom + ", listSkills=" + listSkills + ", state="
 				+ state + ", currentFrame=" + currentFrame + ", stateTime="
 				+ stateTime + "]";
 	}

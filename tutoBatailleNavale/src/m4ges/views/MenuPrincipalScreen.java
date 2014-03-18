@@ -81,7 +81,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	/**
 	 * bouton pour heberger une partie
 	 */
-//	private Button btnMenuHost;
+	//	private Button btnMenuHost;
 	/**
 	 * bouton pour join une partie
 	 */
@@ -178,7 +178,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		stateTime += Gdx.graphics.getDeltaTime(); // #15
 
 		batch.begin();
-//		batch.draw(scrollingImage, (float) (0 - (2 * stateTime * 10)), 0);
+		//		batch.draw(scrollingImage, (float) (0 - (2 * stateTime * 10)), 0);
 		batch.end();
 
 		stage.act(delta);
@@ -289,9 +289,10 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				s.sauvegarder();
 				ArrayList<String> saves = Sauvegarde.getAllSave();
 				for (String save : saves) {
-				System.err.println(save);
+					System.err.println(save);
 				}
-				Sauvegarde u = Sauvegarde.charger(saves.get(0));			}
+				Sauvegarde u = Sauvegarde.charger(saves.get(0));			
+			}
 		});
 		showTestWindow(false, false);
 		return winTest;
@@ -371,13 +372,13 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		style.font = new BitmapFont();
 
 		// buttons with style
-//		btnMenuHost = buildBtnMenuHost(style);
+		//		btnMenuHost = buildBtnMenuHost(style);
 		btnMenuPlay = buildBtnMenuPlay(style);
 		btnMenuDico = buildBtnMenuDico(style);
 		btnMenuOptions = buildBtnMenuOption(style);
 		btnMenuTest = buildBtnMenuTest(style);
 
-//		layer.add(btnMenuHost).left();
+		//		layer.add(btnMenuHost).left();
 		layer.add(btnMenuPlay).right();
 		layer.row();
 		layer.add(btnMenuDico).left();
@@ -503,7 +504,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		scrollingImage.setPosition(0, 0);
 		RepeatAction ra = new RepeatAction();
 		ra.setAction(sequence(moveTo(0, 0), moveBy((int)(-scrollingImage.getWidth()*.6), 0, 8.0f, Interpolation.linear),
-				 moveBy((int)(scrollingImage.getWidth()*.6), 0, 8.0f, Interpolation.linear)));
+				moveBy((int)(scrollingImage.getWidth()*.6), 0, 8.0f, Interpolation.linear)));
 		ra.setCount(RepeatAction.FOREVER);
 		scrollingImage.addAction(ra);
 		stateTime = 0;
@@ -691,7 +692,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		float moveY = 0 * (visible ? -1 : 1);
 		final Touchable touchEnabled = visible ? Touchable.enabled
 				: Touchable.disabled;
-//		btnMenuHost.addAction(moveBy(moveX, moveY, moveDuration, moveEasing));
+		//		btnMenuHost.addAction(moveBy(moveX, moveY, moveDuration, moveEasing));
 		btnMenuPlay.addAction(moveBy(moveX, moveY, moveDuration, moveEasing));
 		btnMenuDico.addAction(sequence(delay(delayOptionsButton),
 				moveBy(moveX, moveY, moveDuration, moveEasing)));
@@ -705,7 +706,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 			seq.addAction(delay(delayOptionsButton + moveDuration));
 		seq.addAction(run(new Runnable() {
 			public void run() {
-//				btnMenuHost.setTouchable(touchEnabled);
+				//				btnMenuHost.setTouchable(touchEnabled);
 				btnMenuPlay.setTouchable(touchEnabled);
 				btnMenuDico.setTouchable(touchEnabled);
 				btnMenuOptions.setTouchable(touchEnabled);
@@ -765,12 +766,12 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	private void goToNewCharacter() {
 		GamePreferences prefs = GamePreferences.instance;
 		if (!prefs.suc_creerUnePartie) {
-		game.androidUI
-		.showToast(
-		"[succes]: vous avez débloqué le succes creer une partie",
-		5, stage);
-		prefs.suc_creerUnePartie = true;
-		prefs.save();
+			game.androidUI
+			.showToast(
+					"[succes]: vous avez débloqué le succes creer une partie",
+					5, stage);
+			prefs.suc_creerUnePartie = true;
+			prefs.save();
 		}
 		AudioManager.instance.stopMusic();
 		super.game.changeScreen(MyGame.NEWCHARACTERSCREEN);

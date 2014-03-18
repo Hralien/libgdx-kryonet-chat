@@ -20,46 +20,11 @@ public abstract class Joueur extends Personnage implements Serializable{
 	public Joueur(){
 		super();
 		pret = false;
+		setMacAddress("");
 		setInventaire(new ArrayList<Item>());
 	}
 
-	@Override
-	public void write(Json json) {
-		// TODO Auto-generated method stub
-		json.writeObjectStart(getNameClass());
-//		json.writeValue("classe", getNameClass());
-//		json.writeField(name, "name");
-//		json.writeField(hp,"hp");
-//		json.writeField(hpMax,"hpMax");
-//		json.writeField(mana,"mana");
-//		json.writeField(manaMax,"manaMax");
-//		json.writeField(strength,"strength");
-//		json.writeField(speed,"speed");
-//		json.writeField(intel,"intel");
-		json.writeFields(this);
-		System.out.println(this.name);
-		json.writeField(this.name, "name");
-		json.writeObjectEnd();
-		String s="";
-		json.fromJson(Joueur.class, s);
-		System.out.println(s);
-	}
-
-	@Override
-	public void read(Json json, JsonValue jsonData) {
-		json.readFields(this, jsonData);
-//		jsonData.child().name();
-//		jsonData.child().asString();
-//		this.name=jsonData.child().asString();
-//		this.hp= jsonData.child().asInt();
-//		this.hpMax= jsonData.child().asInt();
-//		this.mana= jsonData.child().asInt();
-//		this.manaMax= jsonData.child().asInt();
-//		this.strength= jsonData.child().asInt();
-//		this.speed= jsonData.child().asInt();
-//		this.intel= jsonData.child().asInt();
-		
-	}
+	
 	//UNIQUEMENT POUR LES ATTAQUES D'UN JOUEUR VERS UN NPC OU UN SOIN
 	public void attaque(Personnage p, Skill s){
 		System.out.println("Methode attaque joueurs > NPC appelee !");
@@ -83,6 +48,32 @@ public abstract class Joueur extends Personnage implements Serializable{
 		
 		
 	}
+	@Override
+	public void write(Json json) {
+		json.writeValue("name",nom, String.class);
+		json.writeValue("hp",hp,Integer.class);
+		json.writeValue("hpMax",hpMax,Integer.class);
+		json.writeValue("mana",mana,Integer.class);
+		json.writeValue("manaMax",manaMax,Integer.class);
+		json.writeValue("strength",strength,Integer.class);
+		json.writeValue("speed",speed,Integer.class);
+		json.writeValue("intel",intel,Integer.class);
+
+	}
+
+	@Override
+	public void read(Json json, JsonValue jsonData) {
+		this.nom = json.readValue(String.class, jsonData);
+		this.hp = json.readValue("hp", Integer.class, jsonData);
+		this.hpMax= json.readValue("hpMax",Integer.class,jsonData);
+		this.mana= json.readValue("mana",Integer.class,jsonData);
+		this.manaMax= json.readValue("manaMax",Integer.class,jsonData);
+		this.strength= json.readValue("strength",Integer.class,jsonData);
+		this.speed= json.readValue("speed",Integer.class,jsonData);
+		this.intel= json.readValue("intel",Integer.class,jsonData);
+		
+	}
+
 	@Override
 	public abstract String getDesc();
 
@@ -108,6 +99,16 @@ public abstract class Joueur extends Personnage implements Serializable{
 
 	public void setInventaire(ArrayList<Item> inventaire) {
 		this.inventaire = inventaire;
+	}
+
+
+	public String getMacAddress() {
+		return macAddress;
+	}
+
+
+	public void setMacAddress(String macAddress) {
+		this.macAddress = macAddress;
 	}
 	
 	
