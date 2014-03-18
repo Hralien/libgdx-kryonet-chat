@@ -66,7 +66,7 @@ public class ResultScreen extends AbstractScreen {
 		// TODO Auto-generated method stub
 		Gdx.input.setInputProcessor(stage);
 		lastVague = Vague.loadVague(game.currentVague);
-
+		
 		calculRecompenses();
 		// on recup l'adresse a laquelle on est conecter
 		TextButton validation = new TextButton("Continuer", skin);
@@ -135,7 +135,10 @@ public class ResultScreen extends AbstractScreen {
 		//on prend un nombre au hasard
 		float val = MathUtils.random(1)*100;
 		//on parcourt la liste de monstre de la vague precedante
+		System.out.println(lastVague.getNameVague());
 		for (Monstre monster : lastVague.getMonsters()) {
+			System.out.println(monster.getName());
+			System.out.println(monster.getDropPossible());
 			//on parcout les items qui peuvent etre drop
 			for (Item item : monster.getDropPossible()) {
 				//si notre valeur est <= alors on gagne l'item
