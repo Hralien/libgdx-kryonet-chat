@@ -3,6 +3,7 @@ package m4ges.views;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.touchable;
@@ -34,6 +35,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
@@ -64,7 +68,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	/**
 	 * Actor pour l'animation du fond
 	 */
-	private TextureRegion scrollingImage;
+	private Image scrollingImage;
 	/**
 	 * {@link AtlasRegion} to get the logo
 	 */
@@ -174,7 +178,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		stateTime += Gdx.graphics.getDeltaTime(); // #15
 
 		batch.begin();
-		batch.draw(scrollingImage, (float) (0 - (2 * stateTime * 10)), 0);
+//		batch.draw(scrollingImage, (float) (0 - (2 * stateTime * 10)), 0);
 		batch.end();
 
 		stage.act(delta);
@@ -193,10 +197,11 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		TextureAtlas atlas = MyGame.manager.get("ui/loading.pack",
 				TextureAtlas.class);
 
-		// Background initialisation
-		buildBackgroundLayer();
+
 
 		stage.clear();
+		// Background initialisation
+		stage.addActor(buildBackgroundLayer());
 		Stack stack = new Stack();
 		stage.addActor(stack);
 
@@ -491,12 +496,18 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	/**
 	 * 
 	 */
-	private void buildBackgroundLayer() {
+	private Image buildBackgroundLayer() {
 		TextureAtlas atlas = MyGame.manager.get("ui/scroll.pack",
 				TextureAtlas.class);
-		scrollingImage = new TextureRegion(atlas.findRegion("Scroll"));
+		scrollingImage = new Image(atlas.findRegion("Scroll"));
+		scrollingImage.setPosition(0, 0);
+		RepeatAction ra = new RepeatAction();
+		ra.setAction(sequence(moveTo(0, 0), moveBy((int)(-scrollingImage.getWidth()*.6), 0, 8.0f, Interpolation.linear),
+				 moveBy((int)(scrollingImage.getWidth()*.6), 0, 8.0f, Interpolation.linear)));
+		ra.setCount(RepeatAction.FOREVER);
+		scrollingImage.addAction(ra);
 		stateTime = 0;
-
+		return scrollingImage;
 	}
 
 	/**
