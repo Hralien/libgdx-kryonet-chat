@@ -83,8 +83,8 @@ public class BattleScreen extends AbstractScreen {
 	 */
 	public BattleScreen(MyGame myGame) {
 		super(myGame);
-		this.stage = new Stage(Constants.VIEWPORT_GUI_WIDTH,
-				Constants.VIEWPORT_GUI_HEIGHT, true);
+		this.stage = new Stage(Gdx.graphics.getWidth(),
+		Gdx.graphics.getHeight(), true);
 		this.stage.setCamera(cameraGUI);
 		this.fg = new Group();
 
@@ -108,32 +108,12 @@ public class BattleScreen extends AbstractScreen {
 		batch.setProjectionMatrix(stage.getCamera().combined);
 
 		batch.begin();
-		batch.draw(battle_bg, 0, 0, Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT);
+		batch.draw(battle_bg, 0, 0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		if (selected != null) {
 			batch.draw(battle_arrow, selected.getOriginX(),
 					selected.getOriginY() + selected.getHeight());
 		}
 		batch.end();
-		if(Gdx.input.isKeyPressed(Input.Keys.A)){
-			int total=0;
-			for (final Personnage it : currentVague.getMonsters()) {
-
-				System.out.println("name"+(Personnage)it+"o X"+it.getX()+"o Y"+it.getOriginY()+"\np X"+it.getX()+"p Y"+it.getY());
-				System.err.println("nb listener"+it.getListeners().size);
-			}
-			for (final Personnage it : super.game.playersConnected) {
-				System.out.println("name"+(Personnage)it+"o X"+it.getX()+"o Y"+it.getOriginY()+"\np X"+it.getX()+"p Y"+it.getY());
-				System.err.println("nb listener"+it.getListeners().size);
-
-			}
-			//			for(Actor it: stage.getActors()){
-			//				if(it instanceof Personnage){
-			//					System.out.println("name"+(Personnage)it+"o X"+it.getX()+"o Y"+it.getOriginY()+"\np X"+it.getX()+"p Y"+it.getY());
-			//					total+=1;
-			//				}
-			//			}
-			System.err.println("total-listener");
-		}
 		stage.act(delta);
 		stage.draw();
 		Table.drawDebug(stage);
@@ -142,7 +122,7 @@ public class BattleScreen extends AbstractScreen {
 	@Override
 	public void show() {
 		// on dit a l'appli d'ecouter ce stage quand la methode show est appelee
-		Gdx.input.setInputProcessor(this.stage);
+Gdx.input.setInputProcessor(this.stage);
 		
 		currentVague = Vague.loadVague(game.currentVague);
 
@@ -262,7 +242,7 @@ public class BattleScreen extends AbstractScreen {
 		WindowStyle ws = new WindowStyle(new BitmapFont(), Color.BLACK,
 				new TextureRegionDrawable(battle_info2));
 		selectWindow = new Window("", ws);
-		selectWindow.setBounds(Constants.VIEWPORT_GUI_WIDTH, 0,battle_skill.getRegionWidth(), battle_skill.getRegionHeight());
+		selectWindow.setBounds(Gdx.graphics.getWidth(), 0,battle_skill.getRegionWidth(), battle_skill.getRegionHeight());
 		if (selected == null)
 			return selectWindow;
 		selectWindow.add(new Label("name:" + selected.getName(), skin));
@@ -280,8 +260,8 @@ public class BattleScreen extends AbstractScreen {
 	 * @return
 	 */
 	private Table buildPersoLayer() {
-		float width = Constants.VIEWPORT_GUI_WIDTH;
-		float height = Constants.VIEWPORT_GUI_HEIGHT;
+		float width = Gdx.graphics.getWidth();
+		float height = Gdx.graphics.getHeight();
 
 		Table layer = new Table();
 		int i = 0;
@@ -318,8 +298,8 @@ public class BattleScreen extends AbstractScreen {
 	 * @return
 	 */
 	private Table buildMonsterLayer() {
-		float width = Constants.VIEWPORT_GUI_WIDTH;
-		float height = Constants.VIEWPORT_GUI_HEIGHT;
+		float width = Gdx.graphics.getWidth();
+		float height = Gdx.graphics.getHeight();
 
 		Table layer = new Table();
 		int i = 0;
@@ -357,8 +337,8 @@ public class BattleScreen extends AbstractScreen {
 	 */
 	private Actor buildVagueInfo() {
 		Label lblVague = new Label("Vague " + game.currentVague, skin);
-		lblVague.setPosition(Constants.VIEWPORT_GUI_WIDTH / 2 - lblVague.getWidth()/2,	(float) (Constants.VIEWPORT_GUI_HEIGHT /2  ));
-		lblVague.setOrigin(Constants.VIEWPORT_GUI_WIDTH / 2 - lblVague.getWidth()/2,	(float) (Constants.VIEWPORT_GUI_HEIGHT /2  ));
+		lblVague.setPosition(Gdx.graphics.getWidth() / 2 - lblVague.getWidth()/2,	(float) (Gdx.graphics.getHeight() /2  ));
+		lblVague.setOrigin(Gdx.graphics.getWidth() / 2 - lblVague.getWidth()/2,	(float) (Gdx.graphics.getHeight() /2  ));
 		lblVague.pack();
 		lblVague.addAction(sequence(Actions.fadeIn( 0.0001f ), Actions.fadeOut( 3f )));
 		return lblVague;
@@ -378,8 +358,8 @@ public class BattleScreen extends AbstractScreen {
 		style.background = new TextureRegionDrawable(image);
 		style.font = new BitmapFont();
 		lb_info = new Label(s, style);
-		lb_info.setPosition(Constants.VIEWPORT_GUI_WIDTH /2 - lb_info.getWidth()/2,	(float) (Constants.VIEWPORT_GUI_HEIGHT*0.95 ));
-		lb_info.setOrigin(Constants.VIEWPORT_GUI_WIDTH / 2 - lb_info.getWidth()/2,	(float) (Constants.VIEWPORT_GUI_HEIGHT*0.95 ));
+		lb_info.setPosition(Gdx.graphics.getWidth() /2 - lb_info.getWidth()/2,	(float) (Gdx.graphics.getHeight()*0.95 ));
+		lb_info.setOrigin(Gdx.graphics.getWidth() / 2 - lb_info.getWidth()/2,	(float) (Gdx.graphics.getHeight()*0.95 ));
 		lb_info.pack();
 		return lb_info;
 

@@ -153,8 +153,8 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	public MenuPrincipalScreen(MyGame myGame) {
 		super(myGame);
 
-		this.stage = new Stage(Constants.VIEWPORT_GUI_WIDTH,
-				Constants.VIEWPORT_GUI_HEIGHT, true);
+		this.stage = new Stage(Gdx.graphics.getWidth(),
+				Gdx.graphics.getHeight(), true);
 		// Load preferences for audio settings and start playing music
 		GamePreferences.instance.load();
 	}
@@ -191,8 +191,8 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	public void show() {
 		// on dit a l'appli d'ecouter ce stage quand la methode show est appelee
 		Gdx.input.setInputProcessor(stage);
-		float w = Constants.VIEWPORT_GUI_WIDTH;
-		float h =Constants.VIEWPORT_GUI_HEIGHT;
+		float w = Gdx.graphics.getWidth();
+		float h =Gdx.graphics.getHeight();
 
 		TextureAtlas atlas = MyGame.manager.get("ui/loading.pack",
 				TextureAtlas.class);
@@ -345,11 +345,11 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	private Table buildTitleLayer(TextureAtlas atlas) {
 		Table t = new Table();
 		imgTitle = new Image(atlas.findRegion("TitleM4ges"));
-		imgTitle.setSize((float) (Constants.VIEWPORT_GUI_WIDTH*0.5), (float) (Constants.VIEWPORT_GUI_HEIGHT*0.35));
-		imgTitle.setPosition(Constants.VIEWPORT_GUI_WIDTH / 3 - imgTitle.getWidth(), (float) (Constants.VIEWPORT_GUI_HEIGHT /2 - imgTitle.getHeight()));
+		imgTitle.setSize((float) (Gdx.graphics.getWidth()*0.5), (float) (Gdx.graphics.getHeight()*0.35));
+		imgTitle.setPosition(Gdx.graphics.getWidth() / 3 - imgTitle.getWidth(), (float) (Gdx.graphics.getHeight() /2 - imgTitle.getHeight()));
 		imgTitle.addAction(sequence(Actions.fadeOut(0.0001f),Actions.fadeIn(3f)));
 		imgTitle.pack();
-		t.add(imgTitle).width((float) (Constants.VIEWPORT_GUI_WIDTH*0.5)).height((float) (Constants.VIEWPORT_GUI_HEIGHT*0.35));
+		t.add(imgTitle).width((float) (Gdx.graphics.getWidth()*0.5)).height((float) (Gdx.graphics.getHeight()*0.35));
 		t.top();
 		t.pack();
 		return t;
