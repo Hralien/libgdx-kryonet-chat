@@ -35,6 +35,7 @@ public class Skill extends Actor implements Cloneable {
 	private TextureRegion currentFrame; // #7
 
 	private float stateTime; // #8
+	private boolean playingSound;
 
 	public Skill() {
 		super();
@@ -134,22 +135,22 @@ public class Skill extends Actor implements Cloneable {
 
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
-		Sound m = Gdx.audio.newSound(Gdx.files.internal(soundPath));
-		AudioManager.instance.play(m);
+		if(!playingSound){
+			Sound m  = Gdx.audio.newSound(Gdx.files.internal(soundPath));
+			m.setVolume(0, 0.2f);
+			m.play();
+			playingSound=true;
+		}
 		stateTime += Gdx.graphics.getDeltaTime(); // #15
-		// System.err.println(stateTime);
 		if ((stateTime <= skillAnimation.animationDuration / 5)) {
 			currentFrame = skillAnimation.getKeyFrame(stateTime, false); // #16
-			// System.out.println("animation :"+skillAnimation.isAnimationFinished(stateTime));
 			batch.draw(currentFrame, this.getX(), this.getY()); // #17
 		} else {
 			//animation finie, on la vire du parent
-			//			System.out.println("animation :"+skillAnimation.isAnimationFinished(stateTime));
+
 			this.remove();
-			AudioManager.instance.stopMusic();
+			playingSound=false;
 		}
-		// if(stateTime>=(frame_cols*frame_rows+1)*skillAnimation.frameDuration)
-		// skillEffectEnded=true;
 	}
 
 	/**
