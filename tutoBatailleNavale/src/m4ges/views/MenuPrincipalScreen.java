@@ -278,20 +278,26 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		});
 		testMacAddress.addListener(new ChangeListener() {
 			public void changed(ChangeEvent arg0, Actor arg1) {
-				Joueur a = new Aquamancien();
-				a.setName("tot");
-				Joueur b = new Necromancien();
-				b.setName("aze");
-				ArrayList<Joueur> l = new ArrayList<Joueur>();
-				l.add(b);
-				l.add(a);
-				Sauvegarde s = new Sauvegarde(l, 2);
-				s.sauvegarder();
-				ArrayList<String> saves = Sauvegarde.getAllSave();
-				for (String save : saves) {
-					System.err.println(save);
-				}
-				Sauvegarde u = Sauvegarde.charger(saves.get(0));			
+
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						Joueur a = new Aquamancien();
+						a.setName("tot");
+						Joueur b = new Necromancien();
+						b.setName("aze");
+						ArrayList<Joueur> l = new ArrayList<Joueur>();
+						l.add(b);
+						l.add(a);
+						Sauvegarde s = new Sauvegarde(l, 2);
+						s.sauvegarder();
+						ArrayList<String> saves = Sauvegarde.getAllSave();
+						for (String save : saves) {
+							System.err.println(save);
+						}
+						Sauvegarde u = Sauvegarde.charger(saves.get(0));	
+					}
+				}).start();
 			}
 		});
 		showTestWindow(false, false);
@@ -503,8 +509,8 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		scrollingImage = new Image(atlas.findRegion("Scroll"));
 		scrollingImage.setPosition(0, 0);
 		RepeatAction ra = new RepeatAction();
-		ra.setAction(sequence(moveTo(0, 0), moveBy((int)(-scrollingImage.getWidth()*.6), 0, 8.0f, Interpolation.linear),
-				moveBy((int)(scrollingImage.getWidth()*.6), 0, 8.0f, Interpolation.linear)));
+		ra.setAction(sequence(moveTo(0, 0), moveBy((int)(-scrollingImage.getWidth()*.6), 0, 20.0f, Interpolation.linear),
+				moveBy((int)(scrollingImage.getWidth()*.6), 0, 20.0f, Interpolation.linear)));
 		ra.setCount(RepeatAction.FOREVER);
 		scrollingImage.addAction(ra);
 		stateTime = 0;

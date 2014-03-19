@@ -65,73 +65,20 @@ public class Sauvegarde {
 	}
 
 	public void sauvegarder(){
-		//creation d'un objet json
-		Json json = new Json();
-//		json.setSerializer(Joueur.class, new Json.Serializer<Joueur>() {
-//			@Override
-//			public void write (Json json, Joueur j, Class knownType) {
-//				json.writeObjectStart(j.getNameClass());
-//				json.writeField(j.name, "name");
-//				json.writeField(j.hp,"hp");
-//				json.writeField(j.hpMax,"hpMax");
-//				json.writeField(j.mana,"mana");
-//				json.writeField(j.manaMax,"manaMax");
-//				json.writeField(j.strength,"strength");
-//				json.writeField(j.speed,"speed");
-//				json.writeField(j.intel,"intel");
-//				json.writeObjectEnd();
-//			}
-//
-//
-//			@Override
-//			public Joueur read(Json json, JsonValue jsonData, Class type) {
-//				Joueur j = null;
-//				switch (jsonData.child().asString()) {
-//				case "Chamane":
-//					// initialisation du player
-//					j = new Chamane();
-//					GamePreferences.instance.nbChamanPlayed++;
-//					break;
-//				case "Necromancien":
-//					// initialisation du player
-//					j = new Necromancien();
-//					GamePreferences.instance.nbNecroPlayed++;
-//					break;
-//				case "Pyromancien":
-//					// initialisation du player
-//					j = new Pyromancien();
-//					GamePreferences.instance.nbPyroPlayed++;
-//					break;
-//				case "Aquamancien":
-//					// initialisation du player
-//					j = new Aquamancien();
-//					GamePreferences.instance.nbAquaPlayed++;
-//					break;
-//				default:
-//					System.err.println("switch Joueur error");
-//				}
-//				j.name=jsonData.child().asString();
-//				j.hp= jsonData.child().asInt();
-//				j.hpMax= jsonData.child().asInt();
-//				j.mana= jsonData.child().asInt();
-//				j.manaMax= jsonData.child().asInt();
-//				j.strength= jsonData.child().asInt();
-//				j.speed= jsonData.child().asInt();
-//				j.intel= jsonData.child().asInt();
-//
-//				return j;
-//			}
-//		});
-//		json.setElementType(Sauvegarde.class, "listJoueur", Joueur.class);
-
 		//recup des preferences
-		GamePreferences prefs = GamePreferences.instance;
-		prefs.saveNumber++;
-		//recuperation du fichier correspondant
-		FileHandle file = Gdx.files.local("files/saves/save_"+prefs.saveNumber);
-		prefs.save();
-		//enregistrement 
-		json.toJson(this, file);
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				Json json = new Json();
+				GamePreferences prefs = GamePreferences.instance;
+				prefs.saveNumber++;
+				//recuperation du fichier correspondant
+				FileHandle file = Gdx.files.local("files/saves/save_"+prefs.saveNumber);
+				prefs.save();
+				//enregistrement 
+				json.toJson(this, file);
+			}
+		}).start();
 	}
 
 	public static ArrayList<String> getAllSave(){
@@ -174,5 +121,5 @@ public class Sauvegarde {
 		this.date = date;
 	}
 
-	
+
 }
