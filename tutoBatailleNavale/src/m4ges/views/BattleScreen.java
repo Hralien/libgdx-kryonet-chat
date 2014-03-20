@@ -158,6 +158,10 @@ public class BattleScreen extends AbstractScreen {
 
 	}
 	
+	public void updateSkillWindow(){
+		this.stage.addActor(createMySkillWindows());
+	}
+	
 
 
 	/**

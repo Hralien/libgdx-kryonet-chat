@@ -108,7 +108,7 @@ public class UnicastClient {
 	 */
 	private void receive() {
 		// Permet de recevoir les donnes
-		game.androidUI.showAlertBox("title", "receiveOk", "ok", null);
+//		game.androidUI.showAlertBox("title", "receiveOk", "ok", null);
 		try {
 			dsR = new DatagramSocket(PORT);
 			ds = new DatagramSocket();
@@ -130,7 +130,7 @@ public class UnicastClient {
 					try {
 						// recepetion
 						dsR.receive(dpr);
-						System.out.println("RECU");
+//						System.out.println("RECU");
 						data = dpr.getData();
 						traiterData(data);
 
@@ -248,6 +248,7 @@ public class UnicastClient {
 		// si c'est une connexion, il faut donc renvoye une action 2 !
 		if (action == Constants.CONNEXION)
 			sendConnection(ip, true);
+		
 		// DEBUG
 		System.out.println("[UNICAST]\n-- Affichage de(s) " + joueurs.size()
 				+ " joueur(s) --");
@@ -278,7 +279,7 @@ public class UnicastClient {
 		// Si c'est un nouveau on ne repond qu'a lui
 
 		if (nouveau) {
-			System.err.println(ipNouveau.replace('/', '\0').trim());
+			
 			data[0] = Constants.NOUVEAU;
 			if (ipNouveau.replace('/', '\0').trim().equals(monIp)
 					|| ipNouveau.replace('/', '\0').trim().equals("127.0.0.1")) {
@@ -320,17 +321,17 @@ public class UnicastClient {
 		// monstre - action - id skill
 		ip = dpr.getAddress().toString().replace('/', '\0').trim();
 		// DEBUG
-		System.out.println("[UNICAST - LANCERSKILL]:Lancer skill : "
-				+ s.getSkillName() + " ip : " + ip);
+//		System.out.println("[UNICAST - LANCERSKILL]:Lancer skill : "
+//				+ s.getSkillName() + " ip : " + ip);
 		/*
 		 * On recupere la cible et l'attaquant
 		 */
 		joueurs.get(ip).attaque(monstres.get(data[2]), s);
-		// DEBUG
-		System.out.println("[UNICAST - LANCERSKILL]\n"
-				+ joueurs.get(ip).getName() + " Attaque : "
-				+ monstres.get(data[2]).getName() + " avec : "
-				+ s.getSkillName());
+//		// DEBUG
+//		System.out.println("[UNICAST - LANCERSKILL]\n"
+//				+ joueurs.get(ip).getName() + " Attaque : "
+//				+ monstres.get(data[2]).getName() + " avec : "
+//				+ s.getSkillName());
 
 		boolean vagueFinie = true;
 		for (Personnage p : monstres) {
@@ -370,6 +371,8 @@ public class UnicastClient {
 		 * l'attaque
 		 */
 		((Monstre) monstres.get(idMonstre)).attaque(joueurs.get(ip));
+		
+		
 		// DEBUG
 		System.out.println("[UNICAST] " + monstres.get(idMonstre).getName()
 				+ " attaque " + joueurs.get(ip).getName());
@@ -420,7 +423,7 @@ public class UnicastClient {
 		
 		Gdx.app.postRunnable(new Runnable() {
 			public void run() {
-				((BattleScreen) game.getScreen()).update();
+				((BattleScreen) game.getScreen()).updateSkillWindow();
 			}
 		});
 		
