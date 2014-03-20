@@ -1,6 +1,10 @@
 package m4ges.views;
 
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+
 import java.io.IOException;
 
 import m4ges.controllers.AbstractScreen;
@@ -9,8 +13,12 @@ import reseau.UnicastClient;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -28,6 +36,7 @@ public class ChatScreen extends AbstractScreen {
 	// Permet de connaître l'ip du client
 	String ipClient;
 	Stage stage;
+	private Image scrollingImage;
 
 
 	public ChatScreen(MyGame myGame) {
@@ -63,6 +72,8 @@ public class ChatScreen extends AbstractScreen {
 	public void show() {
 		// TODO Auto-generated method stub
 		Gdx.input.setInputProcessor(stage);
+		stage.addActor(buildBackgroundLayer());
+
 		// on recup l'adresse a laquelle on est conecter
 //		ArrayList<String> listIps = new ArrayList<String>();
 //
@@ -163,62 +174,23 @@ public class ChatScreen extends AbstractScreen {
 			}
 		});
 
-//		search.addListener(new ChangeListener() {
-//
-//			@Override
-//			public void changed(ChangeEvent event, Actor actor) {
-//				try {
-//					new Thread(new Runnable() {
-//						
-//						@Override
-//						public void run() {
-//							Gdx.app.postRunnable(new Runnable() {
-//								public void run() {
-//									Client client = new Client();
-//									final List<InetAddress> address = client.discoverHosts(
-//											Network.portUDP, 5000);
-//									for (InetAddress it : address)
-//										game.listHost.add(it.toString().substring(1,it.toString().length()));
-//									if (game.listHost.size() != 0) {
-//										final Window choixServ = new Window(
-//												"Choisissez votre Serveur",
-//												skin);
-//										choixServ.setPosition(
-//												(float) (Gdx.graphics
-//														.getHeight() * 0.5),
-//														200);
-//										final com.badlogic.gdx.scenes.scene2d.ui.List serv = new com.badlogic.gdx.scenes.scene2d.ui.List(
-//												game.listHost.toArray(), skin);
-//										TextButton ok = new TextButton("ok",
-//												skin);
-//										choixServ.add(serv);
-//										choixServ.row();
-//										choixServ.add(ok);
-//										choixServ.row();
-//										choixServ.pack();
-//										stage.addActor(choixServ);
-//										ok.addListener(new ChangeListener() {
-//											public void changed(
-//													ChangeEvent event,
-//													Actor actor) {
-////												tfHost.setText(serv
-////														.getSelection());
-//												choixServ.remove();
-//											}
-//										});
-//									}
-//								}
-//							});
-//						}
-//					}).start();
-//				} catch (Exception e) {
-//					// e.printStackTrace();
-//				}
-//
-//			}
-//		});
-	}
 
+	}
+	/**
+	 * 
+	 */
+	private Image buildBackgroundLayer() {
+		TextureAtlas atlas = MyGame.manager.get("ui/scroll.pack",
+				TextureAtlas.class);
+		scrollingImage = new Image(atlas.findRegion("Scroll_balcon"));
+		scrollingImage.setPosition(0, 0);
+		RepeatAction ra = new RepeatAction();
+		ra.setAction(sequence(moveTo(0, 0), moveBy((int)(-scrollingImage.getWidth()*.6), 0, 20.0f, Interpolation.linear),
+				moveBy((int)(scrollingImage.getWidth()*.6), 0, 20.0f, Interpolation.linear)));
+		ra.setCount(RepeatAction.FOREVER);
+		scrollingImage.addAction(ra);
+		return scrollingImage;
+	}
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub

@@ -1,5 +1,8 @@
 package m4ges.views;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
 import m4ges.models.Citation;
@@ -13,6 +16,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 
@@ -162,7 +166,7 @@ public class LoadingScreen extends AbstractScreen {
 		batch.flush();
 		Gdx.gl10.glDisable(GL10.GL_ALPHA_TEST);
 	}
-
+	
 	@Override
 	public void hide() {
 		// Dispose the loading assets as we no longer need them
