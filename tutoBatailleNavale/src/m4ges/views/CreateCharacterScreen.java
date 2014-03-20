@@ -1,6 +1,8 @@
 package m4ges.views;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.touchable;
 import m4ges.controllers.AbstractScreen;
@@ -13,10 +15,14 @@ import m4ges.models.classes.Chamane;
 import m4ges.util.GamePreferences;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -38,6 +44,8 @@ public class CreateCharacterScreen extends AbstractScreen {
 	 * {@link Stage}
 	 */
 	private Stage stage;
+
+	private Image scrollingImage;
 
 	
 	//window new player
@@ -84,6 +92,7 @@ public class CreateCharacterScreen extends AbstractScreen {
 		Gdx.input.setInputProcessor(stage);
 
 		this.stage.clear();
+		this.stage.addActor(buildBackgroundLayer());
 		this.stage.addActor(buildCreateCharacterWindow());
 		this.stage.addActor(buildClassDescWindow());
 		this.stage.addActor(fg);
@@ -274,6 +283,21 @@ public class CreateCharacterScreen extends AbstractScreen {
 		if(super.game.player!=null)
 			classDescUpdate();
 		winClassDesc.addAction(sequence(touchable(touchEnabled), alpha(alphaTo, duration)));
+	}
+	/**
+	 * 
+	 */
+	private Image buildBackgroundLayer() {
+		TextureAtlas atlas = MyGame.manager.get("ui/scroll.pack",
+				TextureAtlas.class);
+		scrollingImage = new Image(atlas.findRegion("Scroll_neige"));
+		scrollingImage.setPosition(0, 0);
+		RepeatAction ra = new RepeatAction();
+		ra.setAction(sequence(moveTo(0, 0), moveBy((int)(-scrollingImage.getWidth()*.6), 0, 20.0f, Interpolation.linear),
+				moveBy((int)(scrollingImage.getWidth()*.6), 0, 20.0f, Interpolation.linear)));
+		ra.setCount(RepeatAction.FOREVER);
+		scrollingImage.addAction(ra);
+		return scrollingImage;
 	}
 	@Override
 	public void hide() {
