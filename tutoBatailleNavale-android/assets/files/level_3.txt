@@ -4,7 +4,7 @@ idVague: 3,
 nameVague:"MountainRoad",
 monsters: [
     {
-        class: m4ges.models.monster.Monstre,
+        class: m4ges.models.monster.Jaune,
     },
     {
         class: m4ges.models.monster.Lutin,

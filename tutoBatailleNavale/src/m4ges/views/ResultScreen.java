@@ -1,6 +1,10 @@
 package m4ges.views;
 
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -11,9 +15,13 @@ import m4ges.models.Vague;
 import m4ges.models.monster.Monstre;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -33,6 +41,7 @@ public class ResultScreen extends AbstractScreen {
 
 	private Vague lastVague;
 	private ArrayList<Item> itemsObtenu;
+	private Image scrollingImage;
 
 	public ResultScreen(MyGame myGame) {
 		super(myGame);		
@@ -57,6 +66,7 @@ public class ResultScreen extends AbstractScreen {
 	public void render(float delta) {
 		super.render( delta );
 
+		stage.act();
 		stage.draw();
 		Table.drawDebug(stage);
 	}
@@ -80,10 +90,9 @@ public class ResultScreen extends AbstractScreen {
 		stats.getButtonTable().add(new TextButton("X", skin)).height(stats.getPadTop());
 		stats.setPosition(width * 0, 200);
 		stats.defaults().pad(20, 20, 20, 20);
+		stats.add(buildResultatLayer());
 		stats.row();
 		stats.add(validation);
-		stats.row();
-		stats.add(buildResultatLayer());
 		stats.pack();
 
 		Window recompenses = new Window("Récompenses", skin);
@@ -94,6 +103,7 @@ public class ResultScreen extends AbstractScreen {
 		recompenses.add(buildRecompensesLayer());
 		recompenses.pack();
 
+		stage.addActor(buildBackgroundLayer());
 		stage.addActor(stats);
 		stage.addActor(recompenses);
 		stage.addActor(game.mc.chatWindow.getWindow());
@@ -148,6 +158,22 @@ public class ResultScreen extends AbstractScreen {
 		}
 	}
 
+	/**
+	 * 
+	 */
+	private Image buildBackgroundLayer() {
+		TextureAtlas atlas = MyGame.manager.get("ui/scroll.pack",
+				TextureAtlas.class);
+		scrollingImage = new Image(atlas.findRegion("Scroll_desert"));
+		scrollingImage.setPosition(0, 0);
+		RepeatAction ra = new RepeatAction();
+		ra.setAction(sequence(moveTo(0, 0), moveBy((int)(-scrollingImage.getWidth()*.6), 0, 20.0f, Interpolation.linear),
+				moveBy((int)(scrollingImage.getWidth()*.6), 0, 20.0f, Interpolation.linear)));
+		ra.setCount(RepeatAction.FOREVER);
+		scrollingImage.addAction(ra);
+		return scrollingImage;
+	}
+	
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
