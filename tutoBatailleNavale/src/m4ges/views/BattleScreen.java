@@ -10,12 +10,8 @@ import m4ges.models.Bar;
 import m4ges.models.Personnage;
 import m4ges.models.Skill;
 import m4ges.models.Vague;
-import m4ges.models.classes.Joueur;
-import m4ges.models.monster.Monstre;
-import m4ges.util.Constants;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -26,10 +22,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -86,7 +81,7 @@ public class BattleScreen extends AbstractScreen {
 		this.stage = new Stage(Gdx.graphics.getWidth(),
 		Gdx.graphics.getHeight(), true);
 		this.stage.setCamera(cameraGUI);
-		this.fg = new Group();
+		this.setFg(new Group());
 
 	}
 
@@ -395,6 +390,14 @@ Gdx.input.setInputProcessor(this.stage);
 	public void resume() {
 		// TODO Auto-generated method stub
 
+	}
+
+	public Group getFg() {
+		return fg;
+	}
+
+	public void setFg(Group fg) {
+		this.fg = fg;
 	}
 
 }

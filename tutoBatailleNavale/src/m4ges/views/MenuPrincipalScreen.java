@@ -20,7 +20,6 @@ import m4ges.models.classes.Joueur;
 import m4ges.models.classes.Necromancien;
 import m4ges.models.monster.Monstre;
 import m4ges.util.AudioManager;
-import m4ges.util.Constants;
 import m4ges.util.GamePreferences;
 import reseau.UnicastClient;
 
@@ -35,8 +34,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -474,31 +471,31 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		return tbOption;
 	}
 
-	/**
-	 * 
-	 * @param style
-	 * @return
-	 */
-	private TextButton buildBtnMenuHost(TextButtonStyle style) {
-		TextButton tbHost = new TextButton("Héberger une partie", style);
-		tbHost.addListener(new ChangeListener() {
-
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				// TODO:demander nb joueur
-				// nbjoueur = 2;
-				// if (nbjoueur != 0){
-				// showMenuButtons(false);
-				// showServerWindow(true, true);
-				// }
-				game.androidUI.getMacAddress();
-
-			}
-		});
-		tbHost.setPosition((float) (Gdx.graphics.getWidth() / 2.5),
-				Gdx.graphics.getHeight() / 4);
-		return tbHost;
-	}
+//	/**
+//	 * 
+//	 * @param style
+//	 * @return
+//	 */
+//	private TextButton buildBtnMenuHost(TextButtonStyle style) {
+//		TextButton tbHost = new TextButton("Héberger une partie", style);
+//		tbHost.addListener(new ChangeListener() {
+//
+//			@Override
+//			public void changed(ChangeEvent event, Actor actor) {
+//				// TODO:demander nb joueur
+//				// nbjoueur = 2;
+//				// if (nbjoueur != 0){
+//				// showMenuButtons(false);
+//				// showServerWindow(true, true);
+//				// }
+//				game.androidUI.getMacAddress();
+//
+//			}
+//		});
+//		tbHost.setPosition((float) (Gdx.graphics.getWidth() / 2.5),
+//				Gdx.graphics.getHeight() / 4);
+//		return tbHost;
+//	}
 
 	/**
 	 * 

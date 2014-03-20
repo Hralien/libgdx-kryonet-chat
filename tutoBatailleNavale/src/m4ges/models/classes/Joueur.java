@@ -11,33 +11,32 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Json.Serializable;
 import com.badlogic.gdx.utils.JsonValue;
 
-public abstract class Joueur extends Personnage implements Serializable{
-	
+public abstract class Joueur extends Personnage implements Serializable {
+
 	private boolean pret;
 	private ArrayList<Item> inventaire;
 	private String macAddress;
-	
-	public Joueur(){
+
+	public Joueur() {
 		super();
 		pret = false;
 		setMacAddress("");
 		setInventaire(new ArrayList<Item>());
 	}
 
-	
-	//UNIQUEMENT POUR LES ATTAQUES D'UN JOUEUR VERS UN NPC OU UN SOIN
-	public void attaque(Personnage p, Skill s){
-		System.out.println("Methode attaque joueurs > NPC appelee !");
-		System.out.println(p);
-		//resurection
-		if(s.getId()==4 && p.getHp() <= 0 ){
-			p.setState(Personnage.WAIT);
-			p.setHp(p.getHpMax());
-		}
-		else{
-			if(p.getHp() > 0){
+	// UNIQUEMENT POUR LES ATTAQUES D'UN JOUEUR VERS UN NPC OU UN SOIN
+	public void attaque(Personnage p, Skill s) {
+
+		// resurection
+		if (s.getId() == 4) {
+			if (p.getHp() <= 0) {
+				p.setState(Personnage.WAIT);
+				p.setHp(p.getHpMax());
+			}
+		} else {
+			if (p.getHp() > 0) {
 				p.setHp(p.getHp() - s.getDamage());
-				if(p.getHp() <=0){
+				if (p.getHp() <= 0) {
 					p.setHp(0);
 					p.setState(Personnage.MORT);
 				}
@@ -45,19 +44,19 @@ public abstract class Joueur extends Personnage implements Serializable{
 		}
 		System.out.println(" COUT  : " + s.getSpCost());
 		this.setMana(this.getMana() - s.getSpCost());
-		
-		
+
 	}
+
 	@Override
 	public void write(Json json) {
-		json.writeValue("name",nom, String.class);
-		json.writeValue("hp",hp,Integer.class);
-		json.writeValue("hpMax",hpMax,Integer.class);
-		json.writeValue("mana",mana,Integer.class);
-		json.writeValue("manaMax",manaMax,Integer.class);
-		json.writeValue("strength",strength,Integer.class);
-		json.writeValue("speed",speed,Integer.class);
-		json.writeValue("intel",intel,Integer.class);
+		json.writeValue("name", nom, String.class);
+		json.writeValue("hp", hp, Integer.class);
+		json.writeValue("hpMax", hpMax, Integer.class);
+		json.writeValue("mana", mana, Integer.class);
+		json.writeValue("manaMax", manaMax, Integer.class);
+		json.writeValue("strength", strength, Integer.class);
+		json.writeValue("speed", speed, Integer.class);
+		json.writeValue("intel", intel, Integer.class);
 
 	}
 
@@ -65,13 +64,13 @@ public abstract class Joueur extends Personnage implements Serializable{
 	public void read(Json json, JsonValue jsonData) {
 		this.nom = json.readValue(String.class, jsonData);
 		this.hp = json.readValue("hp", Integer.class, jsonData);
-		this.hpMax= json.readValue("hpMax",Integer.class,jsonData);
-		this.mana= json.readValue("mana",Integer.class,jsonData);
-		this.manaMax= json.readValue("manaMax",Integer.class,jsonData);
-		this.strength= json.readValue("strength",Integer.class,jsonData);
-		this.speed= json.readValue("speed",Integer.class,jsonData);
-		this.intel= json.readValue("intel",Integer.class,jsonData);
-		
+		this.hpMax = json.readValue("hpMax", Integer.class, jsonData);
+		this.mana = json.readValue("mana", Integer.class, jsonData);
+		this.manaMax = json.readValue("manaMax", Integer.class, jsonData);
+		this.strength = json.readValue("strength", Integer.class, jsonData);
+		this.speed = json.readValue("speed", Integer.class, jsonData);
+		this.intel = json.readValue("intel", Integer.class, jsonData);
+
 	}
 
 	@Override
@@ -81,15 +80,14 @@ public abstract class Joueur extends Personnage implements Serializable{
 	public abstract Animation animate();
 
 	public abstract byte[] getBytes();
-	
-	
+
 	public abstract String getNameClass();
-	
-	public boolean estPret(){
+
+	public boolean estPret() {
 		return this.pret;
 	}
-	
-	public void setPret(boolean p){
+
+	public void setPret(boolean p) {
 		this.pret = p;
 	}
 
@@ -101,15 +99,12 @@ public abstract class Joueur extends Personnage implements Serializable{
 		this.inventaire = inventaire;
 	}
 
-
 	public String getMacAddress() {
 		return macAddress;
 	}
 
-
 	public void setMacAddress(String macAddress) {
 		this.macAddress = macAddress;
 	}
-	
-	
+
 }
