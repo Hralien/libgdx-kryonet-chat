@@ -3,11 +3,9 @@ package m4ges.models;
 import java.util.ArrayList;
 
 import m4ges.controllers.MyGame;
-import m4ges.util.AudioManager;
 import m4ges.util.Constants;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -104,7 +102,7 @@ public class Skill extends Actor implements Cloneable {
 			list.add(new Skill(1, 5, "soin", "Soin", -10, 5, 4));
 			list.add(new Skill(2, 7, "motivation", "Motivation", 0, 5, 7));
 			list.add(new Skill(3, 4, "ressistance", "Resistance", 0, 5, 4));
-			list.add(new Skill(4, 10, "resurrection", "Resurrection", 50, 5, 7));
+			list.add(new Skill(4, 10, "resurrection", "Resurrection", 0, 5, 7));
 			break;
 		case 1:
 			/** Necromencien */
@@ -187,7 +185,7 @@ public class Skill extends Actor implements Cloneable {
 		listSkill.add(new Skill(1, 5, "soin", "Soin", -10, 5, 4));
 		listSkill.add(new Skill(2, 7, "motivation", "Motivation", 0, 5, 7));
 		listSkill.add(new Skill(3, 4, "ressistance", "Resistance", 0, 5, 4));
-		listSkill.add(new Skill(4, 10, "resurrection", "Resurrection", 50, 5, 7));
+		listSkill.add(new Skill(4, 10, "resurrection", "Resurrection", 0, 5, 7));
 
 
 		/** Necromencien */

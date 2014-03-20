@@ -100,23 +100,6 @@ public abstract class Personnage extends Actor {
 		return listSkills;
 	}
 
-	private void subit(int damage){
-		if(this.hp-damage <= 0){
-			this.state = MORT;
-			this.hp = 0;
-		}
-		else
-			this.hp -= damage;
-		notify();
-		
-	}
-	
-	private void lance(int mana){
-		if(this.mana - mana <= 0)
-			this.mana = 0;
-		else
-			this.mana -= mana;
-	}
 
 	public int getHp() {
 		return hp;

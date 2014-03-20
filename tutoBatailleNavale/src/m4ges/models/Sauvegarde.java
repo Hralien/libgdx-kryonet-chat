@@ -6,17 +6,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import m4ges.models.classes.Aquamancien;
-import m4ges.models.classes.Chamane;
 import m4ges.models.classes.Joueur;
-import m4ges.models.classes.Necromancien;
-import m4ges.models.classes.Pyromancien;
 import m4ges.util.GamePreferences;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonValue;
 
 public class Sauvegarde {
 
