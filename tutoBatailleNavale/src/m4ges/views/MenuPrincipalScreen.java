@@ -70,10 +70,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 * {@link AtlasRegion} to get the logo
 	 */
 	private Image imgTitle;
-	/**
-	 * temps pour l'animation background
-	 */
-	private float stateTime; // #8
+
 	// menu
 	/**
 	 * bouton pour heberger une partie
@@ -172,11 +169,10 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		stateTime += Gdx.graphics.getDeltaTime(); // #15
 
-		batch.begin();
-		//		batch.draw(scrollingImage, (float) (0 - (2 * stateTime * 10)), 0);
-		batch.end();
+//		batch.begin();
+//		//		batch.draw(scrollingImage, (float) (0 - (2 * stateTime * 10)), 0);
+//		batch.end();
 
 		stage.act(delta);
 		stage.draw();
@@ -471,31 +467,6 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		return tbOption;
 	}
 
-//	/**
-//	 * 
-//	 * @param style
-//	 * @return
-//	 */
-//	private TextButton buildBtnMenuHost(TextButtonStyle style) {
-//		TextButton tbHost = new TextButton("Héberger une partie", style);
-//		tbHost.addListener(new ChangeListener() {
-//
-//			@Override
-//			public void changed(ChangeEvent event, Actor actor) {
-//				// TODO:demander nb joueur
-//				// nbjoueur = 2;
-//				// if (nbjoueur != 0){
-//				// showMenuButtons(false);
-//				// showServerWindow(true, true);
-//				// }
-//				game.androidUI.getMacAddress();
-//
-//			}
-//		});
-//		tbHost.setPosition((float) (Gdx.graphics.getWidth() / 2.5),
-//				Gdx.graphics.getHeight() / 4);
-//		return tbHost;
-//	}
 
 	/**
 	 * 
@@ -510,7 +481,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				moveBy((int)(scrollingImage.getWidth()*.6), 0, 20.0f, Interpolation.linear)));
 		ra.setCount(RepeatAction.FOREVER);
 		scrollingImage.addAction(ra);
-		stateTime = 0;
+
 		return scrollingImage;
 	}
 
