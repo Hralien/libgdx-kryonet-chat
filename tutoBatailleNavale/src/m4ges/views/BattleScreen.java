@@ -157,6 +157,8 @@ public class BattleScreen extends AbstractScreen {
 		// this.stage.addActor(fg);
 
 	}
+	
+
 
 	/**
 	 * affiche la liste des skill du player
@@ -169,10 +171,11 @@ public class BattleScreen extends AbstractScreen {
 		Window skillWindow = new Window("", ws);
 		int i = 0;
 		for (final Skill it : super.game.player.getListSkills()) {
-
+			
 			TextButton skillButton = new TextButton(it.getSkillName()
 					+ " cost:" + it.getSpCost(), skin);
 			if (!super.game.player.isToken()) {
+				System.err.println("APPPELELELEE");
 				skillButton.setDisabled(true);
 			}
 			skillButton.addListener(new ChangeListener() {

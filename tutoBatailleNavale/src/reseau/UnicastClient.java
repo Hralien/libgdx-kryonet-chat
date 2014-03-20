@@ -21,6 +21,7 @@ import m4ges.models.classes.Pyromancien;
 import m4ges.models.classes.Chamane;
 import m4ges.models.monster.Monstre;
 import m4ges.util.Constants;
+import m4ges.views.BattleScreen;
 import m4ges.views.ChatWindow;
 
 import com.badlogic.gdx.Gdx;
@@ -406,16 +407,23 @@ public class UnicastClient {
 				it.setaJoueCeTour(false);
 			}
 		}
-		
+
 		// on recupere l'ip de celui qui doit l'avoir
 		ip = new String(data, 1, data.length - 1).trim();
 		System.err.println("IP TOKEN :" + ip);
-		System.out.println(ip);
+
 		// et on lui met
 		joueurs.get(ip).setToken(true);
 
 		// on indique qu'il a joue ce tour
 		joueurs.get(ip).setaJoueCeTour(true);
+		
+		Gdx.app.postRunnable(new Runnable() {
+			public void run() {
+				((BattleScreen) game.getScreen()).update();
+			}
+		});
+		
 	}
 
 	/**
@@ -492,11 +500,11 @@ public class UnicastClient {
 			for (Joueur j : joueurs.values()) {
 				j.setPret(false);
 			}
-			
+
 			// ici, il faut passer le token au premier joueur
 			// on va le donner au dernier qui s'est mit pret
 			joueurs.get(ip).setToken(true);
-
+			joueurs.get(ip).setaJoueCeTour(true);
 			// System.err.println(game.currentVague);
 			// if (joueurs.size() >= NB_JOUEUR_MINIMUM
 			// && game.currentScreen != MyGame.BATTLESCREEN) {
@@ -505,7 +513,7 @@ public class UnicastClient {
 					// game.currentVague = 1;
 					game.currentVague++;
 					game.changeScreen(MyGame.BATTLESCREEN);
-
+					((BattleScreen) game.getScreen()).update();
 				}
 			});
 			// }
