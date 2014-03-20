@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.JsonValue;
 public abstract class Joueur extends Personnage implements Serializable {
 
 	private boolean pret;
+	private boolean aJoueCeTour;
 	private ArrayList<Item> inventaire;
 	private String macAddress;
 
@@ -105,6 +106,14 @@ public abstract class Joueur extends Personnage implements Serializable {
 
 	public void setMacAddress(String macAddress) {
 		this.macAddress = macAddress;
+	}
+
+	public boolean aJoueCeTour() {
+		return aJoueCeTour;
+	}
+
+	public void setaJoueCeTour(boolean aJoueCeTour) {
+		this.aJoueCeTour = aJoueCeTour;
 	}
 
 }
