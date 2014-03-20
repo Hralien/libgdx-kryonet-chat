@@ -79,7 +79,7 @@ public class BattleScreen extends AbstractScreen {
 	public BattleScreen(MyGame myGame) {
 		super(myGame);
 		this.stage = new Stage(Gdx.graphics.getWidth(),
-		Gdx.graphics.getHeight(), true);
+				Gdx.graphics.getHeight(), true);
 		this.stage.setCamera(cameraGUI);
 		this.setFg(new Group());
 
@@ -103,7 +103,8 @@ public class BattleScreen extends AbstractScreen {
 		batch.setProjectionMatrix(stage.getCamera().combined);
 
 		batch.begin();
-		batch.draw(battle_bg, 0, 0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		batch.draw(battle_bg, 0, 0, Gdx.graphics.getWidth(),
+				Gdx.graphics.getHeight());
 		if (selected != null) {
 			batch.draw(battle_arrow, selected.getOriginX(),
 					selected.getOriginY() + selected.getHeight());
@@ -117,15 +118,17 @@ public class BattleScreen extends AbstractScreen {
 	@Override
 	public void show() {
 		// on dit a l'appli d'ecouter ce stage quand la methode show est appelee
-Gdx.input.setInputProcessor(this.stage);
-		
+		Gdx.input.setInputProcessor(this.stage);
+
 		currentVague = Vague.loadVague(game.currentVague);
 
+		this.selected = null;
 		game.getMC().setMonstres(currentVague.getMonsters());
 
 		TextureAtlas atlasMap = MyGame.manager.get("ui/maps.pack",
 				TextureAtlas.class);
-		battle_bg = new TextureRegion(atlasMap.findRegion(currentVague.getNameVague()));
+		battle_bg = new TextureRegion(atlasMap.findRegion(currentVague
+				.getNameVague()));
 
 		TextureAtlas atlas = MyGame.manager.get("ui/battleui.pack",
 				TextureAtlas.class);
@@ -137,14 +140,12 @@ Gdx.input.setInputProcessor(this.stage);
 
 		lb_info = buildLabelMessage("Selectionner un monstre et lancer un sort");
 
-
 		update();
 		this.stage.addActor(buildVagueInfo());
 
-
 	}
 
-	public void update(){
+	public void update() {
 
 		stage.clear();
 		this.stage.addActor(buildPersoLayer());
@@ -153,9 +154,10 @@ Gdx.input.setInputProcessor(this.stage);
 		this.stage.addActor(createMyInfoWindows());
 		this.stage.addActor(createSelectedWindows());
 		this.stage.addActor(lb_info);
-		//this.stage.addActor(fg);
+		// this.stage.addActor(fg);
 
 	}
+
 	/**
 	 * affiche la liste des skill du player
 	 * 
@@ -167,18 +169,22 @@ Gdx.input.setInputProcessor(this.stage);
 		Window skillWindow = new Window("", ws);
 		int i = 0;
 		for (final Skill it : super.game.player.getListSkills()) {
+
 			TextButton skillButton = new TextButton(it.getSkillName()
 					+ " cost:" + it.getSpCost(), skin);
+			if (!super.game.player.isToken()) {
+				skillButton.setDisabled(true);
+			}
 			skillButton.addListener(new ChangeListener() {
 
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
 					it.resetAnimation();
 					for (Actor it : stage.getActors()) {
-						if(it instanceof Skill)
+						if (it instanceof Skill)
 							stage.getActors().removeValue(it, true);
 					}
-					if(selected!=null){
+					if (selected != null) {
 						it.setPosition(selected.getX(), selected.getY());
 						update();
 						stage.addActor(it);
@@ -189,8 +195,7 @@ Gdx.input.setInputProcessor(this.stage);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-					}
-					else{
+					} else {
 						lb_info.setText("Selectionner un monstre et lancer un sort");
 					}
 				}
@@ -237,7 +242,8 @@ Gdx.input.setInputProcessor(this.stage);
 		WindowStyle ws = new WindowStyle(new BitmapFont(), Color.BLACK,
 				new TextureRegionDrawable(battle_info2));
 		selectWindow = new Window("", ws);
-		selectWindow.setBounds(Gdx.graphics.getWidth(), 0,battle_skill.getRegionWidth(), battle_skill.getRegionHeight());
+		selectWindow.setBounds(Gdx.graphics.getWidth(), 0,
+				battle_skill.getRegionWidth(), battle_skill.getRegionHeight());
 		if (selected == null)
 			return selectWindow;
 		selectWindow.add(new Label("name:" + selected.getName(), skin));
@@ -267,10 +273,11 @@ Gdx.input.setInputProcessor(this.stage);
 			it.setBounds(it.getOriginX(), it.getOriginY(), it.getWidth(),
 					it.getHeight());
 			it.addListener(new InputListener() {
-				public boolean touchDown(InputEvent event, float x, float y,int pointer, int button) {
+				public boolean touchDown(InputEvent event, float x, float y,
+						int pointer, int button) {
 					System.out.println("[" + it.getName() + "]" + "down");
 					selected = it;
-					System.err.println("selected:"+selected);
+					System.err.println("selected:" + selected);
 					stage.getActors().removeValue(selectWindow, true);
 					stage.addActor(createSelectedWindows());
 					return true;
@@ -309,7 +316,7 @@ Gdx.input.setInputProcessor(this.stage);
 						int pointer, int button) {
 					System.out.println("[" + it.getName() + "]" + "down");
 					selected = it;
-					System.err.println("selected:"+selected);
+					System.err.println("selected:" + selected);
 					stage.getActors().removeValue(selectWindow, true);
 					stage.addActor(createSelectedWindows());
 					return true;
@@ -332,15 +339,19 @@ Gdx.input.setInputProcessor(this.stage);
 	 */
 	private Actor buildVagueInfo() {
 		Label lblVague = new Label("Vague " + game.currentVague, skin);
-		lblVague.setPosition(Gdx.graphics.getWidth() / 2 - lblVague.getWidth()/2,	(float) (Gdx.graphics.getHeight() /2  ));
-		lblVague.setOrigin(Gdx.graphics.getWidth() / 2 - lblVague.getWidth()/2,	(float) (Gdx.graphics.getHeight() /2  ));
+		lblVague.setPosition(Gdx.graphics.getWidth() / 2 - lblVague.getWidth()
+				/ 2, (float) (Gdx.graphics.getHeight() / 2));
+		lblVague.setOrigin(Gdx.graphics.getWidth() / 2 - lblVague.getWidth()
+				/ 2, (float) (Gdx.graphics.getHeight() / 2));
 		lblVague.pack();
-		lblVague.addAction(sequence(Actions.fadeIn( 0.0001f ), Actions.fadeOut( 3f )));
+		lblVague.addAction(sequence(Actions.fadeIn(0.0001f),
+				Actions.fadeOut(3f)));
 		return lblVague;
 	}
 
 	/**
 	 * affiche le message
+	 * 
 	 * @param s
 	 * @return
 	 */
@@ -353,28 +364,37 @@ Gdx.input.setInputProcessor(this.stage);
 		style.background = new TextureRegionDrawable(image);
 		style.font = new BitmapFont();
 		lb_info = new Label(s, style);
-		lb_info.setPosition(Gdx.graphics.getWidth() /2 - lb_info.getWidth()/2,	(float) (Gdx.graphics.getHeight()*0.95 ));
-		lb_info.setOrigin(Gdx.graphics.getWidth() / 2 - lb_info.getWidth()/2,	(float) (Gdx.graphics.getHeight()*0.95 ));
+		lb_info.setPosition(Gdx.graphics.getWidth() / 2 - lb_info.getWidth()
+				/ 2, (float) (Gdx.graphics.getHeight() * 0.95));
+		lb_info.setOrigin(Gdx.graphics.getWidth() / 2 - lb_info.getWidth() / 2,
+				(float) (Gdx.graphics.getHeight() * 0.95));
 		lb_info.pack();
 		return lb_info;
 
 	}
+
 	/**
-	 * affiche sur l'ecran 
-	 * @param s le skill en question
-	 * @param lanceur le personnage lanceur du skill
-	 * @param cible le personnage qui recoit le skill
+	 * affiche sur l'ecran
+	 * 
+	 * @param s
+	 *            le skill en question
+	 * @param lanceur
+	 *            le personnage lanceur du skill
+	 * @param cible
+	 *            le personnage qui recoit le skill
 	 */
-	private void afficheSkill(Skill s, Personnage lanceur, Personnage cible){
+	private void afficheSkill(Skill s, Personnage lanceur, Personnage cible) {
 		s.resetAnimation();
 		for (Actor it : stage.getActors()) {
-			if(it instanceof Skill)
+			if (it instanceof Skill)
 				stage.getActors().removeValue(it, true);
 		}
 		s.setPosition(selected.getX(), selected.getY());
-		lb_info.setText(lanceur.getName()+" utilise "+s.getName()+" sur "+cible.getName());
+		lb_info.setText(lanceur.getName() + " utilise " + s.getName() + " sur "
+				+ cible.getName());
 		stage.addActor(s);
 	}
+
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub

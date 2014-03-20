@@ -130,7 +130,6 @@ public class UnicastClient {
 						// recepetion
 						dsR.receive(dpr);
 						System.out.println("RECU");
-
 						data = dpr.getData();
 						traiterData(data);
 
@@ -167,7 +166,7 @@ public class UnicastClient {
 			actionTraiterAttaqueMonstre(data);
 			break;
 		case Constants.TOKEN:
-		case Constants.TOKENTOUR:		
+		case Constants.TOKENTOUR:
 			actionToken(data, action);
 			break;
 		case Constants.MESSAGE:
@@ -397,23 +396,25 @@ public class UnicastClient {
 	 */
 	private void actionToken(byte[] data, int action) {
 		/*
-		 * Si action = token tour
-		 * alors tout le monde a joue ce tour;
-		 * il faut mettre aJoueCeTour a false
-		 * et enlever le token a celui qui l'a (même sans tokentour)
+		 * Si action = token tour alors tout le monde a joue ce tour; il faut
+		 * mettre aJoueCeTour a false et enlever le token a celui qui l'a (même
+		 * sans tokentour)
 		 */
-		for (Joueur it : joueurs.values()){
-			if(action==Constants.TOKENTOUR)
-				it.setaJoueCeTour(false);
+		for (Joueur it : joueurs.values()) {
 			it.setToken(false);
+			if (action == Constants.TOKENTOUR) {
+				it.setaJoueCeTour(false);
+			}
 		}
-		// on recupere l'ip de celui qui doit l'avoir
-		ip = new String(data, 1, data.length - 1);
 		
+		// on recupere l'ip de celui qui doit l'avoir
+		ip = new String(data, 1, data.length - 1).trim();
+		System.err.println("IP TOKEN :" + ip);
+		System.out.println(ip);
 		// et on lui met
 		joueurs.get(ip).setToken(true);
-		
-		//on indique qu'il a joue ce tour
+
+		// on indique qu'il a joue ce tour
 		joueurs.get(ip).setaJoueCeTour(true);
 	}
 
@@ -436,8 +437,8 @@ public class UnicastClient {
 		data[0] = Constants.LANCERSKILL;
 		data[1] = (byte) s.getId();
 		data[2] = (byte) monstres.indexOf(mechant);
-
 		sendToAll(data);
+		passerToken();
 	}
 
 	public void lancerSoin(Joueur j, Skill s) throws IOException {
@@ -448,6 +449,7 @@ public class UnicastClient {
 			data[i] = (byte) joueurs.getKey(j).charAt(i - 2);
 		}
 		sendToAll(data);
+		passerToken();
 	}
 
 	/**
@@ -486,32 +488,27 @@ public class UnicastClient {
 			}
 		}
 		if (pret) {
-			//Tout le monde est pret, il faut donc reinitialiser le boolean
+			// Tout le monde est pret, il faut donc reinitialiser le boolean
 			for (Joueur j : joueurs.values()) {
 				j.setPret(false);
 			}
-			//ici, il faut passer le token au premier joueur
-			//on va le donner au dernier qui s'est mit pret
+			
+			// ici, il faut passer le token au premier joueur
+			// on va le donner au dernier qui s'est mit pret
 			joueurs.get(ip).setToken(true);
-			
-			
-			
-			
-			
-			
-			
-//			System.err.println(game.currentVague);
-//			if (joueurs.size() >= NB_JOUEUR_MINIMUM
-//					&& game.currentScreen != MyGame.BATTLESCREEN) {
-				Gdx.app.postRunnable(new Runnable() {
-					public void run() {
-//						game.currentVague = 1;
-						game.currentVague++;
-						game.changeScreen(MyGame.BATTLESCREEN);
+
+			// System.err.println(game.currentVague);
+			// if (joueurs.size() >= NB_JOUEUR_MINIMUM
+			// && game.currentScreen != MyGame.BATTLESCREEN) {
+			Gdx.app.postRunnable(new Runnable() {
+				public void run() {
+					// game.currentVague = 1;
+					game.currentVague++;
+					game.changeScreen(MyGame.BATTLESCREEN);
 
 				}
-				});
-//			}
+			});
+			// }
 			return;
 		}
 
@@ -570,7 +567,6 @@ public class UnicastClient {
 	 * @throws IOException
 	 */
 	public void passerToken() throws IOException {
-
 
 		String ipChoisi = "";
 
