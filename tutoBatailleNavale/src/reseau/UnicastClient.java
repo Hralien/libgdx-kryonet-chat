@@ -21,6 +21,7 @@ import m4ges.models.classes.Pyromancien;
 import m4ges.models.classes.Chamane;
 import m4ges.models.monster.Monstre;
 import m4ges.util.Constants;
+import m4ges.views.BattleScreen;
 import m4ges.views.ChatWindow;
 
 import com.badlogic.gdx.Gdx;
@@ -107,7 +108,7 @@ public class UnicastClient {
 	 */
 	private void receive() {
 		// Permet de recevoir les donnes
-		game.androidUI.showAlertBox("title", "receiveOk", "ok", null);
+//		game.androidUI.showAlertBox("title", "receiveOk", "ok", null);
 		try {
 			dsR = new DatagramSocket(PORT);
 			ds = new DatagramSocket();
@@ -129,7 +130,7 @@ public class UnicastClient {
 					try {
 						// recepetion
 						dsR.receive(dpr);
-						System.out.println("RECU");
+//						System.out.println("RECU");
 						data = dpr.getData();
 						traiterData(data);
 
@@ -247,6 +248,7 @@ public class UnicastClient {
 		// si c'est une connexion, il faut donc renvoye une action 2 !
 		if (action == Constants.CONNEXION)
 			sendConnection(ip, true);
+		
 		// DEBUG
 		System.out.println("[UNICAST]\n-- Affichage de(s) " + joueurs.size()
 				+ " joueur(s) --");
@@ -277,7 +279,7 @@ public class UnicastClient {
 		// Si c'est un nouveau on ne repond qu'a lui
 
 		if (nouveau) {
-			System.err.println(ipNouveau.replace('/', '\0').trim());
+			
 			data[0] = Constants.NOUVEAU;
 			if (ipNouveau.replace('/', '\0').trim().equals(monIp)
 					|| ipNouveau.replace('/', '\0').trim().equals("127.0.0.1")) {
@@ -319,17 +321,17 @@ public class UnicastClient {
 		// monstre - action - id skill
 		ip = dpr.getAddress().toString().replace('/', '\0').trim();
 		// DEBUG
-		System.out.println("[UNICAST - LANCERSKILL]:Lancer skill : "
-				+ s.getSkillName() + " ip : " + ip);
+//		System.out.println("[UNICAST - LANCERSKILL]:Lancer skill : "
+//				+ s.getSkillName() + " ip : " + ip);
 		/*
 		 * On recupere la cible et l'attaquant
 		 */
 		joueurs.get(ip).attaque(monstres.get(data[2]), s);
-		// DEBUG
-		System.out.println("[UNICAST - LANCERSKILL]\n"
-				+ joueurs.get(ip).getName() + " Attaque : "
-				+ monstres.get(data[2]).getName() + " avec : "
-				+ s.getSkillName());
+//		// DEBUG
+//		System.out.println("[UNICAST - LANCERSKILL]\n"
+//				+ joueurs.get(ip).getName() + " Attaque : "
+//				+ monstres.get(data[2]).getName() + " avec : "
+//				+ s.getSkillName());
 
 		boolean vagueFinie = true;
 		for (Personnage p : monstres) {
@@ -369,6 +371,8 @@ public class UnicastClient {
 		 * l'attaque
 		 */
 		((Monstre) monstres.get(idMonstre)).attaque(joueurs.get(ip));
+		
+		
 		// DEBUG
 		System.out.println("[UNICAST] " + monstres.get(idMonstre).getName()
 				+ " attaque " + joueurs.get(ip).getName());
@@ -406,16 +410,24 @@ public class UnicastClient {
 				it.setaJoueCeTour(false);
 			}
 		}
-		
+
 		// on recupere l'ip de celui qui doit l'avoir
 		ip = new String(data, 1, data.length - 1).trim();
 		System.err.println("IP TOKEN :" + ip);
-		System.out.println(ip);
+
 		// et on lui met
 		joueurs.get(ip).setToken(true);
 
 		// on indique qu'il a joue ce tour
 		joueurs.get(ip).setaJoueCeTour(true);
+		
+		Gdx.app.postRunnable(new Runnable() {
+			public void run() {
+				if(game.getScreen() instanceof BattleScreen)
+					((BattleScreen) game.getScreen()).updateSkillWindow();
+			}
+		});
+		
 	}
 
 	/**
@@ -492,11 +504,11 @@ public class UnicastClient {
 			for (Joueur j : joueurs.values()) {
 				j.setPret(false);
 			}
-			
+
 			// ici, il faut passer le token au premier joueur
 			// on va le donner au dernier qui s'est mit pret
 			joueurs.get(ip).setToken(true);
-
+			joueurs.get(ip).setaJoueCeTour(true);
 			// System.err.println(game.currentVague);
 			// if (joueurs.size() >= NB_JOUEUR_MINIMUM
 			// && game.currentScreen != MyGame.BATTLESCREEN) {
@@ -505,7 +517,7 @@ public class UnicastClient {
 					// game.currentVague = 1;
 					game.currentVague++;
 					game.changeScreen(MyGame.BATTLESCREEN);
-
+					((BattleScreen) game.getScreen()).update();
 				}
 			});
 			// }

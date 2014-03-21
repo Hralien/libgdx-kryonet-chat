@@ -71,6 +71,7 @@ public class BattleScreen extends AbstractScreen {
 	 */
 	private Personnage selected;
 	private Window selectWindow;
+	private Window skillWindow;
 
 	/**
 	 * 
@@ -166,7 +167,7 @@ public class BattleScreen extends AbstractScreen {
 	private Table createMySkillWindows() {
 		WindowStyle ws = new WindowStyle(new BitmapFont(), Color.BLACK,
 				new TextureRegionDrawable(battle_skill));
-		Window skillWindow = new Window("", ws);
+		skillWindow = new Window("", ws);
 		int i = 0;
 		for (final Skill it : super.game.player.getListSkills()) {
 
@@ -418,6 +419,11 @@ public class BattleScreen extends AbstractScreen {
 
 	public void setFg(Group fg) {
 		this.fg = fg;
+	}
+
+	public void updateSkillWindow() {
+		stage.getActors().removeValue(skillWindow, true);
+		stage.addActor(createMySkillWindows());		
 	}
 
 }
