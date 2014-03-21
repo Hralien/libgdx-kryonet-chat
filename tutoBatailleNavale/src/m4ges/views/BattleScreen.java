@@ -192,7 +192,7 @@ public class BattleScreen extends AbstractScreen {
 					if (selected != null) {
 						it.setPosition(selected.getX(), selected.getY());
 						update();
-						stage.addActor(it);
+//						stage.addActor(it);
 						try {
 							game.mc.lancerSort(selected, it);
 							stage.getActors().removeValue(selectWindow, true);
@@ -388,14 +388,14 @@ public class BattleScreen extends AbstractScreen {
 	 * @param cible
 	 *            le personnage qui recoit le skill
 	 */
-	private void afficheSkill(Skill s, Personnage lanceur, Personnage cible) {
+	public void afficheSkill(Skill s, Personnage lanceur, Personnage cible) {
 		s.resetAnimation();
 		for (Actor it : stage.getActors()) {
 			if (it instanceof Skill)
 				stage.getActors().removeValue(it, true);
 		}
 		s.setPosition(selected.getX(), selected.getY());
-		lb_info.setText(lanceur.getName() + " utilise " + s.getName() + " sur "
+		lb_info.setText(lanceur.getName() + " utilise " + s.getSkillName() + " sur "
 				+ cible.getName());
 		stage.addActor(s);
 	}
