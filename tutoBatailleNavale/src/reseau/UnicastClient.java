@@ -423,7 +423,8 @@ public class UnicastClient {
 		
 		Gdx.app.postRunnable(new Runnable() {
 			public void run() {
-				((BattleScreen) game.getScreen()).updateSkillWindow();
+				if(game.getScreen() instanceof BattleScreen)
+					((BattleScreen) game.getScreen()).updateSkillWindow();
 			}
 		});
 		
