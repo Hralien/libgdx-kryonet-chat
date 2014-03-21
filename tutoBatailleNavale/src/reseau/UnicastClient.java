@@ -610,11 +610,11 @@ public class UnicastClient {
 			data[0] = Constants.TOKENTOUR;
 
 		} else {
-			data = new byte[ip.length() + 1];
+			data = new byte[ipChoisi.length() + 1];
 			data[0] = Constants.TOKEN;
 		}
 		for (int i = 1; i < data.length; i++) {
-			data[i] = (byte) ip.charAt(i - 1);
+			data[i] = (byte) ipChoisi.charAt(i - 1);
 		}
 		sendToAll(data);
 	}
