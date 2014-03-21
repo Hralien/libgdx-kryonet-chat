@@ -450,6 +450,7 @@ public class UnicastClient {
 		data[1] = (byte) s.getId();
 		data[2] = (byte) monstres.indexOf(mechant);
 		sendToAll(data);
+		game.player.setaJoueCeTour(true);
 		passerToken();
 	}
 
@@ -509,6 +510,7 @@ public class UnicastClient {
 			// on va le donner au dernier qui s'est mit pret
 			joueurs.get(ip).setToken(true);
 			joueurs.get(ip).setaJoueCeTour(true);
+			System.out.println("A JOUE CE TOUR : " + ip);
 			// System.err.println(game.currentVague);
 			// if (joueurs.size() >= NB_JOUEUR_MINIMUM
 			// && game.currentScreen != MyGame.BATTLESCREEN) {
@@ -586,10 +588,13 @@ public class UnicastClient {
 		 * On passe le token au premiere joueur qui n'a pas joue
 		 */
 		for (Joueur j : joueurs.values()) {
+			
 			if (!j.aJoueCeTour()) {
+				System.out.println( j.getName() + " a joue ce tour : " + j.aJoueCeTour());
 				ipChoisi = joueurs.getKey(j);
 				break;
 			}
+			
 		}
 
 		byte data[];
