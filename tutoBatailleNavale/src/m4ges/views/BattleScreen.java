@@ -6,7 +6,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
-
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.color;
 import java.io.IOException;
 
 import m4ges.controllers.AbstractScreen;
@@ -169,7 +169,7 @@ public class BattleScreen extends AbstractScreen {
 
 	}
 
-	
+
 
 
 	/**
@@ -183,7 +183,7 @@ public class BattleScreen extends AbstractScreen {
 		skillWindow = new Window("", ws);
 		int i = 0;
 		for (final Skill it : super.game.player.getListSkills()) {
-			
+
 			TextButton skillButton = new TextButton(it.getSkillName()
 					+ " cost:" + it.getSpCost(), skin);
 			if (!super.game.player.isToken()) {
@@ -201,7 +201,7 @@ public class BattleScreen extends AbstractScreen {
 					}
 					if (selected != null) {
 						it.setPosition(selected.getX()-it.getWidth()/2, selected.getY()-it.getHeight()/2);
-//						stage.addActor(it);
+						//						stage.addActor(it);
 						try {
 							game.mc.lancerSort(selected, it);
 							stage.getActors().removeValue(selectWindow, true);
@@ -410,15 +410,25 @@ public class BattleScreen extends AbstractScreen {
 
 		lb_info.setText(lanceur.getName() + " utilise " + s.getSkillName() + " sur "
 				+ cible.getName());
-		Label lb_dom= new Label(""+s.getDamage(),skin);
+		final Label lb_dom= new Label(""+s.getDamage(),skin);
 		float milieu_x = selected.getX()+selected.getWidth()/2;
 		float milieu_y = selected.getY()+selected.getHeight()/2;
-		
+		lb_dom.setColor(Color.RED);
+//		Action t = new Action() {
+//			
+//			@Override
+//			public boolean act(float delta) {
+//				lb_dom.setFontScale(2f, 2f);
+//				lb_dom.setScale(2f, 2f);
+//				return true;
+//			}
+//		};
 		Action act = new ParallelAction(sequence(moveTo(milieu_x, milieu_y), 
-				moveBy((int)(30),(int) (30), 1.0f, Interpolation.exp10),
-				scaleTo(2f, 2f),
-				fadeOut(0),
-				delay(2.0f)));
+				moveBy((int)(30),(int) (30), 1.0f, Interpolation.linear)
+				),
+				sequence(color(Color.WHITE,1f),
+						fadeOut(0)
+						));
 		lb_dom.addAction(act);
 		stage.addActor(s);
 		stage.addActor(lb_dom);
