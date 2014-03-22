@@ -191,7 +191,6 @@ public class BattleScreen extends AbstractScreen {
 					}
 					if (selected != null) {
 						it.setPosition(selected.getX(), selected.getY());
-						update();
 //						stage.addActor(it);
 						try {
 							game.mc.lancerSort(selected, it);
@@ -200,6 +199,8 @@ public class BattleScreen extends AbstractScreen {
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
+						update();
+
 					} else {
 						lb_info.setText("Selectionner un monstre et lancer un sort");
 					}
@@ -274,7 +275,7 @@ public class BattleScreen extends AbstractScreen {
 		for (final Personnage it : super.game.playersConnected) {
 			it.clear();
 			it.setVisible(true);
-			it.setOrigin(100 + width / 3 + i, 50 + height / 4 + i);
+			it.setOrigin(100 + width / 2 + i, 50 + height / 4 + i);
 			it.setBounds(it.getOriginX(), it.getOriginY(), it.getWidth(),
 					it.getHeight());
 			it.addListener(new InputListener() {
@@ -313,7 +314,7 @@ public class BattleScreen extends AbstractScreen {
 		for (final Personnage it : currentVague.getMonsters()) {
 			it.clear();
 			it.setVisible(true);
-			it.setOrigin(width / 3 + i, height / 4 + i);
+			it.setOrigin(width / 4 + i, (float) (height / 4 + i*1.5));
 			it.setBounds(it.getOriginX(), it.getOriginY(), it.getWidth(),
 					it.getHeight());
 			it.addListener(new InputListener() {
@@ -394,7 +395,7 @@ public class BattleScreen extends AbstractScreen {
 			if (it instanceof Skill)
 				stage.getActors().removeValue(it, true);
 		}
-		s.setPosition(selected.getX(), selected.getY());
+		s.setPosition(selected.getOriginX(), selected.getOriginY());
 		lb_info.setText(lanceur.getName() + " utilise " + s.getSkillName() + " sur "
 				+ cible.getName());
 		stage.addActor(s);
