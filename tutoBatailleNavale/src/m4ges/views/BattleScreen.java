@@ -1,6 +1,11 @@
 package m4ges.views;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
 
 import java.io.IOException;
 
@@ -16,12 +21,19 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
+import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
+import com.badlogic.gdx.scenes.scene2d.actions.ScaleByAction;
+import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -113,7 +125,6 @@ public class BattleScreen extends AbstractScreen {
 		batch.end();
 		stage.act(delta);
 		stage.draw();
-		Table.drawDebug(stage);
 	}
 
 	@Override
@@ -148,7 +159,10 @@ public class BattleScreen extends AbstractScreen {
 
 	public void update() {
 
-		stage.clear();
+		for (Actor it : stage.getActors()) {
+			if (it instanceof Personnage || it instanceof Table)
+				stage.getActors().removeValue(it, true);
+		}		
 		this.stage.addActor(buildPersoLayer());
 		this.stage.addActor(buildMonsterLayer());
 		this.stage.addActor(createMySkillWindows());
@@ -267,6 +281,7 @@ public class BattleScreen extends AbstractScreen {
 	 * @return
 	 */
 	private Table buildPersoLayer() {
+
 		float width = Gdx.graphics.getWidth();
 		float height = Gdx.graphics.getHeight();
 
@@ -398,7 +413,18 @@ public class BattleScreen extends AbstractScreen {
 		s.setPosition(selected.getOriginX(), selected.getOriginY());
 		lb_info.setText(lanceur.getName() + " utilise " + s.getSkillName() + " sur "
 				+ cible.getName());
+		Label lb_dom= new Label(""+s.getDamage(),skin);
+		float milieu_x = selected.getX()+selected.getWidth()/2;
+		float milieu_y = selected.getY()+selected.getHeight()/2;
+		
+		Action act = new ParallelAction(sequence(moveTo(milieu_x, milieu_y), 
+				moveBy((int)(milieu_x+30),(int) (milieu_y+30), 1.0f, Interpolation.linear),
+				fadeOut(0),
+				scaleTo(0.1f, 0.1f),
+				delay(1.0f)));
+		lb_dom.addAction(act);
 		stage.addActor(s);
+		stage.addActor(lb_dom);
 	}
 
 	@Override
