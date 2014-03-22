@@ -44,7 +44,9 @@ public abstract class AbstractScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void dispose() {
-		
+		stage.dispose();
+		skin.dispose();
+		batch.dispose();
 	};
 
 	@Override

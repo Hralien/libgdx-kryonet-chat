@@ -62,10 +62,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 * {@link Stage}
 	 */
 	private Stage stage;
-	/**
-	 * Actor pour l'animation du fond
-	 */
-	private Image scrollingImage;
+
 	/**
 	 * {@link AtlasRegion} to get the logo
 	 */
@@ -242,30 +239,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		});
 		testMulti.addListener(new ChangeListener() {
 			public void changed(ChangeEvent arg0, Actor arg1) {
-				game.player = new Necromancien();
-				game.player.setName("salut");
-				UnicastClient mc = new UnicastClient(game);
-				ArrayList<Monstre> monstres = Vague.loadVague(1)
-						.getMonsters();
-				mc.setMonstres(monstres);
-				for (int i = 0; i < monstres.size(); i++) {
-					System.out.println(monstres.get(i).getName());
-				}
-				try {
-					mc.npcAttaque(monstres.get(0), game.player);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				// test success
-				GamePreferences prefs = GamePreferences.instance;
-				if (!prefs.suc_creerUnePartie) {
-					game.androidUI
-					.showToast(
-							"[succes]: vous avez débloqué le succes creer une partie",
-							5, stage);
-					prefs.suc_creerUnePartie = true;
-					prefs.save();
-				}
+				game.changeScreen(MyGame.FINALSCREEN);
 
 			}
 		});
@@ -474,7 +448,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	private Image buildBackgroundLayer() {
 		TextureAtlas atlas = MyGame.manager.get("ui/scroll.pack",
 				TextureAtlas.class);
-		scrollingImage = new Image(atlas.findRegion("Scroll_forest"));
+		Image scrollingImage = new Image(atlas.findRegion("Scroll_forest"));
 		scrollingImage.setPosition(0, 0);
 		RepeatAction ra = new RepeatAction();
 		ra.setAction(sequence(moveTo(0, 0), moveBy((int)(-scrollingImage.getWidth()*.6), 0, 20.0f, Interpolation.linear),

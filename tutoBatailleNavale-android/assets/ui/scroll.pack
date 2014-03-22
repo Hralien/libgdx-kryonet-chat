@@ -10,14 +10,14 @@ Scroll_balcon
   orig: 2400, 607
   offset: 0, 0
   index: -1
-Scroll_desert
+Scroll_chato
   rotate: false
   xy: 1, 610
   size: 2400, 607
   orig: 2400, 607
   offset: 0, 0
   index: -1
-Scroll_forest
+Scroll_desert
   rotate: false
   xy: 1, 1
   size: 2400, 607
@@ -29,6 +29,13 @@ scroll2.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+Scroll_forest
+  rotate: false
+  xy: 1, 610
+  size: 2400, 607
+  orig: 2400, 607
+  offset: 0, 0
+  index: -1
 Scroll_neige
   rotate: false
   xy: 1, 1

@@ -166,7 +166,7 @@ public class LoadingScreen extends AbstractScreen {
 		batch.flush();
 		Gdx.gl10.glDisable(GL10.GL_ALPHA_TEST);
 	}
-	
+
 	@Override
 	public void hide() {
 		// Dispose the loading assets as we no longer need them

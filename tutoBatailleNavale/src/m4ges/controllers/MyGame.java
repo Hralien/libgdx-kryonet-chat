@@ -11,6 +11,7 @@ import m4ges.views.BattleScreen;
 import m4ges.views.ChatScreen;
 import m4ges.views.CreateCharacterScreen;
 import m4ges.views.EncyclopedieScreen;
+import m4ges.views.FinalScreen;
 import m4ges.views.LoadingScreen;
 import m4ges.views.MenuPrincipalScreen;
 import m4ges.views.ResultScreen;
@@ -39,6 +40,7 @@ public class MyGame extends Game{
 	public final static int BATTLESCREEN = 4;
 	public final static int RESULTSCREEN = 5;
 	public final static int DICOSCREEN = 6;
+	public final static int FINALSCREEN = 7;
 
 
 	/**
@@ -80,9 +82,14 @@ public class MyGame extends Game{
 		screenHashtable.put(BATTLESCREEN,new BattleScreen(this));
 		screenHashtable.put(RESULTSCREEN,new ResultScreen(this));
 		screenHashtable.put(DICOSCREEN,new EncyclopedieScreen(this));
+		screenHashtable.put(FINALSCREEN,new FinalScreen(this));
 		changeScreen(0);
 	}
 
+	/**
+	 * methode permettant de changer d'ecran
+	 * @param nextScreen la variable int public correspondant 
+	 */
 	public void changeScreen(int nextScreen){
 		if(screenHashtable.containsKey(nextScreen)){
 			setScreen(screenHashtable.get(nextScreen));
