@@ -36,11 +36,7 @@ public abstract class Joueur extends Personnage implements Serializable {
 			}
 		} else {
 			if (p.getHp() > 0) {
-				p.setHp(p.getHp() - s.getDamage());
-				if (p.getHp() <= 0) {
-					p.setHp(0);
-					p.setState(Personnage.MORT);
-				}
+				p.perdreVie(s.getDamage());
 			}
 		}
 		System.out.println(" COUT  : " + s.getSpCost());

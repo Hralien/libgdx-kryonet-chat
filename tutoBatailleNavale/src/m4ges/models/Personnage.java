@@ -2,6 +2,8 @@ package m4ges.models;
 
 import java.util.ArrayList;
 
+import m4ges.util.Constants;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -37,6 +39,8 @@ public abstract class Personnage extends Actor {
 	protected String nom;
 	protected int element;
 	protected ArrayList<Skill> listSkills;
+	//permet de connaitre les effets actif sur le perso
+	protected ArrayList<Integer> effet;
 	//permet de connaitre le tour de jeu
 	protected boolean token;
 	
@@ -48,12 +52,38 @@ public abstract class Personnage extends Actor {
 	
 	public Personnage() {
 		this.listSkills = new ArrayList<Skill>();
+		this.effet = new ArrayList<Integer>();
 		this.state=COMPLETE;
 		this.stateTime=0;
 		this.currentFrame = null;
 		setTouchable(Touchable.enabled);
 		this.token = false;
 		this.setOrigin(50, 50);
+	}
+	
+	public void addEffect(int effet){
+		this.effet.add(effet);
+	}
+	
+	public boolean isGele(){
+		return this.effet.contains(Constants.GELE);
+	}
+	
+	public boolean isResistant(){
+		return this.effet.contains(Constants.RESISTANCE);
+	}
+	
+	public void traiteEffet(){
+		for(Integer e:this.effet){
+			switch (e) {
+			case Constants.COMBUSTION:
+				this.perdreVie(5);
+				break;
+
+			default:
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -159,6 +189,18 @@ public abstract class Personnage extends Actor {
 				+ ", name=" + nom + ", listSkills=" + listSkills + ", state="
 				+ state + ", currentFrame=" + currentFrame + ", stateTime="
 				+ stateTime + "]";
+	}
+	
+	public void perdreVie(int x){
+		int hp = this.getHp();
+		hp -= x;
+		if(hp <= 0){
+			this.setHp(0);
+			this.setState(MORT);
+		}
+		else{
+			this.setHp(hp);
+		}
 	}
 	
 }

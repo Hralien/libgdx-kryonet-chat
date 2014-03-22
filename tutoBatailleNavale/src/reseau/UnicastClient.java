@@ -614,7 +614,7 @@ public class UnicastClient {
 		 * joueur de la liste (random quoi...)
 		 */
 		if (ipChoisi.length() < 1) {
-			attaqueMonstre();
+//			attaqueMonstre();
 			ipChoisi = joueurs.getKey((Joueur) game.playersConnected
 					.get(game.playersConnected.size() - 1));
 			data = new byte[ipChoisi.length() + 1];
