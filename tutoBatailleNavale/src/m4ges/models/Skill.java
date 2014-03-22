@@ -84,8 +84,7 @@ public class Skill extends Actor implements Cloneable {
 		skillAnimation.setPlayMode(Animation.NORMAL);
 		stateTime = 0f; // #13
 		currentFrame = skillAnimation.getKeyFrame(0);
-		super.setSize(currentFrame.getRegionWidth(),
-				currentFrame.getRegionHeight());
+		super.setSize(currentFrame.getRegionWidth(),currentFrame.getRegionHeight());
 	}
 
 	/**

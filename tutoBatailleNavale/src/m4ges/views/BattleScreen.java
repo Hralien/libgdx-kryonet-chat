@@ -29,11 +29,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
-import com.badlogic.gdx.scenes.scene2d.actions.ScaleByAction;
-import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -204,7 +200,7 @@ public class BattleScreen extends AbstractScreen {
 							stage.getActors().removeValue(it, true);
 					}
 					if (selected != null) {
-						it.setPosition(selected.getX(), selected.getY());
+						it.setPosition(selected.getX()-it.getWidth()/2, selected.getY()-it.getHeight()/2);
 //						stage.addActor(it);
 						try {
 							game.mc.lancerSort(selected, it);
@@ -410,7 +406,8 @@ public class BattleScreen extends AbstractScreen {
 			if (it instanceof Skill)
 				stage.getActors().removeValue(it, true);
 		}
-		s.setPosition(selected.getOriginX(), selected.getOriginY());
+		s.setPosition(selected.getX()-s.getWidth()/2, selected.getY()-s.getHeight()/3);
+
 		lb_info.setText(lanceur.getName() + " utilise " + s.getSkillName() + " sur "
 				+ cible.getName());
 		Label lb_dom= new Label(""+s.getDamage(),skin);
@@ -418,10 +415,10 @@ public class BattleScreen extends AbstractScreen {
 		float milieu_y = selected.getY()+selected.getHeight()/2;
 		
 		Action act = new ParallelAction(sequence(moveTo(milieu_x, milieu_y), 
-				moveBy((int)(milieu_x+30),(int) (milieu_y+30), 1.0f, Interpolation.linear),
+				moveBy((int)(30),(int) (30), 1.0f, Interpolation.exp10),
+				scaleTo(2f, 2f),
 				fadeOut(0),
-				scaleTo(0.1f, 0.1f),
-				delay(1.0f)));
+				delay(2.0f)));
 		lb_dom.addAction(act);
 		stage.addActor(s);
 		stage.addActor(lb_dom);
