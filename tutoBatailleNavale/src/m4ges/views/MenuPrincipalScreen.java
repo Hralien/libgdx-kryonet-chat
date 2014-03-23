@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
+import m4ges.models.Effect;
 import m4ges.models.Sauvegarde;
 import m4ges.models.Vague;
 import m4ges.models.classes.Aquamancien;
@@ -239,7 +240,11 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		});
 		testMulti.addListener(new ChangeListener() {
 			public void changed(ChangeEvent arg0, Actor arg1) {
-				game.changeScreen(MyGame.FINALSCREEN);
+				Effect brulure = Effect.selectEffectFromEffectID(0);
+				Effect gele = Effect.selectEffectFromEffectID(1);
+				gele.setPosition(20, 10);
+				stage.addActor(brulure);
+				stage.addActor(gele);
 
 			}
 		});

@@ -5,23 +5,37 @@ filter: Nearest,Nearest
 repeat: none
 Foudre
   rotate: false
-  xy: 1, 3
+  xy: 1, 107
   size: 960, 1920
   orig: 960, 1920
   offset: 0, 0
   index: -1
 Combustion
   rotate: false
-  xy: 963, 387
+  xy: 963, 491
   size: 960, 1536
   orig: 960, 1536
   offset: 0, 0
   index: -1
-slash
+Slash
   rotate: false
-  xy: 963, 1
+  xy: 963, 105
   size: 960, 384
   orig: 960, 384
+  offset: 0, 0
+  index: -1
+Brulure
+  rotate: false
+  xy: 1, 54
+  size: 614, 51
+  orig: 614, 51
+  offset: 0, 0
+  index: -1
+Gele
+  rotate: false
+  xy: 1, 1
+  size: 614, 51
+  orig: 614, 51
   offset: 0, 0
   index: -1
 
@@ -48,6 +62,13 @@ Dragon_Breath
   xy: 1, 1
   size: 870, 673
   orig: 870, 673
+  offset: 0, 0
+  index: -1
+Earth_Spike
+  rotate: false
+  xy: 873, 367
+  size: 768, 307
+  orig: 768, 307
   offset: 0, 0
   index: -1
 

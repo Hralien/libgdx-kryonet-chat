@@ -1,12 +1,11 @@
 package m4ges.views;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import m4ges.controllers.AbstractScreen;
 import m4ges.controllers.MyGame;
 import m4ges.models.Citation;
+import m4ges.models.Effect;
 import m4ges.models.LoadingBar;
+import m4ges.models.Skill;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
@@ -16,7 +15,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 
@@ -91,6 +89,10 @@ public class LoadingScreen extends AbstractScreen {
 		MyGame.manager.load("character/personnage.pack", TextureAtlas.class);
 		MyGame.manager.load("ui/scroll.pack", TextureAtlas.class);
 		MyGame.manager.load("effects/items.pack", TextureAtlas.class);
+		
+		Skill.Initialisation();
+		Effect.Initialisation();
+		
 
 
 

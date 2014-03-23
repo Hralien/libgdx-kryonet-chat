@@ -7,10 +7,10 @@ import m4ges.util.Constants;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
@@ -27,7 +27,6 @@ public class Skill extends Actor implements Cloneable {
 
 	/** Skill sprite management */
 	private static volatile TextureAtlas atlas;
-
 
 	private Animation skillAnimation; // #3
 	private TextureRegion currentFrame; // #7
@@ -58,29 +57,20 @@ public class Skill extends Actor implements Cloneable {
 		this.spCost = spCost;
 		this.damage = damage;
 		this.skillName = skillName;
-		this.soundPath = "sound/"+skillEffect+".wav";
+		this.soundPath = "sound/" + skillEffect + ".wav";
 
+		TextureRegion animsheet = new TextureRegion(Initialisation().findRegion(skillEffect));
+		TextureRegion[][] tmp = animsheet.split(animsheet.getRegionWidth() / 
+				frame_cols, animsheet.getRegionHeight() / frame_rows);
 
-		AtlasRegion spritesheet = getInstance().findRegion(skillEffect);
-		// System.err.println("name:"+skillEffect+"width"+spritesheet.getRegionWidth()+"hieght"+spritesheet.getRegionHeight());
-		TextureRegion[] walkFrames = new TextureRegion[frame_cols
-		                                               * frame_rows];
-		int width = spritesheet.getRegionWidth() / frame_cols;
-		int height = spritesheet.getRegionHeight() / frame_rows;
+		TextureRegion[] effectFrames = new TextureRegion[frame_cols * frame_rows];
 		int index = 0;
-		for (int i = 0; i < frame_cols; i++) {
-			for (int j = 0; j < frame_rows; j++) {
-				walkFrames[index] = new TextureRegion(spritesheet, i * width, j
-						* height, width, height);
-				// System.err.println("index:"+index);
-				index++;
-
+		for (int i = 0; i < frame_rows; i++) {
+			for (int j = 0; j < frame_cols; j++) {
+				effectFrames[index++] = tmp[i][j];
 			}
 		}
-
-		// System.err.println(walkFrames.length);
-		skillAnimation = new Animation(0.1f, walkFrames);
-		// System.err.println("skillanim"+skillName+"lenght"+skillAnimation.animationDuration);
+		skillAnimation = new Animation(0.08f, effectFrames);
 		skillAnimation.setPlayMode(Animation.NORMAL);
 		stateTime = 0f; // #13
 		currentFrame = skillAnimation.getKeyFrame(0);
@@ -89,13 +79,11 @@ public class Skill extends Actor implements Cloneable {
 
 	/**
 	 * return la liste des skills d'une classe de personnage
+	 * 
 	 * @param classID
 	 * @return
 	 */
 	public static ArrayList<Skill> getSkillForClass(int classID) {
-		//TODO:recuperer les skills de listskill et non en créer de nouveau
-		if(listSkill == null)
-			buildListSkill();
 		ArrayList<Skill> list = new ArrayList<Skill>();
 		switch (classID) {
 		case Personnage.CHAMANE:
@@ -135,21 +123,24 @@ public class Skill extends Actor implements Cloneable {
 
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
-		if(!playingSound){
-			Sound m  = Gdx.audio.newSound(Gdx.files.internal(soundPath));
-			m.setVolume(0, 0.2f);
-			m.play();
-			playingSound=true;
+		if (!playingSound) {
+			FileHandle s = Gdx.files.internal(soundPath);
+			if(s.exists()){
+				Sound m = Gdx.audio.newSound(s);
+				m.setVolume(0, 0.2f);
+				m.play();
+				playingSound = true;
+			}
 		}
 		stateTime += Gdx.graphics.getDeltaTime(); // #15
-		if ((stateTime <= skillAnimation.animationDuration / 5)) {
+		if (! skillAnimation.isAnimationFinished(stateTime)) {
 			currentFrame = skillAnimation.getKeyFrame(stateTime, false); // #16
 			batch.draw(currentFrame, this.getX(), this.getY()); // #17
 		} else {
-			//animation finie, on la vire du parent
+			// animation finie, on la vire du parent
 
 			this.remove();
-			playingSound=false;
+			playingSound = false;
 		}
 	}
 
@@ -158,7 +149,7 @@ public class Skill extends Actor implements Cloneable {
 	 * 
 	 * @return Retourne l'instance du singleton.
 	 */
-	private final static TextureAtlas getInstance() {
+	public final static TextureAtlas Initialisation() {
 		// Le "Double-Checked Singleton"/"Singleton doublement vérifié" permet
 		// d'éviter un appel coûteux à synchronized,
 		// une fois que l'instanciation est faite.
@@ -176,6 +167,7 @@ public class Skill extends Actor implements Cloneable {
 		}
 		return Skill.atlas;
 	}
+
 	/**
 	 * 
 	 * construit la list des skills possibles
@@ -189,7 +181,6 @@ public class Skill extends Actor implements Cloneable {
 		listSkill.add(new Skill(3, 4, "ressistance", "Resistance", 0, 5, 4));
 		listSkill.add(new Skill(4, 10, "resurrection", "Resurrection", 0, 5, 7));
 
-
 		/** Necromencien */
 		listSkill.add(new Skill(5, 8, "abimes", "Abimes", 10, 5, 6));
 		listSkill.add(new Skill(6, 7, "malédiction", "Malediction", 10, 5, 6));
@@ -197,12 +188,10 @@ public class Skill extends Actor implements Cloneable {
 				5));
 		listSkill.add(new Skill(8, 5, "perturbation", "Perturbation", 10, 5, 5));
 
-
 		/** Mage chaud */
 		listSkill.add(new Skill(9, 5, "deflagration", "Deflagration", 10, 5, 4));
 		listSkill.add(new Skill(10, 10, "foudre", "Foudre", 10, 5, 10));
-		listSkill.add(new Skill(11, 6, "choc sismique", "Choc_sismique", 10, 5,
-				4));
+		listSkill.add(new Skill(11, 6, "choc sismique", "Earth_Spike", 10, 5, 2));
 		listSkill.add(new Skill(12, 8, "combustion", "Combustion", 10, 5, 8));
 
 		/** Mage froid */
@@ -210,11 +199,10 @@ public class Skill extends Actor implements Cloneable {
 		listSkill.add(new Skill(14, 6, "gel", "Gel", 10, 5, 6));
 		listSkill.add(new Skill(15, 6, "tornade", "Tornade", 10, 5, 6));
 		listSkill.add(new Skill(16, 5, "rafale", "Rafale", 10, 5, 5));
-		
-		/**Monstre*/
-		listSkill.add(new Skill(13, 6, "soufle", "Dragon_Breath", 10, 4, 3));
-		listSkill.add(new Skill(13, 6, "slash", "slash", 10, 5, 2));
 
+		/** Monstre */
+		listSkill.add(new Skill(17, 6, "soufle", "Dragon_Breath", 10, 4, 3));
+		listSkill.add(new Skill(18, 6, "slash", "Slash", 10, 5, 2));
 
 	}
 
@@ -259,7 +247,7 @@ public class Skill extends Actor implements Cloneable {
 		return id;
 	}
 
-	public int getDamage(){
+	public int getDamage() {
 		return this.damage;
 	}
 
@@ -270,7 +258,6 @@ public class Skill extends Actor implements Cloneable {
 	public int getSpCost() {
 		return spCost;
 	}
-
 
 	public TextureRegion getCurrentFrame() {
 		return currentFrame;

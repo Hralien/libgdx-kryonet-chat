@@ -64,11 +64,6 @@ public class BattleScreen extends AbstractScreen {
 	private Vague currentVague;
 
 	/**
-	 * premier plan
-	 */
-	private Group fg;
-
-	/**
 	 * label pour afficher un message
 	 */
 	private Label lb_info;
@@ -88,7 +83,6 @@ public class BattleScreen extends AbstractScreen {
 		this.stage = new Stage(Gdx.graphics.getWidth(),
 				Gdx.graphics.getHeight(), true);
 		this.stage.setCamera(cameraGUI);
-		this.setFg(new Group());
 
 	}
 
@@ -123,19 +117,11 @@ public class BattleScreen extends AbstractScreen {
 
 	@Override
 	public void show() {
-		// on dit a l'appli d'ecouter ce stage quand la methode show est appelee
+		// on dit a l'appli d'ecouter ce stage
 		Gdx.input.setInputProcessor(this.stage);
-
-		currentVague = Vague.loadVague(game.currentVague);
-
+		//initilisation
 		this.selected = null;
-		game.getMC().setMonstres(currentVague.getMonsters());
-
-		TextureAtlas atlasMap = MyGame.manager.get("ui/maps.pack",
-				TextureAtlas.class);
-		battle_bg = new TextureRegion(atlasMap.findRegion(currentVague
-				.getNameVague()));
-
+		//on retrouve les images pour construit l'UI
 		TextureAtlas atlas = MyGame.manager.get("ui/battleui.pack",
 				TextureAtlas.class);
 
@@ -143,16 +129,30 @@ public class BattleScreen extends AbstractScreen {
 		battle_info2 = new TextureRegion(atlas.findRegion("battle_ui2"));
 		battle_skill = new TextureRegion(atlas.findRegion("battle_ui_spell"));
 		battle_arrow = new TextureRegion(atlas.findRegion("fleche"));
-
+		
+		//on charge la vague correspondante au niveau
+		currentVague = Vague.loadVague(game.currentVague);
+		//on passe au client la liste actuelle des monstres
+		game.getMC().setMonstres(currentVague.getMonsters());
+		
+		//on recup la map correspondante a la vague
+		TextureAtlas atlasMap = MyGame.manager.get("ui/maps.pack",
+				TextureAtlas.class);
+		battle_bg = new TextureRegion(atlasMap.findRegion(currentVague
+				.getNameVague()));
+		//on affiche
 		lb_info = buildLabelMessage("Selectionner un monstre et lancer un sort");
-
+		//on construit les layers
 		update();
+		//on informe le joueur qu'il est dans la vague X
 		this.stage.addActor(buildVagueInfo());
 
 	}
-
+	/**
+	 * methode qui maj tout les composants
+	 */
 	public void update() {
-
+		//on remove les actor du stage inutiles
 		for (Actor it : stage.getActors()) {
 			if (it instanceof Personnage || it instanceof Table)
 				stage.getActors().removeValue(it, true);
@@ -163,7 +163,6 @@ public class BattleScreen extends AbstractScreen {
 		this.stage.addActor(createMyInfoWindows());
 		this.stage.addActor(createSelectedWindows());
 		this.stage.addActor(lb_info);
-		// this.stage.addActor(fg);
 
 	}
 
@@ -445,6 +444,7 @@ public class BattleScreen extends AbstractScreen {
 		
 		/*
 		 * Indispensable pour garder une certaine coherence dans le jeu
+		 * OULALA
 		 */
 		try {
 			Thread.sleep(1000);
@@ -468,14 +468,6 @@ public class BattleScreen extends AbstractScreen {
 	public void resume() {
 		// TODO Auto-generated method stub
 
-	}
-
-	public Group getFg() {
-		return fg;
-	}
-
-	public void setFg(Group fg) {
-		this.fg = fg;
 	}
 
 	public void updateSkillWindow() {
