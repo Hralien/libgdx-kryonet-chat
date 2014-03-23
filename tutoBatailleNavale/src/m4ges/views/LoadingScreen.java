@@ -90,6 +90,9 @@ public class LoadingScreen extends AbstractScreen {
 		MyGame.manager.load("ui/scroll.pack", TextureAtlas.class);
 		MyGame.manager.load("effects/items.pack", TextureAtlas.class);
 		
+		MyGame.manager.finishLoading();
+
+		
 		Skill.Initialisation();
 		Effect.Initialisation();
 		

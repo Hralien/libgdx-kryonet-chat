@@ -27,12 +27,8 @@ public class Effect extends Actor {
 		this.setNom(effectName);
 		TextureRegion animsheet = new TextureRegion(
 				Initialisation().findRegion(effectName));
-		System.err.println("animsheet size" + animsheet.getRegionWidth() + "|"
-				+ animsheet.getRegionHeight());
 		TextureRegion[][] tmp = animsheet.split(animsheet.getRegionWidth()
 				/ frame_cols, animsheet.getRegionHeight() / frame_rows); // #10
-		System.err.println("size" + tmp.length);
-
 		TextureRegion[] effectFrames = new TextureRegion[frame_cols
 		                                                 * frame_rows];
 		int index = 0;
