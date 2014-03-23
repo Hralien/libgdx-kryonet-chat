@@ -1,8 +1,10 @@
 package m4ges.models;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import m4ges.util.Constants;
+import m4ges.views.BattleScreen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -10,25 +12,27 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+
 /**
  * Classe representant un personnae
+ * 
  * @author Florian
- *
+ * 
  */
 public abstract class Personnage extends Actor {
 
-	//classe
-	public static final int SHAMAN=0;
-	public static final int NECROMANCIEN=1;
-	public static final int PYROMANCIEN=2;
-	public static final int AQUAMANCIEN=3;
-	
-	//etat
-	public static final int COMPLETE=0;	
-	public static final int MORT=1;
-	public static final int WAIT=2;
+	// classe
+	public static final int SHAMAN = 0;
+	public static final int NECROMANCIEN = 1;
+	public static final int PYROMANCIEN = 2;
+	public static final int AQUAMANCIEN = 3;
 
-	//stats
+	// etat
+	public static final int COMPLETE = 0;
+	public static final int MORT = 1;
+	public static final int WAIT = 2;
+
+	// stats
 	protected int hp;
 	protected int hpMax;
 	protected int mana;
@@ -39,47 +43,69 @@ public abstract class Personnage extends Actor {
 	protected String nom;
 	protected int element;
 	protected ArrayList<Skill> listSkills;
-	//permet de connaitre les effets actif sur le perso
+	// permet de connaitre les effets actif sur le perso
 	protected ArrayList<Integer> effet;
-	//permet de connaitre le tour de jeu
+	// permet de connaitre le tour de jeu
 	protected boolean token;
-	
-	//animation
+
+	// animation
 	protected int state;
 	protected TextureRegion currentFrame;
 	protected float stateTime;
 
-	
 	public Personnage() {
 		this.listSkills = new ArrayList<Skill>();
 		this.effet = new ArrayList<Integer>();
-		this.state=COMPLETE;
-		this.stateTime=0;
+		this.state = COMPLETE;
+		this.stateTime = 0;
 		this.currentFrame = null;
 		setTouchable(Touchable.enabled);
 		this.token = false;
 		this.setOrigin(50, 50);
 	}
-	
-	public void addEffect(int effet){
-		this.effet.add(effet);
+
+	public void addEffect(int effet) {
+		if (effet == Constants.GELE || effet == Constants.RESISTANCE
+				|| effet == Constants.MALEDICTION
+				|| effet == Constants.COMBUSTION || effet == Constants.EMPOISONNEMENT)
+			this.effet.add(effet);
 	}
-	
-	public boolean isGele(){
+
+	public void delEffect(int effet) {
+		this.effet.remove((Object)effet);
+	}
+
+	public boolean isGele() {
 		return this.effet.contains(Constants.GELE);
 	}
-	
-	public boolean isResistant(){
+
+	public boolean isResistant() {
 		return this.effet.contains(Constants.RESISTANCE);
 	}
-	
-	public void traiteEffet(){
-		for(Integer e:this.effet){
-			switch (e) {
+
+	public void traiteEffet(BattleScreen bs) {
+		Iterator<Integer> e = this.effet.iterator();
+		while(e.hasNext()){
+			switch (e.next()) {
 			case Constants.COMBUSTION:
 				this.perdreVie(5);
+				bs.afficheSkill(
+						Skill.selectSkillFromSkillID(Constants.COMBUSTION),
+						this, this);
 				break;
-
+			case Constants.MALEDICTION:
+				this.perdreVie(25);
+				e.remove();
+				bs.afficheSkill(
+						Skill.selectSkillFromSkillID(Constants.MALEDICTION),
+						this, this);
+				break;
+			case Constants.EMPOISONNEMENT:
+				this.perdreVie(10);
+				bs.afficheSkill(
+						Skill.selectSkillFromSkillID(Constants.EMPOISONNEMENT),
+						this, this);
+				break;
 			default:
 				break;
 			}
@@ -93,31 +119,37 @@ public abstract class Personnage extends Actor {
 		case COMPLETE:
 			stateTime += Gdx.graphics.getDeltaTime();
 			currentFrame = animate().getKeyFrame(stateTime, true);
-			batch.draw(currentFrame,getOriginX(),getOriginY());
+			batch.draw(currentFrame, getOriginX(), getOriginY());
 			break;
 		case MORT:
 			currentFrame = animate().getKeyFrame(animate().getKeyFrameIndex(8));
-			batch.draw(currentFrame,getOriginX(),getOriginY());
+			batch.draw(currentFrame, getOriginX(), getOriginY());
 			break;
 		case WAIT:
 			currentFrame = animate().getKeyFrame(0, true);
-			batch.draw(currentFrame,getX(),getY());
+			batch.draw(currentFrame, getX(), getY());
 			break;
 		default:
 			break;
 		}
-		this.setSize(currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
-		this.setBounds(getX(), getY(), currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
+		this.setSize(currentFrame.getRegionWidth(),
+				currentFrame.getRegionHeight());
+		this.setBounds(getX(), getY(), currentFrame.getRegionWidth(),
+				currentFrame.getRegionHeight());
 	}
 
 	@Override
-	public Actor hit (float x, float y, boolean touchable) {
-		if (touchable && getTouchable() != Touchable.enabled) return null;
-		return x >= 0 && x < this.getWidth() && y >= 0 && y < this.getHeight() ? this : null;
+	public Actor hit(float x, float y, boolean touchable) {
+		if (touchable && getTouchable() != Touchable.enabled)
+			return null;
+		return x >= 0 && x < this.getWidth() && y >= 0 && y < this.getHeight() ? this
+				: null;
 	}
+
 	public abstract String getDesc();
+
 	public abstract Animation animate();
-	
+
 	public String getNom() {
 		return nom;
 	}
@@ -130,21 +162,17 @@ public abstract class Personnage extends Actor {
 		return listSkills;
 	}
 
-
 	public int getHp() {
 		return hp;
 	}
-
 
 	public void setHp(int hp) {
 		this.hp = hp;
 	}
 
-
 	public int getMana() {
 		return mana;
 	}
-
 
 	public void setMana(int mana) {
 		this.mana = mana;
@@ -173,12 +201,12 @@ public abstract class Personnage extends Actor {
 	public void setState(int state) {
 		this.state = state;
 	}
-	
-	public boolean isToken(){
+
+	public boolean isToken() {
 		return token;
 	}
-	
-	public void setToken(boolean t){
+
+	public void setToken(boolean t) {
 		this.token = t;
 	}
 
@@ -190,17 +218,16 @@ public abstract class Personnage extends Actor {
 				+ state + ", currentFrame=" + currentFrame + ", stateTime="
 				+ stateTime + "]";
 	}
-	
-	public void perdreVie(int x){
+
+	public void perdreVie(int x) {
 		int hp = this.getHp();
 		hp -= x;
-		if(hp <= 0){
+		if (hp <= 0) {
 			this.setHp(0);
 			this.setState(MORT);
-		}
-		else{
+		} else {
 			this.setHp(hp);
 		}
 	}
-	
+
 }

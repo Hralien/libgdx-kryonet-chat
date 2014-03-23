@@ -412,6 +412,12 @@ public class UnicastClient {
 			it.setToken(false);
 			if (action == Constants.TOKENTOUR) {
 				it.setaJoueCeTour(false);
+				it.traiteEffet((BattleScreen) game.getScreen());
+			}
+		}
+		if (action == Constants.TOKENTOUR) {
+			for (Personnage it : monstres) {
+				it.traiteEffet((BattleScreen) game.getScreen());
 			}
 		}
 
@@ -569,17 +575,17 @@ public class UnicastClient {
 		// DEBUG
 		if (ip == null)
 			System.err.println("Erreur joueur inexistant");
-		
+
 		int idMonstre = monstres.indexOf(mechant);
-		
+
 		// Action, cible, sort, ip
 		byte[] data = new byte[1 + 1 + ip.length()];
 		data[0] = Constants.ATTAQUEMONSTRE;
 		data[1] = (byte) idMonstre;
-		
+
 		for (int i = 2; i < data.length; i++)
 			data[i] = (byte) ip.charAt(i - 2);
-		
+
 		sendToAll(data);
 	}
 
@@ -608,18 +614,17 @@ public class UnicastClient {
 
 		byte data[];
 
-		
 		/*
 		 * Si tout les joueurs ont joué ce tour au passe le token au dernier
 		 * joueur de la liste (random quoi...)
 		 */
 		if (ipChoisi.length() < 1) {
-//			attaqueMonstre();
+			attaqueMonstre();
 			ipChoisi = joueurs.getKey((Joueur) game.playersConnected
 					.get(game.playersConnected.size() - 1));
 			data = new byte[ipChoisi.length() + 1];
 			data[0] = Constants.TOKENTOUR;
-			
+
 		} else {
 			data = new byte[ipChoisi.length() + 1];
 			data[0] = Constants.TOKEN;
@@ -627,19 +632,20 @@ public class UnicastClient {
 		for (int i = 1; i < data.length; i++) {
 			data[i] = (byte) ipChoisi.charAt(i - 1);
 		}
-		
+
 		sendToAll(data);
 	}
 
 	/**
 	 * Methode permettant aux monstre d'attaquer
-	 * @throws IOException 
+	 * 
+	 * @throws IOException
 	 */
 	private void attaqueMonstre() throws IOException {
 
-		for(Personnage m:monstres){
+		for (Personnage m : monstres) {
 			Joueur cible = (Joueur) game.playersConnected.get((int) Math
-					.round(Math.random() * (game.playersConnected.size()-1)));
+					.round(Math.random() * (game.playersConnected.size() - 1)));
 			npcAttaque(m, cible);
 		}
 	}
