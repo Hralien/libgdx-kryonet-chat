@@ -96,35 +96,36 @@ public class Skill extends Actor implements Cloneable {
 		//TODO:recuperer les skills de listskill et non en créer de nouveau
 		ArrayList<Skill> list = new ArrayList<Skill>();
 		switch (classID) {
-		case 0:
-			/** Shaman */
-			list.add(new Skill(1, 5, "soin", "Soin", -10, 5, 4));
-			list.add(new Skill(2, 7, "motivation", "Motivation", 0, 5, 7));
-			list.add(new Skill(3, 4, "ressistance", "Resistance", 0, 5, 4));
-			list.add(new Skill(4, 10, "resurrection", "Resurrection", 0, 5, 7));
+		case Personnage.CHAMANE:
+			/** Chamane */
+			list.add(Skill.selectSkillFromSkillID(1));
+			list.add(Skill.selectSkillFromSkillID(2));
+			list.add(Skill.selectSkillFromSkillID(3));
+			list.add(Skill.selectSkillFromSkillID(4));
 			break;
-		case 1:
+		case Personnage.NECROMANCIEN:
 			/** Necromencien */
-			list.add(new Skill(5, 8, "abimes", "Abimes", 10, 5, 6));
-			list.add(new Skill(6, 7, "malédiction", "Malediction", 10, 5, 6));
-			list.add(new Skill(7, 6, "empoisonement", "Empoisonnement", 10, 5,
-					5));
-			list.add(new Skill(8, 5, "perturbation", "Perturbation", 10, 5, 5));
+			list.add(Skill.selectSkillFromSkillID(5));
+			list.add(Skill.selectSkillFromSkillID(6));
+			list.add(Skill.selectSkillFromSkillID(7));
+			list.add(Skill.selectSkillFromSkillID(8));
+
 			break;
-		case 2:
+		case Personnage.PYROMANCIEN:
 			/** Mage chaud */
-			list.add(new Skill(9, 5, "deflagration", "Deflagration", 10, 5, 4));
-			list.add(new Skill(10, 10, "foudre", "Foudre", 10, 5, 10));
-			list.add(new Skill(11, 6, "choc sismique", "Choc_sismique", 10, 5,
-					4));
-			list.add(new Skill(12, 8, "combustion", "Combustion", 10, 5, 8));
+			list.add(Skill.selectSkillFromSkillID(9));
+			list.add(Skill.selectSkillFromSkillID(10));
+			list.add(Skill.selectSkillFromSkillID(11));
+			list.add(Skill.selectSkillFromSkillID(12));
+
 			break;
-		case 3:
+		case Personnage.AQUAMANCIEN:
 			/** Mage froid */
-			list.add(new Skill(13, 6, "geyser", "Geyser", 10, 5, 6));
-			list.add(new Skill(14, 6, "gel", "Gel", 10, 5, 6));
-			list.add(new Skill(15, 6, "tornade", "Tornade", 10, 5, 6));
-			list.add(new Skill(16, 5, "rafale", "Rafale", 10, 5, 5));
+			list.add(Skill.selectSkillFromSkillID(13));
+			list.add(Skill.selectSkillFromSkillID(14));
+			list.add(Skill.selectSkillFromSkillID(15));
+			list.add(Skill.selectSkillFromSkillID(16));
+
 			break;
 		}
 		return list;
@@ -207,6 +208,11 @@ public class Skill extends Actor implements Cloneable {
 		listSkill.add(new Skill(14, 6, "gel", "Gel", 10, 5, 6));
 		listSkill.add(new Skill(15, 6, "tornade", "Tornade", 10, 5, 6));
 		listSkill.add(new Skill(16, 5, "rafale", "Rafale", 10, 5, 5));
+		
+		/**Monstre*/
+		listSkill.add(new Skill(13, 6, "soufle", "Dragon_Breath", 10, 4, 3));
+		listSkill.add(new Skill(13, 6, "slash", "slash", 10, 5, 2));
+
 
 	}
 

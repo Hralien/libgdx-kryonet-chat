@@ -5,16 +5,23 @@ filter: Nearest,Nearest
 repeat: none
 Foudre
   rotate: false
-  xy: 1, 1
+  xy: 1, 3
   size: 960, 1920
   orig: 960, 1920
   offset: 0, 0
   index: -1
 Combustion
   rotate: false
-  xy: 963, 385
+  xy: 963, 387
   size: 960, 1536
   orig: 960, 1536
+  offset: 0, 0
+  index: -1
+slash
+  rotate: false
+  xy: 963, 1
+  size: 960, 384
+  orig: 960, 384
   offset: 0, 0
   index: -1
 
@@ -22,18 +29,77 @@ skill2.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-Choc_sismique
+Motivation
+  rotate: false
+  xy: 1, 676
+  size: 960, 1344
+  orig: 960, 1344
+  offset: 0, 0
+  index: -1
+Resurrection
+  rotate: false
+  xy: 963, 676
+  size: 960, 1344
+  orig: 960, 1344
+  offset: 0, 0
+  index: -1
+Dragon_Breath
+  rotate: false
+  xy: 1, 1
+  size: 870, 673
+  orig: 870, 673
+  offset: 0, 0
+  index: -1
+
+skill3.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Abimes
   rotate: false
   xy: 1, 771
+  size: 960, 1152
+  orig: 960, 1152
+  offset: 0, 0
+  index: -1
+Gel
+  rotate: false
+  xy: 963, 771
+  size: 960, 1152
+  orig: 960, 1152
+  offset: 0, 0
+  index: -1
+Choc_sismique
+  rotate: false
+  xy: 1, 1
   size: 960, 768
   orig: 960, 768
   offset: 0, 0
   index: -1
 Deflagration
   rotate: false
-  xy: 963, 771
+  xy: 963, 1
   size: 960, 768
   orig: 960, 768
+  offset: 0, 0
+  index: -1
+
+skill4.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Geyser
+  rotate: false
+  xy: 1, 771
+  size: 960, 1152
+  orig: 960, 1152
+  offset: 0, 0
+  index: -1
+Malediction
+  rotate: false
+  xy: 963, 771
+  size: 960, 1152
+  orig: 960, 1152
   offset: 0, 0
   index: -1
 Resistance
@@ -51,67 +117,29 @@ Soin
   offset: 0, 0
   index: -1
 
-skill3.png
+skill5.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-Empoisonnement
+Tornade
   rotate: false
-  xy: 1, 963
-  size: 960, 960
-  orig: 960, 960
+  xy: 1, 771
+  size: 960, 1152
+  orig: 960, 1152
   offset: 0, 0
   index: -1
-Perturbation
+Empoisonnement
   rotate: false
   xy: 963, 963
   size: 960, 960
   orig: 960, 960
   offset: 0, 0
   index: -1
-Rafale
+Perturbation
   rotate: false
-  xy: 1, 1
+  xy: 963, 1
   size: 960, 960
   orig: 960, 960
-  offset: 0, 0
-  index: -1
-
-skill4.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-Motivation
-  rotate: false
-  xy: 1, 1
-  size: 960, 1344
-  orig: 960, 1344
-  offset: 0, 0
-  index: -1
-Resurrection
-  rotate: false
-  xy: 963, 1
-  size: 960, 1344
-  orig: 960, 1344
-  offset: 0, 0
-  index: -1
-
-skill5.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-Abimes
-  rotate: false
-  xy: 1, 1
-  size: 960, 1152
-  orig: 960, 1152
-  offset: 0, 0
-  index: -1
-Gel
-  rotate: false
-  xy: 963, 1
-  size: 960, 1152
-  orig: 960, 1152
   offset: 0, 0
   index: -1
 
@@ -119,29 +147,10 @@ skill6.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-Geyser
+Rafale
   rotate: false
   xy: 1, 1
-  size: 960, 1152
-  orig: 960, 1152
-  offset: 0, 0
-  index: -1
-Malediction
-  rotate: false
-  xy: 963, 1
-  size: 960, 1152
-  orig: 960, 1152
-  offset: 0, 0
-  index: -1
-
-skill7.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-Tornade
-  rotate: false
-  xy: 1, 1
-  size: 960, 1152
-  orig: 960, 1152
+  size: 960, 960
+  orig: 960, 960
   offset: 0, 0
   index: -1

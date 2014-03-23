@@ -25,9 +25,6 @@ public class Blobrouge extends Monstre{
 		super.strength=3;
 		super.speed=2;
 
-		
-		super.listSkills=Skill.getSkillForClass(Personnage.NECROMANCIEN);
-
 	}
 	
 	@Override

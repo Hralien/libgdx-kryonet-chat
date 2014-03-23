@@ -27,7 +27,7 @@ public class Chamane extends Joueur {
 		super.speed=10;
 		super.intel=10;
 		
-		super.listSkills=Skill.getSkillForClass(Personnage.SHAMAN);
+		super.listSkills=Skill.getSkillForClass(Personnage.CHAMANE);
 
 	}
 
@@ -82,7 +82,7 @@ public class Chamane extends Joueur {
 	public byte[] getBytes(){
 		byte data[] = new byte[3+this.nom.length()];
 		data[0] = Constants.CONNEXION;
-		data[1] = Personnage.SHAMAN;
+		data[1] = Personnage.CHAMANE;
 		//Et oui, on peut doit l'ip apres :(
 		data[2] = (byte) this.nom.length();
 		byte[] pseudo = this.nom.getBytes();

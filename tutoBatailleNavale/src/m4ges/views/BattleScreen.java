@@ -319,7 +319,6 @@ public class BattleScreen extends AbstractScreen {
 			//ajout
 			layer.addActor(name);
 			//reset
-			skin.getFont("default-font").setColor(Color.WHITE);
 
 		}
 		return layer;
@@ -445,6 +444,15 @@ public class BattleScreen extends AbstractScreen {
 		lb_dom.addAction(act);
 		stage.addActor(s);
 		stage.addActor(lb_dom);
+		
+		/*
+		 * Indispensable pour garder une certaine coherence dans le jeu
+		 */
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

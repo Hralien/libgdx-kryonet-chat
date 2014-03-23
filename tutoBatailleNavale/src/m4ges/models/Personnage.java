@@ -1,8 +1,10 @@
 package m4ges.models;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import m4ges.util.Constants;
+import m4ges.views.BattleScreen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -18,35 +20,107 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 public abstract class Personnage extends Actor {
 
 	//classe
-	public static final int SHAMAN=0;
+	/**
+	 * constante du chamane
+	 */
+	public static final int CHAMANE=0;
+	/**
+	 * constante du necromancien
+	 */
 	public static final int NECROMANCIEN=1;
+	/**
+	 * constante du pyromancien
+	 */
 	public static final int PYROMANCIEN=2;
+	/**
+	 * constante du aquamancien
+	 */
 	public static final int AQUAMANCIEN=3;
+	/**
+	 * constante des monstres
+	 */
+	public static final int MONSTRE = 4;
+	/**
+	 * constante du boss
+	 */
+	public static final int BOSS = 5;
 	
 	//etat
+	/**
+	 * constante animation complete
+	 */
 	public static final int COMPLETE=0;	
+	/**
+	 * constante animation mort
+	 */
 	public static final int MORT=1;
+	/**
+	 * constante animation attente
+	 */
 	public static final int WAIT=2;
 
 	//stats
+	/**
+	 * les hp du personnage
+	 */
 	protected int hp;
+	/**
+	 * les hp max
+	 */
 	protected int hpMax;
+	/**
+	 * le mana 
+	 */
 	protected int mana;
+	/**
+	 * le mana max
+	 */
 	protected int manaMax;
+	/**
+	 * la force
+	 */
 	protected int strength;
+	/**
+	 * la vitesse
+	 */
 	protected int speed;
+	/**
+	 * l'intelligence
+	 */
 	protected int intel;
+	/**
+	 * le nom
+	 */
 	protected String nom;
+	/**
+	 * l'element
+	 */
 	protected int element;
+	/**
+	 * la liste de competences
+	 */
 	protected ArrayList<Skill> listSkills;
-	//permet de connaitre les effets actif sur le perso
+	/*
+	* liste des effets actif sur le personnage
+	*/
 	protected ArrayList<Integer> effet;
-	//permet de connaitre le tour de jeu
+	/**
+	 * permet de connaitre le tour de jeu
+	 */
 	protected boolean token;
 	
 	//animation
+	/**
+	 * etat du personnage
+	 */
 	protected int state;
+	/**
+	 * image active
+	 */
 	protected TextureRegion currentFrame;
+	/**
+	 * temps correspondant
+	 */
 	protected float stateTime;
 
 	
@@ -61,10 +135,15 @@ public abstract class Personnage extends Actor {
 		this.setOrigin(50, 50);
 	}
 	
-	public void addEffect(int effet){
-		this.effet.add(effet);
+	public void addEffect(int effet) {
+		if (effet == Constants.GELE || effet == Constants.RESISTANCE
+				|| effet == Constants.MALEDICTION
+				|| effet == Constants.COMBUSTION || effet == Constants.EMPOISONNEMENT)
+			this.effet.add(effet);
 	}
-	
+	public void delEffect(int effet) {
+		this.effet.remove((Object)effet);
+	}
 	public boolean isGele(){
 		return this.effet.contains(Constants.GELE);
 	}
@@ -73,22 +152,54 @@ public abstract class Personnage extends Actor {
 		return this.effet.contains(Constants.RESISTANCE);
 	}
 	
-	public void traiteEffet(){
-		for(Integer e:this.effet){
-			switch (e) {
+	public void traiteEffet(BattleScreen bs) {
+		Iterator<Integer> e = this.effet.iterator();
+		while(e.hasNext()){
+			switch (e.next()) {
 			case Constants.COMBUSTION:
 				this.perdreVie(5);
+				bs.afficheSkill(
+						Skill.selectSkillFromSkillID(Constants.COMBUSTION),
+						this, this);
 				break;
-
+			case Constants.MALEDICTION:
+				this.perdreVie(25);
+				e.remove();
+				bs.afficheSkill(
+						Skill.selectSkillFromSkillID(Constants.MALEDICTION),
+						this, this);
+				break;
+			case Constants.EMPOISONNEMENT:
+				this.perdreVie(10);
+				bs.afficheSkill(
+						Skill.selectSkillFromSkillID(Constants.EMPOISONNEMENT),
+						this, this);
+				break;
 			default:
 				break;
 			}
 		}
 	}
-
+	/**
+	 * methode permettant le calcul de la vie restante
+	 * @param degat
+	 */
+	public void perdreVie(int degat){
+		int hp = this.getHp();
+		hp -= degat;
+		if(hp <= 0){
+			this.setHp(0);
+			this.setState(MORT);
+		}
+		else{
+			this.setHp(hp);
+		}
+	}
+	/**
+	 * dessine le personnage en fonction de son etat et du statetime
+	 */
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
-
 		switch (state) {
 		case COMPLETE:
 			stateTime += Gdx.graphics.getDeltaTime();
@@ -109,13 +220,33 @@ public abstract class Personnage extends Actor {
 		this.setSize(currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
 		this.setBounds(getX(), getY(), currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
 	}
-
+	/**
+	 * methode à redefinir pour savoir si on selectionne un personnage
+	 * @return l'actor s'il est hit sinon null
+	 */
 	@Override
 	public Actor hit (float x, float y, boolean touchable) {
 		if (touchable && getTouchable() != Touchable.enabled) return null;
 		return x >= 0 && x < this.getWidth() && y >= 0 && y < this.getHeight() ? this : null;
 	}
+	@Override
+	public String toString() {
+		return "Personnage [hp=" + hp + ", mana=" + mana + ", strength="
+				+ strength + ", speed=" + speed + ", intel=" + intel
+				+ ", name=" + nom + ", listSkills=" + listSkills + ", state="
+				+ state + ", currentFrame=" + currentFrame + ", stateTime="
+				+ stateTime + "]";
+	}
+	
+	/**
+	 * 
+	 * @return la description du monstre / classe
+	 */
 	public abstract String getDesc();
+	/**
+	 * 
+	 * @return l'animation correspondante à l'etat
+	 */
 	public abstract Animation animate();
 	
 	public String getNom() {
@@ -182,25 +313,5 @@ public abstract class Personnage extends Actor {
 		this.token = t;
 	}
 
-	@Override
-	public String toString() {
-		return "Personnage [hp=" + hp + ", mana=" + mana + ", strength="
-				+ strength + ", speed=" + speed + ", intel=" + intel
-				+ ", name=" + nom + ", listSkills=" + listSkills + ", state="
-				+ state + ", currentFrame=" + currentFrame + ", stateTime="
-				+ stateTime + "]";
-	}
-	
-	public void perdreVie(int x){
-		int hp = this.getHp();
-		hp -= x;
-		if(hp <= 0){
-			this.setHp(0);
-			this.setState(MORT);
-		}
-		else{
-			this.setHp(hp);
-		}
-	}
 	
 }

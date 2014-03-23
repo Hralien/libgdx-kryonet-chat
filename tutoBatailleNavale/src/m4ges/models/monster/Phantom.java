@@ -26,7 +26,6 @@ public class Phantom extends Monstre {
 		super.mana=5*super.intel;
 		super.strength=3;
 		super.speed=2;		
-		super.listSkills=Skill.getSkillForClass(Personnage.NECROMANCIEN);
 
 	}
 

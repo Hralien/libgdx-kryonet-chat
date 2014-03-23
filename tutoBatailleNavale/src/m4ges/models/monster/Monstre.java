@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import m4ges.models.Item;
 import m4ges.models.Personnage;
+import m4ges.models.Skill;
 
 
 public abstract class Monstre extends Personnage{
@@ -16,6 +17,7 @@ public abstract class Monstre extends Personnage{
 	public Monstre() {
 		super();
 		dropPossible = new ArrayList<Item>();
+		listSkills = Skill.getSkillForClass(Personnage.MONSTRE);
 	}
 
 	public int attaque(){
