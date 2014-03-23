@@ -99,7 +99,7 @@ public class UnicastClient {
 
 	public void lancerClient() throws IOException {
 		sendConnection(null, false);
-		chatWindow.addName(game.player.getName() + " : "
+		chatWindow.addName(game.player.getNom() + " : "
 				+ game.player.getNameClass());
 	}
 
@@ -223,19 +223,19 @@ public class UnicastClient {
 		switch (data[1]) {
 		case Personnage.AQUAMANCIEN:
 			p = new Aquamancien();
-			p.setName(pseudo);
+			p.setNom(pseudo);
 			break;
 		case Personnage.NECROMANCIEN:
 			p = new Necromancien();
-			p.setName(pseudo);
+			p.setNom(pseudo);
 			break;
 		case Personnage.SHAMAN:
 			p = new Chamane();
-			p.setName(pseudo);
+			p.setNom(pseudo);
 			break;
 		case Personnage.PYROMANCIEN:
 			p = new Pyromancien();
-			p.setName(pseudo);
+			p.setNom(pseudo);
 			break;
 		}
 		// On récup l'ip (trim sert à enlever les char null
@@ -246,7 +246,7 @@ public class UnicastClient {
 
 			game.playersConnected.add(p);
 			joueurs.put(ip, p);
-			this.chatWindow.addName(p.getName() + " : " + p.getNameClass());
+			this.chatWindow.addName(p.getNom() + " : " + p.getNameClass());
 		}
 		// si c'est une connexion, il faut donc renvoye une action 2 !
 		if (action == Constants.CONNEXION)
@@ -258,7 +258,7 @@ public class UnicastClient {
 		Set<String> key = joueurs.keySet();
 		for (String it : key) {
 			System.out.println("ip : " + it + " Pseudo : "
-					+ joueurs.get(it).getName());
+					+ joueurs.get(it).getNom());
 		}
 
 	}
@@ -335,8 +335,8 @@ public class UnicastClient {
 				monstres.get(data[2]));
 		// // DEBUG
 		// System.out.println("[UNICAST - LANCERSKILL]\n"
-		// + joueurs.get(ip).getName() + " Attaque : "
-		// + monstres.get(data[2]).getName() + " avec : "
+		// + joueurs.get(ip).getNom() + " Attaque : "
+		// + monstres.get(data[2]).getNom() + " avec : "
 		// + s.getSkillName());
 
 		boolean vagueFinie = true;
@@ -367,7 +367,7 @@ public class UnicastClient {
 		int idMonstre = data[1];
 		// DEBUG
 		System.out.println("[UNICAST - ATTAQUEMONSTRE]:monstre qui attaque : "
-				+ monstres.get(idMonstre).getName());
+				+ monstres.get(idMonstre).getNom());
 		// l'ip de la cible
 		System.err.println(data.length);
 		ip = new String(data, 2, data.length - 2).trim();
@@ -378,8 +378,8 @@ public class UnicastClient {
 		((Monstre) monstres.get(idMonstre)).attaque(joueurs.get(ip));
 
 		// DEBUG
-		System.out.println("[UNICAST] " + monstres.get(idMonstre).getName()
-				+ " attaque " + joueurs.get(ip).getName());
+		System.out.println("[UNICAST] " + monstres.get(idMonstre).getNom()
+				+ " attaque " + joueurs.get(ip).getNom());
 
 		boolean joueursMort = true;
 		for (Joueur j : joueurs.values()) {
@@ -478,7 +478,7 @@ public class UnicastClient {
 	 */
 	public void envoieMessage(String m) throws IOException {
 		// on prend le pseudo du type
-		String pseudo = game.player.getName();
+		String pseudo = game.player.getNom();
 		byte[] data = new byte[2 + pseudo.length() + m.length()];
 		data[0] = Constants.MESSAGE;
 		// On joind la taille du pseudo pour le traitement
@@ -598,7 +598,7 @@ public class UnicastClient {
 		for (Joueur j : joueurs.values()) {
 
 			if (!j.aJoueCeTour()) {
-				System.out.println(j.getName() + " a joue ce tour : "
+				System.out.println(j.getNom() + " a joue ce tour : "
 						+ j.aJoueCeTour());
 				ipChoisi = joueurs.getKey(j);
 				break;

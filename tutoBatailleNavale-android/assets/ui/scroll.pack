@@ -1,6 +1,6 @@
 
-scroll.png
-format: RGBA8888
+scroll.jpg
+format: RGB888
 filter: Nearest,Nearest
 repeat: none
 Scroll_balcon
@@ -25,8 +25,8 @@ Scroll_desert
   offset: 0, 0
   index: -1
 
-scroll2.png
-format: RGBA8888
+scroll2.jpg
+format: RGB888
 filter: Nearest,Nearest
 repeat: none
 Scroll_forest

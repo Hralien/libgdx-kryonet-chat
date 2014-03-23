@@ -118,11 +118,11 @@ public abstract class Personnage extends Actor {
 	public abstract String getDesc();
 	public abstract Animation animate();
 	
-	public String getName() {
+	public String getNom() {
 		return nom;
 	}
 
-	public void setName(String name) {
+	public void setNom(String name) {
 		this.nom = name;
 	}
 

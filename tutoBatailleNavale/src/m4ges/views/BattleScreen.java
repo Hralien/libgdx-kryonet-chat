@@ -262,7 +262,7 @@ public class BattleScreen extends AbstractScreen {
 				battle_skill.getRegionWidth(), battle_skill.getRegionHeight());
 		if (selected == null)
 			return selectWindow;
-		selectWindow.add(new Label("name:" + selected.getName(), skin));
+		selectWindow.add(new Label("name:" + selected.getNom(), skin));
 		selectWindow.row();
 		selectWindow.add(new Label("hp:" + selected.getHp(), skin));
 		selectWindow.row();
@@ -292,7 +292,7 @@ public class BattleScreen extends AbstractScreen {
 			it.addListener(new InputListener() {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
-					System.out.println("[" + it.getName() + "]" + "down");
+					System.out.println("[" + it.getNom() + "]" + "down");
 					selected = it;
 					System.err.println("selected:" + selected);
 					stage.getActors().removeValue(selectWindow, true);
@@ -302,12 +302,25 @@ public class BattleScreen extends AbstractScreen {
 
 				public void touchUp(InputEvent event, float x, float y,
 						int pointer, int button) {
-					System.out.println("[" + it.getName() + "]" + "up");
+					System.out.println("[" + it.getNom() + "]" + "up");
 				}
 			});
 
 			i += 50;
 			layer.addActor(it);
+			//creation du nom du joueur
+			Label name = new Label(it.getNom(), skin);
+			if (it.getState()==Personnage.MORT)
+				name.setColor(Color.RED);
+			else
+				name.setColor(Color.GREEN);
+			//placement
+			name.setPosition( it.getOriginX()+100, it.getOriginY());
+			//ajout
+			layer.addActor(name);
+			//reset
+			skin.getFont("default-font").setColor(Color.WHITE);
+
 		}
 		return layer;
 	}
@@ -331,7 +344,7 @@ public class BattleScreen extends AbstractScreen {
 			it.addListener(new InputListener() {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
-					System.out.println("[" + it.getName() + "]" + "down");
+					System.out.println("[" + it.getNom() + "]" + "down");
 					selected = it;
 					System.err.println("selected:" + selected);
 					stage.getActors().removeValue(selectWindow, true);
@@ -341,7 +354,7 @@ public class BattleScreen extends AbstractScreen {
 
 				public void touchUp(InputEvent event, float x, float y,
 						int pointer, int button) {
-					System.out.println("[" + it.getName() + "]" + "up");
+					System.out.println("[" + it.getNom() + "]" + "up");
 				}
 			});
 			i += 50;
@@ -408,21 +421,21 @@ public class BattleScreen extends AbstractScreen {
 		}
 		s.setPosition(selected.getX()-s.getWidth()/2, selected.getY()-s.getHeight()/3);
 
-		lb_info.setText(lanceur.getName() + " utilise " + s.getSkillName() + " sur "
-				+ cible.getName());
+		lb_info.setText(lanceur.getNom() + " utilise " + s.getSkillName() + " sur "
+				+ cible.getNom());
 		final Label lb_dom= new Label(""+s.getDamage(),skin);
 		float milieu_x = selected.getX()+selected.getWidth()/2;
 		float milieu_y = selected.getY()+selected.getHeight()/2;
 		lb_dom.setColor(Color.RED);
-//		Action t = new Action() {
-//			
-//			@Override
-//			public boolean act(float delta) {
-//				lb_dom.setFontScale(2f, 2f);
-//				lb_dom.setScale(2f, 2f);
-//				return true;
-//			}
-//		};
+		//		Action t = new Action() {
+		//			
+		//			@Override
+		//			public boolean act(float delta) {
+		//				lb_dom.setFontScale(2f, 2f);
+		//				lb_dom.setScale(2f, 2f);
+		//				return true;
+		//			}
+		//		};
 		Action act = new ParallelAction(sequence(moveTo(milieu_x, milieu_y), 
 				moveBy((int)(30),(int) (30), 1.0f, Interpolation.linear)
 				),

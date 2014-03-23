@@ -166,7 +166,7 @@ public class CreateCharacterScreen extends AbstractScreen {
 					System.err.println("switch personnage error");
 				}
 				GamePreferences.instance.save();
-				game.player.setName(tfPlayerName.getText());
+				game.player.setNom(tfPlayerName.getText());
 				stage.addActor(game.player);
 				showClassDescWindow(true, true);
 			}
@@ -187,7 +187,7 @@ public class CreateCharacterScreen extends AbstractScreen {
 			public void changed(ChangeEvent event, Actor actor) {
 				// TODO Auto-generated method stub
 				if (game.player != null) {
-					
+					game.player.setNom(tfPlayerName.getText());
 					game.changeScreen(MyGame.CHATSCREEN);	
 				} 
 				else{
