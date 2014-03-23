@@ -23,7 +23,7 @@ public class Skill extends Actor implements Cloneable {
 	// private ParticleEffect effect;
 	private String soundPath;
 
-	public static ArrayList<Skill> listSkill = new ArrayList<Skill>();
+	public static ArrayList<Skill> listSkill;;
 
 	/** Skill sprite management */
 	private static volatile TextureAtlas atlas;
@@ -94,6 +94,8 @@ public class Skill extends Actor implements Cloneable {
 	 */
 	public static ArrayList<Skill> getSkillForClass(int classID) {
 		//TODO:recuperer les skills de listskill et non en créer de nouveau
+		if(listSkill == null)
+			buildListSkill();
 		ArrayList<Skill> list = new ArrayList<Skill>();
 		switch (classID) {
 		case Personnage.CHAMANE:
