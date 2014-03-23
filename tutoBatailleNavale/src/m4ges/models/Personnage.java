@@ -12,10 +12,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+
 /**
  * Classe representant un personnae
+ * 
  * @author Florian
- *
+ * 
  */
 public abstract class Personnage extends Actor {
 
@@ -58,7 +60,6 @@ public abstract class Personnage extends Actor {
 	 * constante animation attente
 	 */
 	public static final int WAIT=2;
-
 	//stats
 	/**
 	 * les hp du personnage
@@ -103,12 +104,13 @@ public abstract class Personnage extends Actor {
 	/*
 	* liste des effets actif sur le personnage
 	*/
+	// permet de connaitre les effets actif sur le perso
 	protected ArrayList<Integer> effet;
 	/**
 	 * permet de connaitre le tour de jeu
 	 */
-	protected boolean token;
-	
+	// permet de connaitre le tour de jeu
+	protected boolean token;	
 	//animation
 	/**
 	 * etat du personnage
@@ -123,18 +125,16 @@ public abstract class Personnage extends Actor {
 	 */
 	protected float stateTime;
 
-	
 	public Personnage() {
 		this.listSkills = new ArrayList<Skill>();
 		this.effet = new ArrayList<Integer>();
-		this.state=COMPLETE;
-		this.stateTime=0;
+		this.state = COMPLETE;
+		this.stateTime = 0;
 		this.currentFrame = null;
 		setTouchable(Touchable.enabled);
 		this.token = false;
 		this.setOrigin(50, 50);
 	}
-	
 	public void addEffect(int effet) {
 		if (effet == Constants.GELE || effet == Constants.RESISTANCE
 				|| effet == Constants.MALEDICTION
@@ -144,11 +144,13 @@ public abstract class Personnage extends Actor {
 	public void delEffect(int effet) {
 		this.effet.remove((Object)effet);
 	}
-	public boolean isGele(){
+	
+
+	public boolean isGele() {
 		return this.effet.contains(Constants.GELE);
 	}
-	
-	public boolean isResistant(){
+
+	public boolean isResistant() {
 		return this.effet.contains(Constants.RESISTANCE);
 	}
 	
@@ -204,30 +206,34 @@ public abstract class Personnage extends Actor {
 		case COMPLETE:
 			stateTime += Gdx.graphics.getDeltaTime();
 			currentFrame = animate().getKeyFrame(stateTime, true);
-			batch.draw(currentFrame,getOriginX(),getOriginY());
+			batch.draw(currentFrame, getOriginX(), getOriginY());
 			break;
 		case MORT:
 			currentFrame = animate().getKeyFrame(animate().getKeyFrameIndex(8));
-			batch.draw(currentFrame,getOriginX(),getOriginY());
+			batch.draw(currentFrame, getOriginX(), getOriginY());
 			break;
 		case WAIT:
 			currentFrame = animate().getKeyFrame(0, true);
-			batch.draw(currentFrame,getX(),getY());
+			batch.draw(currentFrame, getX(), getY());
 			break;
 		default:
 			break;
 		}
-		this.setSize(currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
-		this.setBounds(getX(), getY(), currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
+		this.setSize(currentFrame.getRegionWidth(),
+				currentFrame.getRegionHeight());
+		this.setBounds(getX(), getY(), currentFrame.getRegionWidth(),
+				currentFrame.getRegionHeight());
 	}
 	/**
 	 * methode à redefinir pour savoir si on selectionne un personnage
 	 * @return l'actor s'il est hit sinon null
 	 */
 	@Override
-	public Actor hit (float x, float y, boolean touchable) {
-		if (touchable && getTouchable() != Touchable.enabled) return null;
-		return x >= 0 && x < this.getWidth() && y >= 0 && y < this.getHeight() ? this : null;
+	public Actor hit(float x, float y, boolean touchable) {
+		if (touchable && getTouchable() != Touchable.enabled)
+			return null;
+		return x >= 0 && x < this.getWidth() && y >= 0 && y < this.getHeight() ? this
+				: null;
 	}
 	@Override
 	public String toString() {
@@ -248,7 +254,7 @@ public abstract class Personnage extends Actor {
 	 * @return l'animation correspondante à l'etat
 	 */
 	public abstract Animation animate();
-	
+
 	public String getNom() {
 		return nom;
 	}
@@ -261,21 +267,17 @@ public abstract class Personnage extends Actor {
 		return listSkills;
 	}
 
-
 	public int getHp() {
 		return hp;
 	}
-
 
 	public void setHp(int hp) {
 		this.hp = hp;
 	}
 
-
 	public int getMana() {
 		return mana;
 	}
-
 
 	public void setMana(int mana) {
 		this.mana = mana;
@@ -304,14 +306,13 @@ public abstract class Personnage extends Actor {
 	public void setState(int state) {
 		this.state = state;
 	}
-	
-	public boolean isToken(){
+
+	public boolean isToken() {
 		return token;
 	}
-	
-	public void setToken(boolean t){
+
+	public void setToken(boolean t) {
 		this.token = t;
 	}
 
-	
 }

@@ -36,6 +36,7 @@ public abstract class Joueur extends Personnage implements Serializable {
 			}
 		} else {
 			if (p.getHp() > 0) {
+				p.addEffect(s.getId());
 				p.perdreVie(s.getDamage());
 			}
 		}

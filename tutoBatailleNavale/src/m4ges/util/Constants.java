@@ -33,11 +33,11 @@ public class Constants {
 	public static final byte LANCERSOIN = 9;
 	
 	//Effet
-	public static final int RESISTANCE=1;
-	public static final int MALEDICTION=2;
-	public static final int EMPOISONNEMENT=3;
-	public static final int COMBUSTION=4;
-	public static final int GELE=5;
+	public static final int RESISTANCE=3;
+	public static final int MALEDICTION=6;
+	public static final int EMPOISONNEMENT=7;
+	public static final int COMBUSTION=12;
+	public static final int GELE=14;
 	
 	
 	
