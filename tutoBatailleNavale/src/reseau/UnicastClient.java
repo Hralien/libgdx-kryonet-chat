@@ -412,12 +412,15 @@ public class UnicastClient {
 			it.setToken(false);
 			if (action == Constants.TOKENTOUR) {
 				it.setaJoueCeTour(false);
-				it.traiteEffet((BattleScreen) game.getScreen());
+				if (game.getScreen() instanceof BattleScreen)
+					it.traiteEffet((BattleScreen) game.getScreen());
 			}
 		}
+		
 		if (action == Constants.TOKENTOUR) {
 			for (Personnage it : monstres) {
-				it.traiteEffet((BattleScreen) game.getScreen());
+				if (game.getScreen() instanceof BattleScreen)
+					it.traiteEffet((BattleScreen) game.getScreen());
 			}
 		}
 
