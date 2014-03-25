@@ -89,15 +89,6 @@ public class LoadingScreen extends AbstractScreen {
 		MyGame.manager.load("character/personnage.pack", TextureAtlas.class);
 		MyGame.manager.load("ui/scroll.pack", TextureAtlas.class);
 		MyGame.manager.load("effects/items.pack", TextureAtlas.class);
-		
-		MyGame.manager.finishLoading();
-
-		
-		Skill.Initialisation();
-		Effect.Initialisation();
-		
-
-
 
 	}
 
@@ -142,6 +133,8 @@ public class LoadingScreen extends AbstractScreen {
 		super.render(delta);
 
 		if (MyGame.manager.update()) { // Load some, will return true if done loading
+			Skill.Initialisation();
+			Effect.Initialisation();
 			//            if (Gdx.input.isTouched()) { // If the screen is touched after the game is done loading, go to the main menu screen
 			Gdx.input.vibrate(100);
 			super.game.changeScreen(MyGame.MENUSCREEN);
