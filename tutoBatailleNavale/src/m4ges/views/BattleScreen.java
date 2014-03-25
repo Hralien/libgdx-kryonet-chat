@@ -218,7 +218,7 @@ public class BattleScreen extends AbstractScreen {
 				skillWindow.row();
 			i++;
 		}
-		skillWindow.setBounds(battle_info.getRegionWidth() - 30, 0,
+		skillWindow.setBounds(battle_info.getRegionWidth(), 0,
 				battle_skill.getRegionWidth(), battle_skill.getRegionHeight());
 
 		return skillWindow;
@@ -286,6 +286,7 @@ public class BattleScreen extends AbstractScreen {
 			it.setOrigin(100 + width / 2 + i, 50 + height / 4 + i);
 			it.setBounds(it.getOriginX(), it.getOriginY(), it.getWidth(),
 					it.getHeight());
+			it.setState(Personnage.WAIT);
 			it.addListener(new InputListener() {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
@@ -302,7 +303,7 @@ public class BattleScreen extends AbstractScreen {
 					System.out.println("[" + it.getNom() + "]" + "up");
 				}
 			});
-
+			
 			i += 50;
 			layer.addActor(it);
 			//creation du nom du joueur
@@ -334,6 +335,7 @@ public class BattleScreen extends AbstractScreen {
 		for (final Personnage it : currentVague.getMonsters()) {
 			it.clear();
 			it.setVisible(true);
+			it.setState(Personnage.WAIT);
 			it.setOrigin(width / 4 + i, (float) (height / 4 + i*1.5));
 			it.setBounds(it.getOriginX(), it.getOriginY(), it.getWidth(),
 					it.getHeight());
@@ -415,13 +417,13 @@ public class BattleScreen extends AbstractScreen {
 			if (it instanceof Skill)
 				stage.getActors().removeValue(it, true);
 		}
-		s.setPosition(selected.getX()-s.getWidth()/2, selected.getY()-s.getHeight()/3);
+		s.setPosition(cible.getX()-s.getWidth()/2, cible.getY()-s.getHeight()/3);
 
 		lb_info.setText(lanceur.getNom() + " utilise " + s.getSkillName() + " sur "
 				+ cible.getNom());
 		final Label lb_dom= new Label(""+s.getDamage(),skin);
-		float milieu_x = selected.getX()+selected.getWidth()/2;
-		float milieu_y = selected.getY()+selected.getHeight()/2;
+		float milieu_x = cible.getX()+cible.getWidth()/2;
+		float milieu_y = cible.getY()+cible.getHeight()/2;
 		lb_dom.setColor(Color.RED);
 		//		Action t = new Action() {
 		//			
@@ -447,7 +449,8 @@ public class BattleScreen extends AbstractScreen {
 		 * OULALA
 		 */
 		try {
-			Thread.sleep(1000);
+			while(!s.isAnimationFinished())
+				Thread.sleep(30);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

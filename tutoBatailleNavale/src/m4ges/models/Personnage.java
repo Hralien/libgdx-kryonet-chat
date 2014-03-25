@@ -21,23 +21,23 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
  */
 public abstract class Personnage extends Actor {
 
-	//classe
+	// classe
 	/**
 	 * constante du chamane
 	 */
-	public static final int CHAMANE=0;
+	public static final int CHAMANE = 0;
 	/**
 	 * constante du necromancien
 	 */
-	public static final int NECROMANCIEN=1;
+	public static final int NECROMANCIEN = 1;
 	/**
 	 * constante du pyromancien
 	 */
-	public static final int PYROMANCIEN=2;
+	public static final int PYROMANCIEN = 2;
 	/**
 	 * constante du aquamancien
 	 */
-	public static final int AQUAMANCIEN=3;
+	public static final int AQUAMANCIEN = 3;
 	/**
 	 * constante des monstres
 	 */
@@ -46,21 +46,21 @@ public abstract class Personnage extends Actor {
 	 * constante du boss
 	 */
 	public static final int BOSS = 5;
-	
-	//etat
+
+	// etat
 	/**
 	 * constante animation complete
 	 */
-	public static final int COMPLETE=0;	
+	public static final int COMPLETE = 0;
 	/**
 	 * constante animation mort
 	 */
-	public static final int MORT=1;
+	public static final int MORT = 1;
 	/**
 	 * constante animation attente
 	 */
-	public static final int WAIT=2;
-	//stats
+	public static final int WAIT = 2;
+	// stats
 	/**
 	 * les hp du personnage
 	 */
@@ -70,7 +70,7 @@ public abstract class Personnage extends Actor {
 	 */
 	protected int hpMax;
 	/**
-	 * le mana 
+	 * le mana
 	 */
 	protected int mana;
 	/**
@@ -102,16 +102,16 @@ public abstract class Personnage extends Actor {
 	 */
 	protected ArrayList<Skill> listSkills;
 	/*
-	* liste des effets actif sur le personnage
-	*/
+	 * liste des effets actif sur le personnage
+	 */
 	// permet de connaitre les effets actif sur le perso
 	protected ArrayList<Integer> effet;
 	/**
 	 * permet de connaitre le tour de jeu
 	 */
 	// permet de connaitre le tour de jeu
-	protected boolean token;	
-	//animation
+	protected boolean token;
+	// animation
 	/**
 	 * etat du personnage
 	 */
@@ -135,16 +135,26 @@ public abstract class Personnage extends Actor {
 		this.token = false;
 		this.setOrigin(50, 50);
 	}
+
+	/**
+	 * Permet d'ajouter un effet
+	 * 
+	 * @param effet
+	 *            : l'effet a ajouter
+	 */
 	public void addEffect(int effet) {
 		if (effet == Constants.GELE || effet == Constants.RESISTANCE
 				|| effet == Constants.MALEDICTION
-				|| effet == Constants.COMBUSTION || effet == Constants.EMPOISONNEMENT)
+				|| effet == Constants.COMBUSTION
+				|| effet == Constants.EMPOISONNEMENT)
 			this.effet.add(effet);
+		for(Integer it:this.effet)
+			System.out.println("EFFET : " + it);
 	}
+
 	public void delEffect(int effet) {
-		this.effet.remove((Object)effet);
+		this.effet.remove((Object) effet);
 	}
-	
 
 	public boolean isGele() {
 		return this.effet.contains(Constants.GELE);
@@ -153,13 +163,14 @@ public abstract class Personnage extends Actor {
 	public boolean isResistant() {
 		return this.effet.contains(Constants.RESISTANCE);
 	}
-	
+
 	public void traiteEffet(BattleScreen bs) {
+		System.out.println(this.getName() + " traiteEffet() appelé");
 		Iterator<Integer> e = this.effet.iterator();
-		while(e.hasNext()){
+		while (e.hasNext()) {
 			switch (e.next()) {
 			case Constants.COMBUSTION:
-				this.perdreVie(5);
+				this.perdreVie(15);
 				bs.afficheSkill(
 						Skill.selectSkillFromSkillID(Constants.COMBUSTION),
 						this, this);
@@ -182,21 +193,23 @@ public abstract class Personnage extends Actor {
 			}
 		}
 	}
+
 	/**
 	 * methode permettant le calcul de la vie restante
+	 * 
 	 * @param degat
 	 */
-	public void perdreVie(int degat){
+	public void perdreVie(int degat) {
 		int hp = this.getHp();
 		hp -= degat;
-		if(hp <= 0){
+		if (hp <= 0) {
 			this.setHp(0);
 			this.setState(MORT);
-		}
-		else{
+		} else {
 			this.setHp(hp);
 		}
 	}
+
 	/**
 	 * dessine le personnage en fonction de son etat et du statetime
 	 */
@@ -224,8 +237,10 @@ public abstract class Personnage extends Actor {
 		this.setBounds(getX(), getY(), currentFrame.getRegionWidth(),
 				currentFrame.getRegionHeight());
 	}
+
 	/**
 	 * methode à redefinir pour savoir si on selectionne un personnage
+	 * 
 	 * @return l'actor s'il est hit sinon null
 	 */
 	@Override
@@ -235,6 +250,7 @@ public abstract class Personnage extends Actor {
 		return x >= 0 && x < this.getWidth() && y >= 0 && y < this.getHeight() ? this
 				: null;
 	}
+
 	@Override
 	public String toString() {
 		return "Personnage [hp=" + hp + ", mana=" + mana + ", strength="
@@ -243,12 +259,13 @@ public abstract class Personnage extends Actor {
 				+ state + ", currentFrame=" + currentFrame + ", stateTime="
 				+ stateTime + "]";
 	}
-	
+
 	/**
 	 * 
 	 * @return la description du monstre / classe
 	 */
 	public abstract String getDesc();
+
 	/**
 	 * 
 	 * @return l'animation correspondante à l'etat
