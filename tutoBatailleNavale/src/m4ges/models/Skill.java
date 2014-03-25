@@ -179,26 +179,26 @@ public class Skill extends Actor implements Cloneable {
 		listSkill.add(new Skill(1, 5, "soin", "Soin", -10, 5, 4));
 		listSkill.add(new Skill(2, 7, "motivation", "Motivation", 0, 5, 7));
 		listSkill.add(new Skill(3, 4, "ressistance", "Resistance", 0, 5, 4));
-		listSkill.add(new Skill(4, 10, "resurrection", "Resurrection", 0, 5, 7));
+		listSkill.add(new Skill(4, 25, "resurrection", "Resurrection", 0, 5, 7));
 
 		/** Necromencien */
-		listSkill.add(new Skill(5, 8, "abimes", "Abimes", 10, 5, 6));
-		listSkill.add(new Skill(6, 7, "malédiction", "Malediction", 10, 5, 6));
-		listSkill.add(new Skill(7, 6, "empoisonement", "Empoisonnement", 10, 5,
+		listSkill.add(new Skill(5, 8, "abimes", "Abimes", 20, 5, 6));
+		listSkill.add(new Skill(6, 12, "malédiction", "Malediction", 15, 5, 6));
+		listSkill.add(new Skill(7, 8, "empoisonement", "Empoisonnement", 10, 5,
 				5));
-		listSkill.add(new Skill(8, 5, "perturbation", "Perturbation", 10, 5, 5));
+		listSkill.add(new Skill(8, 25, "perturbation", "Perturbation", 30, 5, 5));
 
 		/** Mage chaud */
 		listSkill.add(new Skill(9, 5, "deflagration", "Deflagration", 10, 5, 4));
 		listSkill.add(new Skill(10, 10, "foudre", "Foudre", 10, 5, 10));
 		listSkill.add(new Skill(11, 6, "choc sismique", "Earth_Spike", 10, 5, 2));
-		listSkill.add(new Skill(12, 8, "combustion", "Combustion", 10, 5, 8));
+		listSkill.add(new Skill(12, 25, "combustion", "Combustion", 15, 5, 8));
 
 		/** Mage froid */
 		listSkill.add(new Skill(13, 6, "geyser", "Geyser", 10, 5, 6));
-		listSkill.add(new Skill(14, 6, "gel", "Gel", 10, 5, 6));
-		listSkill.add(new Skill(15, 6, "tornade", "Tornade", 10, 5, 6));
-		listSkill.add(new Skill(16, 5, "rafale", "Rafale", 10, 5, 5));
+		listSkill.add(new Skill(14, 6, "gel", "Gel", 5, 5, 6));
+		listSkill.add(new Skill(15, 15, "tornade", "Tornade", 20, 5, 6));
+		listSkill.add(new Skill(16, 25, "rafale", "Rafale", 30, 5, 5));
 
 		/** Monstre */
 		listSkill.add(new Skill(17, 6, "soufle", "Dragon_Breath", 10, 4, 3));

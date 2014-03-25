@@ -102,6 +102,56 @@ public class UnicastClient {
 		chatWindow.addName(game.player.getNom() + " : "
 				+ game.player.getNameClass());
 	}
+	
+	/**
+	 * Permet d'envoyer un rapport de connection aux autres
+	 * 
+	 * @param ipNouveau
+	 *            : lors de la co null mais permet de dire aux nouveaux connecte
+	 *            qu'on est la
+	 * @param nouveau
+	 *            : lors de la co false mais permet de dire aux nouveaux
+	 *            connecte qu'on est la
+	 * @throws IOException
+	 */
+	public void sendConnection(String ipNouveau, boolean nouveau)
+			throws IOException {
+		byte[] data;
+
+		data = ((Joueur) this.game.player).getBytes();
+		// Si c'est un nouveau on ne repond qu'a lui
+
+		if (nouveau) {
+
+			data[0] = Constants.NOUVEAU;
+			if (ipNouveau.replace('/', '\0').trim().equals(monIp)
+					|| ipNouveau.replace('/', '\0').trim().equals("127.0.0.1")) {
+
+				return;
+			}
+
+			dp = new DatagramPacket(data, data.length);
+			dp.setAddress(InetAddress.getByName(ipNouveau));
+			dp.setPort(PORT);
+			ds.send(dp);
+
+			// Sinon on repond a tout le monde
+		} else {
+
+			data[0] = Constants.CONNEXION;
+			String[] broadcastTab = this.monIp.split("\\.");
+			String broadcast = broadcastTab[0] + "." + broadcastTab[1] + "."
+					+ broadcastTab[2] + ".255";
+			dp = new DatagramPacket(data, data.length,
+					InetAddress.getByName(broadcast), PORT);
+			ds.send(dp);
+
+			dp = new DatagramPacket(data, data.length,
+					InetAddress.getByName("255.255.255.255"), PORT);
+			ds.send(dp);
+
+		}
+	}
 
 	/**
 	 * Permet de recevoir les donnees
@@ -263,55 +313,7 @@ public class UnicastClient {
 
 	}
 
-	/**
-	 * Permet d'envoyer un rapport de connection aux autres
-	 * 
-	 * @param ipNouveau
-	 *            : lors de la co null mais permet de dire aux nouveaux connecte
-	 *            qu'on est la
-	 * @param nouveau
-	 *            : lors de la co false mais permet de dire aux nouveaux
-	 *            connecte qu'on est la
-	 * @throws IOException
-	 */
-	public void sendConnection(String ipNouveau, boolean nouveau)
-			throws IOException {
-		byte[] data;
-
-		data = ((Joueur) this.game.player).getBytes();
-		// Si c'est un nouveau on ne repond qu'a lui
-
-		if (nouveau) {
-
-			data[0] = Constants.NOUVEAU;
-			if (ipNouveau.replace('/', '\0').trim().equals(monIp)
-					|| ipNouveau.replace('/', '\0').trim().equals("127.0.0.1")) {
-
-				return;
-			}
-
-			dp = new DatagramPacket(data, data.length);
-			dp.setAddress(InetAddress.getByName(ipNouveau));
-			dp.setPort(PORT);
-			ds.send(dp);
-
-			// Sinon on repond a tout le monde
-		} else {
-
-			data[0] = Constants.CONNEXION;
-			String[] broadcastTab = this.monIp.split("\\.");
-			String broadcast = broadcastTab[0] + "." + broadcastTab[1] + "."
-					+ broadcastTab[2] + ".255";
-			dp = new DatagramPacket(data, data.length,
-					InetAddress.getByName(broadcast), PORT);
-			ds.send(dp);
-
-			dp = new DatagramPacket(data, data.length,
-					InetAddress.getByName("255.255.255.255"), PORT);
-			ds.send(dp);
-
-		}
-	}
+	
 
 	/**
 	 * methode appele en cas de lancement de sorts
@@ -323,9 +325,8 @@ public class UnicastClient {
 		// l'ip commence a 3 et la taille est de : Taille data - l'id du
 		// monstre - action - id skill
 		ip = dpr.getAddress().toString().replace('/', '\0').trim();
-		// DEBUG
-		// System.out.println("[UNICAST - LANCERSKILL]:Lancer skill : "
-		// + s.getSkillName() + " ip : " + ip);
+
+
 		/*
 		 * On recupere la cible et l'attaquant
 		 */
@@ -333,11 +334,6 @@ public class UnicastClient {
 
 		((BattleScreen) game.getScreen()).afficheSkill(s, joueurs.get(ip),
 				monstres.get(data[2]));
-		// // DEBUG
-		// System.out.println("[UNICAST - LANCERSKILL]\n"
-		// + joueurs.get(ip).getNom() + " Attaque : "
-		// + monstres.get(data[2]).getNom() + " avec : "
-		// + s.getSkillName());
 
 		boolean vagueFinie = true;
 		for (Personnage p : monstres) {
@@ -350,7 +346,7 @@ public class UnicastClient {
 		if (vagueFinie) {
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {
-					game.changeScreen(MyGame.FINALSCREEN);
+					game.changeScreen(MyGame.RESULTSCREEN);
 				}
 			});
 		}
@@ -477,6 +473,49 @@ public class UnicastClient {
 		sendToAll(data);
 		passerToken();
 	}
+	
+	/**
+	 * Permet d'avertir les autres joueurs qu'un monstre a lance un sort a un
+	 * joueur
+	 * 
+	 * @param mechant
+	 *            : Le monstre qui attaque
+	 * @param cible
+	 *            : Le joueur attaque(ey)
+	 * @throws IOException
+	 */
+	public void npcAttaque(Personnage mechant, Joueur cible) throws IOException {
+		ip = joueurs.getKey(cible);
+		// DEBUG
+		if (ip == null)
+			System.err.println("Erreur joueur inexistant");
+
+		int idMonstre = monstres.indexOf(mechant);
+
+		// Action, cible, sort, ip
+		byte[] data = new byte[1 + 1 + ip.length()];
+		data[0] = Constants.ATTAQUEMONSTRE;
+		data[1] = (byte) idMonstre;
+
+		for (int i = 2; i < data.length; i++)
+			data[i] = (byte) ip.charAt(i - 2);
+
+		sendToAll(data);
+	}
+	
+	/**
+	 * Methode permettant aux monstre d'attaquer
+	 * 
+	 * @throws IOException
+	 */
+	private void attaqueMonstre() throws IOException {
+
+		for (Personnage m : monstres) {
+			Joueur cible = (Joueur) game.playersConnected.get((int) Math
+					.round(Math.random() * (game.playersConnected.size() - 1)));
+			npcAttaque(m, cible);
+		}
+	}
 
 	/**
 	 * Permet d'envoyer un message
@@ -563,34 +602,6 @@ public class UnicastClient {
 		pretPourVagueSuivante(ip);
 	}
 
-	/**
-	 * Permet d'avertir les autres joueurs qu'un monstre a lance un sort a un
-	 * joueur
-	 * 
-	 * @param mechant
-	 *            : Le monstre qui attaque
-	 * @param cible
-	 *            : Le joueur attaque(ey)
-	 * @throws IOException
-	 */
-	public void npcAttaque(Personnage mechant, Joueur cible) throws IOException {
-		ip = joueurs.getKey(cible);
-		// DEBUG
-		if (ip == null)
-			System.err.println("Erreur joueur inexistant");
-
-		int idMonstre = monstres.indexOf(mechant);
-
-		// Action, cible, sort, ip
-		byte[] data = new byte[1 + 1 + ip.length()];
-		data[0] = Constants.ATTAQUEMONSTRE;
-		data[1] = (byte) idMonstre;
-
-		for (int i = 2; i < data.length; i++)
-			data[i] = (byte) ip.charAt(i - 2);
-
-		sendToAll(data);
-	}
 
 	/**
 	 * Permet de passer le token a un joueur
@@ -622,7 +633,7 @@ public class UnicastClient {
 		 * joueur de la liste (random quoi...)
 		 */
 		if (ipChoisi.length() < 1) {
-			attaqueMonstre();
+//			attaqueMonstre();
 			ipChoisi = joueurs.getKey((Joueur) game.playersConnected
 					.get(game.playersConnected.size() - 1));
 			data = new byte[ipChoisi.length() + 1];
@@ -639,19 +650,7 @@ public class UnicastClient {
 		sendToAll(data);
 	}
 
-	/**
-	 * Methode permettant aux monstre d'attaquer
-	 * 
-	 * @throws IOException
-	 */
-	private void attaqueMonstre() throws IOException {
 
-		for (Personnage m : monstres) {
-			Joueur cible = (Joueur) game.playersConnected.get((int) Math
-					.round(Math.random() * (game.playersConnected.size() - 1)));
-			npcAttaque(m, cible);
-		}
-	}
 
 	private void sendToAll(byte[] data) throws IOException {
 		dp = new DatagramPacket(data, data.length);
