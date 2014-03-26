@@ -77,10 +77,6 @@ public class UnicastClient {
 	 */
 	public ChatWindow chatWindow;
 
-	/**
-	 * Permet de savoir quand est ce que le joueur a recu le token
-	 */
-	public long heureToken;
 
 	/**
 	 * Si true : pas d'attaque de monstre Si false : attaque de monstres
@@ -467,9 +463,6 @@ public class UnicastClient {
 		ip = new String(data, 1, data.length - 1).trim();
 		System.err.println("IP TOKEN :" + ip);
 
-		if (ip.equals(monIp)) {
-			heureToken = TimeUtils.millis();
-		}
 		// et on lui met
 		joueurs.get(ip).setToken(true);
 
@@ -532,6 +525,7 @@ public class UnicastClient {
 	 */
 	public void npcAttaque(Personnage mechant, Joueur cible) throws IOException {
 		ip = joueurs.getKey(cible);
+		
 		// DEBUG
 		if (ip == null)
 			System.err.println("Erreur joueur inexistant");
@@ -607,8 +601,8 @@ public class UnicastClient {
 			// ici, il faut passer le token au premier joueur
 			// on va le donner au dernier qui s'est mit pret
 			joueurs.get(ip).setToken(true);
-			if (ip.equals(monIp))
-				heureToken = TimeUtils.millis();
+
+
 			joueurs.get(ip).setaJoueCeTour(true);
 			System.out.println("A JOUE CE TOUR : " + ip);
 			// System.err.println(game.currentVague);

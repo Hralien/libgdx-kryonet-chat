@@ -165,7 +165,7 @@ public abstract class Personnage extends Actor {
 	}
 
 	public void traiteEffet(BattleScreen bs) {
-		System.out.println(this.getName() + " traiteEffet() appelé");
+
 		Iterator<Integer> e = this.effet.iterator();
 		while (e.hasNext()) {
 			switch (e.next()) {
