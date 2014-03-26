@@ -76,18 +76,17 @@ public class UnicastClient {
 	 * Chat window, utile pour le chat
 	 */
 	public ChatWindow chatWindow;
-	
+
 	/**
 	 * Permet de savoir quand est ce que le joueur a recu le token
 	 */
 	public long heureToken;
-	
+
 	/**
-	 * 	Si true : pas d'attaque de monstre
-	 * 	Si false : attaque de monstres
+	 * Si true : pas d'attaque de monstre Si false : attaque de monstres
 	 */
-	private static final boolean DEBUG = true;
-	
+	private static final boolean DEBUG = false;
+
 	public static final int NB_JOUEUR_MINIMUM = 1;
 
 	/**
@@ -331,7 +330,7 @@ public class UnicastClient {
 	 * @param data
 	 */
 	private void actionTraiterLancerSkill(byte[] data) {
-		Skill s = Skill.selectSkillFromSkillID(data[1]);
+		final Skill s = Skill.selectSkillFromSkillID(data[1]);
 		// l'ip commence a 3 et la taille est de : Taille data - l'id du
 		// monstre - action - id skill
 		ip = dpr.getAddress().toString().replace('/', '\0').trim();
@@ -340,11 +339,10 @@ public class UnicastClient {
 		 * On recupere la cible et l'attaquant
 		 */
 		joueurs.get(ip).attaque(monstres.get(data[2]), s);
-		
-		((BattleScreen) game.getScreen()).update();
+		final int idMonstre = data[2];
 
 		((BattleScreen) game.getScreen()).afficheSkill(s, joueurs.get(ip),
-				monstres.get(data[2]));
+				monstres.get(idMonstre));
 
 		boolean vagueFinie = true;
 		for (Personnage p : monstres) {
@@ -383,13 +381,11 @@ public class UnicastClient {
 		 * l'attaque
 		 */
 		((Monstre) monstres.get(idMonstre)).attaque(joueurs.get(ip));
-		
-		((BattleScreen) game.getScreen()).update();
-		
-		((BattleScreen) game.getScreen()).afficheSkill(monstres.get(idMonstre).getListSkills().get(0), monstres.get(data[2]),
+
+		((BattleScreen) game.getScreen()).afficheSkill(monstres.get(idMonstre)
+				.getListSkills().get(0), monstres.get(idMonstre),
 				joueurs.get(ip));
-		
-		
+
 		// DEBUG
 		System.out.println("[UNICAST] " + monstres.get(idMonstre).getNom()
 				+ " attaque " + joueurs.get(ip).getNom());
@@ -430,7 +426,6 @@ public class UnicastClient {
 			}
 		}
 
-		
 		if (action == Constants.TOKENTOUR) {
 			boolean monstresMort = true;
 			for (Personnage it : monstres) {
@@ -440,39 +435,39 @@ public class UnicastClient {
 						monstresMort = false;
 				}
 			}
-			
-			if(monstresMort){
+
+			if (monstresMort) {
 				Gdx.app.postRunnable(new Runnable() {
 					public void run() {
 						game.changeScreen(MyGame.RESULTSCREEN);
 					}
 				});
 			}
-			
+
 			boolean joueursMort = true;
-			for(Personnage it : joueurs.values()){
+			for (Personnage it : joueurs.values()) {
 				if (game.getScreen() instanceof BattleScreen) {
 					it.traiteEffet((BattleScreen) game.getScreen());
 					if (it.getHp() > 0)
 						joueursMort = false;
 				}
 			}
-			
-			if(joueursMort){
+
+			if (joueursMort) {
 				Gdx.app.postRunnable(new Runnable() {
 					public void run() {
 						game.changeScreen(MyGame.FINALSCREEN);
 					}
 				});
 			}
-			
+
 		}
 
 		// on recupere l'ip de celui qui doit l'avoir
 		ip = new String(data, 1, data.length - 1).trim();
 		System.err.println("IP TOKEN :" + ip);
-		
-		if(ip.equals(monIp)){
+
+		if (ip.equals(monIp)) {
 			heureToken = TimeUtils.millis();
 		}
 		// et on lui met
@@ -612,7 +607,7 @@ public class UnicastClient {
 			// ici, il faut passer le token au premier joueur
 			// on va le donner au dernier qui s'est mit pret
 			joueurs.get(ip).setToken(true);
-			if(ip.equals(monIp))
+			if (ip.equals(monIp))
 				heureToken = TimeUtils.millis();
 			joueurs.get(ip).setaJoueCeTour(true);
 			System.out.println("A JOUE CE TOUR : " + ip);
@@ -685,7 +680,7 @@ public class UnicastClient {
 		 * joueur de la liste (random quoi...)
 		 */
 		if (ipChoisi.length() < 1) {
-			if(!DEBUG)
+			if (!DEBUG)
 				attaqueMonstre();
 			ipChoisi = joueurs.getKey((Joueur) game.playersConnected
 					.get(game.playersConnected.size() - 1));

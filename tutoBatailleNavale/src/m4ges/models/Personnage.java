@@ -128,7 +128,7 @@ public abstract class Personnage extends Actor {
 	public Personnage() {
 		this.listSkills = new ArrayList<Skill>();
 		this.effet = new ArrayList<Integer>();
-		this.state = COMPLETE;
+		this.state = WAIT;
 		this.stateTime = 0;
 		this.currentFrame = null;
 		setTouchable(Touchable.enabled);

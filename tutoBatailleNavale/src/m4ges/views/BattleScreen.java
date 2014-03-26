@@ -1,10 +1,11 @@
 package m4ges.views;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.color;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.color;
+
 import java.io.IOException;
 
 import m4ges.controllers.AbstractScreen;
@@ -22,7 +23,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -103,17 +103,16 @@ public class BattleScreen extends AbstractScreen {
 	public void render(float delta) {
 		super.render(delta);
 		batch.setProjectionMatrix(stage.getCamera().combined);
-		
-		//Timer pour jouer
+
+		// Timer pour jouer
 		long time = TimeUtils.millis() - game.getMC().heureToken;
-		if(time > 15000){
+		if (time > 15000) {
 			try {
 				game.getMC().passerToken();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-	
 
 		batch.begin();
 		batch.draw(battle_bg, 0, 0, Gdx.graphics.getWidth(),
@@ -131,9 +130,9 @@ public class BattleScreen extends AbstractScreen {
 	public void show() {
 		// on dit a l'appli d'ecouter ce stage
 		Gdx.input.setInputProcessor(this.stage);
-		//initilisation
+		// initilisation
 		this.selected = null;
-		//on retrouve les images pour construit l'UI
+		// on retrouve les images pour construit l'UI
 		TextureAtlas atlas = MyGame.manager.get("ui/battleui.pack",
 				TextureAtlas.class);
 
@@ -141,34 +140,36 @@ public class BattleScreen extends AbstractScreen {
 		battle_info2 = new TextureRegion(atlas.findRegion("battle_ui2"));
 		battle_skill = new TextureRegion(atlas.findRegion("battle_ui_spell"));
 		battle_arrow = new TextureRegion(atlas.findRegion("fleche"));
-		
-		//on charge la vague correspondante au niveau
+
+		// on charge la vague correspondante au niveau
 		currentVague = Vague.loadVague(game.currentVague);
-		//on passe au client la liste actuelle des monstres
+		// on passe au client la liste actuelle des monstres
 		game.getMC().setMonstres(currentVague.getMonsters());
-		
-		//on recup la map correspondante a la vague
+
+		// on recup la map correspondante a la vague
 		TextureAtlas atlasMap = MyGame.manager.get("ui/maps.pack",
 				TextureAtlas.class);
 		battle_bg = new TextureRegion(atlasMap.findRegion(currentVague
 				.getNameVague()));
-		//on affiche
+		// on affiche
 		lb_info = buildLabelMessage("Selectionner un monstre et lancer un sort");
-		//on construit les layers
+		// on construit les layers
 		update();
-		//on informe le joueur qu'il est dans la vague X
+		// on informe le joueur qu'il est dans la vague X
 		this.stage.addActor(buildVagueInfo());
 
 	}
+
 	/**
 	 * methode qui maj tout les composants
 	 */
 	public void update() {
-		//on remove les actor du stage inutiles
+		// on remove les actor du stage inutiles
 		for (Actor it : stage.getActors()) {
 			if (it instanceof Personnage || it instanceof Table)
 				stage.getActors().removeValue(it, true);
-		}		
+		}
+		System.out.println("update appelé");
 		this.stage.addActor(buildPersoLayer());
 		this.stage.addActor(buildMonsterLayer());
 		this.stage.addActor(createMySkillWindows());
@@ -177,8 +178,6 @@ public class BattleScreen extends AbstractScreen {
 		this.stage.addActor(lb_info);
 
 	}
-
-
 
 
 	/**
@@ -196,7 +195,6 @@ public class BattleScreen extends AbstractScreen {
 			TextButton skillButton = new TextButton(it.getSkillName()
 					+ " cost:" + it.getSpCost(), skin);
 			if (!super.game.player.isToken()) {
-				System.err.println("APPPELELELEE");
 				skillButton.setDisabled(true);
 			}
 			skillButton.addListener(new ChangeListener() {
@@ -209,8 +207,9 @@ public class BattleScreen extends AbstractScreen {
 							stage.getActors().removeValue(it, true);
 					}
 					if (selected != null) {
-						it.setPosition(selected.getX()-it.getWidth()/2, selected.getY()-it.getHeight()/2);
-						//						stage.addActor(it);
+						it.setPosition(selected.getX() - it.getWidth() / 2,
+								selected.getY() - it.getHeight() / 2);
+						// stage.addActor(it);
 						try {
 							game.mc.lancerSort(selected, it);
 							stage.getActors().removeValue(selectWindow, true);
@@ -218,8 +217,6 @@ public class BattleScreen extends AbstractScreen {
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-						update();
-
 					} else {
 						lb_info.setText("Selectionner un monstre et lancer un sort");
 					}
@@ -315,20 +312,20 @@ public class BattleScreen extends AbstractScreen {
 					System.out.println("[" + it.getNom() + "]" + "up");
 				}
 			});
-			
+
 			i += 50;
 			layer.addActor(it);
-			//creation du nom du joueur
+			// creation du nom du joueur
 			Label name = new Label(it.getNom(), skin);
-			if (it.getState()==Personnage.MORT)
+			if (it.getState() == Personnage.MORT)
 				name.setColor(Color.RED);
 			else
 				name.setColor(Color.GREEN);
-			//placement
-			name.setPosition( it.getOriginX()+100, it.getOriginY());
-			//ajout
+			// placement
+			name.setPosition(it.getOriginX() + 100, it.getOriginY());
+			// ajout
 			layer.addActor(name);
-			//reset
+			// reset
 
 		}
 		return layer;
@@ -347,8 +344,7 @@ public class BattleScreen extends AbstractScreen {
 		for (final Personnage it : currentVague.getMonsters()) {
 			it.clear();
 			it.setVisible(true);
-			it.setState(Personnage.WAIT);
-			it.setOrigin(width / 4 + i, (float) (height / 4 + i*1.5));
+			it.setOrigin(width / 4 + i, (float) (height / 4 + i * 1.5));
 			it.setBounds(it.getOriginX(), it.getOriginY(), it.getWidth(),
 					it.getHeight());
 			it.addListener(new InputListener() {
@@ -429,43 +425,49 @@ public class BattleScreen extends AbstractScreen {
 			if (it instanceof Skill)
 				stage.getActors().removeValue(it, true);
 		}
-		s.setPosition(cible.getX()-s.getWidth()/2, cible.getY()-s.getHeight()/3);
+		s.setPosition(cible.getX() - s.getWidth() / 2,
+				cible.getY() - s.getHeight() / 3);
 
-		lb_info.setText(lanceur.getNom() + " utilise " + s.getSkillName() + " sur "
-				+ cible.getNom());
-		final Label lb_dom= new Label(""+s.getDamage(),skin);
-		float milieu_x = cible.getX()+cible.getWidth()/2;
-		float milieu_y = cible.getY()+cible.getHeight()/2;
+		lb_info.setText(lanceur.getNom() + " utilise " + s.getSkillName()
+				+ " sur " + cible.getNom());
+		final Label lb_dom = new Label("" + s.getDamage(), skin);
+		float milieu_x = cible.getX() + cible.getWidth() / 2;
+		float milieu_y = cible.getY() + cible.getHeight() / 2;
 		lb_dom.setColor(Color.RED);
-		//		Action t = new Action() {
-		//			
-		//			@Override
-		//			public boolean act(float delta) {
-		//				lb_dom.setFontScale(2f, 2f);
-		//				lb_dom.setScale(2f, 2f);
-		//				return true;
-		//			}
-		//		};
-		Action act = new ParallelAction(sequence(moveTo(milieu_x, milieu_y), 
-				moveBy((int)(30),(int) (30), 1.0f, Interpolation.linear)
-				),
-				sequence(color(Color.WHITE,1f),
-						fadeOut(0)
-						));
+		// Action t = new Action() {
+		//
+		// @Override
+		// public boolean act(float delta) {
+		// lb_dom.setFontScale(2f, 2f);
+		// lb_dom.setScale(2f, 2f);
+		// return true;
+		// }
+		// };
+		Action act = new ParallelAction(sequence(moveTo(milieu_x, milieu_y),
+				moveBy((int) (30), (int) (30), 1.0f, Interpolation.linear)),
+				sequence(color(Color.WHITE, 1f), fadeOut(0)));
 		lb_dom.addAction(act);
 		stage.addActor(s);
 		stage.addActor(lb_dom);
-		
+
 		/*
-		 * Indispensable pour garder une certaine coherence dans le jeu
-		 * OULALA
+		 * Indispensable pour garder une certaine coherence dans le jeu OULALA
 		 */
 		try {
-			while(!s.isAnimationFinished())
+			while (!s.isAnimationFinished())
 				Thread.sleep(30);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		System.out.println("appel update");
+		
+		Gdx.app.postRunnable(new Runnable() {
+			@Override
+			public void run() {
+				update();
+			}
+		});
+
 	}
 
 	@Override
@@ -487,7 +489,7 @@ public class BattleScreen extends AbstractScreen {
 
 	public void updateSkillWindow() {
 		stage.getActors().removeValue(skillWindow, true);
-		stage.addActor(createMySkillWindows());		
+		stage.addActor(createMySkillWindows());
 	}
 
 }
