@@ -106,7 +106,7 @@ public class BattleScreen extends AbstractScreen {
 
 		// Timer pour jouer
 		long time = TimeUtils.millis() - game.getMC().heureToken;
-		if (time > 15000) {
+		if(game.player.isToken() && time > 15000){
 			try {
 				game.getMC().passerToken();
 			} catch (IOException e) {
