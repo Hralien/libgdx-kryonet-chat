@@ -369,7 +369,7 @@ public class UnicastClient {
 	 */
 	private void actionTraiterAttaqueMonstre(byte[] data) {
 		// l'id du monstre
-		int idMonstre = data[1];
+		int idMonstre = (int)data[1];
 		// DEBUG
 		System.out.println("[UNICAST - ATTAQUEMONSTRE]:monstre qui attaque : "
 				+ monstres.get(idMonstre).getNom());

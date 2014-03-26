@@ -59,11 +59,13 @@ public class Skill extends Actor implements Cloneable {
 		this.skillName = skillName;
 		this.soundPath = "sound/" + skillEffect + ".wav";
 
-		TextureRegion animsheet = new TextureRegion(Initialisation().findRegion(skillEffect));
-		TextureRegion[][] tmp = animsheet.split(animsheet.getRegionWidth() / 
-				frame_cols, animsheet.getRegionHeight() / frame_rows);
+		TextureRegion animsheet = new TextureRegion(Initialisation()
+				.findRegion(skillEffect));
+		TextureRegion[][] tmp = animsheet.split(animsheet.getRegionWidth()
+				/ frame_cols, animsheet.getRegionHeight() / frame_rows);
 
-		TextureRegion[] effectFrames = new TextureRegion[frame_cols * frame_rows];
+		TextureRegion[] effectFrames = new TextureRegion[frame_cols
+				* frame_rows];
 		int index = 0;
 		for (int i = 0; i < frame_rows; i++) {
 			for (int j = 0; j < frame_cols; j++) {
@@ -74,7 +76,8 @@ public class Skill extends Actor implements Cloneable {
 		skillAnimation.setPlayMode(Animation.NORMAL);
 		stateTime = 0f; // #13
 		currentFrame = skillAnimation.getKeyFrame(0);
-		super.setSize(currentFrame.getRegionWidth(),currentFrame.getRegionHeight());
+		super.setSize(currentFrame.getRegionWidth(),
+				currentFrame.getRegionHeight());
 	}
 
 	/**
@@ -117,6 +120,14 @@ public class Skill extends Actor implements Cloneable {
 			list.add(Skill.selectSkillFromSkillID(16));
 
 			break;
+		case Personnage.MONSTRE:
+			/** monstre */
+			list.add(Skill.selectSkillFromSkillID(18));
+			break;
+		case Personnage.BOSS:
+			/** boss */
+			list.add(Skill.selectSkillFromSkillID(17));
+			break;
 		}
 		return list;
 	}
@@ -125,7 +136,7 @@ public class Skill extends Actor implements Cloneable {
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		if (!playingSound) {
 			FileHandle s = Gdx.files.internal(soundPath);
-			if(s.exists()){
+			if (s.exists()) {
 				Sound m = Gdx.audio.newSound(s);
 				m.setVolume(0, 0.2f);
 				m.play();
@@ -133,7 +144,7 @@ public class Skill extends Actor implements Cloneable {
 			}
 		}
 		stateTime += Gdx.graphics.getDeltaTime(); // #15
-		if (! skillAnimation.isAnimationFinished(stateTime)) {
+		if (!skillAnimation.isAnimationFinished(stateTime)) {
 			currentFrame = skillAnimation.getKeyFrame(stateTime, false); // #16
 			batch.draw(currentFrame, this.getX(), this.getY()); // #17
 		} else {
@@ -179,19 +190,23 @@ public class Skill extends Actor implements Cloneable {
 		listSkill.add(new Skill(1, 5, "soin", "Soin", -10, 5, 4));
 		listSkill.add(new Skill(2, 7, "motivation", "Motivation", 0, 5, 7));
 		listSkill.add(new Skill(3, 4, "ressistance", "Resistance", 0, 5, 4));
-		listSkill.add(new Skill(4, 25, "resurrection", "Resurrection", 0, 5, 7));
+		listSkill
+				.add(new Skill(4, 25, "resurrection", "Resurrection", 0, 5, 7));
 
 		/** Necromencien */
 		listSkill.add(new Skill(5, 8, "abimes", "Abimes", 20, 5, 6));
 		listSkill.add(new Skill(6, 12, "malédiction", "Malediction", 15, 5, 6));
 		listSkill.add(new Skill(7, 8, "empoisonement", "Empoisonnement", 10, 5,
 				5));
-		listSkill.add(new Skill(8, 25, "perturbation", "Perturbation", 30, 5, 5));
+		listSkill
+				.add(new Skill(8, 25, "perturbation", "Perturbation", 30, 5, 5));
 
 		/** Mage chaud */
-		listSkill.add(new Skill(9, 5, "deflagration", "Deflagration", 10, 5, 4));
+		listSkill
+				.add(new Skill(9, 5, "deflagration", "Deflagration", 10, 5, 4));
 		listSkill.add(new Skill(10, 10, "foudre", "Foudre", 10, 5, 10));
-		listSkill.add(new Skill(11, 6, "choc sismique", "Earth_Spike", 10, 5, 2));
+		listSkill
+				.add(new Skill(11, 6, "choc sismique", "Earth_Spike", 10, 5, 2));
 		listSkill.add(new Skill(12, 25, "combustion", "Combustion", 15, 5, 8));
 
 		/** Mage froid */
@@ -200,8 +215,10 @@ public class Skill extends Actor implements Cloneable {
 		listSkill.add(new Skill(15, 15, "tornade", "Tornade", 20, 5, 6));
 		listSkill.add(new Skill(16, 25, "rafale", "Rafale", 30, 5, 5));
 
-		/** Monstre */
+		/** Boss */
 		listSkill.add(new Skill(17, 6, "soufle", "Dragon_Breath", 10, 4, 3));
+		
+		/** Monstre */
 		listSkill.add(new Skill(18, 6, "slash", "Slash", 10, 5, 2));
 
 	}
