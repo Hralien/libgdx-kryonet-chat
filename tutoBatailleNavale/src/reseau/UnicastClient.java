@@ -15,17 +15,16 @@ import m4ges.models.MapPerso;
 import m4ges.models.Personnage;
 import m4ges.models.Skill;
 import m4ges.models.classes.Aquamancien;
+import m4ges.models.classes.Chamane;
 import m4ges.models.classes.Joueur;
 import m4ges.models.classes.Necromancien;
 import m4ges.models.classes.Pyromancien;
-import m4ges.models.classes.Chamane;
 import m4ges.models.monster.Monstre;
 import m4ges.util.Constants;
 import m4ges.views.BattleScreen;
 import m4ges.views.ChatWindow;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.TimeUtils;
 
 /**
  * Classe permettant l'envoye de donnees et de se connecter aux autres joueurs
@@ -366,12 +365,10 @@ public class UnicastClient {
 	private void actionTraiterAttaqueMonstre(byte[] data) {
 		// l'id du monstre
 		int idMonstre = (int)data[1];
-		// DEBUG
-		System.out.println("[UNICAST - ATTAQUEMONSTRE]:monstre qui attaque : "
-				+ monstres.get(idMonstre).getNom());
+		
 		// l'ip de la cible
-		System.err.println(data.length);
 		ip = new String(data, 2, data.length - 2).trim();
+		
 		/*
 		 * On a l'id du monstre a attaque et l'ip de la cible, on lance
 		 * l'attaque
@@ -488,6 +485,7 @@ public class UnicastClient {
 	 * @throws IOException
 	 */
 	public void lancerSort(Personnage mechant, Skill s) throws IOException {
+		
 		if (mechant instanceof Joueur) {
 			lancerSoin((Joueur) mechant, s);
 			return;
@@ -498,7 +496,13 @@ public class UnicastClient {
 		data[1] = (byte) s.getId();
 		data[2] = (byte) monstres.indexOf(mechant);
 		sendToAll(data);
-		game.player.setaJoueCeTour(true);
+		game.player.setToken(false);
+		Gdx.app.postRunnable(new Runnable() {
+			public void run() {
+				if (game.getScreen() instanceof BattleScreen)
+					((BattleScreen) game.getScreen()).updateSkillWindow();
+			}
+		});
 		passerToken();
 	}
 
@@ -510,6 +514,13 @@ public class UnicastClient {
 			data[i] = (byte) joueurs.getKey(j).charAt(i - 2);
 		}
 		sendToAll(data);
+		game.player.setToken(false);
+		Gdx.app.postRunnable(new Runnable() {
+			public void run() {
+				if (game.getScreen() instanceof BattleScreen)
+					((BattleScreen) game.getScreen()).updateSkillWindow();
+			}
+		});
 		passerToken();
 	}
 
@@ -605,12 +616,11 @@ public class UnicastClient {
 
 			joueurs.get(ip).setaJoueCeTour(true);
 			System.out.println("A JOUE CE TOUR : " + ip);
-			// System.err.println(game.currentVague);
-			// if (joueurs.size() >= NB_JOUEUR_MINIMUM
-			// && game.currentScreen != MyGame.BATTLESCREEN) {
+
+
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {
-					// game.currentVague = 1;
+
 					game.currentVague++;
 					game.changeScreen(MyGame.BATTLESCREEN);
 					((BattleScreen) game.getScreen()).update();

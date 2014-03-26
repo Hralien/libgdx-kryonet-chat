@@ -102,6 +102,7 @@ public class FinalScreen extends AbstractScreen {
 		TextureAtlas atlas = MyGame.manager.get("ui/scroll.pack",
 				TextureAtlas.class);
 		Image scrollingImage = new Image(atlas.findRegion("Scroll_chato"));
+		scrollingImage.setHeight(Gdx.graphics.getHeight());
 		scrollingImage.setPosition(0, 0);
 		RepeatAction ra = new RepeatAction();
 		ra.setAction(sequence(moveTo(0, 0), moveBy((int)(-scrollingImage.getWidth()*.6), 0, 20.0f, Interpolation.linear),

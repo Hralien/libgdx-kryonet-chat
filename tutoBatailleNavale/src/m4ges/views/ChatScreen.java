@@ -184,6 +184,7 @@ public class ChatScreen extends AbstractScreen {
 				TextureAtlas.class);
 		scrollingImage = new Image(atlas.findRegion("Scroll_balcon"));
 		scrollingImage.setPosition(0, 0);
+		scrollingImage.setHeight(Gdx.graphics.getHeight());
 		RepeatAction ra = new RepeatAction();
 		ra.setAction(sequence(moveTo(0, 0), moveBy((int)(-scrollingImage.getWidth()*.6), 0, 20.0f, Interpolation.linear),
 				moveBy((int)(scrollingImage.getWidth()*.6), 0, 20.0f, Interpolation.linear)));

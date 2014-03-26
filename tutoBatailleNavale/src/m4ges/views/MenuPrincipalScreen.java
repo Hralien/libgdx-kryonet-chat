@@ -144,7 +144,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 */
 	public MenuPrincipalScreen(MyGame myGame) {
 		super(myGame);
-
+		
 		this.stage = new Stage(Gdx.graphics.getWidth(),
 				Gdx.graphics.getHeight(), true);
 		// Load preferences for audio settings and start playing music
@@ -454,6 +454,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		TextureAtlas atlas = MyGame.manager.get("ui/scroll.pack",
 				TextureAtlas.class);
 		Image scrollingImage = new Image(atlas.findRegion("Scroll_forest"));
+		scrollingImage.setHeight(Gdx.graphics.getHeight());
 		scrollingImage.setPosition(0, 0);
 		RepeatAction ra = new RepeatAction();
 		ra.setAction(sequence(moveTo(0, 0), moveBy((int)(-scrollingImage.getWidth()*.6), 0, 20.0f, Interpolation.linear),
