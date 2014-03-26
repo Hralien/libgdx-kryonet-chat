@@ -24,7 +24,6 @@ public class Aquamancien extends Joueur {
 		super.strength=8;
 		super.speed=11;
 		super.intel=12;
-
 		super.listSkills=Skill.getSkillForClass(Personnage.AQUAMANCIEN);
 
 	}

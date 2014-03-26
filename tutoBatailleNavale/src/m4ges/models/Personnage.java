@@ -219,23 +219,25 @@ public abstract class Personnage extends Actor {
 		case COMPLETE:
 			stateTime += Gdx.graphics.getDeltaTime();
 			currentFrame = animate().getKeyFrame(stateTime, true);
-			batch.draw(currentFrame, getOriginX(), getOriginY());
+			batch.draw(currentFrame, getOriginX(), getOriginY(), getWidth(), getHeight());
 			break;
 		case MORT:
 			currentFrame = animate().getKeyFrame(animate().getKeyFrameIndex(8));
-			batch.draw(currentFrame, getOriginX(), getOriginY());
+			batch.draw(currentFrame, getOriginX(), getOriginY(), getWidth(), getHeight());
 			break;
 		case WAIT:
 			currentFrame = animate().getKeyFrame(0, true);
-			batch.draw(currentFrame, getX(), getY());
+			batch.draw(currentFrame, getX(), getY(), getWidth(), getHeight());
 			break;
 		default:
 			break;
 		}
-		this.setSize(currentFrame.getRegionWidth(),
-				currentFrame.getRegionHeight());
-		this.setBounds(getX(), getY(), currentFrame.getRegionWidth(),
-				currentFrame.getRegionHeight());
+		if(getWidth()==0)
+			this.setWidth(currentFrame.getRegionWidth()*2);
+		if(getHeight()==0)
+			this.setHeight(currentFrame.getRegionHeight()*2);
+//		this.setSize(currentFrame.getRegionWidth(),currentFrame.getRegionHeight());
+//		this.setBounds(getX(), getY(), getWidth(),getHeight());
 	}
 
 	/**
