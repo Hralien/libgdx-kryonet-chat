@@ -340,6 +340,8 @@ public class UnicastClient {
 		 * On recupere la cible et l'attaquant
 		 */
 		joueurs.get(ip).attaque(monstres.get(data[2]), s);
+		
+		((BattleScreen) game.getScreen()).update();
 
 		((BattleScreen) game.getScreen()).afficheSkill(s, joueurs.get(ip),
 				monstres.get(data[2]));
@@ -381,7 +383,13 @@ public class UnicastClient {
 		 * l'attaque
 		 */
 		((Monstre) monstres.get(idMonstre)).attaque(joueurs.get(ip));
-
+		
+		((BattleScreen) game.getScreen()).update();
+		
+		((BattleScreen) game.getScreen()).afficheSkill(monstres.get(idMonstre).getListSkills().get(0), monstres.get(data[2]),
+				joueurs.get(ip));
+		
+		
 		// DEBUG
 		System.out.println("[UNICAST] " + monstres.get(idMonstre).getNom()
 				+ " attaque " + joueurs.get(ip).getNom());
