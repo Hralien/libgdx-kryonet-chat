@@ -76,7 +76,6 @@ public class UnicastClient {
 	 */
 	public ChatWindow chatWindow;
 
-
 	/**
 	 * Si true : pas d'attaque de monstre Si false : attaque de monstres
 	 */
@@ -179,8 +178,8 @@ public class UnicastClient {
 			@Override
 			public void run() {
 				while (true) {
-					// tableau de 1024octet au pif !
-					byte[] data = new byte[1024];
+					// tableau de 128 octets (et c'est large)
+					byte[] data = new byte[128];
 					dpr = new DatagramPacket(data, data.length);
 
 					try {
@@ -242,11 +241,24 @@ public class UnicastClient {
 		}
 	}
 
+	/**
+	 * Traite l'envoie d'un sort d'un joueur vers un autre
+	 * 
+	 * @param data
+	 *            : les donnees a traiter
+	 */
 	private void actionLancerSoin(byte[] data) {
+		// l'ip du lanceur
 		ip = dpr.getAddress().toString().replace('/', '\0').trim();
+		// l'ip de la cible
 		String ipCible = new String(data, 2, data.length - 2).trim();
 		joueurs.get(ip).attaque(joueurs.get(ipCible),
 				Skill.selectSkillFromSkillID(data[1]));
+		// si le joueur est mort (sort hostile), il a joue ce tour (c'est une
+		// image)
+		if (joueurs.get(ipCible).getHp() <= 0)
+			joueurs.get(ipCible).setaJoueCeTour(true);
+		// on affiche le skill
 		((BattleScreen) game.getScreen()).afficheSkill(
 				Skill.selectSkillFromSkillID(data[1]), joueurs.get(ip),
 				joueurs.get(ipCible));
@@ -258,7 +270,8 @@ public class UnicastClient {
 	private void actionRecoit(byte[] data) {
 
 		String pseudoMsg = new String(data, 2, data[1]);
-		String msg = new String(data, 2 + data[1], data.length - data[1] - 2);
+		String msg = new String(data, 2 + data[1], data.length - data[1] - 2)
+				.trim();
 		this.chatWindow.addMessage(pseudoMsg + " : " + msg);
 
 	}
@@ -363,12 +376,17 @@ public class UnicastClient {
 	 * @param data
 	 */
 	private void actionTraiterAttaqueMonstre(byte[] data) {
+		
 		// l'id du monstre
-		int idMonstre = (int)data[1];
+		int idMonstre = (int) data[1];
+		
+		//On vérifie si le monstre n'est pas mort
+		if(monstres.get(idMonstre).getHp() < 0)
+			return;
 		
 		// l'ip de la cible
 		ip = new String(data, 2, data.length - 2).trim();
-		
+
 		/*
 		 * On a l'id du monstre a attaque et l'ip de la cible, on lance
 		 * l'attaque
@@ -387,7 +405,9 @@ public class UnicastClient {
 		for (Joueur j : joueurs.values()) {
 			if (j.getHp() > 0) {
 				joueursMort = false;
-				break;
+			} else {
+				// si il est mort, il a joue ce tour
+				j.setaJoueCeTour(true);
 			}
 		}
 		if (joueursMort) {
@@ -419,7 +439,12 @@ public class UnicastClient {
 			}
 		}
 
+		/*
+		 * Si c'est la fin du tour, alors il faut traiter les effets de tout les
+		 * monstres et joueurs
+		 */
 		if (action == Constants.TOKENTOUR) {
+			// on en profite pour voir si tout les monstres sont mort
 			boolean monstresMort = true;
 			for (Personnage it : monstres) {
 				if (game.getScreen() instanceof BattleScreen) {
@@ -429,16 +454,20 @@ public class UnicastClient {
 				}
 			}
 
+			// si ils y sont on change
 			if (monstresMort) {
 				Gdx.app.postRunnable(new Runnable() {
 					public void run() {
+						regen();
 						game.changeScreen(MyGame.RESULTSCREEN);
 					}
 				});
 			}
 
+			// on regarde ensuite pour les joueurs
 			boolean joueursMort = true;
 			for (Personnage it : joueurs.values()) {
+				// Si tout les montres sont mort, on passera pas ici
 				if (game.getScreen() instanceof BattleScreen) {
 					it.traiteEffet((BattleScreen) game.getScreen());
 					if (it.getHp() > 0)
@@ -446,6 +475,7 @@ public class UnicastClient {
 				}
 			}
 
+			// Partie fini
 			if (joueursMort) {
 				Gdx.app.postRunnable(new Runnable() {
 					public void run() {
@@ -485,7 +515,12 @@ public class UnicastClient {
 	 * @throws IOException
 	 */
 	public void lancerSort(Personnage mechant, Skill s) throws IOException {
-		
+
+		// Si le joueur est mort ou qu'il n'a pas de mana, il ne peut pas lancer
+		// de sort
+		if (game.player.getHp() < 0 || game.player.getMana() < s.getSpCost())
+			return;
+
 		if (mechant instanceof Joueur) {
 			lancerSoin((Joueur) mechant, s);
 			return;
@@ -503,9 +538,27 @@ public class UnicastClient {
 					((BattleScreen) game.getScreen()).updateSkillWindow();
 			}
 		});
+		
+		//indispensable pour que les degats infligé soient effectif
+		//(empeche un monstre mort d'attaquer)
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		passerToken();
 	}
 
+	/**
+	 * Permet de lancer un soin marche aussi pour les attaques hostiles sur
+	 * allie
+	 * 
+	 * @param j
+	 *            : Joueur cible
+	 * @param s
+	 *            : le skill
+	 * @throws IOException
+	 */
 	public void lancerSoin(Joueur j, Skill s) throws IOException {
 		byte[] data = new byte[2 + joueurs.getKey(j).length()];
 		data[0] = Constants.LANCERSOIN;
@@ -536,7 +589,7 @@ public class UnicastClient {
 	 */
 	public void npcAttaque(Personnage mechant, Joueur cible) throws IOException {
 		ip = joueurs.getKey(cible);
-		
+
 		// DEBUG
 		if (ip == null)
 			System.err.println("Erreur joueur inexistant");
@@ -562,9 +615,12 @@ public class UnicastClient {
 	private void attaqueMonstre() throws IOException {
 
 		for (Personnage m : monstres) {
-			Joueur cible = (Joueur) game.playersConnected.get((int) Math
-					.round(Math.random() * (game.playersConnected.size() - 1)));
-			npcAttaque(m, cible);
+			if (m.getHp() > 0) {
+				Joueur cible = (Joueur) game.playersConnected.get((int) Math
+						.round(Math.random()
+								* (game.playersConnected.size() - 1)));
+				npcAttaque(m, cible);
+			}
 		}
 	}
 
@@ -613,14 +669,11 @@ public class UnicastClient {
 			// on va le donner au dernier qui s'est mit pret
 			joueurs.get(ip).setToken(true);
 
-
 			joueurs.get(ip).setaJoueCeTour(true);
 			System.out.println("A JOUE CE TOUR : " + ip);
 
-
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {
-
 					game.currentVague++;
 					game.changeScreen(MyGame.BATTLESCREEN);
 					((BattleScreen) game.getScreen()).update();
@@ -702,6 +755,13 @@ public class UnicastClient {
 		sendToAll(data);
 	}
 
+	/**
+	 * Envoie des donnees a tout le monde
+	 * 
+	 * @param data
+	 *            : tableau de byte a envoyer
+	 * @throws IOException
+	 */
 	private void sendToAll(byte[] data) throws IOException {
 		dp = new DatagramPacket(data, data.length);
 		for (String ips : joueurs.keySet()) {
@@ -709,6 +769,17 @@ public class UnicastClient {
 			dp.setAddress(InetAddress.getByName(ips));
 			dp.setPort(PORT);
 			ds.send(dp);
+		}
+	}
+
+	/**
+	 * Permet de regenerer tout les joueurs
+	 */
+	private void regen() {
+		for (Joueur j : joueurs.values()) {
+			if (j.getHp() > 0)
+				j.setHp(j.getHpMax());
+			j.setMana(j.getManaMax());
 		}
 	}
 

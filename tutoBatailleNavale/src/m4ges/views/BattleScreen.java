@@ -62,7 +62,7 @@ public class BattleScreen extends AbstractScreen {
 	/**
 	 * liste des mobs
 	 */
-	private Vague currentVague;
+	public Vague currentVague;
 
 	/**
 	 * label pour afficher un message
