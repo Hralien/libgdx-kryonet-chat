@@ -104,15 +104,17 @@ public class BattleScreen extends AbstractScreen {
 		super.render(delta);
 		batch.setProjectionMatrix(stage.getCamera().combined);
 
-		// Timer pour jouer
-		long time = TimeUtils.millis() - game.getMC().heureToken;
-		if(game.player.isToken() && time > 15000){
-			try {
-				game.getMC().passerToken();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+//		// Timer pour jouer
+//		long time = TimeUtils.millis() - game.getMC().heureToken;
+//		System.out.println(time);
+//
+//		if(game.player.isToken() && time > 15000){
+//			try {
+//				game.getMC().passerToken();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
 
 		batch.begin();
 		batch.draw(battle_bg, 0, 0, Gdx.graphics.getWidth(),
