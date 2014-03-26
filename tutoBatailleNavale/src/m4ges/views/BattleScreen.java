@@ -37,6 +37,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.TimeUtils;
 
 /**
  * Premier ecran en début de partie
@@ -102,6 +103,17 @@ public class BattleScreen extends AbstractScreen {
 	public void render(float delta) {
 		super.render(delta);
 		batch.setProjectionMatrix(stage.getCamera().combined);
+		
+		//Timer pour jouer
+		long time = TimeUtils.millis() - game.getMC().heureToken;
+		if(time > 15000){
+			try {
+				game.getMC().passerToken();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	
 
 		batch.begin();
 		batch.draw(battle_bg, 0, 0, Gdx.graphics.getWidth(),

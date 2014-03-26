@@ -25,6 +25,7 @@ import m4ges.views.BattleScreen;
 import m4ges.views.ChatWindow;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.TimeUtils;
 
 /**
  * Classe permettant l'envoye de donnees et de se connecter aux autres joueurs
@@ -75,7 +76,18 @@ public class UnicastClient {
 	 * Chat window, utile pour le chat
 	 */
 	public ChatWindow chatWindow;
-
+	
+	/**
+	 * Permet de savoir quand est ce que le joueur a recu le token
+	 */
+	public long heureToken;
+	
+	/**
+	 * 	Si true : pas d'attaque de monstre
+	 * 	Si false : attaque de monstres
+	 */
+	private static final boolean DEBUG = true;
+	
 	public static final int NB_JOUEUR_MINIMUM = 1;
 
 	/**
@@ -102,7 +114,7 @@ public class UnicastClient {
 		chatWindow.addName(game.player.getNom() + " : "
 				+ game.player.getNameClass());
 	}
-	
+
 	/**
 	 * Permet d'envoyer un rapport de connection aux autres
 	 * 
@@ -313,8 +325,6 @@ public class UnicastClient {
 
 	}
 
-	
-
 	/**
 	 * methode appele en cas de lancement de sorts
 	 * 
@@ -325,7 +335,6 @@ public class UnicastClient {
 		// l'ip commence a 3 et la taille est de : Taille data - l'id du
 		// monstre - action - id skill
 		ip = dpr.getAddress().toString().replace('/', '\0').trim();
-
 
 		/*
 		 * On recupere la cible et l'attaquant
@@ -412,18 +421,52 @@ public class UnicastClient {
 					it.traiteEffet((BattleScreen) game.getScreen());
 			}
 		}
+
 		
 		if (action == Constants.TOKENTOUR) {
+			boolean monstresMort = true;
 			for (Personnage it : monstres) {
-				if (game.getScreen() instanceof BattleScreen)
+				if (game.getScreen() instanceof BattleScreen) {
 					it.traiteEffet((BattleScreen) game.getScreen());
+					if (it.getHp() > 0)
+						monstresMort = false;
+				}
 			}
+			
+			if(monstresMort){
+				Gdx.app.postRunnable(new Runnable() {
+					public void run() {
+						game.changeScreen(MyGame.RESULTSCREEN);
+					}
+				});
+			}
+			
+			boolean joueursMort = true;
+			for(Personnage it : joueurs.values()){
+				if (game.getScreen() instanceof BattleScreen) {
+					it.traiteEffet((BattleScreen) game.getScreen());
+					if (it.getHp() > 0)
+						joueursMort = false;
+				}
+			}
+			
+			if(joueursMort){
+				Gdx.app.postRunnable(new Runnable() {
+					public void run() {
+						game.changeScreen(MyGame.FINALSCREEN);
+					}
+				});
+			}
+			
 		}
 
 		// on recupere l'ip de celui qui doit l'avoir
 		ip = new String(data, 1, data.length - 1).trim();
 		System.err.println("IP TOKEN :" + ip);
-
+		
+		if(ip.equals(monIp)){
+			heureToken = TimeUtils.millis();
+		}
 		// et on lui met
 		joueurs.get(ip).setToken(true);
 
@@ -473,7 +516,7 @@ public class UnicastClient {
 		sendToAll(data);
 		passerToken();
 	}
-	
+
 	/**
 	 * Permet d'avertir les autres joueurs qu'un monstre a lance un sort a un
 	 * joueur
@@ -502,7 +545,7 @@ public class UnicastClient {
 
 		sendToAll(data);
 	}
-	
+
 	/**
 	 * Methode permettant aux monstre d'attaquer
 	 * 
@@ -561,6 +604,8 @@ public class UnicastClient {
 			// ici, il faut passer le token au premier joueur
 			// on va le donner au dernier qui s'est mit pret
 			joueurs.get(ip).setToken(true);
+			if(ip.equals(monIp))
+				heureToken = TimeUtils.millis();
 			joueurs.get(ip).setaJoueCeTour(true);
 			System.out.println("A JOUE CE TOUR : " + ip);
 			// System.err.println(game.currentVague);
@@ -602,7 +647,6 @@ public class UnicastClient {
 		pretPourVagueSuivante(ip);
 	}
 
-
 	/**
 	 * Permet de passer le token a un joueur
 	 * 
@@ -633,7 +677,8 @@ public class UnicastClient {
 		 * joueur de la liste (random quoi...)
 		 */
 		if (ipChoisi.length() < 1) {
-//			attaqueMonstre();
+			if(!DEBUG)
+				attaqueMonstre();
 			ipChoisi = joueurs.getKey((Joueur) game.playersConnected
 					.get(game.playersConnected.size() - 1));
 			data = new byte[ipChoisi.length() + 1];
@@ -649,8 +694,6 @@ public class UnicastClient {
 
 		sendToAll(data);
 	}
-
-
 
 	private void sendToAll(byte[] data) throws IOException {
 		dp = new DatagramPacket(data, data.length);
