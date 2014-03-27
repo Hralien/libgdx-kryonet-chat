@@ -18,8 +18,8 @@ public class Necromancien extends Joueur {
 
 	public Necromancien() {
 		super();
-		super.hp=70;
-		super.hpMax = 70;
+		super.hp=1000;
+		super.hpMax = 1000;
 		super.mana=110;
 		super.manaMax =110;
 		super.strength=8;

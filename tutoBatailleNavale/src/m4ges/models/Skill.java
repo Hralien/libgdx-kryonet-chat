@@ -199,7 +199,7 @@ public class Skill extends Actor implements Cloneable {
 		listSkill.add(new Skill(7, 8, "empoisonement", "Empoisonnement", 10, 5,
 				5));
 		listSkill
-				.add(new Skill(8, 25, "perturbation", "Perturbation", 30, 5, 5));
+				.add(new Skill(8, 25, "perturbation", "Perturbation", 50, 5, 5));
 
 		/** Mage chaud */
 		listSkill

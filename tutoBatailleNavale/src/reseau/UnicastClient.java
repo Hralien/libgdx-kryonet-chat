@@ -363,6 +363,8 @@ public class UnicastClient {
 		if (vagueFinie) {
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {
+					((BattleScreen) game.getScreen()).currentVague
+							.setMonsters(null);
 					game.changeScreen(MyGame.RESULTSCREEN);
 				}
 			});
@@ -376,14 +378,14 @@ public class UnicastClient {
 	 * @param data
 	 */
 	private void actionTraiterAttaqueMonstre(byte[] data) {
-		
+
 		// l'id du monstre
 		int idMonstre = (int) data[1];
-		
-		//On vérifie si le monstre n'est pas mort
-		if(monstres.get(idMonstre).getHp() < 0)
+
+		// On vérifie si le monstre n'est pas mort
+		if (monstres.get(idMonstre).getHp() < 0)
 			return;
-		
+
 		// l'ip de la cible
 		ip = new String(data, 2, data.length - 2).trim();
 
@@ -425,6 +427,7 @@ public class UnicastClient {
 	 * @param data
 	 */
 	private void actionToken(byte[] data, int action) {
+		System.out.println("la");
 		/*
 		 * Si action = token tour alors tout le monde a joue ce tour; il faut
 		 * mettre aJoueCeTour a false et enlever le token a celui qui l'a (même
@@ -444,13 +447,16 @@ public class UnicastClient {
 		 * monstres et joueurs
 		 */
 		if (action == Constants.TOKENTOUR) {
+			
 			// on en profite pour voir si tout les monstres sont mort
 			boolean monstresMort = true;
 			for (Personnage it : monstres) {
-				if (game.getScreen() instanceof BattleScreen) {
-					it.traiteEffet((BattleScreen) game.getScreen());
-					if (it.getHp() > 0)
-						monstresMort = false;
+				if (it.getHp() > 0) {
+					if (game.getScreen() instanceof BattleScreen) {
+						it.traiteEffet((BattleScreen) game.getScreen());
+						if (it.getHp() > 0)
+							monstresMort = false;
+					}
 				}
 			}
 
@@ -458,12 +464,14 @@ public class UnicastClient {
 			if (monstresMort) {
 				Gdx.app.postRunnable(new Runnable() {
 					public void run() {
-						regen();
+						if(game.getScreen() instanceof BattleScreen)
+							((BattleScreen) game.getScreen()).currentVague
+									.setMonsters(null);
 						game.changeScreen(MyGame.RESULTSCREEN);
 					}
 				});
 			}
-
+			
 			// on regarde ensuite pour les joueurs
 			boolean joueursMort = true;
 			for (Personnage it : joueurs.values()) {
@@ -530,6 +538,7 @@ public class UnicastClient {
 		data[0] = Constants.LANCERSKILL;
 		data[1] = (byte) s.getId();
 		data[2] = (byte) monstres.indexOf(mechant);
+		System.out.println("ENVOIE");
 		sendToAll(data);
 		game.player.setToken(false);
 		Gdx.app.postRunnable(new Runnable() {
@@ -538,14 +547,15 @@ public class UnicastClient {
 					((BattleScreen) game.getScreen()).updateSkillWindow();
 			}
 		});
-		
-		//indispensable pour que les degats infligé soient effectif
-		//(empeche un monstre mort d'attaquer)
+
+		// indispensable pour que les degats infligé soient effectif
+		// (empeche un monstre mort d'attaquer)
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		System.out.println("ENVOyE");
 		passerToken();
 	}
 
@@ -661,10 +671,14 @@ public class UnicastClient {
 		}
 		if (pret) {
 			// Tout le monde est pret, il faut donc reinitialiser le boolean
+			
 			for (Joueur j : joueurs.values()) {
 				j.setPret(false);
 			}
-
+			
+			//on regen les joueurs
+			regen();
+			
 			// ici, il faut passer le token au premier joueur
 			// on va le donner au dernier qui s'est mit pret
 			joueurs.get(ip).setToken(true);
