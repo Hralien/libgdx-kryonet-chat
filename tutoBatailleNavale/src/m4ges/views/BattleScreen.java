@@ -19,6 +19,7 @@ import m4ges.util.Constants;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
@@ -38,6 +39,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 
@@ -65,7 +67,6 @@ public class BattleScreen extends AbstractScreen {
 	 * liste des mobs
 	 */
 	public Vague currentVague;
-
 	/**
 	 * label pour afficher un message
 	 */
@@ -158,8 +159,7 @@ public class BattleScreen extends AbstractScreen {
 		// on recup la map correspondante a la vague
 		TextureAtlas atlasMap = MyGame.manager.get("ui/maps.pack",
 				TextureAtlas.class);
-		battle_bg = new TextureRegion(atlasMap.findRegion(currentVague
-				.getNameVague()));
+		battle_bg = new TextureRegion(atlasMap.findRegion(currentVague.getNameVague()));
 		// on affiche
 		lb_info = buildLabelMessage("Selectionner un monstre et lancer un sort");
 		// on construit les layers
@@ -195,8 +195,7 @@ public class BattleScreen extends AbstractScreen {
 	 * @return
 	 */
 	private Table createMySkillWindows() {
-		WindowStyle ws = new WindowStyle(new BitmapFont(), Color.BLACK,
-				new TextureRegionDrawable(battle_skill));
+		WindowStyle ws = new WindowStyle(new BitmapFont(), Color.BLACK, new TextureRegionDrawable(battle_skill));
 		skillWindow = new Window("", ws);
 		int i = 0;
 		for (final Skill it : super.game.player.getListSkills()) {
@@ -252,12 +251,13 @@ public class BattleScreen extends AbstractScreen {
 				new TextureRegionDrawable(battle_info));
 		Bar bar = new Bar(game.player);
 		Window infoWindow = new Window("", ws);
-		infoWindow.row();
-		infoWindow.add(new Image(bar.getHpBar()));
 		infoWindow.add(new Label("hp:" + game.player.getHp(), skin));
 		infoWindow.row();
-		infoWindow.add(new Image(bar.getSpBar()));
+		infoWindow.add(new Image(bar.getHpBar()));
+		infoWindow.row();
 		infoWindow.add(new Label("sp:" + game.player.getMana(), skin));
+		infoWindow.row();
+		infoWindow.add(new Image(bar.getSpBar()));
 		infoWindow.pack();
 		infoWindow.setBounds(0, 0, battle_info.getRegionWidth(),
 				battle_info.getRegionHeight());
@@ -270,7 +270,7 @@ public class BattleScreen extends AbstractScreen {
 	 * @return
 	 */
 	private Window createSelectedWindows() {
-		WindowStyle ws = new WindowStyle(new BitmapFont(), Color.BLACK,
+		WindowStyle ws = new WindowStyle(skin.getFont("default-font"), Color.BLACK,
 				new TextureRegionDrawable(battle_info2));
 		selectWindow = new Window("", ws);
 		selectWindow.setBounds(Constants.VIEWPORT_GUI_WIDTH, 0,
@@ -448,15 +448,7 @@ public class BattleScreen extends AbstractScreen {
 		float milieu_x = cible.getX() + cible.getWidth() / 2;
 		float milieu_y = cible.getY() + cible.getHeight() / 2;
 		lb_dom.setColor(Color.RED);
-		// Action t = new Action() {
-		//
-		// @Override
-		// public boolean act(float delta) {
-		// lb_dom.setFontScale(2f, 2f);
-		// lb_dom.setScale(2f, 2f);
-		// return true;
-		// }
-		// };
+
 		Action act = new ParallelAction(sequence(moveTo(milieu_x, milieu_y),
 				moveBy((int) (30), (int) (30), 1.0f, Interpolation.linear)),
 				sequence(color(Color.WHITE, 1f), fadeOut(0)));
@@ -486,18 +478,15 @@ public class BattleScreen extends AbstractScreen {
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
 
 	}
 

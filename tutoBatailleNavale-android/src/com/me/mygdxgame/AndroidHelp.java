@@ -10,12 +10,16 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Point;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.MulticastLock;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 
@@ -70,7 +74,16 @@ public class AndroidHelp implements UITrick {
 
 
 	@Override
-	public void showMyList() {
+	public int[] getScreenSize() {
+		/* First, get the Display from the WindowManager */
+		Display display = ((WindowManager) appContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+
+		/* Now we can retrieve all display-related infos */
+		int width = display.getWidth();
+		int height = display.getHeight();
+
+		int[] size = {width,height};
+		return size;
 	}
 
 	@Override

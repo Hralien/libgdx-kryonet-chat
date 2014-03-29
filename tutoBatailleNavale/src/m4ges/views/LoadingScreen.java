@@ -42,7 +42,7 @@ public class LoadingScreen extends AbstractScreen {
 
 	public LoadingScreen(MyGame game) {
 		super(game);
-		this.font = new BitmapFont(Gdx.files.internal("data/wolf.fnt"), false);
+		this.font = new BitmapFont(Gdx.files.internal("data/roboto-16.fnt"), false);
 		Citation.buildList();
 
 	}

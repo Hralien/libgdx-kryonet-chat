@@ -13,6 +13,7 @@ import m4ges.util.Constants;
 import reseau.UnicastClient;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
@@ -35,18 +36,17 @@ import com.badlogic.gdx.utils.Scaling;
  */
 public class ChatScreen extends AbstractScreen {
 
-//	final TextField tfHost;
-	// Permet de connaître l'ip du client
-	String ipClient;
-	Stage stage;
-	private Image scrollingImage;
+	/**
+	 *  Permet de connaître l'ip du client
+	 */
+	private String ipClient;
+	private Stage stage;
 
 
 	public ChatScreen(MyGame myGame) {
 		super(myGame);
 		this.batch = new SpriteBatch();
 		this.stage = new Stage(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT, false);
-//		this.tfHost = new TextField("", skin);
 	}
 
 	@Override
@@ -74,57 +74,21 @@ public class ChatScreen extends AbstractScreen {
 
 		stage.act(delta);
 		stage.draw();
-		Table.drawDebug(stage);
+//		Table.drawDebug(stage);
 	}
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
 		Gdx.input.setInputProcessor(stage);
 		stage.addActor(buildBackgroundLayer());
 
-		// on recup l'adresse a laquelle on est conecter
-//		ArrayList<String> listIps = new ArrayList<String>();
-//
-//		try {
-//			for (Enumeration<NetworkInterface> en = NetworkInterface
-//					.getNetworkInterfaces(); en.hasMoreElements();) {
-//				NetworkInterface intf = en.nextElement();
-//				for (Enumeration<InetAddress> enumIpAddr = intf
-//						.getInetAddresses(); enumIpAddr.hasMoreElements();) {
-//					InetAddress inetAddress = enumIpAddr.nextElement();
-//					// System.out.println(inetAddress.getHostAddress());
-//					if (!inetAddress.isLoopbackAddress()
-//							&& !inetAddress.isLinkLocalAddress()
-//							&& inetAddress.isSiteLocalAddress()) {
-//						listIps.add(inetAddress.getHostAddress().toString());
-//						ipClient = listIps.get(0);
-//					}
-//
-//				}
-//			}
-//		} catch (SocketException ex) {
-//			System.err.println(ex.getMessage());
-//		}
-
-		// for(String it:listIps)
-		// System.out.println(it);
-
 		// bouton de validation
 		final TextButton validation = new TextButton("se connecter", skin);
+		validation.pad(5);
 		//bouton pour signaler qu'on est pret a debuter la partie
 		final TextButton pret = new TextButton("Prêt", skin);
-//		TextButton search = new TextButton("Rechercher des serveurs", skin);
-
-//		Label lblHost = new Label("Host", skin);
-//		lblHost.setWrap(true);
-
-		// final SelectBox sbIps = new SelectBox(listIps.toArray(),skin);
-//		if (!listIps.isEmpty())
-//			tfHost.setText(listIps.get(0));
-//		else
-//			tfHost.setText("");
-//		tfHost.setMessageText("Saisir un host");
+		pret.pad(5);
+		pret.setColor(Color.RED);
 
 		// recuperation des dimensions de l'ecran
 		float width = Constants.VIEWPORT_GUI_WIDTH;
@@ -132,23 +96,18 @@ public class ChatScreen extends AbstractScreen {
 
 		// window.debug();
 		final Window window = new Window("Connexion", skin);
-		window.getButtonTable().add(new TextButton("X", skin))
-		.height(window.getPadTop());
+		window.getButtonTable().pad(5);
 		window.setPosition(width * 0, 200);
 		window.defaults().pad(20, 20, 20, 20);
-//		window.add(lblHost);
-//		window.add(tfHost);
 		window.row();
 		window.add(validation);
 		window.row();
-//		window.add(search);
 		window.pack();
 
 		// stage.addActor(new Button("Behind Window", skin));
 		stage.addActor(window);
 		validation.addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
-//				game.chatClient = new GameClient(tfHost.getText(), vue, game);
 				ChatWindow cw = new ChatWindow(game);
 				final UnicastClient uc = new UnicastClient(game);
 				uc.chatWindow = cw;
@@ -170,6 +129,7 @@ public class ChatScreen extends AbstractScreen {
 				pret.addListener(new ChangeListener() {
 					@Override
 					public void changed(ChangeEvent event, Actor actor) {
+						pret.setColor(Color.GREEN);
 						try {
 							uc.estPret();
 						} catch (IOException e) {
@@ -191,7 +151,7 @@ public class ChatScreen extends AbstractScreen {
 	private Image buildBackgroundLayer() {
 		TextureAtlas atlas = MyGame.manager.get("ui/scroll.pack",
 				TextureAtlas.class);
-		scrollingImage = new Image(atlas.findRegion("Scroll_balcon"));
+		Image scrollingImage = new Image(atlas.findRegion("Scroll_balcon"));
 		scrollingImage.setPosition(0, 0);
 		scrollingImage.setHeight(Constants.VIEWPORT_GUI_HEIGHT);
 		RepeatAction ra = new RepeatAction();
@@ -203,19 +163,16 @@ public class ChatScreen extends AbstractScreen {
 	}
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
 
 	}
 

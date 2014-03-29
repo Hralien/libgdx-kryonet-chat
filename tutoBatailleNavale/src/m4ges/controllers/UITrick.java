@@ -6,7 +6,7 @@ public interface UITrick {
     public void showToast(CharSequence toastMessage, int toastDuration, Stage stage);
     public void showAlertBox(String alertBoxTitle, String alertBoxMessage, String alertBoxButtonText, Stage stage);
     public void openUri(String uri);
-    public void showMyList();
+    public int[] getScreenSize();
     public String getMacAddress();
 
 }

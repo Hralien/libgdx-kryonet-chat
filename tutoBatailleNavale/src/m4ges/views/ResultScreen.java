@@ -40,11 +40,10 @@ import com.badlogic.gdx.utils.Scaling;
  */
 public class ResultScreen extends AbstractScreen {
 
-	Stage stage;
+	private Stage stage;
 
 	private Vague lastVague;
 	private ArrayList<Item> itemsObtenu;
-	private Image scrollingImage;
 
 	public ResultScreen(MyGame myGame) {
 		super(myGame);		
@@ -172,9 +171,9 @@ public class ResultScreen extends AbstractScreen {
 	private Image buildBackgroundLayer() {
 		TextureAtlas atlas = MyGame.manager.get("ui/scroll.pack",
 				TextureAtlas.class);
-		scrollingImage = new Image(atlas.findRegion("Scroll_desert"));
+		Image scrollingImage = new Image(atlas.findRegion("Scroll_desert"));
 		scrollingImage.setPosition(0, 0);
-		scrollingImage.setHeight(Gdx.graphics.getHeight());
+		scrollingImage.setHeight(Constants.VIEWPORT_GUI_HEIGHT);
 		RepeatAction ra = new RepeatAction();
 		ra.setAction(sequence(moveTo(0, 0), moveBy((int)(-scrollingImage.getWidth()*.6), 0, 20.0f, Interpolation.linear),
 				moveBy((int)(scrollingImage.getWidth()*.6), 0, 20.0f, Interpolation.linear)));
@@ -185,19 +184,16 @@ public class ResultScreen extends AbstractScreen {
 	
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
 
 	}
 

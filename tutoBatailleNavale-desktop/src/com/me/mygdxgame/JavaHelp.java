@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import m4ges.controllers.UITrick;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -20,6 +21,12 @@ import com.badlogic.gdx.Input.Keys;
 
 
 public class JavaHelp implements UITrick{
+
+	LwjglApplicationConfiguration cfg;
+
+	public JavaHelp(LwjglApplicationConfiguration cfg) {
+		this.cfg = cfg;
+	}
 
 
 	@Override
@@ -46,12 +53,6 @@ public class JavaHelp implements UITrick{
 	}
 	@Override
 	public void openUri(String uri) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void showMyList() {
 		// TODO Auto-generated method stub
 
 	}
@@ -89,6 +90,13 @@ public class JavaHelp implements UITrick{
 
 		}
 		return macAddress;
+	}
+
+
+	@Override
+	public int[] getScreenSize() {
+		int[] size={cfg.width,cfg.height};
+		return size;
 	}
 
 

@@ -7,6 +7,7 @@ battle_ui_spell
   rotate: false
   xy: 1, 143
   size: 288, 96
+  split: 18, 138, 6, 10
   orig: 288, 96
   offset: 0, 0
   index: -1
@@ -14,6 +15,7 @@ battle_ui
   rotate: false
   xy: 1, 45
   size: 260, 96
+  split: 7, 26, 4, 5
   orig: 260, 96
   offset: 0, 0
   index: -1
@@ -21,6 +23,7 @@ battle_ui2
   rotate: false
   xy: 291, 143
   size: 260, 96
+  split: 23, 8, 8, 8
   orig: 260, 96
   offset: 0, 0
   index: -1

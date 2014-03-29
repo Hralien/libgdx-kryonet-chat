@@ -17,7 +17,7 @@ public class Main {
 		cfg.height = 600;
 		cfg.addIcon("data/ic_m4ges.png", FileType.Internal);
 
-		new LwjglApplication(new MyGame(new JavaHelp()), cfg);
+		new LwjglApplication(new MyGame(new JavaHelp(cfg)), cfg);
 
 
 	}

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import m4ges.controllers.MyGame;
+import m4ges.util.Constants;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -33,8 +34,8 @@ public  class ChatWindow{
 
 		tfMessage = new TextField("", skin);
 		tfMessage.setMessageText("Saisir votre message");
-
 		envoyer = new TextButton("Envoyer",skin);
+		envoyer.pad(5);
 		//ajout d'un listener lors du clic
 		envoyer.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
@@ -59,11 +60,10 @@ public  class ChatWindow{
 		scrollPaneUser.setFlickScroll(true);
 		SplitPane splitPane = new SplitPane(scrollPaneMessage, scrollPaneUser, false, skin, "default-horizontal");
 
-		float width = Gdx.graphics.getWidth();
-		float height = Gdx.graphics.getHeight();
+		float width = Constants.VIEWPORT_GUI_WIDTH;
+		float height = Constants.VIEWPORT_GUI_HEIGHT;
 
 		window = new Window("Chat", skin);
-		window.getButtonTable().add(new TextButton("X", skin)).height(window.getPadTop());
 		window.setPosition(width*5, 100);
 		window.defaults().spaceBottom(10);
 		window.row().fill().expandX();

@@ -109,6 +109,7 @@ public class CreateCharacterScreen extends AbstractScreen {
 	private Window buildCreateCharacterWindow(){
 		
 		winNewCharacter = new Window("Selection Perso", skin);
+		winNewCharacter.getButtonTable().pad(5);
 		winNewCharacter.setPosition(650, 200);
 		winNewCharacter.defaults().pad(20, 20, 20, 20);
 		winNewCharacter.row().fill().expandX();
@@ -178,7 +179,7 @@ public class CreateCharacterScreen extends AbstractScreen {
 				showClassDescWindow(true, true);
 			}
 		});
-		
+		tbNewPlayer.pad(5);
 		return tbNewPlayer;
 	}
 	/**
@@ -187,7 +188,7 @@ public class CreateCharacterScreen extends AbstractScreen {
 	 */
 	private TextButton buildTbConnecter(){
 		TextButton tbConnecter = new TextButton("Valider", skin);
-
+tbConnecter.pad(5);
 		tbConnecter.addListener(new ChangeListener() {
 
 			@Override
@@ -241,6 +242,7 @@ public class CreateCharacterScreen extends AbstractScreen {
 		for (final Skill it : super.game.player.getListSkills()) {
 			TextButton skillButton = new TextButton(it.getSkillName()
 					+ " cost:" + it.getSpCost(), skin);
+			skillButton.pad(5);
 			skillButton.addListener(new ChangeListener() {
 
 				@Override
