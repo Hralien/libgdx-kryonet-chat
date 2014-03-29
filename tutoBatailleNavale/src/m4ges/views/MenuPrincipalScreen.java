@@ -21,6 +21,7 @@ import m4ges.models.classes.Joueur;
 import m4ges.models.classes.Necromancien;
 import m4ges.models.monster.Monstre;
 import m4ges.util.AudioManager;
+import m4ges.util.Constants;
 import m4ges.util.GamePreferences;
 import reseau.UnicastClient;
 
@@ -31,6 +32,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -51,6 +53,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Scaling;
 
 /**
  * Menu principal selection de ce qu'on veut faire
@@ -145,16 +148,21 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	public MenuPrincipalScreen(MyGame myGame) {
 		super(myGame);
 		
-		this.stage = new Stage(Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight(), true);
+		this.stage = new Stage(Constants.VIEWPORT_GUI_WIDTH,
+				Constants.VIEWPORT_GUI_HEIGHT, true);
 		// Load preferences for audio settings and start playing music
 		GamePreferences.instance.load();
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		stage.setViewport(width, height, true);
-	}
+		Vector2 size = Scaling.fit.apply(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT, width, height);
+        int viewportX = (int)(width - size.x) / 2;
+        int viewportY = (int)(height - size.y) / 2;
+        int viewportWidth = (int)size.x;
+        int viewportHeight = (int)size.y;
+        Gdx.gl.glViewport(viewportX, viewportY, viewportWidth, viewportHeight);
+        stage.setViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT, true, viewportX, viewportY, viewportWidth, viewportHeight);	}
 
 	@Override
 	public void dispose() {
@@ -182,8 +190,8 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	public void show() {
 		// on dit a l'appli d'ecouter ce stage quand la methode show est appelee
 		Gdx.input.setInputProcessor(stage);
-		float w = Gdx.graphics.getWidth();
-		float h =Gdx.graphics.getHeight();
+		float w = Constants.VIEWPORT_GUI_WIDTH;
+		float h =Constants.VIEWPORT_GUI_HEIGHT;
 
 		TextureAtlas atlas = MyGame.manager.get("ui/loading.pack",
 				TextureAtlas.class);
@@ -227,8 +235,8 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		winTest.row();
 		winTest.pack();
 		winTest.setPosition(
-				(float) (Gdx.graphics.getWidth() / 2 - winServer.getWidth()),
-				Gdx.graphics.getHeight() / 2);
+				(float) (Constants.VIEWPORT_GUI_WIDTH / 2 - winServer.getWidth()),
+				Constants.VIEWPORT_GUI_HEIGHT / 2);
 
 		close.addListener(new ChangeListener() {
 
@@ -240,8 +248,8 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		});
 		testMulti.addListener(new ChangeListener() {
 			public void changed(ChangeEvent arg0, Actor arg1) {
-				Effect brulure = Effect.selectEffectFromEffectID(0);
-				Effect gele = Effect.selectEffectFromEffectID(1);
+				Effect brulure = Effect.selectEffectFromEffectID(Effect.COMBUSTION);
+				Effect gele = Effect.selectEffectFromEffectID(Effect.GEL);
 				gele.setPosition(20, 10);
 				stage.addActor(brulure);
 				stage.addActor(gele);
@@ -294,8 +302,8 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		winServer.row();
 		winServer.pack();
 		winServer.setPosition(
-				(float) (Gdx.graphics.getWidth() / 2 - winServer.getWidth()),
-				Gdx.graphics.getHeight() / 2);
+				(float) (Constants.VIEWPORT_GUI_WIDTH / 2 - winServer.getWidth()),
+				Constants.VIEWPORT_GUI_HEIGHT / 2);
 
 		valider.addListener(new ChangeListener() {
 			public void changed(ChangeEvent arg0, Actor arg1) {
@@ -324,11 +332,11 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	private Table buildTitleLayer(TextureAtlas atlas) {
 		Table t = new Table();
 		imgTitle = new Image(atlas.findRegion("TitleM4ges"));
-		imgTitle.setSize((float) (Gdx.graphics.getWidth()*0.5), (float) (Gdx.graphics.getHeight()*0.35));
-		imgTitle.setPosition(Gdx.graphics.getWidth() / 3 - imgTitle.getWidth(), (float) (Gdx.graphics.getHeight() /2 - imgTitle.getHeight()));
+		imgTitle.setSize((float) (Constants.VIEWPORT_GUI_WIDTH*0.5), (float) (Constants.VIEWPORT_GUI_HEIGHT*0.35));
+		imgTitle.setPosition(Constants.VIEWPORT_GUI_WIDTH / 3 - imgTitle.getWidth(), (float) (Constants.VIEWPORT_GUI_HEIGHT /2 - imgTitle.getHeight()));
 		imgTitle.addAction(sequence(Actions.fadeOut(0.0001f),Actions.fadeIn(3f)));
 		imgTitle.pack();
-		t.add(imgTitle).width((float) (Gdx.graphics.getWidth()*0.5)).height((float) (Gdx.graphics.getHeight()*0.35));
+		t.add(imgTitle).width((float) (Constants.VIEWPORT_GUI_WIDTH*0.5)).height((float) (Constants.VIEWPORT_GUI_HEIGHT*0.35));
 		t.top();
 		t.pack();
 		return t;
@@ -364,9 +372,9 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		layer.row();
 		layer.add(btnMenuTest).left();
 		layer.left();
-		layer.padLeft((float) (Gdx.graphics.getWidth()) / 2
+		layer.padLeft((float) (Constants.VIEWPORT_GUI_WIDTH) / 2
 				- image.getRegionWidth() / 2);
-		layer.padTop((float) (Gdx.graphics.getHeight()) / 2 - layer.getHeight());
+		layer.padTop((float) (Constants.VIEWPORT_GUI_HEIGHT) / 2 - layer.getHeight());
 
 		return layer;
 	}
@@ -385,8 +393,8 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				goToNewCharacter();
 			}
 		});
-		tbPlay.setPosition((float) (Gdx.graphics.getWidth() / 2.5),
-				Gdx.graphics.getHeight() / 6);
+		tbPlay.setPosition((float) (Constants.VIEWPORT_GUI_WIDTH / 2.5),
+				Constants.VIEWPORT_GUI_HEIGHT / 6);
 
 		return tbPlay;
 	}
@@ -405,8 +413,8 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				goToDico();
 			}
 		});
-		tbDico.setPosition((float) (Gdx.graphics.getWidth() / 2.5),
-				Gdx.graphics.getHeight() / 6);
+		tbDico.setPosition((float) (Constants.VIEWPORT_GUI_WIDTH / 2.5),
+				Constants.VIEWPORT_GUI_HEIGHT / 6);
 
 		return tbDico;
 	}
@@ -454,7 +462,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		TextureAtlas atlas = MyGame.manager.get("ui/scroll.pack",
 				TextureAtlas.class);
 		Image scrollingImage = new Image(atlas.findRegion("Scroll_forest"));
-		scrollingImage.setHeight(Gdx.graphics.getHeight());
+		scrollingImage.setHeight(Constants.VIEWPORT_GUI_HEIGHT);
 		scrollingImage.setPosition(0, 0);
 		RepeatAction ra = new RepeatAction();
 		ra.setAction(sequence(moveTo(0, 0), moveBy((int)(-scrollingImage.getWidth()*.6), 0, 20.0f, Interpolation.linear),
@@ -582,7 +590,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		winOptions.pack();
 		// Move options window to bottom right corner
 		winOptions.setPosition(
-				Gdx.graphics.getWidth() / 2 - winOptions.getWidth() - 50, 50);
+				Constants.VIEWPORT_GUI_WIDTH / 2 - winOptions.getWidth() - 50, 50);
 		return winOptions;
 	}
 

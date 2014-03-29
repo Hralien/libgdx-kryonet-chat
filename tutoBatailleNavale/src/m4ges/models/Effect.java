@@ -1,7 +1,6 @@
 package m4ges.models;
 
-import java.util.HashMap;
-
+import java.util.ArrayList;
 import m4ges.controllers.MyGame;
 
 import com.badlogic.gdx.Gdx;
@@ -18,15 +17,20 @@ public class Effect extends Actor {
 	private TextureRegion currentFrame;
 	private float stateTime;
 
-	private static HashMap<Integer,Effect> mapEffect;
+	private static ArrayList<Effect> listEffect;
 	
 	private static volatile TextureAtlas atlas;
 
+	public static final int RESISTANCE=3;
+	public static final int MALEDICTION=6;
+	public static final int EMPOISONNEMENT=7;
+	public static final int COMBUSTION=12;
+	public static final int GEL=14;
+	
 	public Effect(int id,String effectName, int frame_cols, int frame_rows) {
 		this.setId(id);
 		this.setNom(effectName);
-		TextureRegion animsheet = new TextureRegion(
-				Initialisation().findRegion(effectName));
+		TextureRegion animsheet = new TextureRegion(Initialisation().findRegion(effectName));
 		TextureRegion[][] tmp = animsheet.split(animsheet.getRegionWidth()
 				/ frame_cols, animsheet.getRegionHeight() / frame_rows); // #10
 		TextureRegion[] effectFrames = new TextureRegion[frame_cols
@@ -49,16 +53,18 @@ public class Effect extends Actor {
 	}
 
 	public static Effect selectEffectFromEffectID(int effectId) {
-		if(mapEffect.containsKey(effectId)){
-			return mapEffect.get(effectId);
+		for (Effect it : listEffect) {
+			if(it.getId()==effectId)
+				return it;
 		}
 		return null;
 	}
 	private static void buildListEffect() {
-		mapEffect = new HashMap<Integer, Effect>();
-		mapEffect.put(0, new Effect(0, "Brulure", 6,1));
-		mapEffect.put(1, new Effect(1, "Gele", 6,1));
-
+		listEffect = new ArrayList<Effect>();
+		listEffect.add(new Effect(COMBUSTION, "ef_Combustion", 6,1));
+		listEffect.add(new Effect(GEL, "ef_Gel", 6,1));
+		listEffect.add(new Effect(EMPOISONNEMENT, "ef_Empoisonnement", 6,1));
+		listEffect.add(new Effect(MALEDICTION, "ef_Malediction", 6,1));
 
 	}
 	
@@ -77,8 +83,7 @@ public class Effect extends Actor {
 			// Il est TRES important.
 			synchronized (Effect.class) {
 				if (Effect.atlas == null) {
-					Effect.atlas = MyGame.manager.get("effects/skill.pack",
-							TextureAtlas.class);
+					Effect.atlas = MyGame.manager.get("effects/skill.pack",TextureAtlas.class);
 					buildListEffect();
 				}
 			}
@@ -99,6 +104,14 @@ public class Effect extends Actor {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public Animation getEffectAnimation() {
+		return effectAnimation;
+	}
+
+	public void setEffectAnimation(Animation effectAnimation) {
+		this.effectAnimation = effectAnimation;
 	}
 
 }

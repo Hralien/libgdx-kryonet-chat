@@ -6,6 +6,7 @@ import m4ges.models.Citation;
 import m4ges.models.Effect;
 import m4ges.models.LoadingBar;
 import m4ges.models.Skill;
+import m4ges.util.Constants;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
@@ -95,8 +96,8 @@ public class LoadingScreen extends AbstractScreen {
 	@Override
 	public void resize(int width, int height) {
 		// Set our screen to always be XXX x 480 in size
-		width = 480 * width / height;
-		height = 480;
+		width = (int) (Constants.VIEWPORT_GUI_HEIGHT * width / height);
+		height = (int) Constants.VIEWPORT_GUI_HEIGHT;
 		stage.setViewport(width , height, false);
 
 		// Make the background fill the screen

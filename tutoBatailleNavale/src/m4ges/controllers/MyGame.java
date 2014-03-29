@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import m4ges.models.Personnage;
-import m4ges.models.Vague;
 import m4ges.models.classes.Joueur;
 import m4ges.util.GamePreferences;
 import m4ges.views.BattleScreen;

@@ -12,11 +12,13 @@ import m4ges.models.classes.Aquamancien;
 import m4ges.models.classes.Necromancien;
 import m4ges.models.classes.Pyromancien;
 import m4ges.models.classes.Chamane;
+import m4ges.util.Constants;
 import m4ges.util.GamePreferences;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -32,6 +34,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Scaling;
 
 /**
  * Menu principal selection de ce qu'on veut faire
@@ -44,8 +47,6 @@ public class CreateCharacterScreen extends AbstractScreen {
 	 * {@link Stage}
 	 */
 	private Stage stage;
-
-	private Image scrollingImage;
 
 	
 	//window new player
@@ -60,14 +61,20 @@ public class CreateCharacterScreen extends AbstractScreen {
 	public CreateCharacterScreen(MyGame myGame) {
 		super(myGame);
 		this.fg = new Group();
-		this.stage = new Stage(Gdx.graphics.getWidth(),	Gdx.graphics.getHeight(), false);
+		this.stage = new Stage(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT, true);
 
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		stage.setViewport(width, height, false);
-	}
+		Vector2 size = Scaling.fit.apply(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT, width, height);
+        int viewportX = (int)(width - size.x) / 2;
+        int viewportY = (int)(height - size.y) / 2;
+        int viewportWidth = (int)size.x;
+        int viewportHeight = (int)size.y;
+        Gdx.gl.glViewport(viewportX, viewportY, viewportWidth, viewportHeight);
+        stage.setViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT, true, viewportX, viewportY, viewportWidth, viewportHeight);
+    }
 
 	@Override
 	public void dispose() {
@@ -290,14 +297,15 @@ public class CreateCharacterScreen extends AbstractScreen {
 	private Image buildBackgroundLayer() {
 		TextureAtlas atlas = MyGame.manager.get("ui/scroll.pack",
 				TextureAtlas.class);
-		scrollingImage = new Image(atlas.findRegion("Scroll_neige"));
+		Image scrollingImage = new Image(atlas.findRegion("Scroll_neige"));
+		scrollingImage.setHeight(Constants.VIEWPORT_GUI_HEIGHT);
 		scrollingImage.setPosition(0, 0);
-		scrollingImage.setHeight(Gdx.graphics.getHeight());
 		RepeatAction ra = new RepeatAction();
 		ra.setAction(sequence(moveTo(0, 0), moveBy((int)(-scrollingImage.getWidth()*.6), 0, 20.0f, Interpolation.linear),
 				moveBy((int)(scrollingImage.getWidth()*.6), 0, 20.0f, Interpolation.linear)));
 		ra.setCount(RepeatAction.FOREVER);
 		scrollingImage.addAction(ra);
+
 		return scrollingImage;
 	}
 	@Override

@@ -5,6 +5,7 @@ import m4ges.util.Constants;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -24,6 +25,7 @@ public abstract class AbstractScreen implements com.badlogic.gdx.Screen {
 	public AbstractScreen(MyGame game) {
 		this.game = game;
 		this.skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+		skin.getFont("default-font").getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		this.fpsLabel = new Label("fps:", skin);
 		this.batch = new SpriteBatch();
 		this.cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
@@ -76,6 +78,7 @@ public abstract class AbstractScreen implements com.badlogic.gdx.Screen {
 	@Override
 	public void resize(int width, int height) {
 		batch.setProjectionMatrix(cameraGUI.combined);
+		
 	}
 	
 	/**

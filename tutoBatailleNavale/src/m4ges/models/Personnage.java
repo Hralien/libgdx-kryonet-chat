@@ -3,7 +3,6 @@ package m4ges.models;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import m4ges.util.Constants;
 import m4ges.views.BattleScreen;
 
 import com.badlogic.gdx.Gdx;
@@ -104,14 +103,11 @@ public abstract class Personnage extends Actor {
 	/*
 	 * liste des effets actif sur le personnage
 	 */
-	// permet de connaitre les effets actif sur le perso
 	protected ArrayList<Integer> effet;
 	/**
 	 * permet de connaitre le tour de jeu
 	 */
-	// permet de connaitre le tour de jeu
 	protected boolean token;
-	// animation
 	/**
 	 * etat du personnage
 	 */
@@ -143,25 +139,27 @@ public abstract class Personnage extends Actor {
 	 *            : l'effet a ajouter
 	 */
 	public void addEffect(int effet) {
-		if (effet == Constants.GELE || effet == Constants.RESISTANCE
-				|| effet == Constants.MALEDICTION
-				|| effet == Constants.COMBUSTION
-				|| effet == Constants.EMPOISONNEMENT)
+		if (effet == Effect.GEL || effet == Effect.RESISTANCE
+				|| effet == Effect.MALEDICTION
+				|| effet == Effect.COMBUSTION
+				|| effet == Effect.EMPOISONNEMENT)
 			this.effet.add(effet);
+//		this.getStage().addActor(Effect.selectEffectFromEffectID(effet));
 		for(Integer it:this.effet)
 			System.out.println("EFFET : " + it);
 	}
 
 	public void delEffect(int effet) {
 		this.effet.remove((Object) effet);
+//		this.getStage().getActors().removeValue(Effect.selectEffectFromEffectID(effet), true);
 	}
 
 	public boolean isGele() {
-		return this.effet.contains(Constants.GELE);
+		return this.effet.contains(Effect.GEL);
 	}
 
 	public boolean isResistant() {
-		return this.effet.contains(Constants.RESISTANCE);
+		return this.effet.contains(Effect.RESISTANCE);
 	}
 
 	public void traiteEffet(BattleScreen bs) {
@@ -169,23 +167,23 @@ public abstract class Personnage extends Actor {
 		Iterator<Integer> e = this.effet.iterator();
 		while (e.hasNext()) {
 			switch (e.next()) {
-			case Constants.COMBUSTION:
+			case Effect.COMBUSTION:
 				this.perdreVie(15);
 				bs.afficheSkill(
-						Skill.selectSkillFromSkillID(Constants.COMBUSTION),
+						Skill.selectSkillFromSkillID(Effect.COMBUSTION),
 						this, this);
 				break;
-			case Constants.MALEDICTION:
+			case Effect.MALEDICTION:
 				this.perdreVie(25);
 				e.remove();
 				bs.afficheSkill(
-						Skill.selectSkillFromSkillID(Constants.MALEDICTION),
+						Skill.selectSkillFromSkillID(Effect.MALEDICTION),
 						this, this);
 				break;
-			case Constants.EMPOISONNEMENT:
+			case Effect.EMPOISONNEMENT:
 				this.perdreVie(10);
 				bs.afficheSkill(
-						Skill.selectSkillFromSkillID(Constants.EMPOISONNEMENT),
+						Skill.selectSkillFromSkillID(Effect.EMPOISONNEMENT),
 						this, this);
 				break;
 			default:
@@ -215,9 +213,10 @@ public abstract class Personnage extends Actor {
 	 */
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
+		stateTime += Gdx.graphics.getDeltaTime();
+
 		switch (state) {
 		case COMPLETE:
-			stateTime += Gdx.graphics.getDeltaTime();
 			currentFrame = animate().getKeyFrame(stateTime, true);
 			batch.draw(currentFrame, getOriginX(), getOriginY(), getWidth(), getHeight());
 			break;
@@ -231,6 +230,10 @@ public abstract class Personnage extends Actor {
 			break;
 		default:
 			break;
+		}
+		
+		for(Integer e : effet){
+			batch.draw(Effect.selectEffectFromEffectID(e).getEffectAnimation().getKeyFrame(stateTime, true),getX(), getY());
 		}
 		if(getWidth()==0)
 			this.setWidth(currentFrame.getRegionWidth()*2);

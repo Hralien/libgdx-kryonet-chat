@@ -5,6 +5,7 @@ import m4ges.controllers.MyGame;
 import m4ges.models.Encyclopedie;
 import m4ges.models.EncyclopedieItem;
 import m4ges.models.monster.Monstre;
+import m4ges.util.Constants;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -150,9 +151,9 @@ public class EncyclopedieScreen extends AbstractScreen {
 
 	@Override
 	public void resize(int width, int height) {
-		batch.getProjectionMatrix().setToOrtho2D(0f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.getProjectionMatrix().setToOrtho2D(0f, 0f, Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
 
-		stage.setViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+		stage.setViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT, false);
 
 		rearrangeTable();
 	}
@@ -201,7 +202,7 @@ public class EncyclopedieScreen extends AbstractScreen {
 		/**
 		 * Maximum itens to be displayed on a single line
 		 */
-		int itemsMaxPerLine = (int) (Gdx.graphics.getWidth() / textureSizeX);
+		int itemsMaxPerLine = (int) (Constants.VIEWPORT_GUI_WIDTH / textureSizeX);
 		itemsMaxPerLine -= (int) (PAD * itemsMaxPerLine / textureSizeX) + 1;
 
 		/**

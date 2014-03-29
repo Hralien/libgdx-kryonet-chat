@@ -5,9 +5,6 @@ import java.util.ArrayList;
 
 import m4ges.controllers.MyGame;
 import m4ges.models.Item;
-import m4ges.models.Personnage;
-import m4ges.models.Skill;
-
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
