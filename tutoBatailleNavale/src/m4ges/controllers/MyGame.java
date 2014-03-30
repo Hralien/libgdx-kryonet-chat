@@ -55,7 +55,7 @@ public class MyGame extends Game{
 	public ArrayList<Personnage> playersConnected;
 	public UnicastClient mc;
 	
-	public int currentVague;
+	public int currentVagueIndex;
 
 	public static AssetManager manager;
 	

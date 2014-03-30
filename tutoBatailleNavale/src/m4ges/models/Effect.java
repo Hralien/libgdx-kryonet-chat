@@ -18,7 +18,7 @@ public class Effect extends Actor {
 	private float stateTime;
 
 	private static ArrayList<Effect> listEffect;
-	
+
 	private static volatile TextureAtlas atlas;
 
 	public static final int RESISTANCE=3;
@@ -26,7 +26,7 @@ public class Effect extends Actor {
 	public static final int EMPOISONNEMENT=7;
 	public static final int COMBUSTION=12;
 	public static final int GEL=14;
-	
+
 	public Effect(int id,String effectName, int frame_cols, int frame_rows) {
 		this.setId(id);
 		this.setNom(effectName);
@@ -49,7 +49,8 @@ public class Effect extends Actor {
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		stateTime += Gdx.graphics.getDeltaTime(); // #15
 		currentFrame = effectAnimation.getKeyFrame(stateTime, true); // #16
-		batch.draw(currentFrame, this.getX(), this.getY()); // #17
+		if(currentFrame!=null)
+			batch.draw(currentFrame, this.getX(), this.getY()); // #17
 	}
 
 	public static Effect selectEffectFromEffectID(int effectId) {
@@ -67,7 +68,7 @@ public class Effect extends Actor {
 		listEffect.add(new Effect(MALEDICTION, "ef_Malediction", 6,1));
 
 	}
-	
+
 	/**
 	 * Méthode permettant de renvoyer une instance de la classe Singleton
 	 * 

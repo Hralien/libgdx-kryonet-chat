@@ -144,14 +144,14 @@ public abstract class Personnage extends Actor {
 				|| effet == Effect.COMBUSTION
 				|| effet == Effect.EMPOISONNEMENT)
 			this.effet.add(effet);
-//		this.getStage().addActor(Effect.selectEffectFromEffectID(effet));
+		//		this.getStage().addActor(Effect.selectEffectFromEffectID(effet));
 		for(Integer it:this.effet)
 			System.out.println("EFFET : " + it);
 	}
 
 	public void delEffect(int effet) {
 		this.effet.remove((Object) effet);
-//		this.getStage().getActors().removeValue(Effect.selectEffectFromEffectID(effet), true);
+		//		this.getStage().getActors().removeValue(Effect.selectEffectFromEffectID(effet), true);
 	}
 
 	public boolean isGele() {
@@ -231,16 +231,22 @@ public abstract class Personnage extends Actor {
 		default:
 			break;
 		}
-		
+
 		for(Integer e : effet){
-			batch.draw(Effect.selectEffectFromEffectID(e).getEffectAnimation().getKeyFrame(stateTime, true),getX(), getY());
+			try{
+				TextureRegion currentEffectTexture= Effect.selectEffectFromEffectID(e).getEffectAnimation().getKeyFrame(stateTime, true);
+				batch.draw(currentEffectTexture,getX(), getY());
+			}catch (NullPointerException e1){
+				//animation de l'effet null
+			}
+
 		}
 		if(getWidth()==0)
 			this.setWidth(currentFrame.getRegionWidth()*2);
 		if(getHeight()==0)
 			this.setHeight(currentFrame.getRegionHeight()*2);
-//		this.setSize(currentFrame.getRegionWidth(),currentFrame.getRegionHeight());
-//		this.setBounds(getX(), getY(), getWidth(),getHeight());
+		//		this.setSize(currentFrame.getRegionWidth(),currentFrame.getRegionHeight());
+		//		this.setBounds(getX(), getY(), getWidth(),getHeight());
 	}
 
 	/**

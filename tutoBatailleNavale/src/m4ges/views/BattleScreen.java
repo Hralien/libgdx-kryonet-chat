@@ -5,6 +5,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
 
 import java.io.IOException;
 
@@ -19,7 +20,6 @@ import m4ges.util.Constants;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
@@ -29,7 +29,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -39,7 +38,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 
@@ -71,6 +70,7 @@ public class BattleScreen extends AbstractScreen {
 	 * label pour afficher un message
 	 */
 	private Label lb_info;
+	private Label lb_vague;
 	/**
 	 * personnage selectionner
 	 */
@@ -84,21 +84,25 @@ public class BattleScreen extends AbstractScreen {
 	 */
 	public BattleScreen(MyGame myGame) {
 		super(myGame);
-		this.stage = new Stage(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT, true);
+		this.stage = new Stage(Constants.VIEWPORT_GUI_WIDTH,
+				Constants.VIEWPORT_GUI_HEIGHT, true);
 		this.stage.setCamera(cameraGUI);
 
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		Vector2 size = Scaling.fit.apply(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT, width, height);
-        int viewportX = (int)(width - size.x) / 2;
-        int viewportY = (int)(height - size.y) / 2;
-        int viewportWidth = (int)size.x;
-        int viewportHeight = (int)size.y;
-        Gdx.gl.glViewport(viewportX, viewportY, viewportWidth, viewportHeight);
-        stage.setViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT, true, viewportX, viewportY, viewportWidth, viewportHeight);
-//		stage.setViewport(width, height, true);
+		Vector2 size = Scaling.fit.apply(Constants.VIEWPORT_GUI_WIDTH,
+				Constants.VIEWPORT_GUI_HEIGHT, width, height);
+		int viewportX = (int) (width - size.x) / 2;
+		int viewportY = (int) (height - size.y) / 2;
+		int viewportWidth = (int) size.x;
+		int viewportHeight = (int) size.y;
+		Gdx.gl.glViewport(viewportX, viewportY, viewportWidth, viewportHeight);
+		stage.setViewport(Constants.VIEWPORT_GUI_WIDTH,
+				Constants.VIEWPORT_GUI_HEIGHT, true, viewportX, viewportY,
+				viewportWidth, viewportHeight);
+		// stage.setViewport(width, height, true);
 	}
 
 	@Override
@@ -113,23 +117,25 @@ public class BattleScreen extends AbstractScreen {
 		super.render(delta);
 		batch.setProjectionMatrix(stage.getCamera().combined);
 
-		//		// Timer pour jouer
-		//		long time = TimeUtils.millis() - game.getMC().heureToken;
-		//		System.out.println(time);
+		// // Timer pour jouer
+		// long time = TimeUtils.millis() - game.getMC().heureToken;
+		// System.out.println(time);
 		//
-		//		if(game.player.isToken() && time > 15000){
-		//			try {
-		//				game.getMC().passerToken();
-		//			} catch (IOException e) {
-		//				e.printStackTrace();
-		//			}
-		//		}
+		// if(game.player.isToken() && time > 15000){
+		// try {
+		// game.getMC().passerToken();
+		// } catch (IOException e) {
+		// e.printStackTrace();
+		// }
+		// }
 
 		batch.begin();
-		batch.draw(battle_bg, 0, 0, Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
+		batch.draw(battle_bg, 0, 0, Constants.VIEWPORT_GUI_WIDTH,
+				Constants.VIEWPORT_GUI_HEIGHT);
 		if (selected != null) {
-			batch.draw(battle_arrow, (float) (selected.getOriginX()+Constants.VIEWPORT_GUI_WIDTH*0.1),
-					selected.getOriginY() + selected.getHeight());
+			batch.draw(battle_arrow,
+					(float) (selected.getX() + selected.getWidth() / 2),
+					selected.getY() + selected.getHeight());
 		}
 		batch.end();
 		stage.act(delta);
@@ -152,20 +158,22 @@ public class BattleScreen extends AbstractScreen {
 		battle_arrow = new TextureRegion(atlas.findRegion("fleche"));
 
 		// on charge la vague correspondante au niveau
-		currentVague = Vague.loadVague(game.currentVague);
+		currentVague = Vague.loadVague(game.currentVagueIndex);
 		// on passe au client la liste actuelle des monstres
 		game.getMC().setMonstres(currentVague.getMonsters());
 
 		// on recup la map correspondante a la vague
 		TextureAtlas atlasMap = MyGame.manager.get("ui/maps.pack",
 				TextureAtlas.class);
-		battle_bg = new TextureRegion(atlasMap.findRegion(currentVague.getNameVague()));
+		battle_bg = new TextureRegion(atlasMap.findRegion(currentVague
+				.getNameVague()));
 		// on affiche
 		lb_info = buildLabelMessage("Selectionner un monstre et lancer un sort");
+		lb_vague = buildVagueInfo();
 		// on construit les layers
 		update();
 		// on informe le joueur qu'il est dans la vague X
-		this.stage.addActor(buildVagueInfo());
+		this.stage.addActor(lb_vague);
 
 	}
 
@@ -175,7 +183,8 @@ public class BattleScreen extends AbstractScreen {
 	public void update() {
 		// on remove les actor du stage inutiles
 		for (Actor it : stage.getActors()) {
-			if (it instanceof Personnage || it instanceof Table)
+			if (it instanceof Personnage || it instanceof Window
+					)
 				stage.getActors().removeValue(it, true);
 		}
 		System.out.println("update appelé");
@@ -185,9 +194,9 @@ public class BattleScreen extends AbstractScreen {
 		this.stage.addActor(createMyInfoWindows());
 		this.stage.addActor(createSelectedWindows());
 		this.stage.addActor(lb_info);
+		// this.stage.addActor(lblVague);
 
 	}
-
 
 	/**
 	 * affiche la liste des skill du player
@@ -195,13 +204,14 @@ public class BattleScreen extends AbstractScreen {
 	 * @return
 	 */
 	private Table createMySkillWindows() {
-		WindowStyle ws = new WindowStyle(new BitmapFont(), Color.BLACK, new TextureRegionDrawable(battle_skill));
+		WindowStyle ws = new WindowStyle(skin.getFont("default-font"), Color.BLACK,
+				new TextureRegionDrawable(battle_skill));
 		skillWindow = new Window("", ws);
 		int i = 0;
 		for (final Skill it : super.game.player.getListSkills()) {
 
-			TextButton skillButton = new TextButton(it.getSkillName()
-					+ " (" + it.getSpCost()+")", skin);
+			TextButton skillButton = new TextButton(it.getSkillName() + " ("
+					+ it.getSpCost() + ")", skin);
 			if (!super.game.player.isToken()) {
 				skillButton.setDisabled(true);
 			}
@@ -215,8 +225,8 @@ public class BattleScreen extends AbstractScreen {
 							stage.getActors().removeValue(it, true);
 					}
 					if (selected != null) {
-						it.setPosition(selected.getX() - it.getWidth() / 2,
-								selected.getY() - it.getHeight() / 2);
+//						it.setPosition(selected.getX() + selected.getWidth() / 2 - it.getWidth() /2,
+//								selected.getY() - it.getHeight() / 2);
 						// stage.addActor(it);
 						try {
 							game.mc.lancerSort(selected, it);
@@ -235,7 +245,7 @@ public class BattleScreen extends AbstractScreen {
 				skillWindow.row();
 			i++;
 		}
-		skillWindow.setBounds(battle_info.getRegionWidth(), 0,
+		skillWindow.setBounds((float) (battle_info.getRegionWidth()*0.95), 0,
 				battle_skill.getRegionWidth(), battle_skill.getRegionHeight());
 
 		return skillWindow;
@@ -269,12 +279,13 @@ public class BattleScreen extends AbstractScreen {
 	 * 
 	 * @return
 	 */
-	private Window createSelectedWindows() {
-		WindowStyle ws = new WindowStyle(skin.getFont("default-font"), Color.BLACK,
-				new TextureRegionDrawable(battle_info2));
+	private Table createSelectedWindows() {
+		WindowStyle ws = new WindowStyle(skin.getFont("default-font"),
+				Color.BLACK, new TextureRegionDrawable(battle_info2));
 		selectWindow = new Window("", ws);
-		selectWindow.setBounds(Constants.VIEWPORT_GUI_WIDTH, 0,
-				battle_skill.getRegionWidth(), battle_skill.getRegionHeight());
+		selectWindow.setBounds((float) ((skillWindow.getX()+skillWindow.getWidth())), 0,
+				battle_info2.getRegionWidth(), battle_info2.getRegionHeight());
+		selectWindow.pack();
 		if (selected == null)
 			return selectWindow;
 		selectWindow.add(new Label("name:" + selected.getNom(), skin));
@@ -282,6 +293,7 @@ public class BattleScreen extends AbstractScreen {
 		selectWindow.add(new Label("hp:" + selected.getHp(), skin));
 		selectWindow.row();
 		selectWindow.add(new Label("sp:" + selected.getMana(), skin));
+
 		selectWindow.pack();
 		return selectWindow;
 	}
@@ -310,7 +322,6 @@ public class BattleScreen extends AbstractScreen {
 						int pointer, int button) {
 					System.out.println("[" + it.getNom() + "]" + "down");
 					selected = it;
-					System.err.println("selected:" + selected);
 					stage.getActors().removeValue(selectWindow, true);
 					stage.addActor(createSelectedWindows());
 					return true;
@@ -321,7 +332,7 @@ public class BattleScreen extends AbstractScreen {
 					System.out.println("[" + it.getNom() + "]" + "up");
 				}
 			});
-				i += 50;
+			i += 50;
 			layer.addActor(it);
 			// creation du nom du joueur
 			Label name = new Label(it.getNom(), skin);
@@ -352,7 +363,7 @@ public class BattleScreen extends AbstractScreen {
 		for (final Personnage it : currentVague.getMonsters()) {
 			it.clear();
 			it.setVisible(true);
-			it.setOrigin(width / 4 + i, (float) (height / 4 + i * 1.5));
+			it.setOrigin(width / 6 + i, (float) (height / 4 + i * 1.2));
 			it.setBounds(it.getOriginX(), it.getOriginY(), it.getWidth(),
 					it.getHeight());
 			it.addListener(new InputListener() {
@@ -360,7 +371,6 @@ public class BattleScreen extends AbstractScreen {
 						int pointer, int button) {
 					System.out.println("[" + it.getNom() + "]" + "down");
 					selected = it;
-					System.err.println("selected:" + selected);
 					stage.getActors().removeValue(selectWindow, true);
 					stage.addActor(createSelectedWindows());
 					return true;
@@ -371,8 +381,8 @@ public class BattleScreen extends AbstractScreen {
 					System.out.println("[" + it.getNom() + "]" + "up");
 				}
 			});
-			if((i % 2)== 0)
-			i += 50;
+			if ((i % 2) == 0)
+				i += 100;
 			layer.addActor(it);
 		}
 		return layer;
@@ -382,18 +392,38 @@ public class BattleScreen extends AbstractScreen {
 	 * 
 	 * @return
 	 */
-	private Actor buildVagueInfo() {
+	private Label buildVagueInfo() {
 		float width = Constants.VIEWPORT_GUI_WIDTH;
 		float height = Constants.VIEWPORT_GUI_HEIGHT;
-		Label lblVague = new Label("Vague " + game.currentVague, skin);
-		lblVague.setPosition(width / 2 - lblVague.getWidth()
-				/ 2, (float) (height / 2));
-		lblVague.setOrigin(width / 2 - lblVague.getWidth()
-				/ 2, (float) (height / 2));
-		lblVague.pack();
-		lblVague.addAction(sequence(Actions.fadeIn(0.0001f),
-				Actions.fadeOut(3f)));
-		return lblVague;
+		TextureAtlas atlas = MyGame.manager.get("ui/battleui.pack",
+				TextureAtlas.class);
+		NinePatchDrawable image = new NinePatchDrawable(
+				atlas.createPatch("btn_placeholder"));
+		LabelStyle style = new LabelStyle();
+		style.background = image;
+		style.font = skin.getFont("default-font");
+		lb_vague = new Label("Vague " + game.currentVagueIndex, style);
+		// lblVague.setWidth((float) (lblVague.getTextBounds().width*1.07));
+		lb_vague.setPosition(width / 2 - lb_vague.getWidth() / 2,
+				(float) (height / 2));
+		lb_vague.setOrigin(width / 2 - lb_vague.getWidth() / 2,
+				(float) (height / 2));
+		// lblVague.addAction(sequence(moveTo(width+lblVague.getWidth(),
+		// height/2-lblVague.getHeight(),0),
+		// moveTo(width/2+lblVague.getWidth(), height/2-lblVague.getHeight(),
+		// 2f),
+		// delay(2f),
+		// moveTo(0-lblVague.getWidth(), height/2-lblVague.getHeight(), 2f)));
+		lb_vague.addAction(sequence(
+				moveTo(width + lb_vague.getWidth() / 2,(float) (height / 2)),
+		 moveTo(width/2-lb_vague.getWidth(),(float) (height / 2),2f,Interpolation.linear),
+		 delay(1f),
+		 moveTo(-lb_vague.getWidth(),(float) (height / 2),2f,Interpolation.linear)
+		 ));
+//		lb_vague.addAction(sequence(fadeIn(0.0001f),
+//				fadeOut(3f)));
+		lb_vague.pack();
+		return lb_vague;
 	}
 
 	/**
@@ -405,20 +435,21 @@ public class BattleScreen extends AbstractScreen {
 	private Label buildLabelMessage(String s) {
 		float width = Constants.VIEWPORT_GUI_WIDTH;
 		float height = Constants.VIEWPORT_GUI_HEIGHT;
-		
-		TextureAtlas atlas = MyGame.manager.get("ui/loading.pack",
+
+		TextureAtlas atlas = MyGame.manager.get("ui/battleui.pack",
 				TextureAtlas.class);
-		TextureRegion image = new TextureRegion(
-				atlas.findRegion("magic_button2"));
+		NinePatchDrawable image = new NinePatchDrawable(
+				atlas.createPatch("btn_placeholder"));
 		LabelStyle style = new LabelStyle();
-		style.background = new TextureRegionDrawable(image);
-		style.font = new BitmapFont();
+		style.background = image;
+		style.font = skin.getFont("default-font");
 		lb_info = new Label(s, style);
-		lb_info.setPosition(width / 2 - lb_info.getWidth()
-				/ 2, (float) (height * 0.95));
+		lb_info.setWidth((float) (lb_info.getTextBounds().width * 1.07));
+		lb_info.setPosition(width / 2 - lb_info.getWidth() / 2,
+				(float) (height * 0.90));
 		lb_info.setOrigin(width / 2 - lb_info.getWidth() / 2,
-				(float) (height * 0.95));
-		lb_info.pack();
+				(float) (height * 0.90));
+		// lb_info.pack();
 		return lb_info;
 
 	}
@@ -439,7 +470,7 @@ public class BattleScreen extends AbstractScreen {
 			if (it instanceof Skill)
 				stage.getActors().removeValue(it, true);
 		}
-		s.setPosition(cible.getX() - s.getWidth() / 2,
+		s.setPosition(cible.getX() + cible.getWidth() / 2 - s.getWidth() /2,
 				cible.getY() - s.getHeight() / 3);
 
 		lb_info.setText(lanceur.getNom() + " utilise " + s.getSkillName()
@@ -490,6 +521,9 @@ public class BattleScreen extends AbstractScreen {
 
 	}
 
+	public void clearScreen(){
+		stage.clear();
+	}
 	public void updateSkillWindow() {
 		stage.getActors().removeValue(skillWindow, true);
 		stage.addActor(createMySkillWindows());

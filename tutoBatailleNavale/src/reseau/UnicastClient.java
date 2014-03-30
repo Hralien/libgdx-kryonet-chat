@@ -363,8 +363,7 @@ public class UnicastClient {
 		if (vagueFinie) {
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {
-					((BattleScreen) game.getScreen()).currentVague
-							.setMonsters(null);
+					((BattleScreen) game.getScreen()).clearScreen();
 					game.changeScreen(MyGame.RESULTSCREEN);
 				}
 			});
@@ -688,7 +687,7 @@ public class UnicastClient {
 
 			Gdx.app.postRunnable(new Runnable() {
 				public void run() {
-					game.currentVague++;
+					game.currentVagueIndex++;
 					game.changeScreen(MyGame.BATTLESCREEN);
 					((BattleScreen) game.getScreen()).update();
 				}

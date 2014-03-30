@@ -82,7 +82,7 @@ public class ResultScreen extends AbstractScreen {
 	public void show() {
 		// TODO Auto-generated method stub
 		Gdx.input.setInputProcessor(stage);
-		lastVague = Vague.loadVague(game.currentVague);
+		lastVague = Vague.loadVague(game.currentVagueIndex);
 		
 		calculRecompenses();
 		// on recup l'adresse a laquelle on est conecter
