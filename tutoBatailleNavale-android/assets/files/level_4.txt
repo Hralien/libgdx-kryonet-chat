@@ -11,9 +11,6 @@ monsters: [
     },
     {
         class: m4ges.models.monster.Skeleton,
-    },
-    {
-        class: m4ges.models.monster.Skeleton,
     }
 ]
 }

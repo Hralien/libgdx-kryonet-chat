@@ -15,25 +15,20 @@ import com.badlogic.gdx.utils.TimeUtils;
 public abstract class AbstractScreen implements com.badlogic.gdx.Screen {
 
 	protected MyGame game;
-	protected Label fpsLabel;
 	protected Skin skin;
 	protected SpriteBatch batch;
 	protected OrthographicCamera cameraGUI;
-	private Stage stage;
 	private static volatile long timePlayed;
 	
 	public AbstractScreen(MyGame game) {
 		this.game = game;
 		this.skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-		skin.getFont("default-font").getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		this.fpsLabel = new Label("fps:", skin);
+		this.skin.getFont("default-font").getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		this.batch = new SpriteBatch();
 		this.cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
 		this.cameraGUI.setToOrtho(false); // flip y-axis
 		this.cameraGUI.update();
 		AbstractScreen.timePlayed = getTimePlayed();
-		this.stage = new Stage();
-		this.stage.addActor(fpsLabel);
 	}
 
 	@Override
@@ -46,7 +41,6 @@ public abstract class AbstractScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void dispose() {
-		stage.dispose();
 		skin.dispose();
 		batch.dispose();
 	};
@@ -67,11 +61,6 @@ public abstract class AbstractScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		batch.setProjectionMatrix(cameraGUI.combined);
-		fpsLabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
-
-		stage.act(arg0);
-		stage.draw();
-		
 
 	}
 

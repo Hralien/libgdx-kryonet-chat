@@ -128,7 +128,7 @@ public class BattleScreen extends AbstractScreen {
 		batch.begin();
 		batch.draw(battle_bg, 0, 0, Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
 		if (selected != null) {
-			batch.draw(battle_arrow, selected.getOriginX(),
+			batch.draw(battle_arrow, (float) (selected.getOriginX()+Constants.VIEWPORT_GUI_WIDTH*0.1),
 					selected.getOriginY() + selected.getHeight());
 		}
 		batch.end();
@@ -201,7 +201,7 @@ public class BattleScreen extends AbstractScreen {
 		for (final Skill it : super.game.player.getListSkills()) {
 
 			TextButton skillButton = new TextButton(it.getSkillName()
-					+ " cost:" + it.getSpCost(), skin);
+					+ " (" + it.getSpCost()+")", skin);
 			if (!super.game.player.isToken()) {
 				skillButton.setDisabled(true);
 			}

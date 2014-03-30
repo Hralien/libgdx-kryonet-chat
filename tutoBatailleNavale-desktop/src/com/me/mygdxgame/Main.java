@@ -14,7 +14,7 @@ public class Main {
 		cfg.title = "M4GES";
 		cfg.useGL20 = false;
 		cfg.width = 800;
-		cfg.height = 600;
+		cfg.height = 480;
 		cfg.addIcon("data/ic_m4ges.png", FileType.Internal);
 
 		new LwjglApplication(new MyGame(new JavaHelp(cfg)), cfg);

@@ -174,7 +174,6 @@ public class LoadingScreen extends AbstractScreen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 		stage.dispose();
 		batch.dispose();
 
@@ -182,13 +181,11 @@ public class LoadingScreen extends AbstractScreen {
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
 
 	}
 }
