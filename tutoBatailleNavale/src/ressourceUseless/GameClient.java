@@ -1,3 +1,4 @@
+package ressourceUseless;
 //
 //package reseau;
 //

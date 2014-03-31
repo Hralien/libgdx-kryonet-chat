@@ -497,7 +497,7 @@ public class UnicastClient {
 
 		// on recupere l'ip de celui qui doit l'avoir
 		ip = new String(data, 1, data.length - 1).trim();
-		System.err.println("IP TOKEN :" + ip);
+//		System.err.println("IP TOKEN :" + ip);
 
 		// et on lui met
 		joueurs.get(ip).setToken(true);
