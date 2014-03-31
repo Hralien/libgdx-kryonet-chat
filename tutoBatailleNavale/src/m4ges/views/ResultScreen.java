@@ -80,41 +80,12 @@ public class ResultScreen extends AbstractScreen {
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
 		Gdx.input.setInputProcessor(stage);
 		lastVague = Vague.loadVague(game.currentVagueIndex);
 		
 		calculRecompenses();
-		// on recup l'adresse a laquelle on est conecter
+
 		TextButton validation = new TextButton("Continuer", skin);
-
-		// recuperation des dimensions de l'ecran
-		float width = Gdx.graphics.getWidth();
-		//float height = Gdx.graphics.getHeight();
-
-		// window.debug();
-		Window stats = new Window("Résultat", skin);
-		stats.getButtonTable().add(new TextButton("X", skin)).height(stats.getPadTop());
-		stats.setPosition(width * 0, 200);
-		stats.defaults().pad(20, 20, 20, 20);
-		stats.add(buildResultatLayer());
-		stats.row();
-		stats.add(validation);
-		stats.pack();
-
-		Window recompenses = new Window("Récompenses", skin);
-		recompenses.getButtonTable().add(new TextButton("X", skin)).height(stats.getPadTop());
-		recompenses.setPosition(300, 200);
-		recompenses.defaults().pad(20, 20, 20, 20);
-		recompenses.row();
-		recompenses.add(buildRecompensesLayer());
-		recompenses.pack();
-
-		stage.addActor(buildBackgroundLayer());
-		stage.addActor(stats);
-		stage.addActor(recompenses);
-		stage.addActor(game.mc.chatWindow.getWindow());
-
 		validation.addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
 				try {
@@ -124,6 +95,25 @@ public class ResultScreen extends AbstractScreen {
 				}
 			}
 		});
+		// recuperation des dimensions de l'ecran
+		float width = Constants.VIEWPORT_GUI_WIDTH;
+
+		// window.debug();
+		Window win_stats = new Window("Résultat", skin);
+		win_stats.getButtonTable().add(new TextButton("X", skin)).height(win_stats.getPadTop());
+		win_stats.setPosition(width * 0, 200);
+		win_stats.defaults().pad(20, 20, 20, 20);
+		win_stats.add(buildRecompensesLayer());
+		win_stats.row();
+		win_stats.add(validation);
+		win_stats.pack();
+
+
+		stage.addActor(buildBackgroundLayer());
+		stage.addActor(win_stats);
+		stage.addActor(game.mc.chatWindow.getWindow());
+
+
 	}
 
 	private Table buildRecompensesLayer(){
@@ -139,13 +129,7 @@ public class ResultScreen extends AbstractScreen {
 		}
 		return recompenses;
 	}
-	private Table buildResultatLayer(){
-		Table resultat = new Table(skin);
-		resultat.add(new Label("NomVague:"+lastVague.getNameVague(),skin));
-		resultat.add(new Label("Vos points:512",skin));
-		return resultat;
-
-	}
+	
 
 	private void calculRecompenses() {
 		itemsObtenu.clear();
@@ -159,6 +143,7 @@ public class ResultScreen extends AbstractScreen {
 			//on parcout les items qui peuvent etre drop
 			for (Item item : monster.getDropPossible()) {
 				//si notre valeur est <= alors on gagne l'item
+				System.out.println("val random"+val + "item:"+item);
 				if(val<=item.getRate())
 					itemsObtenu.add(item);
 			}

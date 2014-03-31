@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Aquamancien extends Joueur {
 
-	private final static String DESCRIPTION = "L'aqueromancien ne paye peut être pas de mine, mais son pouvoir de destruction, combiné à celui d'un pyromancien, en font un adversaire redoutable.";
+	private final static String DESCRIPTION = "L'aquamancien ne paye peut être pas de mine, mais son pouvoir de destruction, combiné à celui d'un pyromancien, en font un adversaire redoutable.";
 	protected static volatile Animation animation;
 
 	public Aquamancien() {
@@ -49,7 +49,6 @@ public class Aquamancien extends Joueur {
 				if (Aquamancien.animation == null) {
 					TextureAtlas atlas = MyGame.manager.get("character/personnage.pack", TextureAtlas.class);
 					AtlasRegion sprite = atlas.findRegion("aquamancien");
-//					Texture sprite = new Texture(Gdx.files.internal("character/aquamancien.png"));
 					TextureRegion[] regions = new TextureRegion[9]; 
 					regions[0] = new TextureRegion(sprite, 0, 0, 30, 50);
 					regions[1] = new TextureRegion(sprite, 30, 0, 33, 50);

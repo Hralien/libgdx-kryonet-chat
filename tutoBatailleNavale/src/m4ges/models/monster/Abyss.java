@@ -71,7 +71,7 @@ public class Abyss extends Monstre{
 
 	@Override
 	public ArrayList<Item> getDropPossible() {
-		super.dropPossible.add(Item.selectItemFromItemID(1));
+		super.dropPossible.add(Item.selectItemFromItemID(2609));
 		return super.dropPossible;
 	}
 }

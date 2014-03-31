@@ -71,7 +71,7 @@ public class Phantom extends Monstre {
 
 	@Override
 	public ArrayList<Item> getDropPossible() {
-		super.dropPossible.add(Item.selectItemFromItemID(1));
+		super.dropPossible.add(Item.selectItemFromItemID(7026));
 		return super.dropPossible;
 	}
 }

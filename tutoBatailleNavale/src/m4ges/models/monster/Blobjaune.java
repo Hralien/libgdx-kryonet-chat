@@ -66,7 +66,7 @@ public class Blobjaune extends Monstre{
 
 	@Override
 	public ArrayList<Item> getDropPossible() {
-		super.dropPossible.add(Item.selectItemFromItemID(1));
+		super.dropPossible.add(Item.selectItemFromItemID(1557));
 		return super.dropPossible;
 	}
 }

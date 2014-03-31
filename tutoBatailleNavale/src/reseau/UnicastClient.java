@@ -163,7 +163,6 @@ public class UnicastClient {
 	 */
 	private void receive() {
 		// Permet de recevoir les donnes
-		// game.androidUI.showAlertBox("title", "receiveOk", "ok", null);
 		try {
 			dsR = new DatagramSocket(PORT);
 			ds = new DatagramSocket();

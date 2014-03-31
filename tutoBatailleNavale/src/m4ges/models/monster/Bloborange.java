@@ -67,7 +67,7 @@ public class Bloborange extends Monstre{
 
 	@Override
 	public ArrayList<Item> getDropPossible() {
-		super.dropPossible.add(Item.selectItemFromItemID(1));
+		super.dropPossible.add(Item.selectItemFromItemID(1554));
 		return super.dropPossible;
 	}
 }

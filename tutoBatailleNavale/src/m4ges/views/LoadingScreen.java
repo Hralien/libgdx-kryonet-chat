@@ -17,6 +17,7 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 
 /**
@@ -75,6 +76,9 @@ public class LoadingScreen extends AbstractScreen {
 		// Or if you only need a static bar, you can do
 		// loadingBar = new Image(atlas.findRegion("loading-bar1"));
 
+		Label lb_info = new Label("M4ges - IUT NANCY Charlemagne - 2013/2014", skin);
+
+		
 		// Add all the actors to the stage
 		stage.addActor(screenBg);
 		stage.addActor(loadingBar);
@@ -82,14 +86,15 @@ public class LoadingScreen extends AbstractScreen {
 		stage.addActor(loadingBarHidden);
 		stage.addActor(loadingFrame);
 		stage.addActor(logo);
-
+		stage.addActor(lb_info);
+		
 		// Add everything to be loaded, for instance:
 		MyGame.manager.load("effects/skill.pack", TextureAtlas.class);
 		MyGame.manager.load("ui/battleui.pack", TextureAtlas.class);
 		MyGame.manager.load("ui/maps.pack", TextureAtlas.class);
 		MyGame.manager.load("character/personnage.pack", TextureAtlas.class);
 		MyGame.manager.load("ui/scroll.pack", TextureAtlas.class);
-		MyGame.manager.load("effects/items.pack", TextureAtlas.class);
+		MyGame.manager.load("items/item.pack", TextureAtlas.class);
 
 	}
 
@@ -157,12 +162,6 @@ public class LoadingScreen extends AbstractScreen {
 		stage.draw();
 
 		//draw tips
-		batch.begin();
-		font.draw(batch, Citation.citationAuHasard().getPhrase(), 100, 100);
-		font.draw(batch, Citation.citationAuHasard().getAuteur(), 100, 80);
-
-		batch.end();
-		batch.flush();
 		Gdx.gl10.glDisable(GL10.GL_ALPHA_TEST);
 	}
 

@@ -69,7 +69,8 @@ public class Lutin extends Monstre{
 
 	@Override
 	public ArrayList<Item> getDropPossible() {
-		super.dropPossible.add(Item.selectItemFromItemID(1));
+		super.dropPossible.add(Item.selectItemFromItemID(1553));
+		super.dropPossible.add(Item.selectItemFromItemID(7026));
 		return super.dropPossible;
 	}
 }

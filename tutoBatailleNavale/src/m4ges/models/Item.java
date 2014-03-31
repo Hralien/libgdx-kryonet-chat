@@ -27,7 +27,7 @@ public class Item {
 	/**
 	 * est il utilisable?
 	 */
-	private boolean usable;
+	private boolean utilisable;
 	/**
 	 * si oui ItemId correspondant
 	 */
@@ -52,10 +52,10 @@ public class Item {
 		super();
 		this.id = id;
 		this.name = name;
-		this.usable = usable;
+		this.utilisable = usable;
 		this.SkillId = SkillId;
 		this.rate = rate;
-		this.image = new Image(getInstance().findRegion(name));
+		this.image = new Image(getInstance().findRegion(""+id));
 
 	}
 	/**
@@ -64,12 +64,31 @@ public class Item {
 	public static ArrayList<Item> buildListItem() {
 		if(listItem == null){
 			listItem = new ArrayList<Item>();
-			listItem.add(new Item(1,"cle",false, -1,30));
-			listItem.add(new Item(2,"potion",true, 1,50));
+			listItem.add(new Item(7026,"cle",false, -1,30));
+			listItem.add(new Item(501,"potion",true, 1,50));
+			listItem.add(new Item(1553,"Livre des mers",false,-1,50));
+			listItem.add(new Item(1554,"Livre des Terres",false,-1,50));
+			listItem.add(new Item(1555,"Livre des Flammes",false,-1,50));
+			listItem.add(new Item(1557,"Livre des Ombres",false,-1,50));
+			listItem.add(new Item(2235,"Couronne",false,-1,50));
+			listItem.add(new Item(2234,"Tiatre",false,-1,50));
+			listItem.add(new Item(2373,"Robe",false,-1,50));
+			listItem.add(new Item(2370,"Tunique",false,-1,50));
+			listItem.add(new Item(2432,"Botines",false,-1,50));
+			listItem.add(new Item(2426,"Bottes Maléfique",false,-1,50));
+			listItem.add(new Item(2617,"Gants",false,-1,50));
+			listItem.add(new Item(2609,"Bague Maléfique",false,-1,50));
+
+			 
 		}
 		return listItem;
 
 	} 
+	/**
+	 * retrouve un item parmis les existant
+	 * @param itemId
+	 * @return
+	 */
 	public static Item selectItemFromItemID(int itemId) {
 		for (Item it : buildListItem()) {
 			if (it.id == itemId) {
@@ -94,7 +113,7 @@ public class Item {
 			// Il est TRES important.
 			synchronized (Item.class) {
 				if (Item.atlas == null) {
-					Item.atlas = MyGame.manager.get("effects/items.pack",
+					Item.atlas = MyGame.manager.get("items/item.pack",
 							TextureAtlas.class);
 					buildListItem();
 				}
@@ -111,11 +130,11 @@ public class Item {
 	}
 
 	public boolean isUsable() {
-		return usable;
+		return utilisable;
 	}
 
 	public void setUsable(boolean usable) {
-		this.usable = usable;
+		this.utilisable = usable;
 	}
 
 	public int getSkillId() {
@@ -137,4 +156,11 @@ public class Item {
 	public void setRate(int rate) {
 		this.rate = rate;
 	}
+	@Override
+	public String toString() {
+		return "Item [id=" + id + ", name=" + name + ", usable=" + utilisable
+				+ ", SkillId=" + SkillId + ", image=" + image + ", rate="
+				+ rate + "]";
+	}
+	
 }

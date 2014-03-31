@@ -369,11 +369,12 @@ public class BattleScreen extends AbstractScreen {
 		float height = Constants.VIEWPORT_GUI_HEIGHT;
 
 		Table layer = new Table();
-		int i = 0;
+		int x = 0;
+		int y = 0;
 		for (final Personnage it : currentVague.getMonsters()) {
 			it.clear();
 			it.setVisible(true);
-			it.setOrigin(width / 6 + i, (float) (height / 4 + i * 1.2));
+			it.setOrigin(width / 7 + x*100,height / 4 + y*80 );
 			it.setBounds(it.getOriginX(), it.getOriginY(), it.getWidth(),
 					it.getHeight());
 			it.addListener(new InputListener() {
@@ -389,8 +390,12 @@ public class BattleScreen extends AbstractScreen {
 						int pointer, int button) {
 				}
 			});
-			if ((i % 2) == 0)
-				i += 100;
+			if ((x % 2) == 0){
+				x ++;
+			}
+			else
+				x--;
+			y ++;
 			layer.addActor(it);
 		}
 		return layer;
@@ -411,8 +416,8 @@ public class BattleScreen extends AbstractScreen {
 		style.background = image;
 		style.font = skin.getFont("default-font");
 		lb_token = new Label("À votre tour de jouer", style);
-//		lb_token.setPosition(width / 2 - lb_token.getWidth() / 2,(float) (height / 2));
-//		lb_token.setOrigin(width / 2 - lb_token.getWidth() / 2,	(float) (height / 2));
+		//		lb_token.setPosition(width / 2 - lb_token.getWidth() / 2,(float) (height / 2));
+		//		lb_token.setOrigin(width / 2 - lb_token.getWidth() / 2,	(float) (height / 2));
 		lb_token.addAction(sequence(
 				moveTo(width /2 - lb_vague.getWidth() / 2,height -lb_token.getHeight()),
 				moveTo(width/2 - lb_vague.getWidth() / 2, (float)(height *0.75 -lb_token.getHeight()),1.7f,Interpolation.bounceOut),
@@ -443,8 +448,8 @@ public class BattleScreen extends AbstractScreen {
 		style.font = skin.getFont("default-font");
 		lb_vague = new Label("Vague " + game.currentVagueIndex, style);
 		// lblVague.setWidth((float) (lblVague.getTextBounds().width*1.07));
-//		lb_vague.setPosition(width / 2 - lb_vague.getWidth() / 2,(float) (height / 2));
-//		lb_vague.setOrigin(width / 2 - lb_vague.getWidth() / 2,	(float) (height / 2));
+		//		lb_vague.setPosition(width / 2 - lb_vague.getWidth() / 2,(float) (height / 2));
+		//		lb_vague.setOrigin(width / 2 - lb_vague.getWidth() / 2,	(float) (height / 2));
 		lb_vague.addAction(sequence(
 				moveTo(width + lb_vague.getWidth() / 2,(float) (height / 2)),
 				moveTo(width/2-lb_vague.getWidth()/2,(float) (height / 2),2f,Interpolation.linear),
