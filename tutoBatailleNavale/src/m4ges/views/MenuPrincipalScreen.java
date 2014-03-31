@@ -88,7 +88,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	/**
 	 * bouton pour afficher les tests
 	 */
-	private Button btnMenuTest;
+	//private Button btnMenuTest;
 	/**
 	 * bouton pour afficher le dico
 	 */
@@ -126,7 +126,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 * checkbox pour voir fps
 	 */
 	private CheckBox chkShowFpsCounter;
-	private CheckBox chkUseMonochromeShader;
+//	private CheckBox chkUseMonochromeShader;
 
 	// server setup
 	/**
@@ -175,10 +175,6 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-
-//		batch.begin();
-//		//		batch.draw(scrollingImage, (float) (0 - (2 * stateTime * 10)), 0);
-//		batch.end();
 
 		stage.act(delta);
 		stage.draw();
@@ -355,22 +351,22 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				atlas.findRegion("magic_button2"));
 		TextButtonStyle style = new TextButtonStyle();
 		style.up = new TextureRegionDrawable(image);
-		style.font = new BitmapFont();
+		style.font = skin.getFont("default-font");
 
 		// buttons with style
 		//		btnMenuHost = buildBtnMenuHost(style);
 		btnMenuPlay = buildBtnMenuPlay(style);
 		btnMenuDico = buildBtnMenuDico(style);
 		btnMenuOptions = buildBtnMenuOption(style);
-		btnMenuTest = buildBtnMenuTest(style);
+		//btnMenuTest = buildBtnMenuTest(style);
 
-		//		layer.add(btnMenuHost).left();
-		layer.add(btnMenuPlay).right();
+		layer.add(btnMenuPlay);
 		layer.row();
-		layer.add(btnMenuDico).left();
-		layer.add(btnMenuOptions).right();
+		layer.add(btnMenuDico);
 		layer.row();
-		layer.add(btnMenuTest).left();
+		layer.add(btnMenuOptions);
+		layer.row();
+		//layer.add(btnMenuTest).left();
 		layer.left();
 		layer.padLeft((float) (Constants.VIEWPORT_GUI_WIDTH) / 2
 				- image.getRegionWidth() / 2);
@@ -521,9 +517,9 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		tbl.add(chkShowFpsCounter);
 		tbl.row();
 		// + Checkbox, "Use Monochrome Shader" label
-		chkUseMonochromeShader = new CheckBox("", skin);
+//		chkUseMonochromeShader = new CheckBox("", skin);
 		tbl.add(new Label("Use Monochrome Shader", skin));
-		tbl.add(chkUseMonochromeShader);
+//		tbl.add(chkUseMonochromeShader);
 		tbl.row();
 		return tbl;
 	}
@@ -623,7 +619,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		chkMusic.setChecked(prefs.music);
 		sldMusic.setValue(prefs.volMusic);
 		chkShowFpsCounter.setChecked(prefs.showFpsCounter);
-		chkUseMonochromeShader.setChecked(prefs.useMonochromeShader);
+//		chkUseMonochromeShader.setChecked(prefs.useMonochromeShader);
 	}
 
 	/**
@@ -636,7 +632,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		prefs.music = chkMusic.isChecked();
 		prefs.volMusic = sldMusic.getValue();
 		prefs.showFpsCounter = chkShowFpsCounter.isChecked();
-		prefs.useMonochromeShader = chkUseMonochromeShader.isChecked();
+//		prefs.useMonochromeShader = chkUseMonochromeShader.isChecked();
 		prefs.save();
 	}
 
@@ -660,8 +656,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				moveBy(moveX, moveY, moveDuration, moveEasing)));
 		btnMenuOptions.addAction(sequence(delay(delayOptionsButton * 2),
 				moveBy(moveX, moveY, moveDuration, moveEasing)));
-		btnMenuTest.addAction(sequence(delay(delayOptionsButton * 3),
-				moveBy(moveX, moveY, moveDuration, moveEasing)));
+//		btnMenuTest.addAction(sequence(delay(delayOptionsButton * 3),moveBy(moveX, moveY, moveDuration, moveEasing)));
 
 		SequenceAction seq = sequence();
 		if (visible)
@@ -672,7 +667,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 				btnMenuPlay.setTouchable(touchEnabled);
 				btnMenuDico.setTouchable(touchEnabled);
 				btnMenuOptions.setTouchable(touchEnabled);
-				btnMenuTest.setTouchable(touchEnabled);
+//				btnMenuTest.setTouchable(touchEnabled);
 			}
 		}));
 		stage.addAction(seq);
