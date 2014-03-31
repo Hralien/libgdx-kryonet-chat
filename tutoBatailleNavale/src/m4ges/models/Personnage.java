@@ -241,7 +241,13 @@ public abstract class Personnage extends Actor {
 			}
 
 		}
-		if(!nom.equals("Abyss")){
+		if(nom.equals("Abyss")){
+			if(getWidth()==0)
+				this.setWidth(currentFrame.getRegionWidth());
+			if(getHeight()==0)
+				this.setHeight(currentFrame.getRegionHeight());
+		}
+		else{
 			if(getWidth()==0)
 				this.setWidth(currentFrame.getRegionWidth()*2);
 			if(getHeight()==0)
