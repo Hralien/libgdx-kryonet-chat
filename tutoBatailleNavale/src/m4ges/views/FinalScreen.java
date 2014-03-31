@@ -86,7 +86,7 @@ public class FinalScreen extends AbstractScreen {
 		sprite = new Valkyrie().getSprite();
 		this.font = new BitmapFont(Gdx.files.internal("data/wolf.fnt"), false);
 
-		dialog = new Message("Il était une fois");
+		dialog = new Message("Bravo");
 		
 		stage.addActor(buildBackgroundLayer());
 //		stage.addActor(buildValkyrieLayer());
@@ -124,7 +124,7 @@ public class FinalScreen extends AbstractScreen {
 			.push(Tween.to(dialog, MessageAccessor.POSITION_XY, 4.0f).target(200, 400))
 		    .start(tweenManager);    // and finally start it!
 			
-			System.err.println("fini");
+//			System.err.println("fini");
 		}
 	};
 	@Override

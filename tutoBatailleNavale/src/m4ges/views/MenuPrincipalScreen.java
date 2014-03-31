@@ -269,7 +269,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 						s.sauvegarder();
 						ArrayList<String> saves = Sauvegarde.getAllSave();
 						for (String save : saves) {
-							System.err.println(save);
+//							System.err.println(save);
 						}
 						Sauvegarde u = Sauvegarde.charger(saves.get(0));	
 					}

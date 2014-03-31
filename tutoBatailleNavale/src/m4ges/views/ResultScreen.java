@@ -138,12 +138,12 @@ public class ResultScreen extends AbstractScreen {
 		//on parcourt la liste de monstre de la vague precedante
 		System.out.println(lastVague.getNameVague());
 		for (Monstre monster : lastVague.getMonsters()) {
-			System.out.println(monster.getName());
-			System.out.println(monster.getDropPossible());
+//			System.out.println(monster.getName());
+//			System.out.println(monster.getDropPossible());
 			//on parcout les items qui peuvent etre drop
 			for (Item item : monster.getDropPossible()) {
 				//si notre valeur est <= alors on gagne l'item
-				System.out.println("val random"+val + "item:"+item);
+//				System.out.println("val random"+val + "item:"+item);
 				if(val<=item.getRate())
 					itemsObtenu.add(item);
 			}

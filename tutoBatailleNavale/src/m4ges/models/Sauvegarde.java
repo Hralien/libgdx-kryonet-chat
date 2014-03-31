@@ -44,7 +44,6 @@ public class Sauvegarde {
 
 	public static Sauvegarde charger(String saveName){
 		String nb = saveName.substring(5);
-		System.err.println(nb);
 		//creation d'un objet json
 		Json json = new Json();
 		//recuperation du fichier correspondant

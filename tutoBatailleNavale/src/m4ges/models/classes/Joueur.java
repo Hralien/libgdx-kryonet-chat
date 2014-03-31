@@ -40,7 +40,7 @@ public abstract class Joueur extends Personnage implements Serializable {
 				p.perdreVie(s.getDamage());
 			}
 		}
-		System.out.println(" COUT  : " + s.getSpCost());
+//		System.out.println(" COUT  : " + s.getSpCost());
 		this.setMana(this.getMana() - s.getSpCost());
 
 	}

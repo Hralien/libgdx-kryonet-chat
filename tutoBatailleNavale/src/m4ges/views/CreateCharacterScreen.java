@@ -210,7 +210,7 @@ public class CreateCharacterScreen extends AbstractScreen {
 					GamePreferences.instance.nbAquaPlayed++;
 					break;
 				default:
-					System.err.println("switch personnage error");
+//					System.err.println("switch personnage error");
 				}
 				GamePreferences.instance.save();
 				game.player.setNom(tfPlayerName.getText());

@@ -145,8 +145,8 @@ public abstract class Personnage extends Actor {
 				|| effet == Effect.EMPOISONNEMENT)
 			this.effet.add(effet);
 		//		this.getStage().addActor(Effect.selectEffectFromEffectID(effet));
-		for(Integer it:this.effet)
-			System.out.println("EFFET : " + it);
+//		for(Integer it:this.effet)
+//			System.out.println("EFFET : " + it);
 	}
 
 	public void delEffect(int effet) {

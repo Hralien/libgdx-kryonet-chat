@@ -26,7 +26,7 @@ public abstract class Monstre extends Personnage{
 
 	//UNIQUEMENT POUR LES ATTAQUES D'UN NPC VERS UN JOUEURS
 	public void attaque(Personnage p){
-		System.out.println("Methode d'attaque NPC > joueurs appelee");
+//		System.out.println("Methode d'attaque NPC > joueurs appelee");
 		
 		p.setHp(p.getHp() - this.attaque());
 	}

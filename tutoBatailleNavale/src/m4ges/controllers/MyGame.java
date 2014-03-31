@@ -51,15 +51,15 @@ public class MyGame extends Game{
 	 * interface qui permet l'appel a des methodes propres a android
 	 */
 	public UITrick androidUI;
-	
+
 	public ArrayList<String> listHost ;
 	public ArrayList<Personnage> playersConnected;
 	public UnicastClient mc;
-	
+
 	public int currentVagueIndex;
 
 	public static AssetManager manager;
-	
+
 	public int currentScreen;
 
 	public MyGame(UITrick actionResolver) {
@@ -110,14 +110,14 @@ public class MyGame extends Game{
 		GamePreferences prefs = GamePreferences.instance;
 		prefs.timePlayed += TimeUtils.millis() - AbstractScreen.getTimePlayed();
 		prefs.save();
-		System.err.println("fini:"+prefs.timePlayed/1000+"sec");
-		
+		//System.err.println("fini:"+prefs.timePlayed/1000+"sec");
+
 	}
-	
+
 	public void setMC(UnicastClient m){
 		this.mc = m;
 	}
-	
+
 	public UnicastClient getMC(){
 		return this.mc;
 	}

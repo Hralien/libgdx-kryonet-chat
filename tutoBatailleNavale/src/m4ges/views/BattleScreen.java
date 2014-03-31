@@ -532,7 +532,7 @@ public class BattleScreen extends AbstractScreen {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.out.println("appel update");
+//		System.out.println("appel update");
 
 		Gdx.app.postRunnable(new Runnable() {
 			@Override
