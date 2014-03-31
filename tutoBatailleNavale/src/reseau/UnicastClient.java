@@ -505,8 +505,10 @@ public class UnicastClient {
 
 		Gdx.app.postRunnable(new Runnable() {
 			public void run() {
-				if (game.getScreen() instanceof BattleScreen)
+				if (game.getScreen() instanceof BattleScreen){
 					((BattleScreen) game.getScreen()).updateSkillWindow();
+					((BattleScreen) game.getScreen()).buildTokenInfo();
+				}
 			}
 		});
 
@@ -689,7 +691,8 @@ public class UnicastClient {
 				public void run() {
 					game.currentVagueIndex++;
 					game.changeScreen(MyGame.BATTLESCREEN);
-					((BattleScreen) game.getScreen()).update();
+//					((BattleScreen) game.getScreen()).update();
+					((BattleScreen) game.getScreen()).buildTokenInfo();
 				}
 			});
 			// }

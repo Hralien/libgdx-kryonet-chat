@@ -6,6 +6,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
 
 import java.io.IOException;
 
@@ -71,6 +72,8 @@ public class BattleScreen extends AbstractScreen {
 	 */
 	private Label lb_info;
 	private Label lb_vague;
+	private Label lb_token;
+
 	/**
 	 * personnage selectionner
 	 */
@@ -102,7 +105,6 @@ public class BattleScreen extends AbstractScreen {
 		stage.setViewport(Constants.VIEWPORT_GUI_WIDTH,
 				Constants.VIEWPORT_GUI_HEIGHT, true, viewportX, viewportY,
 				viewportWidth, viewportHeight);
-		// stage.setViewport(width, height, true);
 	}
 
 	@Override
@@ -133,9 +135,7 @@ public class BattleScreen extends AbstractScreen {
 		batch.draw(battle_bg, 0, 0, Constants.VIEWPORT_GUI_WIDTH,
 				Constants.VIEWPORT_GUI_HEIGHT);
 		if (selected != null) {
-			batch.draw(battle_arrow,
-					(float) (selected.getX() + selected.getWidth() / 2),
-					selected.getY() + selected.getHeight());
+			batch.draw(battle_arrow,selected.getX() + selected.getWidth() / 3,selected.getY() + selected.getHeight());
 		}
 		batch.end();
 		stage.act(delta);
@@ -187,14 +187,12 @@ public class BattleScreen extends AbstractScreen {
 					)
 				stage.getActors().removeValue(it, true);
 		}
-		System.out.println("update appelé");
 		this.stage.addActor(buildPersoLayer());
 		this.stage.addActor(buildMonsterLayer());
 		this.stage.addActor(createMySkillWindows());
 		this.stage.addActor(createMyInfoWindows());
 		this.stage.addActor(createSelectedWindows());
 		this.stage.addActor(lb_info);
-		// this.stage.addActor(lblVague);
 
 	}
 
@@ -225,9 +223,6 @@ public class BattleScreen extends AbstractScreen {
 							stage.getActors().removeValue(it, true);
 					}
 					if (selected != null) {
-//						it.setPosition(selected.getX() + selected.getWidth() / 2 - it.getWidth() /2,
-//								selected.getY() - it.getHeight() / 2);
-						// stage.addActor(it);
 						try {
 							game.mc.lancerSort(selected, it);
 							stage.getActors().removeValue(selectWindow, true);
@@ -320,7 +315,6 @@ public class BattleScreen extends AbstractScreen {
 			it.addListener(new InputListener() {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
-					System.out.println("[" + it.getNom() + "]" + "down");
 					selected = it;
 					stage.getActors().removeValue(selectWindow, true);
 					stage.addActor(createSelectedWindows());
@@ -329,7 +323,6 @@ public class BattleScreen extends AbstractScreen {
 
 				public void touchUp(InputEvent event, float x, float y,
 						int pointer, int button) {
-					System.out.println("[" + it.getNom() + "]" + "up");
 				}
 			});
 			i += 50;
@@ -351,7 +344,7 @@ public class BattleScreen extends AbstractScreen {
 	}
 
 	/**
-	 * 
+	 * affiche les monstres
 	 * @return
 	 */
 	private Table buildMonsterLayer() {
@@ -369,7 +362,6 @@ public class BattleScreen extends AbstractScreen {
 			it.addListener(new InputListener() {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
-					System.out.println("[" + it.getNom() + "]" + "down");
 					selected = it;
 					stage.getActors().removeValue(selectWindow, true);
 					stage.addActor(createSelectedWindows());
@@ -378,7 +370,6 @@ public class BattleScreen extends AbstractScreen {
 
 				public void touchUp(InputEvent event, float x, float y,
 						int pointer, int button) {
-					System.out.println("[" + it.getNom() + "]" + "up");
 				}
 			});
 			if ((i % 2) == 0)
@@ -389,7 +380,38 @@ public class BattleScreen extends AbstractScreen {
 	}
 
 	/**
-	 * 
+	 * affiche a vous de jouer
+	 * @return
+	 */
+	public void buildTokenInfo() {
+		float width = Constants.VIEWPORT_GUI_WIDTH;
+		float height = Constants.VIEWPORT_GUI_HEIGHT;
+		TextureAtlas atlas = MyGame.manager.get("ui/battleui.pack",
+				TextureAtlas.class);
+		NinePatchDrawable image = new NinePatchDrawable(
+				atlas.createPatch("btn_placeholder"));
+		LabelStyle style = new LabelStyle();
+		style.background = image;
+		style.font = skin.getFont("default-font");
+		lb_token = new Label("À votre tour de jouer", style);
+		lb_token.setPosition(width / 2 - lb_token.getWidth() / 2,
+				(float) (height / 2));
+		lb_token.setOrigin(width / 2 - lb_token.getWidth() / 2,
+				(float) (height / 2));
+		lb_token.addAction(sequence(
+				moveTo(width /2,height -lb_token.getHeight()),
+				moveTo(width/2,height / 2 -lb_token.getHeight(),1.7f,Interpolation.bounceOut),
+				delay(1f),
+				moveTo(width/2,-lb_token.getHeight(),1f,Interpolation.linear), run(new Runnable() {
+					public void run () {
+						stage.getActors().removeValue(lb_token, true);
+					}
+				})));
+		lb_token.pack();
+		this.stage.addActor(lb_token);
+	}
+	/**
+	 * affiche le numero de la vague
 	 * @return
 	 */
 	private Label buildVagueInfo() {
@@ -408,26 +430,18 @@ public class BattleScreen extends AbstractScreen {
 				(float) (height / 2));
 		lb_vague.setOrigin(width / 2 - lb_vague.getWidth() / 2,
 				(float) (height / 2));
-		// lblVague.addAction(sequence(moveTo(width+lblVague.getWidth(),
-		// height/2-lblVague.getHeight(),0),
-		// moveTo(width/2+lblVague.getWidth(), height/2-lblVague.getHeight(),
-		// 2f),
-		// delay(2f),
-		// moveTo(0-lblVague.getWidth(), height/2-lblVague.getHeight(), 2f)));
 		lb_vague.addAction(sequence(
 				moveTo(width + lb_vague.getWidth() / 2,(float) (height / 2)),
-		 moveTo(width/2-lb_vague.getWidth(),(float) (height / 2),2f,Interpolation.linear),
-		 delay(1f),
-		 moveTo(-lb_vague.getWidth(),(float) (height / 2),2f,Interpolation.linear)
-		 ));
-//		lb_vague.addAction(sequence(fadeIn(0.0001f),
-//				fadeOut(3f)));
+				moveTo(width/2-lb_vague.getWidth(),(float) (height / 2),2f,Interpolation.linear),
+				delay(1f),
+				moveTo(-lb_vague.getWidth(),(float) (height / 2),2f,Interpolation.linear)
+				));
+
 		lb_vague.pack();
 		return lb_vague;
 	}
-
 	/**
-	 * affiche le message
+	 * affiche le message en haut de l'ecran
 	 * 
 	 * @param s
 	 * @return
@@ -449,7 +463,7 @@ public class BattleScreen extends AbstractScreen {
 				(float) (height * 0.90));
 		lb_info.setOrigin(width / 2 - lb_info.getWidth() / 2,
 				(float) (height * 0.90));
-		// lb_info.pack();
+		lb_info.pack();
 		return lb_info;
 
 	}
@@ -506,7 +520,13 @@ public class BattleScreen extends AbstractScreen {
 		});
 
 	}
-
+	public void clearScreen(){
+		stage.clear();
+	}
+	public void updateSkillWindow() {
+		stage.getActors().removeValue(skillWindow, true);
+		stage.addActor(createMySkillWindows());
+	}
 	@Override
 	public void hide() {
 	}
@@ -519,14 +539,6 @@ public class BattleScreen extends AbstractScreen {
 	@Override
 	public void resume() {
 
-	}
-
-	public void clearScreen(){
-		stage.clear();
-	}
-	public void updateSkillWindow() {
-		stage.getActors().removeValue(skillWindow, true);
-		stage.addActor(createMySkillWindows());
 	}
 
 }
