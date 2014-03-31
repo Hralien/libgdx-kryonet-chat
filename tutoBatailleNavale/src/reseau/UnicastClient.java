@@ -233,6 +233,9 @@ public class UnicastClient {
 		case Constants.LANCERSOIN:
 			actionLancerSoin(data);
 			break;
+		case Constants.DECO:
+			actionDeco();
+			break;
 		default:
 			System.err.println("[UNICASTClient-DEFAULT]:Action non reconnue : "
 					+ action);
@@ -506,7 +509,8 @@ public class UnicastClient {
 			public void run() {
 				if (game.getScreen() instanceof BattleScreen){
 					((BattleScreen) game.getScreen()).updateSkillWindow();
-					((BattleScreen) game.getScreen()).buildTokenInfo();
+					if(ip.equals(monIp))
+						((BattleScreen) game.getScreen()).buildTokenInfo();
 				}
 			}
 		});
@@ -661,7 +665,7 @@ public class UnicastClient {
 	/**
 	 * quand tout les joueurs sont pret on peut continuer vers la vague suivante
 	 */
-	public void pretPourVagueSuivante(String ip) {
+	public void pretPourVagueSuivante(final String ip) {
 		boolean pret = true;
 		for (Joueur j : joueurs.values()) {
 			if (!j.estPret()) {
@@ -682,7 +686,9 @@ public class UnicastClient {
 			// ici, il faut passer le token au premier joueur
 			// on va le donner au dernier qui s'est mit pret
 			joueurs.get(ip).setToken(true);
-
+			
+			
+			
 			joueurs.get(ip).setaJoueCeTour(true);
 			System.out.println("A JOUE CE TOUR : " + ip);
 
@@ -690,8 +696,11 @@ public class UnicastClient {
 				public void run() {
 					game.currentVagueIndex++;
 					game.changeScreen(MyGame.BATTLESCREEN);
+					if(ip.equals(monIp)){
+						((BattleScreen) game.getScreen()).buildTokenInfo();
+					}
 //					((BattleScreen) game.getScreen()).update();
-					((BattleScreen) game.getScreen()).buildTokenInfo();
+				
 				}
 			});
 			// }
@@ -720,6 +729,16 @@ public class UnicastClient {
 		String ip = dpr.getAddress().toString().replace('/', '\0').trim();
 		joueurs.get(ip).setPret(true);
 		pretPourVagueSuivante(ip);
+	}
+	
+	/**
+	 * Traite le deconnexion
+	 */
+	public void actionDeco(){
+		String ip = dpr.getAddress().toString().replace('/', '\0').trim();
+		this.chatWindow.removeName(joueurs.get(ip).getName());
+		game.playersConnected.remove(joueurs.get(ip));
+		this.joueurs.remove(ip);
 	}
 
 	/**
@@ -786,7 +805,16 @@ public class UnicastClient {
 			ds.send(dp);
 		}
 	}
-
+	
+	/**
+	 * Methode permettant le déconnexion
+	 * @throws IOException 
+	 */
+	public void deco() throws IOException{
+		byte data[] = new byte[1];
+		data[0] = Constants.DECO;
+		sendToAll(data);
+	}
 	/**
 	 * Permet de regenerer tout les joueurs
 	 */
@@ -797,6 +825,8 @@ public class UnicastClient {
 			j.setMana(j.getManaMax());
 		}
 	}
+	
+	
 
 	public MapPerso<String, Joueur> getJoueurs() {
 		return joueurs;

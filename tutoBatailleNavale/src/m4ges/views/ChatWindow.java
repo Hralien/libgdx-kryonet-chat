@@ -127,5 +127,25 @@ public  class ChatWindow{
 		this.setNames(names);
 	}
 
-
+	public void removeName(String name) {
+		String[] tmp = this.nameList.getItems();
+		String[] names = new String[tmp.length - 1];
+		int i = 0;
+		int j = 0;
+		boolean trouve = false;
+		while(j < names.length){
+			if(tmp[i].equals(name)){
+				i++;
+				trouve = true;
+			}
+			else{
+				names[j] = tmp[i];
+				i++;
+				j++;
+			}
+		}
+		
+		if(trouve)
+			this.setNames(names);
+	}
 }

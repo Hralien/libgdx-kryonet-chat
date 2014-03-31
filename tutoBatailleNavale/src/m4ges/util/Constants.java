@@ -30,7 +30,8 @@ public class Constants {
 	public static final int PRET = 6;
 	public static final int TOKEN = 7;
 	public static final int TOKENTOUR = 8;
-	public static final byte LANCERSOIN = 9;
+	public static final int LANCERSOIN = 9;
+	public static final int DECO = 0;
 	
 	//Effet
 

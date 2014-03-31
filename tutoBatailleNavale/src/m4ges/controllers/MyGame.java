@@ -1,5 +1,6 @@
 package m4ges.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -100,11 +101,17 @@ public class MyGame extends Game{
 
 	@Override
 	public void dispose(){
+		try {
+			this.mc.deco();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		GamePreferences.instance.load();
 		GamePreferences prefs = GamePreferences.instance;
 		prefs.timePlayed += TimeUtils.millis() - AbstractScreen.getTimePlayed();
 		prefs.save();
 		System.err.println("fini:"+prefs.timePlayed/1000+"sec");
+		
 	}
 	
 	public void setMC(UnicastClient m){
