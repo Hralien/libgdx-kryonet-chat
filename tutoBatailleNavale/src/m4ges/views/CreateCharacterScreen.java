@@ -34,6 +34,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Scaling;
 
 /**
@@ -48,14 +49,24 @@ public class CreateCharacterScreen extends AbstractScreen {
 	 */
 	private Stage stage;
 
-	
-	//window new player
+
+	/**
+	 * window new player
+	 */
 	private Window winNewCharacter;
+	/**
+	 * input pour le pseudo du joueur
+	 */
 	private TextField tfPlayerName;
+	/**
+	 * list des classes jouables
+	 */
 	private List listClasses;
-	//window class description
+	/**
+	 * window class description
+	 */
 	private Window winClassDesc;
-	
+
 	private Group fg;
 
 	public CreateCharacterScreen(MyGame myGame) {
@@ -68,13 +79,13 @@ public class CreateCharacterScreen extends AbstractScreen {
 	@Override
 	public void resize(int width, int height) {
 		Vector2 size = Scaling.fit.apply(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT, width, height);
-        int viewportX = (int)(width - size.x) / 2;
-        int viewportY = (int)(height - size.y) / 2;
-        int viewportWidth = (int)size.x;
-        int viewportHeight = (int)size.y;
-        Gdx.gl.glViewport(viewportX, viewportY, viewportWidth, viewportHeight);
-        stage.setViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT, true, viewportX, viewportY, viewportWidth, viewportHeight);
-    }
+		int viewportX = (int)(width - size.x) / 2;
+		int viewportY = (int)(height - size.y) / 2;
+		int viewportWidth = (int)size.x;
+		int viewportHeight = (int)size.y;
+		Gdx.gl.glViewport(viewportX, viewportY, viewportWidth, viewportHeight);
+		stage.setViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT, true, viewportX, viewportY, viewportWidth, viewportHeight);
+	}
 
 	@Override
 	public void dispose() {
@@ -107,7 +118,7 @@ public class CreateCharacterScreen extends AbstractScreen {
 
 	}
 	private Window buildCreateCharacterWindow(){
-		
+
 		winNewCharacter = new Window("Selection Perso", skin);
 		winNewCharacter.getButtonTable().pad(5);
 		winNewCharacter.setPosition(650, 200);
@@ -117,35 +128,63 @@ public class CreateCharacterScreen extends AbstractScreen {
 		winNewCharacter.row();
 		winNewCharacter.add(buildClasseSelection()).minWidth(100).expandX().fillX().colspan(4);
 		winNewCharacter.row();
-		winNewCharacter.add(buildTbNewPlayer());
 		winNewCharacter.add(buildTbConnecter());
 		winNewCharacter.row();
 		winNewCharacter.pack();
 		showNewCharacterWindow(true, true);
 		return winNewCharacter;
 	}
-	
+
 	private TextField buildTfPlayerName(){
 		tfPlayerName = new TextField("", skin);
 		tfPlayerName.setMessageText("Saisir un pseudo!");
-		
+
 		tfPlayerName.setTextFieldListener(new TextFieldListener() {
 			public void keyTyped(TextField textField, char key) {
 				if (key == '\n')
 					textField.getOnscreenKeyboard().show(false);
 			}
 		});
-		
+
 		return tfPlayerName;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private TextButton buildTbConnecter(){
+		TextButton tbConnecter = new TextButton("Valider", skin);
+		tbConnecter.pad(5);
+		tbConnecter.addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				// TODO Auto-generated method stub
+				if (game.player != null) {
+					game.player.setNom(tfPlayerName.getText());
+					game.changeScreen(MyGame.CHATSCREEN);	
+				} 
+				else{
+					game.androidUI.showAlertBox("Erreur",
+							"Veuillez créer un personnage avant", "ok", stage);
+				}
+			}
+		});
+		return tbConnecter;
 	}
 	/**
 	 * 
 	 * @return
 	 */
-	private TextButton buildTbNewPlayer(){
-		TextButton tbNewPlayer = new TextButton("Créer un perso", skin);
+	private ScrollPane buildClasseSelection(){
+		// creation d'un tableau pour stocker les classes
+		String[] tabPersonnage = { "Chamane", "Necromancien", "Pyromancien","Aquamancien" };
+		// creation d'une select box (appele List ici) avec le tableau ci dessus
+		listClasses = new List(tabPersonnage, skin);
+		listClasses.addListener(new ChangeListener() {
 
-		tbNewPlayer.addListener(new ChangeListener() {
+			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				stage.getRoot().removeActor(game.player);
 				GamePreferences.instance.load();
@@ -176,45 +215,9 @@ public class CreateCharacterScreen extends AbstractScreen {
 				GamePreferences.instance.save();
 				game.player.setNom(tfPlayerName.getText());
 				stage.addActor(game.player);
-				showClassDescWindow(true, true);
+				showClassDescWindow(true, true);		
 			}
 		});
-		tbNewPlayer.pad(5);
-		return tbNewPlayer;
-	}
-	/**
-	 * 
-	 * @return
-	 */
-	private TextButton buildTbConnecter(){
-		TextButton tbConnecter = new TextButton("Valider", skin);
-tbConnecter.pad(5);
-		tbConnecter.addListener(new ChangeListener() {
-
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				// TODO Auto-generated method stub
-				if (game.player != null) {
-					game.player.setNom(tfPlayerName.getText());
-					game.changeScreen(MyGame.CHATSCREEN);	
-				} 
-				else{
-					game.androidUI.showAlertBox("Erreur",
-							"Veuillez créer un personnage avant", "ok", stage);
-				}
-			}
-		});
-		return tbConnecter;
-	}
-	/**
-	 * 
-	 * @return
-	 */
-	private ScrollPane buildClasseSelection(){
-		// creation d'un tableau pour stocker les classes
-		String[] tabPersonnage = { "Chamane", "Necromancien", "Pyromancien","Aquamancien" };
-		// creation d'une select box (appele List ici) avec le tableau ci dessus
-		listClasses = new List(tabPersonnage, skin);
 		// ajout de la List dans un scrollPane, pour pouvoir derouler,
 		// descendre, monter
 		ScrollPane scrollPaneClasses = new ScrollPane(listClasses, skin);
@@ -251,7 +254,7 @@ tbConnecter.pad(5);
 					it.resetAnimation();
 					it.setSize(it.getCurrentFrame().getRegionWidth(), it.getCurrentFrame().getRegionHeight());
 					fg.addActor(it);
-					
+
 				}
 			});
 			tSkill.add(skillButton).fillX();

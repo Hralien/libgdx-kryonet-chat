@@ -328,19 +328,36 @@ public class BattleScreen extends AbstractScreen {
 			i += 50;
 			layer.addActor(it);
 			// creation du nom du joueur
-			Label name = new Label(it.getNom(), skin);
-			if (it.getState() == Personnage.MORT)
-				name.setColor(Color.RED);
-			else
-				name.setColor(Color.GREEN);
-			// placement
-			name.setPosition(it.getOriginX() + 100, it.getOriginY());
-			// ajout
-			layer.addActor(name);
+			layer.addActor(buildNamePlayerLayer(it));
 			// reset
 
 		}
 		return layer;
+	}
+
+	private Table buildNamePlayerLayer(Personnage it) {
+		//recuperation atlas
+		TextureAtlas atlas = MyGame.manager.get("ui/battleui.pack",	TextureAtlas.class);
+		//recuperation fond
+		TextureRegionDrawable image = new TextureRegionDrawable(atlas.findRegion("pseudo_placeholder"));
+		//creation style window
+		WindowStyle ws = new WindowStyle(skin.getFont("default-font"),Color.BLACK, image);
+		Table win_pseudo = new Window("",ws);
+		//creation style label
+		LabelStyle style = new LabelStyle();
+		style.font = skin.getFont("default-font");
+		if (it.getState() == Personnage.MORT)
+			style.font.setColor(Color.RED);
+		else
+			style.font.setColor(Color.GREEN);
+		Label lb_name = new Label(it.getNom(), style);
+		// placement
+		win_pseudo.setPosition(it.getOriginX() + 100, it.getOriginY());
+		win_pseudo.padBottom(5);
+		win_pseudo.setWidth(84);
+		win_pseudo.add(lb_name);
+		win_pseudo.pack();
+		return win_pseudo;
 	}
 
 	/**
@@ -394,20 +411,20 @@ public class BattleScreen extends AbstractScreen {
 		style.background = image;
 		style.font = skin.getFont("default-font");
 		lb_token = new Label("À votre tour de jouer", style);
-		lb_token.setPosition(width / 2 - lb_token.getWidth() / 2,
-				(float) (height / 2));
-		lb_token.setOrigin(width / 2 - lb_token.getWidth() / 2,
-				(float) (height / 2));
+//		lb_token.setPosition(width / 2 - lb_token.getWidth() / 2,(float) (height / 2));
+//		lb_token.setOrigin(width / 2 - lb_token.getWidth() / 2,	(float) (height / 2));
 		lb_token.addAction(sequence(
-				moveTo(width /2,height -lb_token.getHeight()),
-				moveTo(width/2,height / 2 -lb_token.getHeight(),1.7f,Interpolation.bounceOut),
+				moveTo(width /2 - lb_vague.getWidth() / 2,height -lb_token.getHeight()),
+				moveTo(width/2 - lb_vague.getWidth() / 2, (float)(height *0.75 -lb_token.getHeight()),1.7f,Interpolation.bounceOut),
 				delay(1f),
-				moveTo(width/2,-lb_token.getHeight(),1f,Interpolation.linear), run(new Runnable() {
+				moveTo(width/2 - lb_vague.getWidth() / 2,-lb_token.getHeight(),1f,Interpolation.linear), run(new Runnable() {
 					public void run () {
 						stage.getActors().removeValue(lb_token, true);
 					}
 				})));
 		lb_token.pack();
+		lb_token.setZIndex(2);
+
 		this.stage.addActor(lb_token);
 	}
 	/**
@@ -426,18 +443,17 @@ public class BattleScreen extends AbstractScreen {
 		style.font = skin.getFont("default-font");
 		lb_vague = new Label("Vague " + game.currentVagueIndex, style);
 		// lblVague.setWidth((float) (lblVague.getTextBounds().width*1.07));
-		lb_vague.setPosition(width / 2 - lb_vague.getWidth() / 2,
-				(float) (height / 2));
-		lb_vague.setOrigin(width / 2 - lb_vague.getWidth() / 2,
-				(float) (height / 2));
+//		lb_vague.setPosition(width / 2 - lb_vague.getWidth() / 2,(float) (height / 2));
+//		lb_vague.setOrigin(width / 2 - lb_vague.getWidth() / 2,	(float) (height / 2));
 		lb_vague.addAction(sequence(
 				moveTo(width + lb_vague.getWidth() / 2,(float) (height / 2)),
-				moveTo(width/2-lb_vague.getWidth(),(float) (height / 2),2f,Interpolation.linear),
+				moveTo(width/2-lb_vague.getWidth()/2,(float) (height / 2),2f,Interpolation.linear),
 				delay(1f),
 				moveTo(-lb_vague.getWidth(),(float) (height / 2),2f,Interpolation.linear)
 				));
 
 		lb_vague.pack();
+		lb_info.setZIndex(2);
 		return lb_vague;
 	}
 	/**
@@ -463,6 +479,7 @@ public class BattleScreen extends AbstractScreen {
 				(float) (height * 0.90));
 		lb_info.setOrigin(width / 2 - lb_info.getWidth() / 2,
 				(float) (height * 0.90));
+		lb_info.setZIndex(2);
 		lb_info.pack();
 		return lb_info;
 

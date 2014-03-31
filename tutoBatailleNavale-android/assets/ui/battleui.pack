@@ -54,9 +54,16 @@ btn_placeholder
   orig: 70, 70
   offset: 0, 0
   index: -1
+pseudo_placeholder
+  rotate: false
+  xy: 467, 121
+  size: 84, 20
+  orig: 84, 20
+  offset: 0, 0
+  index: -1
 fleche
   rotate: false
-  xy: 467, 109
+  xy: 110, 10
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
