@@ -216,7 +216,7 @@ public class Skill extends Actor implements Cloneable {
 		listSkill.add(new Skill(16, 25, "rafale", "Rafale", 30, 5, 5));
 
 		/** Boss */
-		listSkill.add(new Skill(17, 6, "soufle", "Dragon_Breath", 10, 4, 3));
+		listSkill.add(new Skill(17, 6, "soufle", "Dragon_Breath", 30, 4, 3));
 		
 		/** Monstre */
 		listSkill.add(new Skill(18, 6, "slash", "Slash", 10, 5, 2));
