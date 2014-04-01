@@ -311,7 +311,7 @@ public class BattleScreen extends AbstractScreen {
 			it.setOrigin(100 + width / 2 + i, 50 + height / 4 + i);
 			it.setBounds(it.getOriginX(), it.getOriginY(), it.getWidth(),
 					it.getHeight());
-			it.setState(Personnage.WAIT);
+//			it.setState(Personnage.WAIT);
 			it.addListener(new InputListener() {
 				public boolean touchDown(InputEvent event, float x, float y,
 						int pointer, int button) {
