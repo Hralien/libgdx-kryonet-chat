@@ -466,8 +466,7 @@ public class UnicastClient {
 				Gdx.app.postRunnable(new Runnable() {
 					public void run() {
 						if (game.getScreen() instanceof BattleScreen)
-							((BattleScreen) game.getScreen()).currentVague
-									.setMonsters(null);
+							((BattleScreen) game.getScreen()).clearScreen();
 						game.changeScreen(MyGame.RESULTSCREEN);
 					}
 				});
